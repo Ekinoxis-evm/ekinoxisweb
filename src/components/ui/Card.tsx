@@ -8,13 +8,15 @@ interface CardProps {
   className?: string;
   glow?: 'blue' | 'purple' | 'none';
   hover?: boolean;
+  onClick?: () => void;
 }
 
 export default function Card({ 
   children, 
   className = '',
   glow = 'blue',
-  hover = true 
+  hover = true,
+  onClick
 }: CardProps) {
   const glowClasses = {
     blue: 'border-cyber-blue/30 hover:border-glow bg-cyber-black-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]',
@@ -26,7 +28,10 @@ export default function Card({
 
   if (!hover) {
     return (
-      <div className={`${baseClasses} ${glowClasses[glow]} ${className}`}>
+      <div 
+        onClick={onClick}
+        className={`${baseClasses} ${glowClasses[glow]} ${className} ${onClick ? 'cursor-pointer' : ''}`}
+      >
         {children}
       </div>
     );
@@ -34,8 +39,9 @@ export default function Card({
 
   return (
     <motion.div
+      onClick={onClick}
       whileHover={{ scale: 1.02, y: -5 }}
-      className={`${baseClasses} ${glowClasses[glow]} ${className}`}
+      className={`${baseClasses} ${glowClasses[glow]} ${className} ${onClick ? 'cursor-pointer' : ''}`}
     >
       {children}
     </motion.div>

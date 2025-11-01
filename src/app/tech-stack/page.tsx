@@ -37,11 +37,11 @@ export default function TechStackPage() {
           <div className="space-y-16">
             {categories.map(([key, category], categoryIdx) => {
               const allLogos = [
-                ...(category.logos || []),
-                ...(category.blockchains || []),
-                ...(category.protocols || []),
-                ...(category.wallets || []),
-                ...(category.tools || []),
+                ...('logos' in category ? category.logos : []),
+                ...('blockchains' in category ? category.blockchains : []),
+                ...('protocols' in category ? category.protocols : []),
+                ...('wallets' in category ? category.wallets : []),
+                ...('tools' in category ? category.tools : []),
               ];
 
               const isExpanded = selectedCategory === key || selectedCategory === null;
