@@ -129,7 +129,7 @@ export const content = {
         development: {
           name: "Development & Infrastructure",
           tools: [
-            "/tecnologies/Deployments/Vercel/Vercel_Logo_1.svg",
+            "/tecnologies/Deployments/Vercel_Logo_1.png",
             "/tecnologies/infraservices/Primary_Vertical_Lockup_Full_Color.png",
           ],  
         },
@@ -145,6 +145,7 @@ export const content = {
           name: "Automations",
           tools: [
             "/tecnologies/automations/n8n-color.png",
+            "/tecnologies/automations/zapier.webp",
           ],
         },
         management: {
@@ -490,7 +491,7 @@ export const content = {
         development: {
           name: "Desarrollo & Infraestructura",
           tools: [
-            "/tecnologies/Deployments/Vercel/Vercel_Logo_1.svg",
+            "/tecnologies/Deployments/Vercel_Logo_1.png",
             "/tecnologies/infraservices/Primary_Vertical_Lockup_Full_Color.png",
           ],
         },
@@ -506,6 +507,7 @@ export const content = {
           name: "Automatizaciones",
           tools: [
             "/tecnologies/automations/n8n-color.png",
+            "/tecnologies/automations/zapier.webp",
           ],
         },
         management: {
