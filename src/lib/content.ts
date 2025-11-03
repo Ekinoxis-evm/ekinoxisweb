@@ -490,7 +490,7 @@ export const content = {
         development: {
           name: "Desarrollo & Infraestructura",
           tools: [
-            "/tecnologies/Deployments/vercel-logotype-light.png",
+            "/tecnologies/Deployments/Vercel/Vercel_Logo_1.svg",
             "/tecnologies/infraservices/Primary_Vertical_Lockup_Full_Color.png",
           ],
         },
