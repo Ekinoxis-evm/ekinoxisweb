@@ -106,7 +106,6 @@ export const content = {
             "/tecnologies/AI/v0-logo-light.png",
             "/tecnologies/AI/gemini.webp",
             "/tecnologies/AI/grok.webp",
-            "/tecnologies/AI/llama.webp",
             "/tecnologies/AI/deepseek.webp",
           ],
         },
