@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 
 export default function Navigation() {
   const { language, setLanguage } = useLanguage();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
@@ -25,16 +26,15 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setExpandedMenu(null);
       }
     };
+    // Only attach for desktop menu, not mobile
     document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, []);
 
@@ -215,40 +215,57 @@ export default function Navigation() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-cyber-blue/20 relative z-50">
+          <div className="lg:hidden py-4 border-t border-cyber-blue/20 relative z-50" style={{ pointerEvents: 'auto' }}>
             <div className="flex flex-col space-y-2">
               {/* About Us Mobile */}
               <div>
                 <button
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setExpandedMenu(expandedMenu === 'about-us-mobile' ? null : 'about-us-mobile');
                   }}
-                  onTouchStart={(e) => e.stopPropagation()}
                   className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
+                  style={{ pointerEvents: 'auto' }}
                 >
                   {menuItems['about-us'].label} {expandedMenu === 'about-us-mobile' ? '▲' : '▼'}
                 </button>
                 {expandedMenu === 'about-us-mobile' && (
-                  <div className="pl-4 space-y-1 mt-1">
+                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
                     {menuItems['about-us'].items.map((item) => (
-                      <Link
+                      <a
                         key={item.href}
                         href={item.href}
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setMobileMenuOpen(false);
                           setExpandedMenu(null);
+                          router.push(item.href);
                         }}
-                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                          router.push(item.href);
+                        }}
                         className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
                           isActive(item.href)
                             ? 'text-cyber-blue bg-cyber-blue/10'
                             : 'text-gray-400 hover:text-cyber-blue'
                         }`}
+                        style={{ 
+                          display: 'block', 
+                          pointerEvents: 'auto', 
+                          cursor: 'pointer',
+                          position: 'relative',
+                          zIndex: 61,
+                          WebkitTapHighlightColor: 'transparent'
+                        }}
                       >
                         {item.label}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -258,55 +275,73 @@ export default function Navigation() {
               <div>
                 <button
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setExpandedMenu(expandedMenu === 'our-value-mobile' ? null : 'our-value-mobile');
                   }}
-                  onTouchStart={(e) => e.stopPropagation()}
                   className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
+                  style={{ pointerEvents: 'auto' }}
                 >
                   {menuItems['our-value'].label} {expandedMenu === 'our-value-mobile' ? '▲' : '▼'}
                 </button>
                 {expandedMenu === 'our-value-mobile' && (
-                  <div className="pl-4 space-y-1 mt-1">
+                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
                     {menuItems['our-value'].items.map((item) => (
-                      <Link
+                      <a
                         key={item.href}
                         href={item.href}
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setMobileMenuOpen(false);
                           setExpandedMenu(null);
+                          router.push(item.href);
                         }}
-                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                          router.push(item.href);
+                        }}
                         className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
                           isActive(item.href)
                             ? 'text-cyber-blue bg-cyber-blue/10'
                             : 'text-gray-400 hover:text-cyber-blue'
                         }`}
+                        style={{ 
+                          display: 'block', 
+                          pointerEvents: 'auto', 
+                          cursor: 'pointer',
+                          position: 'relative',
+                          zIndex: 61,
+                          WebkitTapHighlightColor: 'transparent'
+                        }}
                       >
                         {item.label}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 )}
               </div>
 
               {/* Hacker House Mobile */}
-              <Link
+              <a
                 href={menuItems['hacker-house'].href!}
                 onClick={(e) => {
-                  e.stopPropagation();
+                  e.preventDefault();
                   setMobileMenuOpen(false);
+                  router.push(menuItems['hacker-house'].href!);
                 }}
-                onTouchStart={(e) => e.stopPropagation()}
                 className={`px-4 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                   isActive(menuItems['hacker-house'].href!)
                     ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
                     : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
                 }`}
+                style={{ display: 'block', pointerEvents: 'auto', cursor: 'pointer' }}
               >
                 {menuItems['hacker-house'].label}
-              </Link>
+              </a>
             </div>
           </div>
         )}
