@@ -106,22 +106,28 @@ export const content = {
             "/tecnologies/AI/v0-logo-light.png",
           ],
         },
-        crypto: {
-          name: "Cryptocurrency & Blockchain",
-          blockchains: [
+        crypto_networks: {
+          name: "Blockchain Networks",
+          tools: [
             "/tecnologies/Crypto/Blockchains/Base_Logo_1.png",
             "/tecnologies/Crypto/Blockchains/ethereum.png",
             "/tecnologies/Crypto/Blockchains/op mainnet.png",
             "/tecnologies/Crypto/Blockchains/polygon.png",
             "/tecnologies/Crypto/Blockchains/unichain.png",
           ],
-          protocols: [
+        },
+        crypto_protocols: {
+          name: "WEB3Protocols",
+          tools: [
             "/tecnologies/Crypto/Protocols/uniswap-uni-logo.png",
             "/tecnologies/Crypto/Protocols/aave.svg",
             "/tecnologies/Crypto/Protocols/ens.svg",
             "/tecnologies/Crypto/Protocols/safe.svg",
           ],
-          wallets: [
+        },
+        crypto_wallets: {
+          name: "Wallet Providers",
+          tools: [
             "/tecnologies/Crypto/wallet providers/privy.png",
             "/tecnologies/Crypto/wallet providers/alchemy.png",
           ],
@@ -159,7 +165,7 @@ export const content = {
           name: "Marketing & E-commerce",
           tools: [
             "/tecnologies/marketing/qK72DSBL_400x400.jpg",
-            "/tecnologies/marketing/shopify_logo_black.png",
+            "/tecnologies/marketing/shopify_logo_white.png",
           ],
         },
         paymentintegrations: {
@@ -469,23 +475,30 @@ export const content = {
             "/tecnologies/AI/v0-logo-light.png",
           ],
         },
-        crypto: {
-          name: "Criptomonedas & Blockchain",
-          blockchains: [
+        crypto_networks: {
+          name: "Redes Blockchain",
+          tools: [
             "/tecnologies/Crypto/Blockchains/Base_Logo_1.png",
             "/tecnologies/Crypto/Blockchains/ethereum.png",
             "/tecnologies/Crypto/Blockchains/op mainnet.png",
             "/tecnologies/Crypto/Blockchains/polygon.png",
             "/tecnologies/Crypto/Blockchains/unichain.png",
           ],
-          protocols: [
+        },
+        crypto_protocols: {
+          name: "Protocolos",
+          tools: [
             "/tecnologies/Crypto/Protocols/uniswap-uni-logo.png",
             "/tecnologies/Crypto/Protocols/aave.svg",
             "/tecnologies/Crypto/Protocols/ens.svg",
             "/tecnologies/Crypto/Protocols/safe.svg",
           ],
-          wallets: [
+        },
+        crypto_wallets: {
+          name: "Proveedores de Wallet",
+          tools: [
             "/tecnologies/Crypto/wallet providers/privy.png",
+            "/tecnologies/Crypto/wallet providers/alchemy.png",
           ],
         },
         development: {
@@ -521,7 +534,7 @@ export const content = {
           name: "Marketing & E-commerce",
           tools: [
             "/tecnologies/marketing/qK72DSBL_400x400.jpg",
-            "/tecnologies/marketing/shopify_logo_black.png",
+            "/tecnologies/marketing/shopify_logo_white.png",
           ],
         },
         paymentintegrations: {

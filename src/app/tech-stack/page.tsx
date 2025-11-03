@@ -38,9 +38,6 @@ export default function TechStackPage() {
             {categories.map(([key, category], categoryIdx) => {
               const allLogos = [
                 ...('logos' in category ? category.logos : []),
-                ...('blockchains' in category ? category.blockchains : []),
-                ...('protocols' in category ? category.protocols : []),
-                ...('wallets' in category ? category.wallets : []),
                 ...('tools' in category ? category.tools : []),
               ];
 
