@@ -25,13 +25,17 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setExpandedMenu(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, []);
 
   const menuItems = {
@@ -211,13 +215,17 @@ export default function Navigation() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-cyber-blue/20">
+          <div className="lg:hidden py-4 border-t border-cyber-blue/20 relative z-50">
             <div className="flex flex-col space-y-2">
               {/* About Us Mobile */}
               <div>
                 <button
-                  onClick={() => setExpandedMenu(expandedMenu === 'about-us-mobile' ? null : 'about-us-mobile')}
-                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedMenu(expandedMenu === 'about-us-mobile' ? null : 'about-us-mobile');
+                  }}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
                 >
                   {menuItems['about-us'].label} {expandedMenu === 'about-us-mobile' ? '▲' : '▼'}
                 </button>
@@ -227,11 +235,13 @@ export default function Navigation() {
                       <Link
                         key={item.href}
                         href={item.href}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setMobileMenuOpen(false);
                           setExpandedMenu(null);
                         }}
-                        className={`block px-4 py-2 rounded-lg text-sm ${
+                        onTouchStart={(e) => e.stopPropagation()}
+                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
                           isActive(item.href)
                             ? 'text-cyber-blue bg-cyber-blue/10'
                             : 'text-gray-400 hover:text-cyber-blue'
@@ -247,8 +257,12 @@ export default function Navigation() {
               {/* Our Value Mobile */}
               <div>
                 <button
-                  onClick={() => setExpandedMenu(expandedMenu === 'our-value-mobile' ? null : 'our-value-mobile')}
-                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedMenu(expandedMenu === 'our-value-mobile' ? null : 'our-value-mobile');
+                  }}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
                 >
                   {menuItems['our-value'].label} {expandedMenu === 'our-value-mobile' ? '▲' : '▼'}
                 </button>
@@ -258,11 +272,13 @@ export default function Navigation() {
                       <Link
                         key={item.href}
                         href={item.href}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setMobileMenuOpen(false);
                           setExpandedMenu(null);
                         }}
-                        className={`block px-4 py-2 rounded-lg text-sm ${
+                        onTouchStart={(e) => e.stopPropagation()}
+                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
                           isActive(item.href)
                             ? 'text-cyber-blue bg-cyber-blue/10'
                             : 'text-gray-400 hover:text-cyber-blue'
@@ -278,8 +294,12 @@ export default function Navigation() {
               {/* Hacker House Mobile */}
               <Link
                 href={menuItems['hacker-house'].href!}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMobileMenuOpen(false);
+                }}
+                onTouchStart={(e) => e.stopPropagation()}
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                   isActive(menuItems['hacker-house'].href!)
                     ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
                     : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
