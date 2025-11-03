@@ -104,6 +104,10 @@ export const content = {
             "/tecnologies/AI/Claude_AI_logo.png",
             "/tecnologies/AI/cursor.png",
             "/tecnologies/AI/v0-logo-light.png",
+            "/tecnologies/AI/gemini.webp",
+            "/tecnologies/AI/grok.webp",
+            "/tecnologies/AI/llama.webp",
+            "/tecnologies/AI/deepseek.webp",
           ],
         },
         crypto_networks: {
@@ -117,7 +121,7 @@ export const content = {
           ],
         },
         crypto_protocols: {
-          name: "WEB3Protocols",
+          name: "WEB3 Protocols",
           tools: [
             "/tecnologies/Crypto/Protocols/uniswap-uni-logo.png",
             "/tecnologies/Crypto/Protocols/aave.svg",
