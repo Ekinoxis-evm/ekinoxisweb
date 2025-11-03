@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Ekinoxis - Innovation Without Frontiers',
+  title: 'Innovation Without Frontiers',
   description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
   keywords: ['Blockchain', 'Cryptography', 'Artificial Intelligence', 'Innovation', 'Colombia', 'WEB3'],
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,6 +12,8 @@ export default function Navigation() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const t = content[language].nav;
 
   useEffect(() => {
@@ -22,24 +24,54 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { href: '/', label: t.home },
-    { href: '/education', label: t.education },
-    { href: '/certifications', label: t.certifications },
-    { href: '/hacker-house', label: t.hackerHouse },
-    { href: '/products', label: t.products },
-    { href: '/research', label: t.research },
-    { href: '/culture', label: t.culture },
-    { href: '/tech-stack', label: t.techStack },
-    { href: '/services', label: t.services },
-    { href: '/hackers', label: t.hackers },
-  ];
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setExpandedMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const menuItems = {
+    'about-us': {
+      label: language === 'en' ? 'About Us' : 'Nosotros',
+      items: [
+        { href: '/culture', label: t.culture },
+        { href: '/hackers', label: t.hackers },
+        { href: '/tech-stack', label: t.techStack },
+      ],
+    },
+    'our-value': {
+      label: language === 'en' ? 'Our Value' : 'Nuestro Valor',
+      items: [
+        { href: '/products', label: t.products },
+        { href: '/services', label: t.services },
+        { href: '/research', label: t.research },
+        { href: '/certifications', label: t.certifications },
+        { href: '/education', label: t.education },
+      ],
+    },
+    'hacker-house': {
+      label: t.hackerHouse,
+      href: '/hacker-house',
+    },
+  };
 
   const isActive = (href: string) => {
     if (href === '/') {
       return pathname === '/';
     }
     return pathname.startsWith(href);
+  };
+
+  const isMenuActive = (menuKey: string) => {
+    if (menuKey === 'hacker-house') {
+      return isActive('/hacker-house');
+    }
+    const menu = menuItems[menuKey as keyof typeof menuItems];
+    return 'items' in menu && menu.items?.some(item => isActive(item.href));
   };
 
   return (
@@ -52,8 +84,8 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          {/* Logo - Only logo, no text */}
+          <Link href="/" className="flex items-center group">
             <div className="relative w-12 h-12">
               <Image
                 src="/logo/ekinoxis logo.gif"
@@ -63,26 +95,87 @@ export default function Navigation() {
                 className="animate-pulse-slow group-hover:scale-110 transition-transform"
               />
             </div>
-            <span className="text-cyber-blue text-2xl font-bold text-glow group-hover:text-cyber-blue-light transition-colors">
-              EKINOXIS
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
+          <div className="hidden lg:flex items-center space-x-1" ref={menuRef}>
+            {/* About Us Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setExpandedMenu(expandedMenu === 'about-us' ? null : 'about-us')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(link.href)
+                  isMenuActive('about-us')
                     ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
                     : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
                 }`}
               >
-                {link.label}
-              </Link>
-            ))}
+                {menuItems['about-us'].label}
+                <span className="ml-2">{expandedMenu === 'about-us' ? '▲' : '▼'}</span>
+              </button>
+              {expandedMenu === 'about-us' && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
+                  {menuItems['about-us'].items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setExpandedMenu(null)}
+                      className={`block px-4 py-3 text-sm transition-all ${
+                        isActive(item.href)
+                          ? 'text-cyber-blue bg-cyber-blue/10'
+                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Our Value Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setExpandedMenu(expandedMenu === 'our-value' ? null : 'our-value')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isMenuActive('our-value')
+                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                }`}
+              >
+                {menuItems['our-value'].label}
+                <span className="ml-2">{expandedMenu === 'our-value' ? '▲' : '▼'}</span>
+              </button>
+              {expandedMenu === 'our-value' && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
+                  {menuItems['our-value'].items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setExpandedMenu(null)}
+                      className={`block px-4 py-3 text-sm transition-all ${
+                        isActive(item.href)
+                          ? 'text-cyber-blue bg-cyber-blue/10'
+                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Hacker House - Direct Link */}
+            <Link
+              href={menuItems['hacker-house'].href!}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                isActive(menuItems['hacker-house'].href!)
+                  ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                  : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+              }`}
+            >
+              {menuItems['hacker-house'].label}
+            </Link>
             
             {/* Language Toggle */}
             <button
@@ -120,20 +213,80 @@ export default function Navigation() {
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-cyber-blue/20">
             <div className="flex flex-col space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                    isActive(link.href)
-                      ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                      : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                  }`}
+              {/* About Us Mobile */}
+              <div>
+                <button
+                  onClick={() => setExpandedMenu(expandedMenu === 'about-us-mobile' ? null : 'about-us-mobile')}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all"
                 >
-                  {link.label}
-                </Link>
-              ))}
+                  {menuItems['about-us'].label} {expandedMenu === 'about-us-mobile' ? '▲' : '▼'}
+                </button>
+                {expandedMenu === 'about-us-mobile' && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {menuItems['about-us'].items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                        }}
+                        className={`block px-4 py-2 rounded-lg text-sm ${
+                          isActive(item.href)
+                            ? 'text-cyber-blue bg-cyber-blue/10'
+                            : 'text-gray-400 hover:text-cyber-blue'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Our Value Mobile */}
+              <div>
+                <button
+                  onClick={() => setExpandedMenu(expandedMenu === 'our-value-mobile' ? null : 'our-value-mobile')}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all"
+                >
+                  {menuItems['our-value'].label} {expandedMenu === 'our-value-mobile' ? '▲' : '▼'}
+                </button>
+                {expandedMenu === 'our-value-mobile' && (
+                  <div className="pl-4 space-y-1 mt-1">
+                    {menuItems['our-value'].items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                        }}
+                        className={`block px-4 py-2 rounded-lg text-sm ${
+                          isActive(item.href)
+                            ? 'text-cyber-blue bg-cyber-blue/10'
+                            : 'text-gray-400 hover:text-cyber-blue'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Hacker House Mobile */}
+              <Link
+                href={menuItems['hacker-house'].href!}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  isActive(menuItems['hacker-house'].href!)
+                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                }`}
+              >
+                {menuItems['hacker-house'].label}
+              </Link>
             </div>
           </div>
         )}
@@ -141,4 +294,3 @@ export default function Navigation() {
     </nav>
   );
 }
-

@@ -3,7 +3,7 @@ export type Language = 'en' | 'es';
 export const content = {
   en: {
     hero: {
-      title: "EKINOXIS IS INNOVATION WITHOUT FRONTIERS",
+      title: "INNOVATION WITHOUT FRONTIERS",
       subtitle: "We are the first Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and Artificial Intelligence.",
     },
     nav: {
@@ -117,6 +117,9 @@ export const content = {
           ],
           protocols: [
             "/tecnologies/Crypto/Protocols/uniswap-uni-logo.png",
+            "/tecnologies/Crypto/Protocols/aave.svg",
+            "/tecnologies/Crypto/Protocols/ens.svg",
+            "/tecnologies/Crypto/Protocols/safe.svg",
           ],
           wallets: [
             "/tecnologies/Crypto/wallet providers/privy.png",
@@ -177,21 +180,132 @@ export const content = {
       title: "OUR HACKERS",
       description: "Meet the talented developers who have participated in our hacker houses and projects.",
       members: [
-        { name: "Cristóbal", image: "/hackers/cristobal.jpg" },
-        { name: "Camilo Sacanamboy", image: "/hackers/camilosacanamboy.png" },
-        { name: "Filadelfo", image: "/hackers/filadelfo.png" },
-        { name: "Juan David Burgos", image: "/hackers/juan david burgos.jpg" },
-        { name: "Miguel Bolaños", image: "/hackers/miguel bolanos.png" },
-        { name: "María del Mar", image: "/hackers/maria del mar.png" },
-        { name: "Juan Urrea", image: "/hackers/Juanurrea.png" },
-        { name: "Juan José Bailón", image: "/hackers/juan jose bailon.png" },
-        { name: "William", image: "/hackers/william.png" },
+        { 
+          name: "William Martinez", 
+          image: "/hackers/william.png",
+          profile: "Founder",
+          university: "ICESI",
+          github: "https://github.com/wmb81321",
+          linkedin: "https://www.linkedin.com/in/williammartinez8/",
+          x: "https://twitter.com/0xwmb"
+        },
+        { 
+          name: "Juan Urrea", 
+          image: "/hackers/Juanurrea.png",
+          profile: "Researcher, Defi Specialist",
+          university: "Anon",
+          github: "",
+          linkedin: "",
+          x: "https://twitter.com/juan21179"
+        },
+        { 
+          name: "Filadelfo Caicedo", 
+          image: "/hackers/filadelfo.png",
+          profile: "Researcher, Defi Specialist",
+          university: "Anon",
+          github: "https://github.com/phill900",
+          linkedin: "https://www.linkedin.com/in/filadelfo-caicedo/",
+          x: "https://twitter.com/Filatrader"
+        },
+        { 
+          name: "Maria del Mar Borrero", 
+          image: "/hackers/maria del mar.png",
+          profile: "Community Manager, Digital Marketing",
+          university: "UAO",
+          github: "https://github.com/marimarketingdigitalw3",
+          linkedin: "https://www.linkedin.com/in/mariadelmarborrerog/",
+          x: "https://twitter.com/marimarketingw3"
+        },
+        { 
+          name: "Cristobal Valencia", 
+          image: "/hackers/cristobal.jpg",
+          profile: "Full Stack Developer",
+          university: "USC",
+          github: "https://github.com/DevCristobalvc/",
+          linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
+          x: "https://x.com/DevCristobalvc"
+        },
+        { 
+          name: "Jose Bailon", 
+          image: "/hackers/juan jose bailon.png",
+          profile: "Backend Developer",
+          university: "Univalle",
+          github: "https://github.com/juanbailon",
+          linkedin: "https://linkedin.com/in/juan-bailon-ab3767192",
+          x: ""
+        },
+        { 
+          name: "Juan David Burgos", 
+          image: "/hackers/juan david burgos.jpg",
+          profile: "Lawyer",
+          university: "Unicauca",
+          github: "",
+          linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
+          x: "https://x.com/JuanBK_ethcali"
+        },
+        { 
+          name: "Miguel Bolaños", 
+          image: "/hackers/miguel bolanos.png",
+          profile: "Front End Developer",
+          university: "Anon",
+          github: "https://github.com/MAB015",
+          linkedin: "https://www.linkedin.com/in/mab015/",
+          x: "https://twitter.com/MAB015"
+        },
+        { 
+          name: "Jhon Alex Torres", 
+          image: "/hackers/jhonalex.jpg",
+          profile: "Full stack Developer",
+          university: "USC",
+          github: "https://github.com/DevJhonnTorres",
+          linkedin: "https://www.linkedin.com/in/jhonnalexandertorrescastro",
+          x: "https://x.com/the_aleeeex?s=21"
+        },
+        { 
+          name: "Tania Agredo", 
+          image: "/hackers/taniaagredo.png",
+          profile: "Full stack Developer",
+          university: "USC",
+          github: "https://github.com/taniagredo/",
+          linkedin: "https://www.linkedin.com/in/tania-agredoh?trk=contact-info",
+          x: "https://x.com/devil_skyy?s=21"
+        },
+        { 
+          name: "Camilo Sacamboy", 
+          image: "/hackers/camilosacanamboy.png",
+          profile: "Full stack Developer",
+          university: "ICESI",
+          github: "https://github.com/csacanam",
+          linkedin: "https://www.linkedin.com/in/camilosaka/",
+          x: "https://x.com/camilosaka"
+        },
+        { 
+          name: "Juice Sands", 
+          image: "/hackers/william.png",
+          profile: "Smartcontract Developer",
+          university: "Anon",
+          github: "https://github.com/ICREE8",
+          linkedin: "",
+          x: "https://x.com/1cree8"
+        },
       ],
     },
     socials: {
       x: "https://x.com/ekinoxis",
       instagram: "https://www.instagram.com/ekinoxis.evm/",
       telegram: "https://t.me/ekinoxis",
+      discord: "https://discord.gg/teQR8fA786",
+      github: "https://github.com/ekinoxis-evm/",
+    },
+    footer: {
+      usa: {
+        address: "159 North Wolcott Street\nSuite 133\nCasper, WY - US",
+        phone: "+1 (305) 504-1248",
+      },
+      colombia: {
+        address: "Calle 36#128-321 - Zona Franca, Zonaamerica.com\nCali, Valle del Cauca - Colombia",
+        phone: "+57 302 3721435",
+      },
     },
   },
   es: {
@@ -310,6 +424,9 @@ export const content = {
           ],
           protocols: [
             "/tecnologies/Crypto/Protocols/uniswap-uni-logo.png",
+            "/tecnologies/Crypto/Protocols/aave.svg",
+            "/tecnologies/Crypto/Protocols/ens.svg",
+            "/tecnologies/Crypto/Protocols/safe.svg",
           ],
           wallets: [
             "/tecnologies/Crypto/wallet providers/privy.png",
@@ -370,21 +487,132 @@ export const content = {
       title: "NUESTROS HACKERS",
       description: "Conoce a los talentosos desarrolladores que han participado en nuestros hacker houses y proyectos.",
       members: [
-        { name: "Cristóbal", image: "/hackers/cristobal.jpg" },
-        { name: "Camilo Sacanamboy", image: "/hackers/camilosacanamboy.png" },
-        { name: "Filadelfo", image: "/hackers/filadelfo.png" },
-        { name: "Juan David Burgos", image: "/hackers/juan david burgos.jpg" },
-        { name: "Miguel Bolaños", image: "/hackers/miguel bolanos.png" },
-        { name: "María del Mar", image: "/hackers/maria del mar.png" },
-        { name: "Juan Urrea", image: "/hackers/Juanurrea.png" },
-        { name: "Juan José Bailón", image: "/hackers/juan jose bailon.png" },
-        { name: "William", image: "/hackers/william.png" },
+        { 
+          name: "William Martinez", 
+          image: "/hackers/william.png",
+          profile: "Founder",
+          university: "ICESI",
+          github: "https://github.com/wmb81321",
+          linkedin: "https://www.linkedin.com/in/williammartinez8/",
+          x: "https://twitter.com/0xwmb"
+        },
+        { 
+          name: "Juan Urrea", 
+          image: "/hackers/Juanurrea.png",
+          profile: "Researcher, Defi Specialist",
+          university: "Anon",
+          github: "",
+          linkedin: "",
+          x: "https://twitter.com/juan21179"
+        },
+        { 
+          name: "Filadelfo Caicedo", 
+          image: "/hackers/filadelfo.png",
+          profile: "Researcher, Defi Specialist",
+          university: "Anon",
+          github: "https://github.com/phill900",
+          linkedin: "https://www.linkedin.com/in/filadelfo-caicedo/",
+          x: "https://twitter.com/Filatrader"
+        },
+        { 
+          name: "Maria del Mar Borrero", 
+          image: "/hackers/maria del mar.png",
+          profile: "Community Manager, Digital Marketing",
+          university: "UAO",
+          github: "https://github.com/marimarketingdigitalw3",
+          linkedin: "https://www.linkedin.com/in/mariadelmarborrerog/",
+          x: "https://twitter.com/marimarketingw3"
+        },
+        { 
+          name: "Cristobal Valencia", 
+          image: "/hackers/cristobal.jpg",
+          profile: "Full Stack Developer",
+          university: "USC",
+          github: "https://github.com/DevCristobalvc/",
+          linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
+          x: "https://x.com/DevCristobalvc"
+        },
+        { 
+          name: "Jose Bailon", 
+          image: "/hackers/juan jose bailon.png",
+          profile: "Backend Developer",
+          university: "Univalle",
+          github: "https://github.com/juanbailon",
+          linkedin: "https://linkedin.com/in/juan-bailon-ab3767192",
+          x: ""
+        },
+        { 
+          name: "Juan David Burgos", 
+          image: "/hackers/juan david burgos.jpg",
+          profile: "Lawyer",
+          university: "Unicauca",
+          github: "",
+          linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
+          x: "https://x.com/JuanBK_ethcali"
+        },
+        { 
+          name: "Miguel Bolaños", 
+          image: "/hackers/miguel bolanos.png",
+          profile: "Front End Developer",
+          university: "Anon",
+          github: "https://github.com/MAB015",
+          linkedin: "https://www.linkedin.com/in/mab015/",
+          x: "https://twitter.com/MAB015"
+        },
+        { 
+          name: "Jhon Alex Torres", 
+          image: "/hackers/jhonalex.jpg",
+          profile: "Full stack Developer",
+          university: "USC",
+          github: "https://github.com/DevJhonnTorres",
+          linkedin: "https://www.linkedin.com/in/jhonnalexandertorrescastro",
+          x: "https://x.com/the_aleeeex?s=21"
+        },
+        { 
+          name: "Tania Agredo", 
+          image: "/hackers/taniaagredo.png",
+          profile: "Full stack Developer",
+          university: "USC",
+          github: "https://github.com/taniagredo/",
+          linkedin: "https://www.linkedin.com/in/tania-agredoh?trk=contact-info",
+          x: "https://x.com/devil_skyy?s=21"
+        },
+        { 
+          name: "Camilo Sacamboy", 
+          image: "/hackers/camilosacanamboy.png",
+          profile: "Full stack Developer",
+          university: "ICESI",
+          github: "https://github.com/csacanam",
+          linkedin: "https://www.linkedin.com/in/camilosaka/",
+          x: "https://x.com/camilosaka"
+        },
+        { 
+          name: "Juice Sands", 
+          image: "/hackers/william.png",
+          profile: "Smartcontract Developer",
+          university: "Anon",
+          github: "https://github.com/ICREE8",
+          linkedin: "",
+          x: "https://x.com/1cree8"
+        },
       ],
     },
     socials: {
       x: "https://x.com/ekinoxis",
       instagram: "https://www.instagram.com/ekinoxis.evm/",
       telegram: "https://t.me/ekinoxis",
+      discord: "https://discord.gg/teQR8fA786",
+      github: "https://github.com/ekinoxis-evm/",
+    },
+    footer: {
+      usa: {
+        address: "159 North Wolcott Street\nSuite 133\nCasper, WY - US",
+        phone: "+1 (305) 504-1248",
+      },
+      colombia: {
+        address: "Calle 36#128-321 - Zona Franca, Zonaamerica.com\nCali, Valle del Cauca - Colombia",
+        phone: "+57 302 3721435",
+      },
     },
   },
 };

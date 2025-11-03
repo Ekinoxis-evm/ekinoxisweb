@@ -36,10 +36,10 @@ export default function Home() {
               }}
             >
               <Image
-                src="/logo/ekinoxis logo.gif"
+                src="/logo/logo.png"
                 alt="Ekinoxis Logo"
-                width={250}
-                height={250}
+                width={100}
+                height={100}
                 className="drop-shadow-[0_0_40px_rgba(0,240,255,0.5)]"
               />
             </motion.div>
@@ -50,7 +50,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-glow animate-glow-text"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-glow animate-glow-text"
           >
             {t.hero.title}
           </motion.h1>
