@@ -4,7 +4,7 @@ export const content = {
   en: {
     hero: {
       title: "INNOVATION WITHOUT FRONTIERS",
-      subtitle: "We are the first Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and Artificial Intelligence.",
+      subtitle: "We are the first Innovation Laboratory from the Colombian Pacific specialized in Blockchain, Cryptography and Artificial Intelligence.",
     },
     nav: {
       home: "Home",
@@ -239,7 +239,7 @@ export const content = {
           image: "/hackers/juan david burgos.jpg",
           profile: "Lawyer",
           university: "Unicauca",
-          github: "",
+          github: "https://github.com/juandavid883",
           linkedin: "https://www.linkedin.com/in/juan-david-burgos-giraldo-0000000000",
           x: "https://x.com/JuanBK_ethcali"
         },
@@ -281,7 +281,7 @@ export const content = {
         },
         { 
           name: "Juice Sands", 
-          image: "/hackers/william.png",
+          image: "/hackers/juicesands.png",
           profile: "Smartcontract Developer",
           university: "Anon",
           github: "https://github.com/ICREE8",

@@ -44,7 +44,7 @@ export default function Footer() {
 
           {/* Social Links */}
           <div>
-            <h4 className="text-cyber-purple font-bold mb-4">Connect</h4>
+            <h4 className="text-cyber-purple font-bold mb-4">Socials</h4>
             <div className="flex flex-wrap gap-3">
               <a
                 href={t.socials.x}
@@ -53,7 +53,7 @@ export default function Footer() {
                 className="w-10 h-10 rounded-lg border border-cyber-blue/30 flex items-center justify-center hover:border-cyber-blue hover:bg-cyber-blue/10 transition-all group"
               >
                 <Image
-                  src="/socials/X-Logo-Unique-Branding-Symbol-PNG-thumb.webp"
+                  src="/socials/x.jpg"
                   alt="X / Twitter"
                   width={20}
                   height={20}
