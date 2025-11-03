@@ -31,7 +31,7 @@ export default function ServicesPage() {
           </motion.div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             {t.offerings.map((service, idx) => (
               <motion.div
                 key={idx}
@@ -49,35 +49,126 @@ export default function ServicesPage() {
                   <p className="text-gray-300 text-lg leading-relaxed mb-6">
                     {service.description}
                   </p>
-                  <Button variant="outline" glow={idx % 2 === 0 ? 'blue' : 'purple'}>
-                    Learn More
-                  </Button>
                 </Card>
               </motion.div>
             ))}
           </div>
 
-          {/* CTA Section */}
+          {/* Pricing Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
+            className="mb-16"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow-purple">
+                {t.pricing.title}
+              </h2>
+              <p className="text-xl text-cyber-purple/80 max-w-2xl mx-auto">
+                {t.pricing.description}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {t.pricing.plans.map((plan, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 + idx * 0.1 }}
+                >
+                  <Card
+                    glow={plan.popular ? 'purple' : 'blue'}
+                    className={`h-full p-8 relative ${plan.popular ? 'border-2 border-cyber-purple' : ''}`}
+                  >
+                    {plan.popular && (
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-cyber-purple text-white text-sm font-bold rounded-full">
+                        {language === 'en' ? 'POPULAR' : 'POPULAR'}
+                      </div>
+                    )}
+                    <div className="text-center mb-6">
+                      <h3 className="text-2xl font-bold mb-2 text-cyber-blue">
+                        {plan.name}
+                      </h3>
+                      <div className="mb-4">
+                        <span className="text-4xl font-bold text-cyber-purple">
+                          {plan.price}
+                        </span>
+                        {plan.period !== 'quote' && plan.period !== 'cotización' && (
+                          <span className="text-gray-400 text-sm ml-2">
+                            / {plan.period}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((feature, featureIdx) => (
+                        <li key={featureIdx} className="flex items-start">
+                          <svg
+                            className="w-5 h-5 text-cyber-blue mr-2 flex-shrink-0 mt-0.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          <span className="text-gray-300 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href={t.calendarLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full"
+                    >
+                      <Button
+                        variant={plan.popular ? 'primary' : 'outline'}
+                        glow={plan.popular ? 'purple' : 'blue'}
+                        className="w-full"
+                      >
+                        {language === 'en' ? 'Schedule Meeting' : 'Agendar Reunión'}
+                      </Button>
+                    </a>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center"
           >
             <Card glow="purple" className="p-12">
               <h2 className="text-4xl font-bold mb-4 text-cyber-purple">
-                Ready to Get Started?
+                {language === 'en' ? 'Ready to Get Started?' : '¿Listo para Comenzar?'}
               </h2>
               <p className="text-xl text-gray-300 mb-8">
-                Contact us to discuss how we can help your organization leverage cutting-edge technologies.
+                {language === 'en'
+                  ? 'Contact us to discuss how we can help your organization leverage cutting-edge technologies.'
+                  : 'Contáctanos para discutir cómo podemos ayudar a tu organización a aprovechar tecnologías de vanguardia.'}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button variant="primary" glow="blue">
-                  Contact Us
-                </Button>
-                <Button variant="outline" glow="purple">
-                  Schedule Consultation
-                </Button>
+                <a href={t.calendarLink} target="_blank" rel="noopener noreferrer">
+                  <Button variant="primary" glow="blue">
+                    {language === 'en' ? 'Schedule Consultation' : 'Agendar Consulta'}
+                  </Button>
+                </a>
+                <a href="mailto:ekinoxis.evm@gmail.com">
+                  <Button variant="outline" glow="purple">
+                    {language === 'en' ? 'Contact Us' : 'Contáctanos'}
+                  </Button>
+                </a>
               </div>
             </Card>
           </motion.div>
@@ -86,4 +177,3 @@ export default function ServicesPage() {
     </AnimatedBackground>
   );
 }
-

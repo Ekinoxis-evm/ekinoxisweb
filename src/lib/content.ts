@@ -123,14 +123,15 @@ export const content = {
           ],
           wallets: [
             "/tecnologies/Crypto/wallet providers/privy.png",
+            "/tecnologies/Crypto/wallet providers/alchemy.png",
           ],
         },
         development: {
           name: "Development & Infrastructure",
           tools: [
-            "/tecnologies/Deployments/vercel-logotype-light.png",
+            "/tecnologies/Deployments/Vercel/Vercel_Logo_1.svg",
             "/tecnologies/infraservices/Primary_Vertical_Lockup_Full_Color.png",
-          ],
+          ],  
         },
         creativity: {
           name: "Creativity & Design",
@@ -160,6 +161,14 @@ export const content = {
             "/tecnologies/marketing/shopify_logo_black.png",
           ],
         },
+        paymentintegrations: {
+          name: "Payment Integrations",
+          tools: [
+            "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
+            "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
+            "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
+          ],
+        },
       },
     },
     services: {
@@ -175,6 +184,52 @@ export const content = {
           description: "Custom development of prototypes, MVPs, and production-ready solutions. We build products that integrate WEB3 and AI technologies.",
         },
       ],
+      pricing: {
+        title: "Pricing Structure",
+        description: "Transparent pricing for our services",
+        plans: [
+          {
+            name: "Starter",
+            price: "From $5,000",
+            period: "project",
+            features: [
+              "Initial consultation & strategy",
+              "Technical assessment",
+              "MVP development",
+              "2 weeks of support",
+            ],
+            popular: false,
+          },
+          {
+            name: "Professional",
+            price: "From $15,000",
+            period: "project",
+            features: [
+              "Full consultation package",
+              "Custom development",
+              "Integration with existing systems",
+              "1 month of support",
+              "Documentation & training",
+            ],
+            popular: true,
+          },
+          {
+            name: "Enterprise",
+            price: "Custom",
+            period: "quote",
+            features: [
+              "Dedicated team",
+              "Ongoing support & maintenance",
+              "Advanced integrations",
+              "24/7 support",
+              "SLA guarantees",
+              "Custom pricing",
+            ],
+            popular: false,
+          },
+        ],
+      },
+      calendarLink: "https://calendar.app.google/DjRwd2YNcaTxGN5g8",
     },
     hackers: {
       title: "OUR HACKERS",
@@ -467,6 +522,14 @@ export const content = {
             "/tecnologies/marketing/shopify_logo_black.png",
           ],
         },
+        paymentintegrations: {
+          name: "Integraciones de Pago",
+          tools: [
+            "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
+            "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
+            "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
+          ],
+        },
       },
     },
     services: {
@@ -482,6 +545,52 @@ export const content = {
           description: "Desarrollo personalizado de prototipos, MVPs y soluciones listas para producción. Construimos productos que integran tecnologías WEB3 e IA.",
         },
       ],
+      pricing: {
+        title: "Estructura de Precios",
+        description: "Precios transparentes para nuestros servicios",
+        plans: [
+          {
+            name: "Starter",
+            price: "Desde $5,000",
+            period: "proyecto",
+            features: [
+              "Consulta inicial y estrategia",
+              "Evaluación técnica",
+              "Desarrollo de MVP/prototipo",
+              "2 semanas de soporte",
+            ],
+            popular: false,
+          },
+          {
+            name: "Profesional",
+            price: "Desde $15,000",
+            period: "proyecto",
+            features: [
+              "Paquete completo de consultoría",
+              "Desarrollo personalizado",
+              "Integración con sistemas existentes",
+              "1 mes de soporte",
+              "Documentación y capacitación",
+            ],
+            popular: true,
+          },
+          {
+            name: "Enterprise",
+            price: "Personalizado",
+            period: "cotización",
+            features: [
+              "Equipo dedicado",
+              "Soporte y mantenimiento continuo",
+              "Integraciones avanzadas",
+              "Soporte 24/7",
+              "Garantías SLA",
+              "Precio personalizado",
+            ],
+            popular: false,
+          },
+        ],
+      },
+      calendarLink: "https://calendar.app.google/DjRwd2YNcaTxGN5g8",
     },
     hackers: {
       title: "NUESTROS HACKERS",
