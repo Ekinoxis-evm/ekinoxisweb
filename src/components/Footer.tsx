@@ -26,8 +26,12 @@ export default function Footer() {
             <p className="text-gray-400 text-sm whitespace-pre-line mb-2">
               {t.footer.usa.address}
             </p>
-            <a href={`tel:${t.footer.usa.phone.replace(/\s/g, '')}`} className="text-cyber-blue hover:text-glow transition-colors text-sm">
-              {t.footer.usa.phone}
+            <a href="https://wa.me/13055041248" className="text-cyber-blue hover:text-glow transition-colors text-sm">
+              +1 (305) 504-1248
+            </a>
+            <br />
+            <a href="mailto:hello@ekinoxis.com" className="text-cyber-blue hover:text-glow transition-colors text-sm">
+              hello@ekinoxis.com
             </a>
           </div>
 
@@ -37,8 +41,12 @@ export default function Footer() {
             <p className="text-gray-400 text-sm whitespace-pre-line mb-2">
               {t.footer.colombia.address}
             </p>
-            <a href={`tel:${t.footer.colombia.phone.replace(/\s/g, '')}`} className="text-cyber-purple hover:text-glow-purple transition-colors text-sm">
-              {t.footer.colombia.phone}
+            <a href="https://wa.me/573023721435" className="text-cyber-purple hover:text-glow-purple transition-colors text-sm">
+              +57 302 3721435
+            </a>
+            <br />
+            <a href="mailto:hola@ekinoxis.com" className="text-cyber-purple hover:text-glow-purple transition-colors text-sm">
+              hola@ekinoxis.com
             </a>
           </div>
 

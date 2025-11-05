@@ -867,10 +867,12 @@ export const content = {
       usa: {
         address: "159 North Wolcott Street\nSuite 133\nCasper, WY - US",
         phone: "+1 (305) 504-1248",
+        email: "hello@ekinoxis.com",
       },
       colombia: {
         address: "Calle 36#128-321 - Zona Franca, Zonaamerica.com\nCali, Valle del Cauca - Colombia",
         phone: "+57 302 3721435",
+        email: "hola@ekinoxis.com",
       },
     },
   },
