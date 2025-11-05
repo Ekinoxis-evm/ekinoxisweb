@@ -58,6 +58,10 @@ export const content = {
         title: "Participated Hackathons",
         items: [
           { name: "ETHGlobal", logo: "/hackathons/ethglobal.png" },
+          { name: "Tech Startup Weeekend", logo: "/hackathons/techstars.png" },
+          { name: "Base Batches 001", logo: "/hackathons/basebatches001.png" },
+          { name: "Base Batches 002", logo: "/hackathons/basebatches002.png" },
+          { name: "Crecimiento Alepth", logo: "/hackathons/crecimientoaleph.png" },
         ],
       },
     },
