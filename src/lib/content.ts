@@ -133,11 +133,15 @@ export const content = {
     },
     culture: {
       title: "CULTURE",
-      description: "We have a culture and practices oriented to open source innovation. We believe in collaborative development and knowledge sharing.",
+      description: "We believe in the power of technology to change the world.",
       values: [
         {
           title: "Open Source",
           description: "We believe in transparency and collaborative development.",
+        },
+        {
+          title: "Privacy",
+          description: "We believe in privacy and data ownership.",
         },
         {
           title: "Innovation",
@@ -151,7 +155,11 @@ export const content = {
           title: "Education",
           description: "We share knowledge freely and empower the next generation.",
         },
-      ],
+        {
+          title: "Collaboration",
+          description: "We collaborate with universities, enterprises and government institutions to enable innovation.",
+        },
+      ],  
     },
     technologies: {
       title: "TECH STACK",
@@ -193,6 +201,7 @@ export const content = {
           tools: [
             "/tecnologies/Crypto/wallet providers/privy.png",
             "/tecnologies/Crypto/wallet providers/alchemy.png",
+            "/tecnologies/Crypto/wallet providers/thirdweb.png",
           ],
         },
         development: {
@@ -229,6 +238,7 @@ export const content = {
           tools: [
             "/tecnologies/marketing/qK72DSBL_400x400.jpg",
             "/tecnologies/marketing/shopify_logo_white.png",
+            "/tecnologies/marketing/metaads.svg",
           ],
         },
         paymentintegrations: {
@@ -237,6 +247,8 @@ export const content = {
             "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
             "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
             "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
+            "/tecnologies/paymentintegrations/MercadoPago/mercadopago.png",
+            "/tecnologies/paymentintegrations/wompi/wompi.png",
           ],
         },
       },
