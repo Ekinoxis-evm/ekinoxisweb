@@ -328,7 +328,7 @@ export const content = {
         { 
           name: "William Martinez", 
           image: "/hackers/william.png",
-          profile: "Founder",
+          profile: "Product Manager",
           university: "ICESI",
           github: "https://github.com/wmb81321",
           linkedin: "https://www.linkedin.com/in/williammartinez8/",
