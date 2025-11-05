@@ -41,9 +41,13 @@ export const content = {
     },
     certifications: {
       title: "CERTIFICATIONS",
-      description: "We collaborate with leading certification partners to validate and recognize skills in cutting-edge technologies.",
+      description: "We encourage our hackers to get certified in cutting-edge technologies with leading certification partners.",
       partners: [
-        { name: "Cyphrin", logo: "/education/certifications/cyphrin/Updraft Logo Full - Dark.png" },
+        { name: "Cyphrin", logo: "/education/certifications/cyphrin/cyphrinupdraft.png" },
+        { name: "Speedrun Ethereum", logo: "/education/certifications/speedrunethereum/speedrunethereum.png" },
+        { name: "Consensys Academy", logo: "/education/certifications/consensysacademy/consensys.png" },
+        { name: "Alchemy University", logo: "/education/certifications/alchemyuniversity/alchemyu.png" },
+        
       ],
     },
     hackerHouse: {
