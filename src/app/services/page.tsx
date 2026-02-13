@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
@@ -31,27 +32,78 @@ export default function ServicesPage() {
           </motion.div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {t.offerings.map((service, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: idx * 0.2 }}
-              >
-                <Card glow={idx % 2 === 0 ? 'blue' : 'purple'} className="h-full p-8">
-                  <div className="text-5xl mb-6">
-                    {idx === 0 ? '💡' : '⚡'}
-                  </div>
-                  <h2 className="text-3xl font-bold mb-4 text-cyber-blue">
-                    {service.title}
-                  </h2>
-                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-                </Card>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {/* Consultation Service */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card glow="blue" className="h-full p-8 flex flex-col">
+                <div className="text-5xl mb-6 text-center">💡</div>
+                <h2 className="text-3xl font-bold mb-4 text-cyber-blue text-center">
+                  {language === 'en' ? 'Consultation' : 'Consultoría'}
+                </h2>
+                <p className="text-gray-300 text-lg leading-relaxed mb-6 flex-grow">
+                  {language === 'en' 
+                    ? 'Expert guidance on blockchain, crypto, and AI implementation. From $25 for individual sessions to enterprise packages.'
+                    : 'Orientación experta en implementación de blockchain, cripto e IA. Desde $25 para sesiones individuales hasta paquetes empresariales.'}
+                </p>
+                <Link href="/services/consultation" className="mt-auto">
+                  <Button variant="outline" glow="blue" className="w-full">
+                    {language === 'en' ? 'Learn More' : 'Saber Más'}
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
+
+            {/* Web Development Service */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Card glow="purple" className="h-full p-8 flex flex-col">
+                <div className="text-5xl mb-6 text-center">🌐</div>
+                <h2 className="text-3xl font-bold mb-4 text-cyber-purple text-center">
+                  {language === 'en' ? 'Web Development' : 'Desarrollo Web'}
+                </h2>
+                <p className="text-gray-300 text-lg leading-relaxed mb-6 flex-grow">
+                  {language === 'en'
+                    ? 'Launch your online business in 5 days with payments, WhatsApp & automation. Complete packages from $300.'
+                    : 'Lanza tu negocio online en 5 días con pagos, WhatsApp y automatización. Paquetes completos desde $300.'}
+                </p>
+                <Link href="/services/web-development" className="mt-auto">
+                  <Button variant="outline" glow="purple" className="w-full">
+                    {language === 'en' ? 'Learn More' : 'Saber Más'}
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
+
+            {/* App Building Service */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Card glow="blue" className="h-full p-8 flex flex-col">
+                <div className="text-5xl mb-6 text-center">📱</div>
+                <h2 className="text-3xl font-bold mb-4 text-cyber-blue text-center">
+                  {language === 'en' ? 'App Building' : 'Desarrollo de Apps'}
+                </h2>
+                <p className="text-gray-300 text-lg leading-relaxed mb-6 flex-grow">
+                  {language === 'en'
+                    ? 'Custom mobile and web applications with blockchain and AI integration. MVPs to production-ready solutions.'
+                    : 'Aplicaciones móviles y web personalizadas con integración de blockchain e IA. Desde MVPs hasta soluciones listas para producción.'}
+                </p>
+                <Link href="/services/app-building" className="mt-auto">
+                  <Button variant="outline" glow="blue" className="w-full">
+                    {language === 'en' ? 'Learn More' : 'Saber Más'}
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
           </div>
 
           {/* Pricing Section */}
