@@ -44,18 +44,28 @@ export default function Navigation() {
       items: [
         { href: '/culture', label: t.culture },
         { href: '/hackers', label: t.hackers },
-        { href: '/tech-stack', label: t.techStack },
+      ],
+    },
+    services: {
+      label: t.services,
+      items: [
+        { href: '/services/consultation', label: language === 'en' ? 'Consultation' : 'Consultoría' },
+        { href: '/services/web-development', label: language === 'en' ? 'Web Development' : 'Desarrollo Web' },
+        { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Desarrollo de Apps' },
       ],
     },
     'our-value': {
       label: language === 'en' ? 'Our Value' : 'Nuestro Valor',
       items: [
-        { href: '/products', label: t.products },
-        { href: '/services', label: t.services },
+        { href: '/tech-stack', label: t.techStack },
         { href: '/research', label: t.research },
         { href: '/certifications', label: t.certifications },
         { href: '/education', label: t.education },
       ],
+    },
+    products: {
+      label: t.products,
+      href: '/products',
     },
     'hacker-house': {
       label: t.hackerHouse,
@@ -136,6 +146,39 @@ export default function Navigation() {
               )}
             </div>
 
+            {/* Services Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setExpandedMenu(expandedMenu === 'services' ? null : 'services')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isMenuActive('services')
+                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                }`}
+              >
+                {menuItems['services'].label}
+                <span className="ml-2">{expandedMenu === 'services' ? '▲' : '▼'}</span>
+              </button>
+              {expandedMenu === 'services' && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
+                  {menuItems['services'].items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setExpandedMenu(null)}
+                      className={`block px-4 py-3 text-sm transition-all ${
+                        isActive(item.href)
+                          ? 'text-cyber-blue bg-cyber-blue/10'
+                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Our Value Dropdown */}
             <div className="relative">
               <button
@@ -168,6 +211,18 @@ export default function Navigation() {
                 </div>
               )}
             </div>
+
+            {/* Products - Direct Link */}
+            <Link
+              href={menuItems['products'].href!}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                isActive(menuItems['products'].href!)
+                  ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                  : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+              }`}
+            >
+              {menuItems['products'].label}
+            </Link>
 
             {/* Hacker House - Direct Link */}
             <Link
@@ -324,6 +379,78 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
+
+              {/* Services Mobile */}
+              <div>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setExpandedMenu(expandedMenu === 'services-mobile' ? null : 'services-mobile');
+                  }}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
+                  style={{ pointerEvents: 'auto' }}
+                >
+                  {menuItems['services'].label} {expandedMenu === 'services-mobile' ? '▲' : '▼'}
+                </button>
+                {expandedMenu === 'services-mobile' && (
+                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
+                    {menuItems['services'].items.map((item) => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                          router.push(item.href);
+                        }}
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setMobileMenuOpen(false);
+                          setExpandedMenu(null);
+                          router.push(item.href);
+                        }}
+                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
+                          isActive(item.href)
+                            ? 'text-cyber-blue bg-cyber-blue/10'
+                            : 'text-gray-400 hover:text-cyber-blue'
+                        }`}
+                        style={{ 
+                          display: 'block', 
+                          pointerEvents: 'auto', 
+                          cursor: 'pointer',
+                          position: 'relative',
+                          zIndex: 61,
+                          WebkitTapHighlightColor: 'transparent'
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Products Mobile */}
+              <a
+                href={menuItems['products'].href!}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  router.push(menuItems['products'].href!);
+                }}
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation ${
+                  isActive(menuItems['products'].href!)
+                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
+                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
+                }`}
+                style={{ display: 'block', pointerEvents: 'auto', cursor: 'pointer' }}
+              >
+                {menuItems['products'].label}
+              </a>
 
               {/* Hacker House Mobile */}
               <a

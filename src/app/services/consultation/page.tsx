@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Link from 'next/link';
 
 export default function ConsultationPage() {
   const { language } = useLanguage();
@@ -19,10 +18,10 @@ export default function ConsultationPage() {
       valueDelivered: {
         title: "Value Delivered",
         items: [
+          "1 Hour Preliminary Diagnosis Free",
           "3 Hours of consultancy",
           "Private and Flexible Schedule",
           "Charge based on attendees",
-          "1 Hour Preliminary Diagnosis Free",
           "Flexible execution: 3 sessions of 1 hour or 1 session of 3 Hours",
           "Material to review: Video + textual documentation"
         ]
@@ -31,17 +30,18 @@ export default function ConsultationPage() {
         title: "Transparent Pricing",
         subtitle: "Choose the package that fits your team size",
         plans: [
-          { people: "1", price: "$25.00" },
-          { people: "2", price: "$50.00" },
-          { people: "4", price: "$90.00" },
-          { people: "8", price: "$180.00" },
-          { people: "16", price: "$350.00" },
-          { people: "32", price: "$600.00" },
-          { people: "More than 32", price: "$1,000.00" }
+          { people: "1", price: "$50" },
+          { people: "2", price: "$90" },
+          { people: "4", price: "$150" },
+          { people: "8", price: "$280" },
+          { people: "16", price: "$500" },
+          { people: "32", price: "$850" },
+          { people: "64", price: "$1,500" },
+          { people: "More than 64", price: "$2,500" }
         ]
       },
       cta: {
-        primary: "Schedule Consultation",
+        primary: "Request Consultation",
         secondary: "Back to Services"
       }
     },
@@ -65,17 +65,18 @@ export default function ConsultationPage() {
         title: "Precios Transparentes",
         subtitle: "Elige el paquete que se ajuste al tamaño de tu equipo",
         plans: [
-          { people: "1", price: "$25.00" },
-          { people: "2", price: "$50.00" },
-          { people: "4", price: "$90.00" },
-          { people: "8", price: "$180.00" },
-          { people: "16", price: "$350.00" },
-          { people: "32", price: "$600.00" },
-          { people: "Más de 32", price: "$1,000.00" }
+          { people: "1", price: "$50" },
+          { people: "2", price: "$90" },
+          { people: "4", price: "$150" },
+          { people: "8", price: "$280" },
+          { people: "16", price: "$500" },
+          { people: "32", price: "$850" },
+          { people: "64", price: "$1,500" },
+          { people: "Más de 64", price: "$2,500" }
         ]
       },
       cta: {
-        primary: "Agendar Consulta",
+        primary: "Solicitar Consulta",
         secondary: "Volver a Servicios"
       }
     }
@@ -187,23 +188,9 @@ export default function ConsultationPage() {
                     <p className="text-sm text-gray-400 mb-4">
                       {language === 'en' ? 'People' : 'Personas'}
                     </p>
-                    <div className="text-4xl font-bold text-cyber-purple mb-6">
+                    <div className="text-4xl font-bold text-cyber-purple">
                       {plan.price}
                     </div>
-                    <a
-                      href="https://calendar.app.google/DjRwd2YNcaTxGN5g8"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full"
-                    >
-                      <Button
-                        variant={idx === 3 ? 'primary' : 'outline'}
-                        glow={idx === 3 ? 'purple' : 'blue'}
-                        className="w-full"
-                      >
-                        {language === 'en' ? 'Book Now' : 'Reservar'}
-                      </Button>
-                    </a>
                   </Card>
                 </motion.div>
               ))}
@@ -226,22 +213,15 @@ export default function ConsultationPage() {
                   ? 'Schedule your free preliminary diagnosis and discover how we can help your organization.'
                   : 'Agenda tu diagnóstico preliminar gratuito y descubre cómo podemos ayudar a tu organización.'}
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a
-                  href="https://calendar.app.google/DjRwd2YNcaTxGN5g8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="primary" glow="purple">
-                    {t.cta.primary}
-                  </Button>
-                </a>
-                <Link href="/services">
-                  <Button variant="outline" glow="blue">
-                    {t.cta.secondary}
-                  </Button>
-                </Link>
-              </div>
+              <a
+                href="https://mcai2mcfwrq.typeform.com/to/PLttpvSa"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="primary" glow="purple">
+                  {t.cta.primary}
+                </Button>
+              </a>
             </Card>
           </motion.div>
         </div>

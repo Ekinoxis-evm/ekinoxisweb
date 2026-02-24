@@ -165,31 +165,61 @@ export const content = {
     },
     culture: {
       title: "CULTURE",
-      description: "We believe in the power of technology to change the world.",
+      description: "Cypher-minded builders. Open by default. Innovation by default.",
       values: [
         {
           title: "Open Source",
-          description: "We believe in transparency and collaborative development.",
+          description: "We build in public and share primitives that others can reuse.",
+          details: [
+            "We open-source reusable modules whenever possible — code, templates, and tooling.",
+            "We document what we learn (trade-offs included) so others can replicate faster.",
+            "We prefer open standards and verifiable systems over closed black boxes.",
+          ],
         },
         {
           title: "Privacy",
-          description: "We believe in privacy and data ownership.",
+          description: "User sovereignty by design. Data minimization by default.",
+          details: [
+            "We collect the minimum data needed and keep sensitive logic off-server when possible.",
+            "We design for self-custody, consent, and selective disclosure.",
+            "We explore ZK and privacy-preserving primitives to unlock safer UX.",
+          ],
         },
         {
           title: "Innovation",
-          description: "We push the boundaries of what's possible with emerging technologies.",
+          description: "Frontier tech, shipped. Experiments become production when they earn it.",
+          details: [
+            "We prototype fast (hackathons, hacker houses), then harden what works.",
+            "We test new ideas safely with measurable outcomes — not hype.",
+            "We merge AI, cryptography, and blockchain into products that run in the real world.",
+          ],
         },
         {
           title: "Community",
-          description: "We foster a community of developers, researchers, and innovators.",
+          description: "A builders-first network across LATAM and beyond.",
+          details: [
+            "We run spaces where builders meet: sessions, hacker houses, workshops, and demos.",
+            "We connect researchers, founders, and developers to turn ideas into deployments.",
+            "We share opportunities and collaborate across teams instead of competing in silos.",
+          ],
         },
         {
           title: "Education",
-          description: "We share knowledge freely and empower the next generation.",
+          description: "Learning loops: teach → build → iterate → teach again.",
+          details: [
+            "We teach by building: real projects, real repos, real demos.",
+            "We create accessible learning paths for AI, crypto, and blockchain adoption.",
+            "We mentor hackers to become leaders: research, shipping, and communication.",
+          ],
         },
         {
           title: "Collaboration",
-          description: "We collaborate with universities, enterprises and government institutions to enable innovation.",
+          description: "We partner with institutions to deploy, not just to publish.",
+          details: [
+            "We co-build with universities, enterprises, and governments to reach production outcomes.",
+            "We translate research into prototypes and pilots with clear success criteria.",
+            "We keep IP and incentives aligned so innovation can scale responsibly.",
+          ],
         },
       ],  
     },
@@ -440,15 +470,6 @@ export const content = {
           x: "https://x.com/devil_skyy?s=21"
         },
         { 
-          name: "Camilo Sacamboy", 
-          image: "/hackers/camilosacanamboy.png",
-          profile: "Full stack Developer",
-          university: "ICESI",
-          github: "https://github.com/csacanam",
-          linkedin: "https://www.linkedin.com/in/camilosaka/",
-          x: "https://x.com/camilosaka"
-        },
-        { 
           name: "Juice Sands", 
           image: "/hackers/juicesands.png",
           profile: "Smartcontract Developer",
@@ -633,23 +654,61 @@ export const content = {
     },
     culture: {
       title: "CULTURA",
-      description: "Tenemos una cultura y prácticas orientadas a la innovación open source. Creemos en el desarrollo colaborativo y el intercambio de conocimiento.",
+      description: "Constructores con mentalidad cypher. Abierto por defecto. Innovación por defecto.",
       values: [
         {
           title: "Open Source",
-          description: "Creemos en la transparencia y el desarrollo colaborativo.",
+          description: "Construimos en público y compartimos primitivas reutilizables.",
+          details: [
+            "Open source cuando tiene sentido: módulos, plantillas y tooling reutilizable.",
+            "Documentamos lo que aprendemos (incluyendo trade-offs) para acelerar a otros.",
+            "Preferimos estándares abiertos y sistemas verificables sobre cajas negras.",
+          ],
+        },
+        {
+          title: "Privacidad",
+          description: "Soberanía del usuario por diseño. Minimización de datos por defecto.",
+          details: [
+            "Recopilamos lo mínimo necesario y mantenemos lógica sensible fuera del servidor cuando es posible.",
+            "Diseñamos para autocustodia, consentimiento y divulgación selectiva.",
+            "Exploramos ZK y primitivas de privacidad para habilitar UX más segura.",
+          ],
         },
         {
           title: "Innovación",
-          description: "Impulsamos los límites de lo posible con tecnologías emergentes.",
+          description: "Tecnología de frontera, entregada. De experimento a producción cuando se lo gana.",
+          details: [
+            "Prototipamos rápido (hackathons, hacker houses) y endurecemos lo que funciona.",
+            "Probamos ideas nuevas con métricas y seguridad — no solo hype.",
+            "Combinamos IA, criptografía y blockchain para productos en el mundo real.",
+          ],
         },
         {
           title: "Comunidad",
-          description: "Fomentamos una comunidad de desarrolladores, investigadores e innovadores.",
+          description: "Una red de constructores en LATAM y más allá.",
+          details: [
+            "Creamos espacios para construir: sesiones, hacker houses, workshops y demos.",
+            "Conectamos investigadores, founders y developers para llegar a despliegues reales.",
+            "Compartimos oportunidades y colaboramos entre equipos, sin silos.",
+          ],
         },
         {
           title: "Educación",
-          description: "Compartimos conocimiento libremente y empoderamos a la próxima generación.",
+          description: "Ciclos de aprendizaje: enseñar → construir → iterar → enseñar.",
+          details: [
+            "Enseñamos construyendo: proyectos reales, repos reales, demos reales.",
+            "Creamos rutas accesibles para adoptar IA, cripto y blockchain.",
+            "Acompañamos hackers a ser líderes: investigación, shipping y comunicación.",
+          ],
+        },
+        {
+          title: "Colaboración",
+          description: "Aliados para desplegar, no solo para publicar.",
+          details: [
+            "Co-construimos con universidades, empresas y gobiernos para resultados en producción.",
+            "Llevamos investigación a prototipos y pilotos con criterios claros de éxito.",
+            "Alineamos incentivos e IP para escalar innovación de forma responsable.",
+          ],
         },
       ],
     },
@@ -891,15 +950,6 @@ export const content = {
           github: "https://github.com/taniagredo/",
           linkedin: "https://www.linkedin.com/in/tania-agredoh?trk=contact-info",
           x: "https://x.com/devil_skyy?s=21"
-        },
-        { 
-          name: "Camilo Sacamboy", 
-          image: "/hackers/camilosacanamboy.png",
-          profile: "Full stack Developer",
-          university: "ICESI",
-          github: "https://github.com/csacanam",
-          linkedin: "https://www.linkedin.com/in/camilosaka/",
-          x: "https://x.com/camilosaka"
         },
         { 
           name: "Juice Sands", 

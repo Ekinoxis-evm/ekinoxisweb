@@ -448,7 +448,7 @@ export default function AppBuildingPage() {
               <div className="flex flex-wrap justify-center gap-4">
                 <a href={t.calendarLink} target="_blank" rel="noopener noreferrer">
                   <Button variant="primary" glow="blue">
-                    {language === 'en' ? 'Schedule Consultation' : 'Agendar Consulta'}
+                    {language === 'en' ? 'Request Consultation' : 'Solicitar Consulta'}
                   </Button>
                 </a>
                 <Link href="/services">

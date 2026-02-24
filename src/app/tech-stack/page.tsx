@@ -86,7 +86,7 @@ export default function TechStackPage() {
                                 src={logo}
                                 alt="Tech logo"
                                 fill
-                                className="object-contain grayscale hover:grayscale-0 transition-all"
+                                className="object-contain transition-all"
                               />
                             </div>
                           </motion.div>

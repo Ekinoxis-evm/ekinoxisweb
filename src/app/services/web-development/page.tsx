@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Link from 'next/link';
 
 export default function WebDevelopmentPage() {
   const { language } = useLanguage();
@@ -259,37 +258,6 @@ export default function WebDevelopmentPage() {
             </p>
           </motion.div>
 
-          {/* Perfect For Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-16"
-          >
-            <Card glow="blue" className="p-8 md:p-12">
-              <h2 className="text-3xl font-bold mb-6 text-center text-cyber-blue">
-                {t.perfectFor.title}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {t.perfectFor.items.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: 0.3 + idx * 0.1 }}
-                    className="flex items-center"
-                  >
-                    <span className="text-2xl mr-3">✓</span>
-                    <span className="text-gray-300 text-lg">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <p className="text-center text-cyber-purple italic text-lg">
-                {t.perfectFor.tagline}
-              </p>
-            </Card>
-          </motion.div>
-
           {/* What You Get Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -334,6 +302,46 @@ export default function WebDevelopmentPage() {
                 </motion.div>
               ))}
             </div>
+          </motion.div>
+
+          {/* Why Choose Us - moved below What You Get */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="mb-16"
+          >
+            <Card glow="purple" className="p-8 md:p-12">
+              <h2 className="text-3xl font-bold mb-6 text-center text-cyber-purple">
+                {t.trust.title}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {t.trust.items.map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.4 + idx * 0.1 }}
+                    className="flex items-center justify-center"
+                  >
+                    <svg
+                      className="w-6 h-6 text-cyber-purple mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="text-gray-300 text-lg">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </Card>
           </motion.div>
 
           {/* Pricing Section */}
@@ -381,7 +389,7 @@ export default function WebDevelopmentPage() {
                         {plan.priceAlt}
                       </div>
                     </div>
-                    <ul className="space-y-3 mb-8">
+                    <ul className="space-y-3">
                       {plan.features.map((feature, featureIdx) => (
                         <li key={featureIdx} className="flex items-start">
                           <svg
@@ -401,20 +409,6 @@ export default function WebDevelopmentPage() {
                         </li>
                       ))}
                     </ul>
-                    <a
-                      href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full"
-                    >
-                      <Button
-                        variant={plan.popular ? 'primary' : 'outline'}
-                        glow={plan.popular ? 'purple' : 'blue'}
-                        className="w-full"
-                      >
-                        {plan.cta}
-                      </Button>
-                    </a>
                   </Card>
                 </motion.div>
               ))}
@@ -422,46 +416,6 @@ export default function WebDevelopmentPage() {
             <p className="text-center text-sm text-gray-400 italic">
               {t.pricing.note}
             </p>
-          </motion.div>
-
-          {/* Trust Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.9 }}
-            className="mb-16"
-          >
-            <Card glow="purple" className="p-8 md:p-12">
-              <h2 className="text-3xl font-bold mb-6 text-center text-cyber-purple">
-                {t.trust.title}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {t.trust.items.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 1 + idx * 0.1 }}
-                    className="flex items-center justify-center"
-                  >
-                    <svg
-                      className="w-6 h-6 text-cyber-purple mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span className="text-gray-300 text-lg">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </Card>
           </motion.div>
 
           {/* Final CTA */}
@@ -475,22 +429,15 @@ export default function WebDevelopmentPage() {
               <h2 className="text-4xl md:text-5xl font-bold mb-8 text-cyber-blue">
                 {t.finalCta.title}
               </h2>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a
-                  href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="primary" glow="purple">
-                    {t.finalCta.button}
-                  </Button>
-                </a>
-                <Link href="/services">
-                  <Button variant="outline" glow="blue">
-                    {language === 'en' ? 'Back to Services' : 'Volver a Servicios'}
-                  </Button>
-                </Link>
-              </div>
+              <a
+                href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="primary" glow="purple">
+                  {t.finalCta.button}
+                </Button>
+              </a>
             </Card>
           </motion.div>
         </div>

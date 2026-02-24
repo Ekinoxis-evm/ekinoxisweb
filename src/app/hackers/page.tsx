@@ -22,10 +22,10 @@ export default function HackersPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-glow-purple">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-glow-blue">
               {t.title}
             </h1>
-            <p className="text-xl md:text-2xl text-cyber-purple/80 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-cyber-blue/80 max-w-3xl mx-auto">
               {t.description}
             </p>
           </motion.div>
