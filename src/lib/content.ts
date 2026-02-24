@@ -5,6 +5,7 @@ export const content = {
     hero: {
       title: "INNOVATION WITHOUT FRONTIERS",
       subtitle: "We are the first Innovation Laboratory from the Colombian Pacific specialized in Blockchain, Cryptography and Artificial Intelligence.",
+      contactUs: "Contact Us",
     },
     nav: {
       home: "Home",
@@ -480,6 +481,7 @@ export const content = {
     hero: {
       title: "EKINOXIS ES INNOVACIÓN SIN FRONTERAS",
       subtitle: "Somos el primer Laboratorio de Innovación del Pacífico Colombiano especializado en Blockchain, Criptografía e inteligencia artificial.",
+      contactUs: "Contáctanos",
     },
     nav: {
       home: "Inicio",

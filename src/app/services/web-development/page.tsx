@@ -16,7 +16,7 @@ export default function WebDevelopmentPage() {
       headline: "Launch your online business in 5 days",
       subheadline: "With payments, WhatsApp & automation ready",
       description: "We build your complete online presence so you can sell, get paid, and talk to customers immediately.",
-      trustLine: "From $300 · No hidden fees · 50% upfront, 50% on delivery",
+      trustLine: "From $300 · No hidden fees",
       perfectFor: {
         title: "Perfect for:",
         items: [
@@ -56,8 +56,7 @@ export default function WebDevelopmentPage() {
               "Domain + hosting (1 year*)",
               "Corporate email (1 year*)",
               "Payment confirmation emails",
-              "5-day delivery",
-              "50% upfront / 50% final"
+              "5-day delivery"
             ],
             cta: "Start with Online Business"
           },
@@ -125,7 +124,7 @@ export default function WebDevelopmentPage() {
       headline: "Lanza tu negocio online en 5 días",
       subheadline: "Con pagos, WhatsApp y automatización listos",
       description: "Construimos tu presencia online completa para que puedas vender, recibir pagos y hablar con clientes inmediatamente.",
-      trustLine: "Desde $300 · Sin costos ocultos · 50% adelantado, 50% en entrega",
+      trustLine: "Desde $300 · Sin costos ocultos",
       perfectFor: {
         title: "Perfecto para:",
         items: [
@@ -165,8 +164,7 @@ export default function WebDevelopmentPage() {
               "Dominio + hosting (1 año*)",
               "Correo corporativo (1 año*)",
               "Confirmaciones de pago por email",
-              "Entrega en 5 días",
-              "50% adelantado / 50% final"
+              "Entrega en 5 días"
             ],
             cta: "Comenzar con Negocio Online"
           },
@@ -404,7 +402,7 @@ export default function WebDevelopmentPage() {
                       ))}
                     </ul>
                     <a
-                      href="https://calendar.app.google/DjRwd2YNcaTxGN5g8"
+                      href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block w-full"
@@ -424,40 +422,6 @@ export default function WebDevelopmentPage() {
             <p className="text-center text-sm text-gray-400 italic">
               {t.pricing.note}
             </p>
-          </motion.div>
-
-          {/* How It Works Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="mb-16"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow-purple">
-                {t.howItWorks.title}
-              </h2>
-              <p className="text-xl text-cyber-blue/80">
-                {t.howItWorks.subtitle}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {t.howItWorks.steps.map((step, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
-                >
-                  <Card glow="blue" className="p-6 text-center">
-                    <div className="text-5xl font-bold text-cyber-purple mb-4">
-                      {step.number}
-                    </div>
-                    <p className="text-gray-300 text-lg">{step.text}</p>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
 
           {/* Trust Section */}
@@ -513,7 +477,7 @@ export default function WebDevelopmentPage() {
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 <a
-                  href="https://calendar.app.google/DjRwd2YNcaTxGN5g8"
+                  href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

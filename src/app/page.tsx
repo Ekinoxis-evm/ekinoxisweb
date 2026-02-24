@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
@@ -73,16 +72,15 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <Link href="/education">
+            <a
+              href="https://t.me/ekinoxis"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="primary" glow="blue">
-                Explore Education
+                {t.hero.contactUs}
               </Button>
-            </Link>
-            <Link href="/hacker-house">
-              <Button variant="primary" glow="purple">
-                Join Hacker House
-              </Button>
-            </Link>
+            </a>
           </motion.div>
         </div>
 
