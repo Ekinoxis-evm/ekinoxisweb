@@ -74,6 +74,23 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg border border-cyber-purple/30 flex items-center justify-center hover:border-cyber-purple hover:bg-cyber-purple/10 transition-all group"
               >
+                
+                <Image
+                  src="/socials/linkedin.png"
+                  alt="LinkedIn"
+                  width={20}
+                  height={20}
+                  className="grayscale group-hover:grayscale-0 transition-all"
+                />
+              </a>
+              <a
+                href={t.socials.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg border border-cyber-purple/30 flex items-center justify-center hover:border-cyber-purple hover:bg-cyber-purple/10 transition-all group"
+              >
+
+                
                 <Image
                   src="/socials/instagram.webp"
                   alt="Instagram"

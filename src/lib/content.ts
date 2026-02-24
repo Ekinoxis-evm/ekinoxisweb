@@ -482,9 +482,10 @@ export const content = {
     },
     socials: {
       x: "https://x.com/ekinoxis",
-      instagram: "https://www.instagram.com/ekinoxis.evm/",
+      instagram: "https://www.instagram.com/ekinoxis.labs/",
       telegram: "https://t.me/ekinoxis",
-      discord: "https://discord.gg/teQR8fA786",
+      linkedin: "https://www.linkedin.com/company/ekinoxis-labs/",
+      discord: "https://discord.gg/3AsvCE3Pwq",
       github: "https://github.com/ekinoxis-evm/",
     },
     footer: {
@@ -964,9 +965,9 @@ export const content = {
     },
     socials: {
       x: "https://x.com/ekinoxis",
-      instagram: "https://www.instagram.com/ekinoxis.evm/",
+      instagram: "https://www.instagram.com/ekinoxis.labs/",
       telegram: "https://t.me/ekinoxis",
-      discord: "https://discord.gg/teQR8fA786",
+      discord: "https://discord.gg/3AsvCE3Pwq",
       github: "https://github.com/ekinoxis-evm/",
     },
     footer: {

@@ -9,7 +9,7 @@ EKINOXIS IS INNOVATION WITHOUT FRONTIERS
 Somos el primer Laboratorio de Innovación del Pacífico Colombiano especializado en Blockchain, Criptografia e inteligencia artificial.
 
 X: https://x.com/ekinoxis
-Instagram: https://www.instagram.com/ekinoxis.evm/
+Instagram: https://www.instagram.com/ekinoxis.labs/
 Telegram: https://t.me/ekinoxis
 
 
