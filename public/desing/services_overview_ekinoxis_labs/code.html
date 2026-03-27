@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EKINOXIS // SERVICES</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#516700",
+                        "secondary-container": "#3106ff",
+                        "inverse-surface": "#f5faff",
+                        "inverse-on-surface": "#4c565e",
+                        "surface-container-low": "#09151c",
+                        "surface-container-high": "#14212a",
+                        "on-tertiary-container": "#4a5e00",
+                        "on-primary-fixed": "#003f43",
+                        "on-secondary-fixed": "#1e00b1",
+                        "background": "#060f16",
+                        "surface-container-highest": "#192731",
+                        "surface-bright": "#1e2e38",
+                        "on-tertiary-fixed-variant": "#526900",
+                        "surface-dim": "#060f16",
+                        "secondary": "#9492ff",
+                        "outline": "#6c777f",
+                        "on-primary-container": "#005359",
+                        "on-primary": "#005d63",
+                        "secondary-fixed": "#cfcdff",
+                        "on-error-container": "#ffa8a3",
+                        "primary-fixed": "#00eefc",
+                        "tertiary": "#f3ffca",
+                        "outline-variant": "#3f4951",
+                        "secondary-dim": "#625dff",
+                        "primary-container": "#00eefc",
+                        "primary": "#8ff5ff",
+                        "tertiary-container": "#cafd00",
+                        "surface-tint": "#8ff5ff",
+                        "secondary-fixed-dim": "#bfbdff",
+                        "on-surface-variant": "#a2acb5",
+                        "on-tertiary-fixed": "#3a4a00",
+                        "surface-variant": "#192731",
+                        "primary-dim": "#00deec",
+                        "on-surface": "#e8f2fb",
+                        "on-secondary": "#100077",
+                        "on-error": "#490006",
+                        "tertiary-fixed": "#cafd00",
+                        "surface": "#060f16",
+                        "inverse-primary": "#006a71",
+                        "error": "#ff716c",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed-dim": "#00deec",
+                        "on-secondary-container": "#dedcff",
+                        "error-dim": "#d7383b",
+                        "tertiary-fixed-dim": "#beee00",
+                        "error-container": "#9f0519",
+                        "surface-container": "#0f1b23",
+                        "on-primary-fixed-variant": "#005e64",
+                        "on-background": "#e8f2fb",
+                        "tertiary-dim": "#beee00",
+                        "on-secondary-fixed-variant": "#320aff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .scan-line {
+            background: linear-gradient(to bottom, transparent 50%, rgba(143, 245, 255, 0.03) 50%);
+            background-size: 100% 4px;
+        }
+        .glitch-hover:hover {
+            text-shadow: 2px 0 #320aff, -2px 0 #beee00;
+        }
+        .glass-panel {
+            background: rgba(15, 27, 35, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 238, 252, 0.1);
+        }
+        body {
+            background-color: #060f16;
+            color: #e8f2fb;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-surface-container-lowest">
+<!-- SCAN LINE OVERLAY -->
+<div class="fixed inset-0 pointer-events-none scan-line z-[100] opacity-50"></div>
+<!-- TOP NAVIGATION -->
+<nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-cyan-900/20 flex justify-between items-center px-6 py-4 font-['Space_Grotesk'] tracking-tighter uppercase">
+<div class="text-2xl font-bold tracking-tighter text-cyan-400 italic">EKINOXIS</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-slate-500 hover:text-cyan-200 transition-colors" href="#">STATIONS</a>
+<a class="text-cyan-400 border-b-2 border-cyan-400 pb-1" href="#">PROTOCOLS</a>
+<a class="text-slate-500 hover:text-cyan-200 transition-colors" href="#">TERMINAL</a>
+<a class="text-slate-500 hover:text-cyan-200 transition-colors" href="#">ARCHIVE</a>
+</div>
+<button class="bg-primary px-6 py-2 text-surface-container-lowest font-bold text-sm tracking-widest hover:bg-primary-dim transition-all active:scale-95 duration-75 ease-in">
+            INITIATE
+        </button>
+</nav>
+<!-- SIDE NAV (OPERATOR TERMINAL) -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r border-cyan-900/30 bg-black hidden xl:flex flex-col p-4 z-40 font-['Space_Grotesk_Mono'] text-xs">
+<div class="mt-20 mb-8 px-4">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-surface-container-highest border border-primary/20 relative overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="high-contrast portrait of a digital operator with blue neon interface reflections on glass" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjCPCpAdfyYHcVMQgR8HM10wSnXoKvaa0M0v_tlrKQ4lfYRcHOsWqC3APjwKJ71O-MU1cH4su3tGOFqlSdvwdLK5uIQeRnNdBgGmsK7quSZlfz_mnjc9kVidXqqsUqZGDe5a6JwytiUXot_7B5FDYIA5WwJTkE1Gb5xIoOkOcafjJWNjoAGdbPQabcQBxkGl-EhcimBWXWaG9qpXgLJOdfmAr8o2_Pq7USdZKCmDRRoLZHQH3uYEmq5hT9IFd3ExSIIlG5kFcX4qCf"/>
+</div>
+<div>
+<div class="text-cyan-400 font-bold uppercase">OPERATOR_01</div>
+<div class="text-slate-600 text-[10px]">LEVEL_4_ACCESS</div>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 p-3 text-slate-600 hover:bg-slate-900 group" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>SYSLOG</span>
+</a>
+<a class="flex items-center gap-3 p-3 bg-cyan-900/20 text-cyan-400 border-l-4 border-cyan-400" href="#">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">enhanced_encryption</span>
+<span>ENCRYPTION</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-slate-600 hover:bg-slate-900 group" href="#">
+<span class="material-symbols-outlined text-sm">monitoring</span>
+<span>METRICS</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-slate-600 hover:bg-slate-900 group" href="#">
+<span class="material-symbols-outlined text-sm">storage</span>
+<span>VAULT</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full py-2 border border-slate-800 text-slate-600 hover:border-error hover:text-error transition-colors uppercase tracking-widest text-[10px]">
+                LOGOUT
+            </button>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="xl:ml-64 pt-24 pb-20 px-6 md:px-12">
+<!-- HERO SECTION -->
+<section class="relative mb-32">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-outline-variant/10 pb-12">
+<div class="max-w-2xl">
+<div class="font-['Space_Grotesk_Mono'] text-primary text-xs tracking-[0.3em] mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-primary animate-pulse"></span>
+                        SYSTEM_LOC: SERVICES_DIRECTORY
+                    </div>
+<h1 class="font-headline text-7xl md:text-9xl font-bold tracking-tighter text-on-surface mb-6 uppercase leading-none">
+                        SERVICES
+                    </h1>
+<h2 class="font-headline text-2xl md:text-3xl text-secondary font-medium tracking-tight mb-4">
+                        Strategic Protocol Deployment
+                    </h2>
+<p class="text-on-surface-variant text-lg max-w-lg leading-relaxed">
+                        We provide consultancy and development services to help organizations leverage cutting-edge technologies. From cryptographic audits to AI neural integration.
+                    </p>
+</div>
+<div class="hidden lg:block">
+<div class="w-64 h-64 border border-primary/20 relative p-2">
+<div class="absolute inset-0 bg-primary/5"></div>
+<img class="w-full h-full object-cover grayscale opacity-50 contrast-125" data-alt="abstract 3D render of crystalline structures with glowing cyan data lines on a black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUOPlVI7bAeEvYduyF9ncN4foAYTxUPukDqEbyEAvjfsh9RQbVCO2jqJgzXH2mC-S2UfJwDV5jUmSNrxink9s3jHAK512LB-xGnbQMXZb72QfEvxlJcHa-MN9WkvkiWIKbWs1a2CHTGUVFaGXBcRlMZwZnTs3u_owoVRFDFDxkAHLpEhIn2DnUR5IbEZd82IehTCA9fz7KHARfH3I5oY93AcYTfU_uXGRaFM90RIa_ORi6KMiUbRkwM2GCOcfv_scmTH5b-EoOeQlw"/>
+<div class="absolute bottom-4 right-4 text-[10px] font-['Space_Grotesk_Mono'] text-primary uppercase">
+                            RENDER_ID: 994-X
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- SERVICE TRACKS -->
+<section class="mb-32">
+<div class="grid md:grid-cols-2 gap-1 px-1 bg-outline-variant/10">
+<!-- Track 01 -->
+<div class="bg-surface-container-lowest p-8 md:p-12 group hover:bg-surface-container-low transition-all duration-500 border border-transparent hover:border-primary/20">
+<div class="flex justify-between items-start mb-16">
+<div class="font-['Space_Grotesk_Mono'] text-xs text-secondary-dim">TRACK_01 // STRATEGY</div>
+<span class="material-symbols-outlined text-primary text-4xl opacity-50 group-hover:opacity-100 transition-opacity">biotech</span>
+</div>
+<h3 class="font-headline text-4xl font-bold text-on-surface mb-4 uppercase tracking-tighter italic">CONSULTANCY</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                        Strategic guidance on blockchain, crypto, and AI implementation. We navigate the frontier of decentralization to optimize your technical stack.
+                    </p>
+<ul class="space-y-3 font-['Space_Grotesk_Mono'] text-xs text-slate-500 mb-12">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> CRYPTOGRAPHIC AUDITS</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> NEURAL ARCHITECTURE DESIGN</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> PROTOCOL FEASIBILITY STUDY</li>
+</ul>
+<a class="inline-flex items-center gap-2 text-primary text-sm font-bold tracking-widest uppercase group-hover:gap-4 transition-all" href="#">
+                        VIEW_PROTOCOL <span class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+<!-- Track 02 -->
+<div class="bg-surface-container-lowest p-8 md:p-12 group hover:bg-surface-container-low transition-all duration-500 border border-transparent hover:border-primary/20">
+<div class="flex justify-between items-start mb-16">
+<div class="font-['Space_Grotesk_Mono'] text-xs text-tertiary-dim">TRACK_02 // EXECUTION</div>
+<span class="material-symbols-outlined text-tertiary text-4xl opacity-50 group-hover:opacity-100 transition-opacity">memory</span>
+</div>
+<h3 class="font-headline text-4xl font-bold text-on-surface mb-4 uppercase tracking-tighter italic">DEVELOPMENT</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                        Custom prototypes, MVPs, and production-ready frontier solutions. We transform complex theories into functional codebases.
+                    </p>
+<ul class="space-y-3 font-['Space_Grotesk_Mono'] text-xs text-slate-500 mb-12">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> FULL-STACK DECENTRALIZATION</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> SMART CONTRACT DEPLOYMENT</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> CUSTOM ML PIPELINES</li>
+</ul>
+<a class="inline-flex items-center gap-2 text-tertiary text-sm font-bold tracking-widest uppercase group-hover:gap-4 transition-all" href="#">
+                        ACCESS_TERMINAL <span class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+</div>
+</section>
+<!-- PRICING TIERS -->
+<section class="mb-32">
+<div class="mb-12 flex justify-between items-end border-b border-primary/10 pb-4">
+<h2 class="font-headline text-3xl font-bold tracking-tight uppercase italic">PROTOCOL_TIERS</h2>
+<div class="font-['Space_Grotesk_Mono'] text-[10px] text-slate-600">RECURRING_DATA_MODELS_V4.0</div>
+</div>
+<div class="grid lg:grid-cols-3 gap-6">
+<!-- Tier 1 -->
+<div class="relative bg-surface-container-low border border-outline-variant/20 p-8 flex flex-col hover:border-primary/40 transition-colors group">
+<div class="absolute top-0 right-0 p-2 font-['Space_Grotesk_Mono'] text-[8px] text-slate-700 bg-surface-container-high">PKT_ST_001</div>
+<div class="mb-12">
+<h4 class="font-headline text-xs font-bold text-primary tracking-[0.4em] mb-2 uppercase">STARTER</h4>
+<div class="text-4xl font-headline font-bold text-on-surface mb-4">
+                            $5,000<span class="text-sm font-normal text-slate-500 ml-1">/BASE</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed font-light">
+                            MVP dev, technical assessment, 2 weeks support. Ideal for rapid validation of frontier concepts.
+                        </p>
+</div>
+<div class="mt-auto space-y-4">
+<div class="h-[1px] bg-outline-variant/10 w-full"></div>
+<button class="w-full py-4 border border-primary/20 text-primary font-bold text-xs tracking-widest hover:bg-primary hover:text-surface-container-lowest transition-all">
+                            INITIALIZE_PROTOCOL
+                        </button>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="relative bg-surface-container-high border-2 border-primary p-8 flex flex-col transform lg:-translate-y-4 shadow-[0_0_30px_rgba(143,245,255,0.05)] group">
+<div class="absolute top-0 right-0 p-2 font-['Space_Grotesk_Mono'] text-[8px] text-surface-container-lowest bg-primary">PKT_PRO_002</div>
+<div class="mb-12">
+<div class="inline-block px-2 py-1 bg-primary text-surface-container-lowest font-['Space_Grotesk_Mono'] text-[10px] font-bold mb-4">RECOMMENDED</div>
+<h4 class="font-headline text-xs font-bold text-primary tracking-[0.4em] mb-2 uppercase">PROFESSIONAL</h4>
+<div class="text-4xl font-headline font-bold text-on-surface mb-4">
+                            $15,000<span class="text-sm font-normal text-slate-500 ml-1">/BASE</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed font-light">
+                            Full custom development, integrations, 1 month support, technical documentation, and audit readiness.
+                        </p>
+</div>
+<div class="mt-auto space-y-4">
+<div class="h-[1px] bg-primary/20 w-full"></div>
+<button class="w-full py-4 bg-primary text-surface-container-lowest font-bold text-xs tracking-widest hover:bg-white transition-all">
+                            DEPLOY_SOLUTION
+                        </button>
+</div>
+</div>
+<!-- Tier 3 -->
+<div class="relative bg-surface-container-low border border-outline-variant/20 p-8 flex flex-col hover:border-tertiary/40 transition-colors group">
+<div class="absolute top-0 right-0 p-2 font-['Space_Grotesk_Mono'] text-[8px] text-slate-700 bg-surface-container-high">PKT_ENT_003</div>
+<div class="mb-12">
+<h4 class="font-headline text-xs font-bold text-tertiary tracking-[0.4em] mb-2 uppercase">ENTERPRISE</h4>
+<div class="text-4xl font-headline font-bold text-on-surface mb-4 italic uppercase">
+                            QUOTE
+                        </div>
+<p class="text-on-surface-variant text-sm leading-relaxed font-light">
+                            Dedicated team, 24/7 support, SLA guarantees, and infrastructure scaling for global impact.
+                        </p>
+</div>
+<div class="mt-auto space-y-4">
+<div class="h-[1px] bg-outline-variant/10 w-full"></div>
+<button class="w-full py-4 border border-tertiary/20 text-tertiary font-bold text-xs tracking-widest hover:bg-tertiary hover:text-surface-container-lowest transition-all">
+                            REQUEST_ACCESS
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA SECTION -->
+<section class="mb-20">
+<div class="relative w-full aspect-[21/9] flex items-center justify-center overflow-hidden border border-primary/20 bg-surface-container-lowest">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-20 grayscale hue-rotate-180" data-alt="satellite view of earth at night with complex web of glowing blue data connections across continents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdLMHuYVwl8BxGnGuqZvpTzbA1IiTgiqMusi21ioYGxlr2f3Dkx7pdavzgIgfSBopl0MiVZGwx4DUQTDlwSkzIUl-LgrpBsUkZ3Ol2r5YREqat5MZtcusnK-KhjPhdR9OPrrl2vYItIPPAEq8q9Jmt4zUNc9sUNj11sjLskYSVAiqJBCyvPyLYl7OqHAIlyFcCTT4Vibl-T-SQzpr1DaalLklqoC-93PTMOeKWGNbc49jL5Auo-CgYDGaP1Dzf2iaWSnY2x9hJQTJr"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
+</div>
+<div class="relative z-10 text-center px-4">
+<h2 class="font-headline text-4xl md:text-6xl font-bold text-on-surface uppercase tracking-tight mb-8">
+                        READY TO SCALE<br/>THE FRONTIER?
+                    </h2>
+<a class="inline-flex items-center gap-4 bg-primary px-10 py-5 text-surface-container-lowest font-bold text-sm tracking-[0.2em] group hover:scale-105 transition-all" href="https://calendar.google.com" target="_blank">
+                        BOOK_CONSULTATION 
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">schedule</span>
+</a>
+<div class="mt-8 font-['Space_Grotesk_Mono'] text-[10px] text-primary/60 tracking-widest">
+                        UPLINK_ESTABLISHED // SECURE_LINE_ACTIVE
+                    </div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="xl:ml-64 w-full border-t border-cyan-900/10 py-12 bg-black flex flex-col md:flex-row justify-between items-center px-8 gap-6">
+<div class="font-['Space_Grotesk_Mono'] text-[10px] uppercase tracking-widest text-lime-400">
+            ©2024 EKINOXIS_LABS // NO_FRONTIERS
+        </div>
+<div class="flex flex-wrap justify-center gap-8 font-['Space_Grotesk_Mono'] text-[10px] uppercase tracking-widest">
+<span class="text-lime-400">OS_STATUS: NOMINAL</span>
+<span class="text-slate-700 hover:text-lime-200 transition-opacity cursor-default">LAT: 37.7749 N</span>
+<span class="text-slate-700 hover:text-lime-200 transition-opacity cursor-default">LONG: 122.4194 W</span>
+<span class="text-slate-700 hover:text-lime-200 transition-opacity cursor-default">NEO_TOKYO_HUB</span>
+</div>
+</footer>
+<!-- SCROLL DECORATION -->
+<div class="fixed right-4 top-1/2 -translate-y-1/2 hidden 2xl:flex flex-col gap-4">
+<div class="w-1 h-20 bg-outline-variant/20 relative">
+<div class="absolute top-1/4 left-0 w-full h-4 bg-primary"></div>
+</div>
+<div class="rotate-90 origin-left text-[10px] font-['Space_Grotesk_Mono'] text-slate-700 whitespace-nowrap translate-x-3 translate-y-10">
+            COORD_Z: 44.92.11
+        </div>
+</div>
+</body></html>

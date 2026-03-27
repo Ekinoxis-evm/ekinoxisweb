@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#000000",
+              "surface": "#060f16",
+              "on-primary-container": "#005359",
+              "secondary-fixed": "#cfcdff",
+              "on-surface-variant": "#a2acb5",
+              "secondary-dim": "#625dff",
+              "on-primary-fixed": "#003f43",
+              "secondary-fixed-dim": "#bfbdff",
+              "inverse-primary": "#006a71",
+              "on-tertiary-container": "#4a5e00",
+              "on-secondary-fixed-variant": "#320aff",
+              "error-container": "#9f0519",
+              "surface-container-high": "#14212a",
+              "primary": "#8ff5ff",
+              "primary-fixed": "#00eefc",
+              "background": "#060f16",
+              "tertiary-fixed-dim": "#beee00",
+              "tertiary": "#f3ffca",
+              "on-surface": "#e8f2fb",
+              "on-tertiary": "#516700",
+              "surface-container-low": "#09151c",
+              "surface-dim": "#060f16",
+              "on-secondary": "#100077",
+              "on-background": "#e8f2fb",
+              "surface-bright": "#1e2e38",
+              "primary-dim": "#00deec",
+              "on-primary-fixed-variant": "#005e64",
+              "surface-container": "#0f1b23",
+              "tertiary-dim": "#beee00",
+              "primary-fixed-dim": "#00deec",
+              "tertiary-container": "#cafd00",
+              "inverse-surface": "#f5faff",
+              "outline": "#6c777f",
+              "primary-container": "#00eefc",
+              "on-error": "#490006",
+              "secondary": "#9492ff",
+              "on-primary": "#005d63",
+              "error": "#ff716c",
+              "outline-variant": "#3f4951",
+              "on-tertiary-fixed-variant": "#526900",
+              "surface-variant": "#192731",
+              "tertiary-fixed": "#cafd00",
+              "surface-tint": "#8ff5ff",
+              "on-tertiary-fixed": "#3a4a00",
+              "on-error-container": "#ffa8a3",
+              "error-dim": "#d7383b",
+              "secondary-container": "#3106ff",
+              "on-secondary-fixed": "#1e00b1",
+              "surface-container-highest": "#192731",
+              "on-secondary-container": "#dedcff",
+              "inverse-on-surface": "#4c565e"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"],
+              "mono": ["Space Mono"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            cursor: crosshair;
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(143, 245, 255, 0.2);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(143, 245, 255, 0.5);
+        }
+    
+        @keyframes pulse-breathing {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(0,240,255,0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 70px rgba(0,240,255,0.6)); }
+        }
+
+        @keyframes slow-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes glitch-flicker {
+            0% { opacity: 0.98; transform: translate(0,0); }
+            5% { opacity: 1; transform: translate(1px, -1px); }
+            10% { opacity: 0.95; transform: translate(-1px, 1px); }
+            15% { opacity: 1; transform: translate(0,0); }
+            100% { opacity: 1; transform: translate(0,0); }
+        }
+
+        .animate-hero-core {
+            animation: pulse-breathing 8s ease-in-out infinite, slow-rotate 60s linear infinite;
+        }
+
+        .hero-visual-glitch {
+            animation: glitch-flicker 4s infinite step-end;
+        }
+        </style>
+</head>
+<body class="font-body text-on-background selection:bg-primary selection:text-surface-container-lowest">
+<!-- Scanline Effect Overlay -->
+<div class="fixed inset-0 z-[100] scanline-overlay opacity-20"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-[#00F0FF]/10 shadow-[0_0_15px_rgba(0,240,255,0.1)]">
+<nav class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-[#00F0FF] font-['Space_Grotesk'] uppercase tracking-tighter">
+                EKINOXIS
+            </div>
+<div class="hidden md:flex items-center space-x-8 font-['Space_Grotesk'] uppercase tracking-tighter">
+<a class="text-[#00F0FF] border-b-2 border-[#00F0FF] pb-1" href="#">About</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Services</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Value</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Products</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Hacker House</a>
+</div>
+<div class="flex items-center space-x-6">
+<span class="text-[#00F0FF] font-mono text-xs cursor-pointer hover:bg-[#00F0FF]/5 p-2 transition-all">EN/ES</span>
+<span class="material-symbols-outlined text-[#00F0FF] cursor-pointer hover:scale-110 duration-200">terminal</span>
+</div>
+</nav>
+</header>
+<main class="relative min-h-screen pt-20 overflow-hidden">
+<!-- Hero Section -->
+<section class="relative z-10 container mx-auto px-6 pt-12 md:pt-24 min-h-[921px] flex flex-col justify-center items-start">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+<!-- Content Column -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Tech Readout Metadata -->
+<div class="flex items-center space-x-4 font-mono text-[10px] text-primary/60 tracking-widest uppercase">
+<span class="border border-primary/30 px-2 py-1">SYS_ACTIVE: 2024</span>
+<span class="border border-primary/30 px-2 py-1">LOC: PACIFIC_COAST_COL</span>
+<span class="border border-primary/30 px-2 py-1">LVL: ROOT_LAB</span>
+</div>
+<h1 class="font-headline text-5xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface">
+                        INNOVATION<br/>
+<span class="text-primary text-glow italic">WITHOUT</span><br/>
+                        FRONTIERS
+                    </h1>
+<p class="max-w-xl text-lg md:text-xl text-on-surface-variant font-light leading-relaxed">
+                        We are the first <span class="text-primary">Innovation Laboratory</span> from the Colombian Pacific specialized in <span class="text-secondary">Blockchain</span>, <span class="text-tertiary">Cryptography</span> and <span class="text-secondary">Artificial Intelligence</span>.
+                    </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+<button class="bg-primary text-on-primary px-8 py-4 font-headline font-bold uppercase tracking-widest hover:bg-primary-dim hover:shadow-[0_0_30px_rgba(143,245,255,0.4)] active:scale-95 transition-all duration-200 flex items-center gap-3">
+                            Contact Us
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+<div class="flex flex-col font-mono text-[11px] text-outline tracking-tighter">
+<span>DIRECT_CHANNEL://TELEGRAM_BOT</span>
+<span class="text-primary">UPLINK_STATUS: SECURE_CONNECTED</span>
+</div>
+</div>
+</div>
+<!-- Visual Column (Central Abstract Sphere) -->
+<div class="lg:col-span-5 relative flex justify-center items-center py-12">
+<!-- Glow Backdrops -->
+<div class="absolute w-[300px] h-[300px] bg-primary/20 blur-[100px] rounded-full"></div>
+<div class="absolute w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full"></div>
+<!-- Sphere Container -->
+<div class="relative w-80 h-80 md:w-full md:aspect-square max-w-[500px] hero-visual-glitch">
+<img alt="Ekinoxis Core Sphere" class="w-full h-full object-contain filter drop-shadow-[0_0_50px_rgba(0,240,255,0.3)] animate-hero-core" data-alt="A glowing neon cyan abstract digital sphere with complex geometric glass patterns floating in a deep black void with technical UI artifacts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCrDptPwJF_sfOVxfDnBDtyKcVcrigmDuYu3YiXI2uU31i3XU4tZHDnLiBXfvCqth4bciniAZ64n7kA71VOV1JPGCbsQMjcZgs3YxfIsA9ahlLGXzdaZG4eZmO-5dfYDyzA5IkrUxYLMdhqX0oxoJ_B4xD1g1XrMNq5S2dBQMjYwW6H98SBQ765nK7auJoMmfMic_32GCf9nTlqoJ8TYe6JLNYyILz9S8Agw7rr2rOZDyQZ2xComoivZ88RGL0fYp4oVKTpHOPnAly"/>
+<!-- Floating Monospaced Readouts around sphere -->
+<div class="absolute top-0 right-0 bg-surface-container/80 backdrop-blur-md p-3 border-l-2 border-primary">
+<p class="font-mono text-[10px] text-primary">PROJECT: EKX_LAB_01</p>
+<p class="font-mono text-[9px] text-outline">LAT: 3.4516° N // LON: 76.5320° W</p>
+</div>
+<div class="absolute bottom-10 -left-10 bg-surface-container/80 backdrop-blur-md p-3 border-r-2 border-tertiary">
+<p class="font-mono text-[10px] text-tertiary">DATA_STREAM: ENCRYPTED</p>
+<p class="font-mono text-[9px] text-outline">BIT_RATE: 1.2 GBPS</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission Stats Section (Asymmetric Grid) -->
+<section class="relative z-10 container mx-auto px-6 py-24">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-px bg-primary/10 border border-primary/10">
+<div class="bg-black p-12 group hover:bg-surface-container transition-colors duration-500">
+<span class="font-mono text-primary text-sm mb-4 block">01 / ORIGIN</span>
+<h3 class="font-headline text-4xl font-bold mb-4">1ST</h3>
+<p class="font-label text-xs text-outline uppercase tracking-widest leading-relaxed">Innovation Lab specialized in emerging tech in the Colombian Pacific.</p>
+</div>
+<div class="bg-black p-12 group hover:bg-surface-container transition-colors duration-500">
+<span class="font-mono text-primary text-sm mb-4 block">02 / FOCUS</span>
+<h3 class="font-headline text-4xl font-bold mb-4">A.I.</h3>
+<p class="font-label text-xs text-outline uppercase tracking-widest leading-relaxed">Pushing frontiers in neural networks and ethical computation models.</p>
+</div>
+<div class="bg-black p-12 group hover:bg-surface-container transition-colors duration-500">
+<span class="font-mono text-primary text-sm mb-4 block">03 / TRUST</span>
+<h3 class="font-headline text-4xl font-bold mb-4">CRPT</h3>
+<p class="font-label text-xs text-outline uppercase tracking-widest leading-relaxed">Cryptography-first approach for sovereign data and blockchain infrastructure.</p>
+</div>
+<div class="bg-black p-12 group hover:bg-surface-container transition-colors duration-500">
+<span class="font-mono text-primary text-sm mb-4 block">04 / TIMELINE</span>
+<h3 class="font-headline text-4xl font-bold mb-4">2024</h3>
+<p class="font-label text-xs text-outline uppercase tracking-widest leading-relaxed">Founded as a beacon for decentralized innovation from the South.</p>
+</div>
+</div>
+</section>
+<!-- Visual Texture Background Elements -->
+<div class="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[150px]"></div>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
+</main>
+<!-- Footer -->
+<footer class="relative z-10 bg-black border-t border-[#00F0FF]/5 py-12 px-8 w-full">
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col space-y-4">
+<div class="text-lg font-bold text-[#00F0FF] font-headline uppercase tracking-tight">EKINOXIS LABS</div>
+<p class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 max-w-xs">
+                    Building the future of sovereign technology from the edges of the world.
+                </p>
+<div class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500">
+                    © 2024 EKINOXIS LABS // USA - COLOMBIA
+                </div>
+</div>
+<div class="flex flex-wrap items-end justify-start md:justify-end gap-x-8 gap-y-4">
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">X</a>
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Instagram</a>
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">LinkedIn</a>
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Telegram</a>
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Discord</a>
+<a class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">GitHub</a>
+</div>
+</div>
+</footer>
+</body></html>

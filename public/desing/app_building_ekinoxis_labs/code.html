@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>INNOVATION_LAB // APP_BUILDING</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed-variant": "#005e64",
+                        "inverse-surface": "#f5faff",
+                        "tertiary-fixed-dim": "#beee00",
+                        "surface-dim": "#060f16",
+                        "tertiary-container": "#cafd00",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#bfbdff",
+                        "secondary": "#9492ff",
+                        "surface-tint": "#8ff5ff",
+                        "secondary-fixed": "#cfcdff",
+                        "primary-dim": "#00deec",
+                        "on-tertiary": "#516700",
+                        "surface-variant": "#192731",
+                        "on-primary-fixed": "#003f43",
+                        "outline": "#6c777f",
+                        "on-secondary-container": "#dedcff",
+                        "error-dim": "#d7383b",
+                        "primary-fixed": "#00eefc",
+                        "tertiary-dim": "#beee00",
+                        "on-error-container": "#ffa8a3",
+                        "background": "#060f16",
+                        "secondary-dim": "#625dff",
+                        "on-surface-variant": "#a2acb5",
+                        "on-primary": "#005d63",
+                        "error": "#ff716c",
+                        "primary-container": "#00eefc",
+                        "inverse-on-surface": "#4c565e",
+                        "surface": "#060f16",
+                        "on-tertiary-container": "#4a5e00",
+                        "primary": "#8ff5ff",
+                        "on-background": "#e8f2fb",
+                        "on-tertiary-fixed": "#3a4a00",
+                        "surface-container-high": "#14212a",
+                        "surface-bright": "#1e2e38",
+                        "error-container": "#9f0519",
+                        "tertiary": "#f3ffca",
+                        "on-secondary": "#100077",
+                        "on-error": "#490006",
+                        "surface-container-low": "#09151c",
+                        "surface-container-highest": "#192731",
+                        "on-primary-container": "#005359",
+                        "primary-fixed-dim": "#00deec",
+                        "on-secondary-fixed-variant": "#320aff",
+                        "tertiary-fixed": "#cafd00",
+                        "on-surface": "#e8f2fb",
+                        "outline-variant": "#3f4951",
+                        "on-secondary-fixed": "#1e00b1",
+                        "secondary-container": "#3106ff",
+                        "inverse-primary": "#006a71",
+                        "on-tertiary-fixed-variant": "#526900",
+                        "surface-container": "#0f1b23"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0rem", "lg": "0rem", "xl": "0rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 238, 252, 0.5);
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(15, 27, 35, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+<!-- Scanline Texture Overlay -->
+<div class="fixed inset-0 z-[100] scanline-overlay opacity-20 pointer-events-none"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-[#00eefc]/10 flex justify-between items-center px-6 py-4 shadow-[0_0_20px_rgba(0,238,252,0.1)]">
+<div class="text-2xl font-bold tracking-tighter text-[#00eefc] font-headline uppercase">INNOVATION_LAB</div>
+<div class="hidden md:flex space-x-8 font-headline uppercase tracking-tighter text-sm">
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">Consult</a>
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">Web</a>
+<a class="text-[#00eefc] border-b-2 border-[#00eefc] pb-1" href="#">App</a>
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">Stack</a>
+</div>
+<button class="bg-primary text-on-primary font-headline font-bold px-4 py-2 text-xs tracking-widest hover:bg-primary-dim transition-all active:skew-x-2">
+            TERMINAL_INIT
+        </button>
+</nav>
+<!-- SideNavBar (Architecture context) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#0f1b23] border-r border-[#00eefc]/5 hidden xl:flex flex-col pt-20 z-40">
+<div class="px-6 py-4 border-b border-[#00eefc]/5">
+<div class="text-[#00eefc] font-black font-headline text-lg tracking-widest">ARCHITECT_V1</div>
+<div class="font-label text-[10px] text-[#8ff5ff]/40 tracking-[0.2em] uppercase">Access: Level_04</div>
+</div>
+<nav class="flex-grow py-6">
+<div class="space-y-1">
+<a class="flex items-center px-6 py-3 space-x-4 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 transition-transform hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="grid_view">grid_view</span>
+<span class="font-label text-xs tracking-widest uppercase">Overview</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-4 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+<span class="font-label text-xs tracking-widest uppercase">Research</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-4 bg-[#00eefc] text-black font-bold" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span class="font-label text-xs tracking-widest uppercase">Deployments</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-4 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="hub">hub</span>
+<span class="font-label text-xs tracking-widest uppercase">Network</span>
+</a>
+</div>
+</nav>
+<div class="p-6 space-y-4 border-t border-[#00eefc]/5">
+<button class="w-full py-3 bg-surface-variant border border-[#00eefc]/20 text-[#00eefc] font-label text-[10px] tracking-widest hover:border-[#00eefc] transition-colors">
+                NEW_PROJECT
+            </button>
+<div class="flex flex-col space-y-2">
+<a class="flex items-center space-x-2 text-[#8ff5ff]/40 hover:text-[#00eefc] text-[10px] font-label tracking-widest uppercase" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center space-x-2 text-[#8ff5ff]/40 hover:text-[#00eefc] text-[10px] font-label tracking-widest uppercase" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="list_alt">list_alt</span>
+<span>Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="xl:ml-64 pt-24 pb-20 px-6 md:px-12 lg:px-20 min-h-screen relative overflow-hidden">
+<!-- Ambient Glow Backgrounds -->
+<div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute bottom-[-5%] left-[-5%] w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Hero Section -->
+<section class="relative z-10 mb-24 max-w-5xl">
+<div class="inline-block px-3 py-1 bg-primary/10 border border-primary/20 text-primary font-label text-[10px] tracking-[0.3em] uppercase mb-6">
+                System_Status: Operational // Build_Module: V2.4
+            </div>
+<h1 class="text-6xl md:text-8xl font-headline font-black tracking-tighter text-on-background leading-[0.9] mb-8 uppercase glow-cyan">
+                FRONTIER <br/>APP_BUILDING
+            </h1>
+<p class="text-xl md:text-2xl font-body text-on-surface-variant max-w-2xl leading-relaxed">
+                Full-stack application development with deep <span class="text-primary">Blockchain &amp; AI</span> integration. We architect high-performance environments where precision meets subversion.
+            </p>
+<div class="mt-12 flex flex-wrap gap-6">
+<button class="bg-primary text-on-primary font-headline font-black px-10 py-5 text-sm tracking-[0.2em] hover:shadow-[0_0_30px_rgba(0,238,252,0.4)] transition-all flex items-center gap-4">
+                    BUILD_THE_FUTURE
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="flex items-center gap-4 px-6 border border-outline-variant/30 text-on-surface-variant font-label text-xs tracking-widest uppercase">
+<span class="w-2 h-2 bg-tertiary-dim rounded-full animate-pulse"></span>
+                    Slots available for Q3_2024
+                </div>
+</div>
+</section>
+<!-- Bento Grid Capabilities -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto mb-32">
+<!-- Smart Contract Card -->
+<div class="md:col-span-7 bg-surface-container border border-outline-variant/10 p-8 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 font-label text-[10px] text-primary/40 uppercase tracking-widest">UID: SC-772</div>
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary/10 flex items-center justify-center mb-12">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+</div>
+<h3 class="text-3xl font-headline font-bold mb-4 tracking-tight uppercase">Smart Contract <br/>Development</h3>
+<p class="text-on-surface-variant mb-8 max-w-md">Hardened Solidity architectures for DeFi, NFTs, and DAO governance. Auditable, gas-optimized, and battle-tested.</p>
+<div class="flex gap-4">
+<span class="text-[10px] font-label py-1 px-3 border border-outline-variant/30 text-outline uppercase tracking-widest">Solidity</span>
+<span class="text-[10px] font-label py-1 px-3 border border-outline-variant/30 text-outline uppercase tracking-widest">Hardhat</span>
+<span class="text-[10px] font-label py-1 px-3 border border-outline-variant/30 text-outline uppercase tracking-widest">EVM</span>
+</div>
+</div>
+<div class="absolute bottom-[-20px] right-[-20px] opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[180px]" data-icon="token">token</span>
+</div>
+</div>
+<!-- AI Integration Card -->
+<div class="md:col-span-5 bg-surface-container-high border border-outline-variant/10 p-8 relative flex flex-col justify-between overflow-hidden">
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<img alt="abstract neural network" class="w-full h-full object-cover grayscale" data-alt="Close-up of abstract neural network lines glowing with cyan light on a dark obsidian background, technical aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBGc8o5BIyhg76A5hAvg1TVsKEesCvAZvpWYga-Sn3leNj1l6up-FwAw0eoR0xIBIK5Z_vtYiUN7g2zcINwkbnEZJEFv8QtreU6sEXUZfa1U1ruAocNRvDo6Yq3AtIyZpnWvfKVnoLKgosUq1LO8Yiv_rdyr6mp8oPkG33d7W1PxPv7lOIJCs6XhsXE4gXR065hwM8zfJjH7Q1cCgpBbQdRJvFwynE5df7Q-pv_caahXZucavGlExTzkecOIkgBbRJDkdLt3_hkjLR"/>
+</div>
+<div class="relative z-10">
+<h3 class="text-2xl font-headline font-bold mb-4 uppercase text-secondary">AI API <br/>Integrations</h3>
+<p class="text-sm text-on-surface-variant mb-6">Deep integration with OpenAI, Claude, and Llama 3 to build agentic workflows and intelligent user interfaces.</p>
+</div>
+<div class="space-y-3 relative z-10">
+<div class="flex justify-between items-center text-[10px] font-label text-secondary/60 uppercase">
+<span>Latency</span>
+<span>42ms</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-secondary w-4/5"></div>
+</div>
+</div>
+</div>
+<!-- Secure Auth Card -->
+<div class="md:col-span-4 bg-surface-container border border-outline-variant/10 p-8 flex flex-col justify-center items-center text-center group">
+<span class="material-symbols-outlined text-tertiary-dim text-5xl mb-6 group-hover:scale-110 transition-transform" data-icon="fingerprint">fingerprint</span>
+<h3 class="text-xl font-headline font-bold mb-2 uppercase">Secure Auth</h3>
+<p class="text-xs text-on-surface-variant font-label tracking-widest">PRIVY // WEB3AUTH // PASSKEYS</p>
+<div class="mt-6 pt-6 border-t border-outline-variant/10 w-full text-[10px] text-on-surface-variant/50 leading-relaxed uppercase">
+                    Onboarding users to the frontier without seed phrase friction.
+                </div>
+</div>
+<!-- Scaling Card -->
+<div class="md:col-span-8 bg-surface-container-low border border-outline-variant/10 p-10 relative overflow-hidden group">
+<div class="flex flex-col md:flex-row gap-12 items-center">
+<div class="flex-1">
+<h3 class="text-4xl font-headline font-black mb-6 uppercase tracking-tighter">MVP TO <br/>PRODUCTION</h3>
+<p class="text-on-surface-variant mb-8">Rapid prototyping followed by enterprise-grade scaling. We don't just build apps; we architect ecosystems that withstand traffic spikes and network congestion.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-sm font-label uppercase tracking-widest text-primary/80">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle">check_circle</span>
+                                Auto-Scaling Infrastructure
+                            </li>
+<li class="flex items-center gap-3 text-sm font-label uppercase tracking-widest text-primary/80">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle">check_circle</span>
+                                High-Density Data Viz
+                            </li>
+</ul>
+</div>
+<div class="w-full md:w-64 h-64 bg-black border border-primary/20 flex items-center justify-center relative">
+<!-- Abstract Grid Visual -->
+<div class="absolute inset-4 border border-primary/10 grid grid-cols-4 grid-rows-4">
+<div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div>
+<div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div>
+<div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div>
+<div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div><div class="border-[0.5px] border-primary/5"></div>
+</div>
+<span class="material-symbols-outlined text-primary text-6xl opacity-50" data-icon="rocket_launch">rocket_launch</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Specs / Focus Area -->
+<section class="mb-32">
+<div class="flex flex-col lg:flex-row gap-16 items-start">
+<div class="lg:w-1/3">
+<h2 class="text-sm font-label text-tertiary uppercase tracking-[0.5em] mb-6">// CORE_FOCUS</h2>
+<p class="text-2xl font-headline font-bold text-on-surface leading-tight uppercase">Custom dApps, AI-powered tools, complex Web3 ecosystems.</p>
+</div>
+<div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-6 bg-surface-variant/30 border-l-4 border-primary">
+<div class="text-[10px] font-label text-primary uppercase mb-2">Protocol_Stack</div>
+<h4 class="font-headline font-bold mb-3 uppercase">Interoperable Architectures</h4>
+<p class="text-xs text-on-surface-variant font-body leading-relaxed">We leverage cross-chain messaging and layer-2 solutions to ensure your application isn't siloed in a single network.</p>
+</div>
+<div class="p-6 bg-surface-variant/30 border-l-4 border-secondary">
+<div class="text-[10px] font-label text-secondary uppercase mb-2">Interface_Theory</div>
+<h4 class="font-headline font-bold mb-3 uppercase">High-Density UX</h4>
+<p class="text-xs text-on-surface-variant font-body leading-relaxed">Interfaces built for power-users. We prioritize information density and low-latency interactions over whitespace.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Terminal Snippet Section -->
+<section class="max-w-4xl mx-auto mb-32">
+<div class="bg-black border border-outline-variant/20 shadow-2xl overflow-hidden">
+<div class="bg-surface-variant px-4 py-2 flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex gap-2">
+<div class="w-3 h-3 bg-error rounded-full"></div>
+<div class="w-3 h-3 bg-tertiary-dim rounded-full"></div>
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+<div class="text-[10px] font-label text-on-surface-variant/50 uppercase tracking-widest">deployment_process.log</div>
+</div>
+<div class="p-6 font-mono text-[11px] leading-relaxed text-primary-dim/80">
+<div class="mb-2"><span class="text-tertiary-dim">root@frontier_lab:</span><span class="text-on-primary-fixed">~#</span> init app_build --service="full-stack"</div>
+<div class="mb-1">[ <span class="text-primary">OK</span> ] Loading blockchain_module.so...</div>
+<div class="mb-1">[ <span class="text-primary">OK</span> ] Initializing AI_cognitive_layer...</div>
+<div class="mb-1">[ <span class="text-secondary">WAIT</span> ] Validating secure_auth_protocols...</div>
+<div class="mb-1">[ <span class="text-primary">OK</span> ] Auth_verified: Privy_Keyless_V2</div>
+<div class="mt-4 text-on-background/40">// Establishing websocket connection to mainnet...</div>
+<div class="mb-1 text-on-background/40">// Listening on port 8080</div>
+<div class="mt-6 text-tertiary uppercase animate-pulse">System ready for deployment_</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="text-center py-20 relative">
+<div class="absolute inset-0 bg-primary/5 blur-[150px] pointer-events-none"></div>
+<h2 class="text-5xl md:text-7xl font-headline font-black mb-12 tracking-tighter uppercase italic">READY_TO_DEPLOY?</h2>
+<button class="group relative px-16 py-8 bg-transparent border-2 border-primary overflow-hidden">
+<div class="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+<span class="relative z-10 text-primary group-hover:text-black font-headline font-black text-2xl tracking-[0.2em]">INIT_CONSULTATION</span>
+</button>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-black border-t border-[#00eefc]/10 py-12 px-10 relative overflow-hidden">
+<div class="absolute inset-0 scanline-overlay opacity-5 pointer-events-none"></div>
+<div class="w-full flex flex-col md:flex-row justify-between items-center z-10 relative">
+<div class="mb-8 md:mb-0">
+<div class="text-[#00eefc] font-headline font-black text-xl tracking-tighter uppercase mb-2">INNOVATION_LAB</div>
+<p class="text-[#beee00] font-label text-[10px] uppercase tracking-widest">©2024_FRONTIER_LABS // NO_RIGHTS_RESERVED</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 font-label text-[10px] uppercase tracking-[0.3em]">
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">MANUAL</a>
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">ENCRYPTION_KEY</a>
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">OSI_MODEL</a>
+</div>
+<div class="mt-8 md:mt-0 flex gap-4">
+<span class="material-symbols-outlined text-[#beee00]/50 hover:text-[#beee00] cursor-pointer" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-[#beee00]/50 hover:text-[#beee00] cursor-pointer" data-icon="code">code</span>
+<span class="material-symbols-outlined text-[#beee00]/50 hover:text-[#beee00] cursor-pointer" data-icon="security">security</span>
+</div>
+</div>
+</footer>
+</body></html>

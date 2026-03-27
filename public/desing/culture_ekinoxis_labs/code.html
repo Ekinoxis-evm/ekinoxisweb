@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EKINOXIS // CULTURE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#000000",
+              "surface": "#060f16",
+              "on-primary-container": "#005359",
+              "secondary-fixed": "#cfcdff",
+              "on-surface-variant": "#a2acb5",
+              "secondary-dim": "#625dff",
+              "on-primary-fixed": "#003f43",
+              "secondary-fixed-dim": "#bfbdff",
+              "inverse-primary": "#006a71",
+              "on-tertiary-container": "#4a5e00",
+              "on-secondary-fixed-variant": "#320aff",
+              "error-container": "#9f0519",
+              "surface-container-high": "#14212a",
+              "primary": "#8ff5ff",
+              "primary-fixed": "#00eefc",
+              "background": "#060f16",
+              "tertiary-fixed-dim": "#beee00",
+              "tertiary": "#f3ffca",
+              "on-surface": "#e8f2fb",
+              "on-tertiary": "#516700",
+              "surface-container-low": "#09151c",
+              "surface-dim": "#060f16",
+              "on-secondary": "#100077",
+              "on-background": "#e8f2fb",
+              "surface-bright": "#1e2e38",
+              "primary-dim": "#00deec",
+              "on-primary-fixed-variant": "#005e64",
+              "surface-container": "#0f1b23",
+              "tertiary-dim": "#beee00",
+              "primary-fixed-dim": "#00deec",
+              "tertiary-container": "#cafd00",
+              "inverse-surface": "#f5faff",
+              "outline": "#6c777f",
+              "primary-container": "#00eefc",
+              "on-error": "#490006",
+              "secondary": "#9492ff",
+              "on-primary": "#005d63",
+              "error": "#ff716c",
+              "outline-variant": "#3f4951",
+              "on-tertiary-fixed-variant": "#526900",
+              "surface-variant": "#192731",
+              "tertiary-fixed": "#cafd00",
+              "surface-tint": "#8ff5ff",
+              "on-tertiary-fixed": "#3a4a00",
+              "on-error-container": "#ffa8a3",
+              "error-dim": "#d7383b",
+              "secondary-container": "#3106ff",
+              "on-secondary-fixed": "#1e00b1",
+              "surface-container-highest": "#192731",
+              "on-secondary-container": "#dedcff",
+              "inverse-on-surface": "#4c565e"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"],
+              "mono": ["Space Mono"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            background-image: linear-gradient(rgba(143, 245, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(143, 245, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scanline {
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(143, 245, 255, 0.02) 50%, rgba(0, 0, 0, 0) 100%);
+            background-size: 100% 4px;
+            position: fixed;
+            pointer-events: none;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(15, 27, 35, 0.6);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body text-on-background min-h-screen selection:bg-primary selection:text-surface">
+<div class="scanline"></div>
+<!-- TopNavBar -->
+<nav class="bg-black/80 backdrop-blur-xl docked full-width top-0 z-50 border-b border-[#00F0FF]/10 shadow-[0_0_15px_rgba(0,240,255,0.1)] fixed w-full">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-[#00F0FF] font-['Space_Grotesk'] uppercase">
+                EKINOXIS
+            </div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center space-x-8 font-['Space_Grotesk'] uppercase tracking-tighter">
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">About</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Services</a>
+<a class="text-[#00F0FF] border-b-2 border-[#00F0FF] pb-1" href="#">Value</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Products</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors" href="#">Hacker House</a>
+</div>
+<div class="flex items-center space-x-6">
+<span class="text-[#00F0FF] font-mono text-xs cursor-pointer hover:bg-[#00F0FF]/5 p-1">EN/ES</span>
+<span class="material-symbols-outlined text-[#00F0FF] cursor-pointer">terminal</span>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto relative">
+<!-- Hero Section -->
+<header class="mb-20 border-l-4 border-primary pl-8">
+<div class="flex items-center gap-4 mb-2">
+<span class="font-mono text-primary text-sm tracking-widest">[ VIEWPORT: CULTURE_v2.0 ]</span>
+<div class="h-[1px] flex-grow bg-primary/20"></div>
+</div>
+<h1 class="text-6xl md:text-8xl font-headline font-bold text-on-background uppercase tracking-tighter leading-none mb-6">
+                CULTURE
+            </h1>
+<p class="text-xl md:text-2xl font-headline text-primary-dim max-w-2xl font-light">
+                Cypher-minded builders. Open by default. Innovation by default.
+            </p>
+</header>
+<!-- Core Values Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Value Card 1: Open Source -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-primary">OPEN</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Open Source</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        Build in public, share primitives. We believe the future of infrastructure is collaborative and verifiable by all.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">PRIMITIVE_SHARING_ENABLED</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Value Card 2: Privacy -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-tertiary">ENCRYPTED</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">key</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Privacy</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        User sovereignty and ZK exploration. Privacy is not a feature, it's a fundamental human right in the digital age.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">ZK_PROOF_VALIDATED</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Value Card 3: Innovation -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-primary">ACTIVE</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Innovation</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        Fast prototyping and radical experimentation. We value shipped code over theoretical perfections.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">PROTO_LAB_01</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Value Card 4: Community -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-primary">SCALING</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Community</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        Builders-first across LATAM. Fostering a decentralised network of talent from Bogota to Buenos Aires.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">LATAM_NODES_LIVE</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Value Card 5: Education -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-primary">SYNCING</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Education</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        Learn by building. We demystify complex protocols through hands-on technical workshops and documentation.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">LEARN_PATH_v4</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Value Card 6: Collaboration -->
+<div class="glass-card group relative p-8 border border-primary/20 hover:border-primary transition-all duration-300 flex flex-col justify-between h-80">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 uppercase">
+                    STATUS: <span class="text-tertiary">CONNECTED</span>
+</div>
+<div>
+<div class="mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-on-background mb-3 uppercase tracking-tight">Collaboration</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        Co-build with universities and industry leaders. Bridging the gap between academia and production environments.
+                    </p>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-mono text-[10px] text-primary/60">UNI_BRIDGE_ACTIVE</span>
+<span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Decorative Asymmetry Section -->
+<section class="mt-32 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-7">
+<div class="relative group">
+<div class="absolute -inset-1 bg-primary/20 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+<img alt="Cybersecurity lab environment" class="relative w-full grayscale contrast-125 border border-primary/10" data-alt="High-tech server room with glowing blue led lights and dark metallic surfaces in a futuristic research facility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeHz-PSBJng6WHubRL1VPT5KH3aRiJko84xYc5zNt1_qFBkvSAwbrcFl2hGsNzbjdCky5jLh0U09zT_IUwRoRKPa8JH_GGncEDglQXmauWRKfxPocbLFXkyan5zrc4m3L5Gj4wxHtItnmwW0ySZ3M2oRotZ8KySXZabQpO_80TuonNnc5RsfO20-htVYCNZgelL-CspUZ0oPN3KySMouEIVPZ1C6Nq5qR6SFhxww3rLI2bVu2qwJnpHzrExTCHAOqCvqYh4aX0sUwt"/>
+<div class="absolute bottom-0 left-0 bg-black p-4 font-mono text-[10px] text-primary">
+                        DATA_ORIGIN: LAB_CORE_B
+                    </div>
+</div>
+</div>
+<div class="md:col-span-5 space-y-6">
+<h2 class="text-4xl font-headline font-bold uppercase tracking-tighter text-on-background leading-none">
+                    The Frontier of <br/><span class="text-primary">Latam Devs</span>
+</h2>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">
+                    We are building more than software; we are building the resilient infrastructure that will power the next decade of decentralized finance and identity in the global south.
+                </p>
+<div class="flex flex-col gap-2 pt-4">
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="font-mono text-[10px] text-primary uppercase">Builders Reached</span>
+<span class="text-2xl font-headline font-bold text-on-background tracking-tighter">1,200+</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="font-mono text-[10px] text-primary uppercase">Active Labs</span>
+<span class="text-2xl font-headline font-bold text-on-background tracking-tighter">04</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="font-mono text-[10px] text-primary uppercase">Repos Open</span>
+<span class="text-2xl font-headline font-bold text-on-background tracking-tighter">182</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-black full-width bottom-0 border-t border-[#00F0FF]/5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-12 w-full max-w-screen-2xl mx-auto">
+<div class="space-y-4">
+<div class="text-lg font-bold text-[#00F0FF] font-['Space_Grotesk'] uppercase tracking-widest">
+                    EKINOXIS LABS
+                </div>
+<p class="font-['Space_Grotesk_Mono'] text-xs uppercase text-slate-500 max-w-xs">
+                    Building the primitives for the sovereign individual. Join the resistance through code.
+                </p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-4 md:justify-end items-start font-['Space_Grotesk_Mono'] text-xs uppercase">
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">X</a>
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Instagram</a>
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">LinkedIn</a>
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Telegram</a>
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">Discord</a>
+<a class="text-slate-500 hover:text-[#BEFF00] transition-colors hover:translate-x-1 duration-200" href="#">GitHub</a>
+</div>
+<div class="md:col-span-2 pt-8 border-t border-[#00F0FF]/5 flex justify-between items-center">
+<span class="font-['Space_Grotesk_Mono'] text-[10px] uppercase text-slate-600">
+                    © 2024 EKINOXIS LABS // USA - COLOMBIA
+                </span>
+<span class="font-mono text-[10px] text-primary/20">
+                    LATENCY: 14MS // SYS_OK
+                </span>
+</div>
+</div>
+</footer>
+<!-- Mobile Bottom Nav -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-xl border-t border-primary/20 z-[60] flex justify-around py-4">
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined text-xl">home</span>
+<span class="text-[8px] font-mono mt-1">HOME</span>
+</a>
+<a class="flex flex-col items-center text-primary" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[8px] font-mono mt-1">VALUE</span>
+</a>
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined text-xl">code</span>
+<span class="text-[8px] font-mono mt-1">REPO</span>
+</a>
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined text-xl">person</span>
+<span class="text-[8px] font-mono mt-1">ACCOUNT</span>
+</a>
+</div>
+</body></html>

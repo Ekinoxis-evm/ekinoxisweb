@@ -16,6 +16,7 @@ interface ProductFormProps {
 }
 
 const STATUS_OPTIONS = [
+  { value: 'POC', label: 'POC' },
   { value: 'MVP', label: 'MVP' },
   { value: 'BETA', label: 'BETA' },
   { value: 'LAUNCHED', label: 'LAUNCHED' },

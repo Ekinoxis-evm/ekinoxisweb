@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OPEN_CLAW_AGENT_DEPLOYMENT // OBSIDIAN_ARCHITECT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#beee00",
+              "surface-container-low": "#09151c",
+              "on-tertiary": "#516700",
+              "on-background": "#e8f2fb",
+              "on-secondary-fixed-variant": "#320aff",
+              "on-secondary-fixed": "#1e00b1",
+              "secondary-fixed-dim": "#bfbdff",
+              "on-tertiary-fixed-variant": "#526900",
+              "error-container": "#9f0519",
+              "outline-variant": "#3f4951",
+              "outline": "#6c777f",
+              "on-primary-container": "#005359",
+              "on-tertiary-fixed": "#3a4a00",
+              "surface-container-lowest": "#000000",
+              "tertiary-container": "#cafd00",
+              "secondary-container": "#3106ff",
+              "primary-fixed": "#00eefc",
+              "background": "#060f16",
+              "secondary-dim": "#625dff",
+              "on-secondary": "#100077",
+              "surface-container": "#0f1b23",
+              "on-error": "#490006",
+              "on-primary-fixed": "#003f43",
+              "primary-fixed-dim": "#00deec",
+              "error-dim": "#d7383b",
+              "surface-dim": "#060f16",
+              "on-primary-fixed-variant": "#005e64",
+              "on-surface": "#e8f2fb",
+              "on-tertiary-container": "#4a5e00",
+              "surface": "#060f16",
+              "tertiary-dim": "#beee00",
+              "surface-variant": "#192731",
+              "on-primary": "#005d63",
+              "primary": "#8ff5ff",
+              "surface-bright": "#1e2e38",
+              "inverse-on-surface": "#4c565e",
+              "surface-container-highest": "#192731",
+              "surface-container-high": "#14212a",
+              "primary-container": "#00eefc",
+              "on-surface-variant": "#a2acb5",
+              "surface-tint": "#8ff5ff",
+              "primary-dim": "#00deec",
+              "tertiary-fixed": "#cafd00",
+              "tertiary": "#f3ffca",
+              "secondary-fixed": "#cfcdff",
+              "inverse-primary": "#006a71",
+              "on-secondary-container": "#dedcff",
+              "secondary": "#9492ff",
+              "on-error-container": "#ffa8a3",
+              "error": "#ff716c",
+              "inverse-surface": "#f5faff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .scan-line {
+            background: linear-gradient(to bottom, transparent 50%, rgba(143, 245, 255, 0.03) 50%);
+            background-size: 100% 4px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(143, 245, 255, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+<!-- SCANLINE OVERLAY -->
+<div class="fixed inset-0 pointer-events-none scan-line z-[60]"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+<div class="text-xl font-bold tracking-tighter text-[#8ff5ff] font-headline uppercase">OBSIDIAN_ARCHITECT</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-[#8ff5ff]/50 hover:text-[#f3ffca] hover:bg-[#8ff5ff]/5 transition-all duration-300 px-2 py-1" href="#">LABS</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-[#8ff5ff] border-b-0 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-[#8ff5ff] px-2 py-1" href="#">AGENTS</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-[#8ff5ff]/50 hover:text-[#f3ffca] hover:bg-[#8ff5ff]/5 transition-all duration-300 px-2 py-1" href="#">HARDWARE</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-[#8ff5ff]/50 hover:text-[#f3ffca] hover:bg-[#8ff5ff]/5 transition-all duration-300 px-2 py-1" href="#">TERMINAL</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#8ff5ff]">settings_input_component</span>
+<span class="material-symbols-outlined text-[#8ff5ff]">memory</span>
+<div class="w-8 h-8 bg-surface-container-highest border border-primary/20 flex items-center justify-center">
+<span class="text-[10px] font-label text-primary">ID_01</span>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden md:flex fixed left-0 h-full w-64 z-40 bg-[#0f1b23]/80 backdrop-blur-2xl flex flex-col h-full py-20 border-r border-[#8ff5ff]/10">
+<div class="px-6 mb-10">
+<div class="text-[#beee00] font-mono text-xs mb-1">NODE_01</div>
+<div class="text-[#00eefc] font-headline font-bold text-lg tracking-widest">STATUS: ACTIVE</div>
+</div>
+<nav class="flex-1">
+<div class="flex items-center px-6 py-4 text-slate-500 hover:bg-[#320aff]/20 hover:text-white transition-transform hover:translate-x-1 cursor-pointer font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">lan</span> CORE
+            </div>
+<div class="flex items-center px-6 py-4 bg-[#8ff5ff]/10 text-[#8ff5ff] border-l-4 border-[#8ff5ff] font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">dns</span> NETWORK
+            </div>
+<div class="flex items-center px-6 py-4 text-slate-500 hover:bg-[#320aff]/20 hover:text-white transition-transform hover:translate-x-1 cursor-pointer font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">lock_open</span> SECURITY
+            </div>
+<div class="flex items-center px-6 py-4 text-slate-500 hover:bg-[#320aff]/20 hover:text-white transition-transform hover:translate-x-1 cursor-pointer font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">dataset</span> REGISTRY
+            </div>
+<div class="flex items-center px-6 py-4 text-slate-500 hover:bg-[#320aff]/20 hover:text-white transition-transform hover:translate-x-1 cursor-pointer font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">settings_ethernet</span> UPLINK
+            </div>
+</nav>
+<div class="px-6 py-8">
+<button class="w-full bg-primary text-on-primary py-3 font-label font-bold text-xs tracking-tighter hover:bg-primary-dim transition-colors uppercase">
+                INITIALIZE_AGENT
+            </button>
+</div>
+<div class="px-6 py-4 border-t border-primary/10">
+<div class="flex items-center text-slate-600 hover:text-[#8ff5ff] cursor-pointer font-['Space_Grotesk_Mono'] text-xs uppercase gap-3">
+<span class="material-symbols-outlined text-sm">power_settings_new</span> LOGOUT
+            </div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-64 pt-24 min-h-screen">
+<!-- Hero Section -->
+<section class="relative px-6 py-12 md:px-12 md:py-24 overflow-hidden">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none"></div>
+<div class="max-w-5xl relative z-10">
+<div class="inline-block px-3 py-1 bg-primary/10 text-primary font-label text-[10px] tracking-[0.3em] uppercase mb-6 border-l-2 border-primary">
+                    SERVICE_ID: OPEN_CLAW_AGENT_DEPLOYMENT
+                </div>
+<h1 class="text-5xl md:text-7xl font-headline font-bold text-on-background tracking-tighter uppercase mb-4 leading-none">
+                    DEPLOY_HARDWARE_AGENTS
+                </h1>
+<p class="text-lg md:text-2xl text-on-surface-variant font-body max-w-2xl border-l border-primary/30 pl-6 py-2">
+                    Integrated AI Agents with Mac Mini M4 Infrastructure. Edge-computing excellence for the next generation of autonomous workloads.
+                </p>
+</div>
+<div class="mt-16 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl">
+<div class="bg-surface-container p-6 border-t-2 border-primary glow-cyan">
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 1;">dns</span>
+<h3 class="font-label text-xs font-bold text-primary tracking-widest uppercase mb-2">HOSTING</h3>
+<p class="text-xl font-headline font-semibold">Local Hosting</p>
+</div>
+<div class="bg-surface-container p-6 border-t-2 border-secondary">
+<span class="material-symbols-outlined text-secondary mb-4" style="font-variation-settings: 'FILL' 1;">speed</span>
+<h3 class="font-label text-xs font-bold text-secondary tracking-widest uppercase mb-2">LATENCY</h3>
+<p class="text-xl font-headline font-semibold">Low Latency</p>
+</div>
+<div class="bg-surface-container p-6 border-t-2 border-tertiary">
+<span class="material-symbols-outlined text-tertiary mb-4" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<h3 class="font-label text-xs font-bold text-tertiary tracking-widest uppercase mb-2">SECURITY</h3>
+<p class="text-xl font-headline font-semibold">Privacy-First</p>
+</div>
+<div class="bg-surface-container p-6 border-t-2 border-primary">
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 1;">memory</span>
+<h3 class="font-label text-xs font-bold text-primary tracking-widest uppercase mb-2">HARDWARE</h3>
+<p class="text-xl font-headline font-semibold">16GB Unified</p>
+</div>
+</div>
+</section>
+<!-- Configuration & Cost Section -->
+<section class="px-6 py-12 md:px-12 bg-surface-container-low border-y border-primary/5">
+<div class="max-w-6xl mx-auto">
+<div class="flex items-center gap-4 mb-12">
+<h2 class="text-3xl font-headline font-bold text-on-background tracking-tighter uppercase">Cost &amp; Configuration</h2>
+<div class="flex-1 h-[1px] bg-gradient-to-r from-primary/30 to-transparent"></div>
+</div>
+<div class="space-y-4 font-label">
+<!-- Table Header -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-6 py-2 text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">
+<div class="col-span-6">Component / Description</div>
+<div class="col-span-3 text-right">Frequency</div>
+<div class="col-span-3 text-right">Cost (COP)</div>
+</div>
+<!-- Hardware -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container p-6 border-l-2 border-primary hover:bg-surface-container-high transition-colors">
+<div class="col-span-12 md:col-span-6">
+<div class="text-primary text-xs mb-1 font-bold">Hardware</div>
+<div class="text-lg font-headline font-medium">Mac Mini M4 (16GB RAM / 256GB SSD)</div>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] text-on-surface-variant uppercase tracking-widest">ONE_TIME</span>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right text-2xl font-headline font-bold text-primary">
+                            $4.000.000
+                        </div>
+</div>
+<!-- Setup -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container p-6 border-l-2 border-secondary hover:bg-surface-container-high transition-colors">
+<div class="col-span-12 md:col-span-6">
+<div class="text-secondary text-xs mb-1 font-bold">Setup</div>
+<div class="text-lg font-headline font-medium">Open Claw Integration &amp; System Architecture</div>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] text-on-surface-variant uppercase tracking-widest">ONE_TIME</span>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right text-2xl font-headline font-bold text-secondary">
+                            $3.000.000
+                        </div>
+</div>
+<!-- Maintenance -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container p-6 border-l-2 border-tertiary hover:bg-surface-container-high transition-colors">
+<div class="col-span-12 md:col-span-6">
+<div class="text-tertiary text-xs mb-1 font-bold">Maintenance</div>
+<div class="text-lg font-headline font-medium">Agent Tuning, Prompts &amp; Optimization</div>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] text-on-surface-variant uppercase tracking-widest">MONTHLY</span>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right text-2xl font-headline font-bold text-tertiary">
+                            $500.000
+                        </div>
+</div>
+<!-- API Tokens -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container p-6 border-l-2 border-outline hover:bg-surface-container-high transition-colors">
+<div class="col-span-12 md:col-span-6">
+<div class="text-on-surface-variant text-xs mb-1 font-bold uppercase">API Tokens</div>
+<div class="text-lg font-headline font-medium">Anthropic Claude (Pass-through)</div>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] text-on-surface-variant uppercase tracking-widest">MONTHLY</span>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right text-2xl font-headline font-bold text-on-surface">
+                            Real Consumption
+                        </div>
+</div>
+<!-- Total -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-primary text-on-primary p-8 mt-8 border-none">
+<div class="col-span-12 md:col-span-6">
+<div class="text-[10px] uppercase tracking-[0.4em] mb-1 font-bold">Summary Execution</div>
+<div class="text-3xl font-headline font-bold uppercase tracking-tight">TOTAL SETUP</div>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right">
+<span class="bg-on-primary/10 px-3 py-1 text-[10px] uppercase tracking-widest font-bold">ONE_TIME_FEE</span>
+</div>
+<div class="col-span-12 md:col-span-3 md:text-right text-4xl font-headline font-black italic">
+                            $7.000.000
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-6 py-24 md:px-12 flex flex-col items-center text-center">
+<div class="max-w-3xl relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-primary"></div>
+<h2 class="text-4xl md:text-6xl font-headline font-bold uppercase tracking-tighter mb-8 leading-tight">
+                    READY TO BRING YOUR <span class="text-primary italic underline decoration-2 underline-offset-8">HARDWARE AGENT</span> ONLINE?
+                </h2>
+<div class="flex flex-col md:flex-row gap-6 justify-center">
+<button class="bg-primary text-on-primary px-12 py-5 font-headline font-bold text-lg tracking-widest uppercase hover:bg-primary-dim transition-all active:scale-95 group flex items-center gap-4">
+                        INITIALIZE_DEPLOYMENT
+                        <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">terminal</span>
+</button>
+<button class="bg-transparent border border-primary/40 text-primary px-12 py-5 font-headline font-bold text-lg tracking-widest uppercase hover:bg-primary/5 transition-all">
+                        REQUEST_WHITE_PAPER
+                    </button>
+</div>
+<p class="mt-8 font-label text-[10px] text-slate-500 tracking-[0.2em] uppercase">
+                    SECURE NODE CONNECTION REQUIRED // ENCRYPTION ENABLED
+                </p>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-8 border-t border-[#8ff5ff]/5 bg-black flex flex-col md:flex-row justify-between items-center px-12 gap-4 font-['Space_Grotesk_Mono'] text-[10px] uppercase tracking-[0.2em]">
+<div class="text-[#8ff5ff] opacity-80">© 2024 FRONTIER_LABS // NO_RESTRICTIONS</div>
+<div class="flex gap-8">
+<a class="text-slate-600 hover:text-[#8ff5ff] underline-offset-4 underline transition-all" href="#">ENCRYPTION_POLICY</a>
+<a class="text-slate-600 hover:text-[#8ff5ff] underline-offset-4 underline transition-all" href="#">NODE_STATUS</a>
+<a class="text-slate-600 hover:text-[#8ff5ff] underline-offset-4 underline transition-all" href="#">SOURCE_CODE</a>
+</div>
+</footer>
+</main>
+<!-- Visual Enhancements (Floating Elements) -->
+<div class="fixed top-1/4 -right-20 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none rounded-full"></div>
+<div class="fixed bottom-1/4 -left-20 w-64 h-64 bg-secondary/5 blur-[100px] pointer-events-none rounded-full"></div>
+</body></html>

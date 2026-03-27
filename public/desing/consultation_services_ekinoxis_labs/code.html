@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STRATEGIC CONSULTATION | INNOVATION_LAB</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed-variant": "#005e64",
+              "inverse-surface": "#f5faff",
+              "tertiary-fixed-dim": "#beee00",
+              "surface-dim": "#060f16",
+              "tertiary-container": "#cafd00",
+              "surface-container-lowest": "#000000",
+              "secondary-fixed-dim": "#bfbdff",
+              "secondary": "#9492ff",
+              "surface-tint": "#8ff5ff",
+              "secondary-fixed": "#cfcdff",
+              "primary-dim": "#00deec",
+              "on-tertiary": "#516700",
+              "surface-variant": "#192731",
+              "on-primary-fixed": "#003f43",
+              "outline": "#6c777f",
+              "on-secondary-container": "#dedcff",
+              "error-dim": "#d7383b",
+              "primary-fixed": "#00eefc",
+              "tertiary-dim": "#beee00",
+              "on-error-container": "#ffa8a3",
+              "background": "#060f16",
+              "secondary-dim": "#625dff",
+              "on-surface-variant": "#a2acb5",
+              "on-primary": "#005d63",
+              "error": "#ff716c",
+              "primary-container": "#00eefc",
+              "inverse-on-surface": "#4c565e",
+              "surface": "#060f16",
+              "on-tertiary-container": "#4a5e00",
+              "primary": "#8ff5ff",
+              "on-background": "#e8f2fb",
+              "on-tertiary-fixed": "#3a4a00",
+              "surface-container-high": "#14212a",
+              "surface-bright": "#1e2e38",
+              "error-container": "#9f0519",
+              "tertiary": "#f3ffca",
+              "on-secondary": "#100077",
+              "on-error": "#490006",
+              "surface-container-low": "#09151c",
+              "surface-container-highest": "#192731",
+              "on-primary-container": "#005359",
+              "primary-fixed-dim": "#00deec",
+              "on-secondary-fixed-variant": "#320aff",
+              "tertiary-fixed": "#cafd00",
+              "on-surface": "#e8f2fb",
+              "outline-variant": "#3f4951",
+              "on-secondary-fixed": "#1e00b1",
+              "secondary-container": "#3106ff",
+              "inverse-primary": "#006a71",
+              "on-tertiary-fixed-variant": "#526900",
+              "surface-container": "#0f1b23"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #060f16;
+            background-image: linear-gradient(rgba(0, 238, 252, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 238, 252, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 238, 252, 0.1);
+            position: absolute;
+            z-index: 10;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 238, 252, 0.15);
+        }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full border-b border-[#00eefc]/10 bg-black/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 z-50 font-['Space_Grotesk'] uppercase tracking-tighter shadow-[0_0_20px_rgba(0,238,252,0.1)]">
+<div class="text-2xl font-bold tracking-tighter text-[#00eefc]">
+            INNOVATION_LAB
+        </div>
+<div class="hidden md:flex gap-8">
+<a class="text-[#00eefc] border-b-2 border-[#00eefc] pb-1" href="#">Consult</a>
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">Web</a>
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">App</a>
+<a class="text-[#8ff5ff]/50 hover:text-[#00eefc] transition-colors" href="#">Stack</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-[#00eefc] text-on-primary-container px-4 py-1 text-sm font-bold skew-x-[-10deg] hover:skew-x-0 transition-transform">
+                TERMINAL_INIT
+            </button>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r border-[#00eefc]/5 bg-[#0f1b23] hidden lg:flex flex-col pt-20 z-40">
+<div class="px-6 mb-8">
+<div class="text-[#00eefc] font-black font-['Space_Grotesk'] tracking-widest text-xs">ARCHITECT_V1</div>
+<div class="text-[#8ff5ff]/40 text-[10px] font-mono">Access: Level_04</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 hover:translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="grid_view">grid_view</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-[#00eefc] text-black font-bold" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest">Research</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 hover:translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest">Deployments</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#8ff5ff]/40 hover:bg-[#8ff5ff]/10 hover:translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="hub">hub</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest">Network</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#00eefc]/5 mt-auto">
+<button class="w-full bg-surface-container-high border border-[#00eefc]/20 text-[#00eefc] py-2 text-xs font-bold mb-4 hover:bg-[#00eefc]/10 transition-colors">
+                    NEW_PROJECT
+                </button>
+<div class="space-y-2">
+<a class="flex items-center gap-2 text-[#8ff5ff]/40 text-[10px] uppercase tracking-widest hover:text-[#00eefc]" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="settings">settings</span> Settings
+                    </a>
+<a class="flex items-center gap-2 text-[#8ff5ff]/40 text-[10px] uppercase tracking-widest hover:text-[#00eefc]" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="list_alt">list_alt</span> Logs
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 pt-24 min-h-screen relative overflow-hidden">
+<!-- Background Decoration -->
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full -mr-64 -mt-64"></div>
+<section class="max-w-7xl mx-auto px-6 py-12 relative z-10">
+<div class="mb-16">
+<div class="inline-block bg-primary/10 text-primary text-[10px] font-mono px-2 py-1 mb-4 border-l-2 border-primary">
+                        SERVICE_PROTOCOL_v2.0
+                    </div>
+<h1 class="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-on-surface mb-6 uppercase">
+                        STRATEGIC<br/><span class="text-primary">CONSULTATION</span>
+</h1>
+<p class="text-xl md:text-2xl font-body text-on-surface-variant max-w-2xl leading-relaxed">
+                        Custom-scoped advisory for organizations of all sizes. Architecting the future through technical rigor and tactical foresight.
+                    </p>
+</div>
+<!-- Pricing Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 bg-outline-variant/10 border border-outline-variant/20">
+<!-- Tier 1: SOLO -->
+<div class="p-8 border border-outline-variant/10 surface-container hover:bg-surface-container-high transition-all group relative">
+<div class="absolute top-4 right-4 text-[10px] font-mono text-outline">UID: 0x01</div>
+<div class="text-primary-dim font-headline text-xs tracking-widest uppercase mb-4">SOLO</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$50</span>
+<span class="text-outline text-xs uppercase">/ session</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12">1-on-1 session for individual builders seeking technical validation.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> 60min Direct Link
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Code Review Intro
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-transparent border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+<!-- Tier 2: SMALL TEAM -->
+<div class="p-8 border border-outline-variant/10 surface-container hover:bg-surface-container-high transition-all group relative overflow-hidden">
+<div class="absolute top-4 right-4 text-[10px] font-mono text-outline">UID: 0x02</div>
+<div class="text-primary-dim font-headline text-xs tracking-widest uppercase mb-4">SMALL TEAM</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$100</span>
+<span class="text-outline text-xs uppercase">/ focus</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12">Up to 5 members, focused on strategy and high-level architecture.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Up to 5 Participants
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Strategic Alignment
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-transparent border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+<!-- Tier 3: MEDIUM -->
+<div class="p-8 border border-outline-variant/10 surface-container hover:bg-surface-container-high transition-all group relative">
+<div class="absolute top-4 right-4 text-[10px] font-mono text-outline">UID: 0x03</div>
+<div class="text-primary-dim font-headline text-xs tracking-widest uppercase mb-4">MEDIUM</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$250</span>
+<span class="text-outline text-xs uppercase">/ review</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12">Up to 15 members. Full technical and architectural review.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Up to 15 Participants
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Tech Stack Audit
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-transparent border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+<!-- Tier 4: LARGE -->
+<div class="p-8 border border-outline-variant/10 surface-container hover:bg-surface-container-high transition-all group relative">
+<div class="absolute top-4 right-4 text-[10px] font-mono text-outline">UID: 0x04</div>
+<div class="text-primary-dim font-headline text-xs tracking-widest uppercase mb-4">LARGE</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$500</span>
+<span class="text-outline text-xs uppercase">/ roadmap</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12">Up to 50 members. Detailed implementation roadmap.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Up to 50 Participants
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Implementation Plan
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-transparent border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+<!-- Tier 5: ENTERPRISE -->
+<div class="p-8 border-2 border-primary/40 surface-container-highest transition-all group relative shadow-[0_0_30px_rgba(0,238,252,0.1)]">
+<div class="absolute top-0 right-0 bg-primary text-black px-2 py-1 text-[10px] font-bold">RECOMMENDED</div>
+<div class="absolute top-6 right-4 text-[10px] font-mono text-outline">UID: 0x05</div>
+<div class="text-primary font-headline text-xs tracking-widest uppercase mb-4">ENTERPRISE</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$1,000</span>
+<span class="text-outline text-xs uppercase">/ scale</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12 text-on-surface">Dedicated support for large-scale operations and infra scaling.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-tertiary font-bold" data-icon="check">check</span> Unlimited Participants
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-tertiary font-bold" data-icon="check">check</span> 24/7 Priority Support
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-primary text-on-primary font-extrabold text-xs uppercase tracking-widest hover:bg-primary-dim transition-all glow-cyan" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+<!-- Tier 6: CUSTOM -->
+<div class="p-8 border border-outline-variant/10 surface-container hover:bg-surface-container-high transition-all group relative">
+<div class="absolute top-4 right-4 text-[10px] font-mono text-outline">UID: 0x06</div>
+<div class="text-tertiary font-headline text-xs tracking-widest uppercase mb-4">CUSTOM</div>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-4xl font-headline font-bold text-on-surface">$2,500+</span>
+<span class="text-outline text-xs uppercase">/ partner</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-8 font-body h-12">Tailored long-term strategic partnership for frontier projects.</p>
+<ul class="space-y-3 mb-12">
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Custom Service Level
+                            </li>
+<li class="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check">check</span> Board-Level Advisory
+                            </li>
+</ul>
+<a class="block text-center py-4 bg-transparent border border-tertiary/20 text-tertiary font-bold text-xs uppercase tracking-widest hover:bg-tertiary hover:text-black transition-all" href="https://calendar.google.com">
+                            BOOK_SESSION
+                        </a>
+</div>
+</div>
+<!-- Technical Specs Section -->
+<div class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="text-3xl font-headline font-bold text-primary mb-6">TECHNICAL_SPECIFICATIONS</h2>
+<div class="space-y-6">
+<div class="border-l border-primary/30 pl-6 py-2">
+<div class="text-[10px] text-outline uppercase tracking-widest mb-1">Architecture</div>
+<div class="text-lg text-on-surface">Full-stack review from silicon to browser. No abstraction is left unturned.</div>
+</div>
+<div class="border-l border-primary/30 pl-6 py-2">
+<div class="text-[10px] text-outline uppercase tracking-widest mb-1">Deliverables</div>
+<div class="text-lg text-on-surface">Encrypted technical reports, visual roadmap, and repository audits.</div>
+</div>
+</div>
+</div>
+<div class="aspect-video bg-surface-container border border-primary/10 relative group overflow-hidden">
+<img alt="Digital Interface" class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="abstract close-up of a high-tech glowing computer circuit board with neon cyan light lines and digital data overlays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgMbvRibUmfgnMHEY3aSQsQ--yUCeqMgxruO2oyp_7OdOCz4_VAmhMz2pIaWuiS71bm6SNMr_x1MDiXRFj-bbp_KDZsU3c4HXN115jF3bnS46y8nqhSbigDj-2Ybk35lHqNtXKDP8ooKVpChJbvXm9ZecSL8yRyrdVI3eKuIpxW-tPUIMbMnWAv6VeETV9grjSPSmTQaKvlKDJTec3HXuLujTHHzVXYGP89ByfUHxnGq_49_BnKzfaRmqdm2fIoZ7j1F7IQdfYhL3Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4 font-mono text-[10px] text-primary">SCANNING_PROTOCOL... OK</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full border-t border-[#00eefc]/10 py-8 bg-black flex flex-col md:flex-row justify-between items-center px-10 font-['Space_Grotesk_Mono'] text-[10px] uppercase relative">
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background: repeating-linear-gradient(0deg, #00eefc, #00eefc 1px, transparent 1px, transparent 3px);"></div>
+<div class="text-[#00eefc] font-bold mb-4 md:mb-0">
+            INNOVATION_LAB // FRONTIER_CORE
+        </div>
+<div class="flex gap-6 mb-4 md:mb-0">
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">MANUAL</a>
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">ENCRYPTION_KEY</a>
+<a class="text-gray-600 hover:text-[#00eefc] underline underline-offset-4 transition-colors" href="#">OSI_MODEL</a>
+</div>
+<div class="text-[#beee00]">
+            ©2024_FRONTIER_LABS // NO_RIGHTS_RESERVED
+        </div>
+</footer>
+<!-- FAB Suppression: Contextually suppressed on detailed service page -->
+</body></html>

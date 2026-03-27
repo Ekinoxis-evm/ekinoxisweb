@@ -11,6 +11,7 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { ProductWithRelations, HackathonWithStatus } from '@/lib/supabase/types';
 
 const STATUS_VARIANT: Record<string, 'muted' | 'secondary' | 'tertiary'> = {
+  POC: 'muted',
   MVP: 'muted',
   BETA: 'secondary',
   LAUNCHED: 'tertiary',
