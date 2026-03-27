@@ -1,29 +1,20 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
 export default function Navigation() {
   const { language, setLanguage } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const t = content[language].nav;
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -31,16 +22,19 @@ export default function Navigation() {
         setExpandedMenu(null);
       }
     };
-    // Only attach for desktop menu, not mobile
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setExpandedMenu(null);
+  }, [pathname]);
 
   const menuItems = {
     'about-us': {
-      label: language === 'en' ? 'About Us' : 'Nosotros',
+      label: language === 'en' ? 'About' : 'Nosotros',
       items: [
         { href: '/culture', label: t.culture },
         { href: '/hackers', label: t.hackers },
@@ -50,12 +44,12 @@ export default function Navigation() {
       label: t.services,
       items: [
         { href: '/services/consultation', label: language === 'en' ? 'Consultation' : 'Consultoría' },
-        { href: '/services/web-development', label: language === 'en' ? 'Web Development' : 'Desarrollo Web' },
-        { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Desarrollo de Apps' },
+        { href: '/services/web-development', label: language === 'en' ? 'Web Dev' : 'Desarrollo Web' },
+        { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Apps' },
       ],
     },
     'our-value': {
-      label: language === 'en' ? 'Our Value' : 'Nuestro Valor',
+      label: language === 'en' ? 'Value' : 'Valor',
       items: [
         { href: '/tech-stack', label: t.techStack },
         { href: '/research', label: t.research },
@@ -63,416 +57,237 @@ export default function Navigation() {
         { href: '/education', label: t.education },
       ],
     },
-    products: {
-      label: t.products,
-      href: '/products',
-    },
-    'hacker-house': {
-      label: t.hackerHouse,
-      href: '/hacker-house',
-    },
+    products: { label: t.products, href: '/products' },
+    'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
   };
 
-  const isActive = (href: string) => {
-    if (href === '/') {
-      return pathname === '/';
-    }
-    return pathname.startsWith(href);
+  const isActive = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(href));
+  const isMenuActive = (key: string) => {
+    const m = menuItems[key as keyof typeof menuItems];
+    return 'items' in m && m.items?.some((i) => isActive(i.href));
   };
 
-  const isMenuActive = (menuKey: string) => {
-    if (menuKey === 'hacker-house') {
-      return isActive('/hacker-house');
-    }
-    const menu = menuItems[menuKey as keyof typeof menuItems];
-    return 'items' in menu && menu.items?.some(item => isActive(item.href));
+  const linkBase = 'font-label text-xs uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
+  const linkActive = 'text-primary border-b-2 border-primary pb-1';
+  const linkInactive = 'text-on-surface-variant hover:text-primary';
+
+  const dropdownVariants: Variants = {
+    hidden: { opacity: 0, y: -4 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.15 } },
+    exit: { opacity: 0, y: -4, transition: { duration: 0.1 } },
   };
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-cyber-black/95 backdrop-blur-md border-b border-cyber-blue/30 shadow-lg'
-          : 'bg-cyber-black/80 backdrop-blur-md border-b border-cyber-blue/20'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo - Only logo, no text */}
-          <Link href="/" className="flex items-center group">
-            <div className="relative w-12 h-12">
-              <Image
-                src="/logo/ekinoxis logo.gif"
-                alt="Ekinoxis Logo"
-                width={48}
-                height={48}
-                className="animate-pulse-slow group-hover:scale-110 transition-transform"
-              />
-            </div>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl">
+      {/* Bottom gradient line */}
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1" ref={menuRef}>
-            {/* About Us Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setExpandedMenu(expandedMenu === 'about-us' ? null : 'about-us')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isMenuActive('about-us')
-                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                }`}
-              >
-                {menuItems['about-us'].label}
-                <span className="ml-2">{expandedMenu === 'about-us' ? '▲' : '▼'}</span>
-              </button>
-              {expandedMenu === 'about-us' && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
-                  {menuItems['about-us'].items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setExpandedMenu(null)}
-                      className={`block px-4 py-3 text-sm transition-all ${
-                        isActive(item.href)
-                          ? 'text-cyber-blue bg-cyber-blue/10'
-                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+      <nav className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-16">
 
-            {/* Services Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setExpandedMenu(expandedMenu === 'services' ? null : 'services')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isMenuActive('services')
-                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                }`}
-              >
-                {menuItems['services'].label}
-                <span className="ml-2">{expandedMenu === 'services' ? '▲' : '▼'}</span>
-              </button>
-              {expandedMenu === 'services' && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
-                  {menuItems['services'].items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setExpandedMenu(null)}
-                      className={`block px-4 py-3 text-sm transition-all ${
-                        isActive(item.href)
-                          ? 'text-cyber-blue bg-cyber-blue/10'
-                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+        {/* Logo */}
+        <Link href="/" className="font-headline text-xl font-bold tracking-tighter text-primary uppercase hover:text-glow transition-all">
+          EKINOXIS
+        </Link>
 
-            {/* Our Value Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setExpandedMenu(expandedMenu === 'our-value' ? null : 'our-value')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isMenuActive('our-value')
-                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                }`}
-              >
-                {menuItems['our-value'].label}
-                <span className="ml-2">{expandedMenu === 'our-value' ? '▲' : '▼'}</span>
-              </button>
-              {expandedMenu === 'our-value' && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-cyber-black/95 backdrop-blur-md border border-cyber-blue/30 rounded-lg shadow-lg overflow-hidden">
-                  {menuItems['our-value'].items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setExpandedMenu(null)}
-                      className={`block px-4 py-3 text-sm transition-all ${
-                        isActive(item.href)
-                          ? 'text-cyber-blue bg-cyber-blue/10'
-                          : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Products - Direct Link */}
+        {/* Desktop nav */}
+        {(
+          <div className="hidden lg:flex items-center" ref={menuRef}>
+            {/* About dropdown */}
+            <DropdownMenu
+              label={menuItems['about-us'].label}
+              items={menuItems['about-us'].items}
+              menuKey="about-us"
+              expanded={expandedMenu}
+              setExpanded={setExpandedMenu}
+              isActive={isMenuActive('about-us')}
+              isItemActive={isActive}
+              variants={dropdownVariants}
+              linkBase={linkBase}
+              linkActive={linkActive}
+              linkInactive={linkInactive}
+            />
+            {/* Services dropdown */}
+            <DropdownMenu
+              label={menuItems['services'].label}
+              items={menuItems['services'].items}
+              menuKey="services"
+              expanded={expandedMenu}
+              setExpanded={setExpandedMenu}
+              isActive={isMenuActive('services')}
+              isItemActive={isActive}
+              variants={dropdownVariants}
+              linkBase={linkBase}
+              linkActive={linkActive}
+              linkInactive={linkInactive}
+            />
+            {/* Our Value dropdown */}
+            <DropdownMenu
+              label={menuItems['our-value'].label}
+              items={menuItems['our-value'].items}
+              menuKey="our-value"
+              expanded={expandedMenu}
+              setExpanded={setExpandedMenu}
+              isActive={isMenuActive('our-value')}
+              isItemActive={isActive}
+              variants={dropdownVariants}
+              linkBase={linkBase}
+              linkActive={linkActive}
+              linkInactive={linkInactive}
+            />
+            {/* Products */}
             <Link
-              href={menuItems['products'].href!}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                isActive(menuItems['products'].href!)
-                  ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                  : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-              }`}
+              href="/products"
+              className={`${linkBase} ${isActive('/products') ? linkActive : linkInactive}`}
             >
               {menuItems['products'].label}
             </Link>
-
-            {/* Hacker House - Direct Link */}
+            {/* Hacker House */}
             <Link
-              href={menuItems['hacker-house'].href!}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                isActive(menuItems['hacker-house'].href!)
-                  ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                  : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-              }`}
+              href="/hacker-house"
+              className={`${linkBase} ${isActive('/hacker-house') ? linkActive : linkInactive}`}
             >
               {menuItems['hacker-house'].label}
             </Link>
-            
-            {/* Language Toggle */}
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-              className="ml-4 px-4 py-2 border border-cyber-blue/50 rounded-lg hover:border-cyber-blue hover:bg-cyber-blue/10 transition-all text-cyber-blue font-medium text-sm"
-            >
-              {language === 'en' ? 'ES' : 'EN'}
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center space-x-4">
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-              className="px-3 py-2 border border-cyber-blue/50 rounded-lg hover:border-cyber-blue text-cyber-blue text-sm"
-            >
-              {language === 'en' ? 'ES' : 'EN'}
-            </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-cyber-blue hover:text-cyber-blue-light transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-cyber-blue/20 relative z-50" style={{ pointerEvents: 'auto' }}>
-            <div className="flex flex-col space-y-2">
-              {/* About Us Mobile */}
-              <div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setExpandedMenu(expandedMenu === 'about-us-mobile' ? null : 'about-us-mobile');
-                  }}
-                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
-                  style={{ pointerEvents: 'auto' }}
-                >
-                  {menuItems['about-us'].label} {expandedMenu === 'about-us-mobile' ? '▲' : '▼'}
-                </button>
-                {expandedMenu === 'about-us-mobile' && (
-                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
-                    {menuItems['about-us'].items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        onTouchEnd={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
-                          isActive(item.href)
-                            ? 'text-cyber-blue bg-cyber-blue/10'
-                            : 'text-gray-400 hover:text-cyber-blue'
-                        }`}
-                        style={{ 
-                          display: 'block', 
-                          pointerEvents: 'auto', 
-                          cursor: 'pointer',
-                          position: 'relative',
-                          zIndex: 61,
-                          WebkitTapHighlightColor: 'transparent'
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Our Value Mobile */}
-              <div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setExpandedMenu(expandedMenu === 'our-value-mobile' ? null : 'our-value-mobile');
-                  }}
-                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
-                  style={{ pointerEvents: 'auto' }}
-                >
-                  {menuItems['our-value'].label} {expandedMenu === 'our-value-mobile' ? '▲' : '▼'}
-                </button>
-                {expandedMenu === 'our-value-mobile' && (
-                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
-                    {menuItems['our-value'].items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        onTouchEnd={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
-                          isActive(item.href)
-                            ? 'text-cyber-blue bg-cyber-blue/10'
-                            : 'text-gray-400 hover:text-cyber-blue'
-                        }`}
-                        style={{ 
-                          display: 'block', 
-                          pointerEvents: 'auto', 
-                          cursor: 'pointer',
-                          position: 'relative',
-                          zIndex: 61,
-                          WebkitTapHighlightColor: 'transparent'
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Services Mobile */}
-              <div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setExpandedMenu(expandedMenu === 'services-mobile' ? null : 'services-mobile');
-                  }}
-                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5 transition-all touch-manipulation"
-                  style={{ pointerEvents: 'auto' }}
-                >
-                  {menuItems['services'].label} {expandedMenu === 'services-mobile' ? '▲' : '▼'}
-                </button>
-                {expandedMenu === 'services-mobile' && (
-                  <div className="pl-4 space-y-1 mt-1" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 60 }}>
-                    {menuItems['services'].items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        onTouchEnd={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setMobileMenuOpen(false);
-                          setExpandedMenu(null);
-                          router.push(item.href);
-                        }}
-                        className={`block px-4 py-2 rounded-lg text-sm touch-manipulation ${
-                          isActive(item.href)
-                            ? 'text-cyber-blue bg-cyber-blue/10'
-                            : 'text-gray-400 hover:text-cyber-blue'
-                        }`}
-                        style={{ 
-                          display: 'block', 
-                          pointerEvents: 'auto', 
-                          cursor: 'pointer',
-                          position: 'relative',
-                          zIndex: 61,
-                          WebkitTapHighlightColor: 'transparent'
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Products Mobile */}
-              <a
-                href={menuItems['products'].href!}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMobileMenuOpen(false);
-                  router.push(menuItems['products'].href!);
-                }}
-                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation ${
-                  isActive(menuItems['products'].href!)
-                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                }`}
-                style={{ display: 'block', pointerEvents: 'auto', cursor: 'pointer' }}
-              >
-                {menuItems['products'].label}
-              </a>
-
-              {/* Hacker House Mobile */}
-              <a
-                href={menuItems['hacker-house'].href!}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMobileMenuOpen(false);
-                  router.push(menuItems['hacker-house'].href!);
-                }}
-                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation ${
-                  isActive(menuItems['hacker-house'].href!)
-                    ? 'text-cyber-blue text-glow bg-cyber-blue/10 border border-cyber-blue/30'
-                    : 'text-gray-300 hover:text-cyber-blue hover:bg-cyber-blue/5'
-                }`}
-                style={{ display: 'block', pointerEvents: 'auto', cursor: 'pointer' }}
-              >
-                {menuItems['hacker-house'].label}
-              </a>
-            </div>
           </div>
         )}
-      </div>
-    </nav>
+
+        {/* Right controls */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
+            className="font-mono text-xs text-primary hover:bg-primary/5 px-2 py-1 transition-all"
+          >
+            {language === 'en' ? 'EN/ES' : 'ES/EN'}
+          </button>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-primary p-1"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen
+                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+              }
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20 overflow-hidden"
+          >
+            <div className="px-6 py-4 flex flex-col gap-1">
+              {Object.entries(menuItems).map(([key, menu]) => {
+                if ('href' in menu && menu.href) {
+                  return (
+                    <Link
+                      key={key}
+                      href={menu.href}
+                      className={`py-3 font-label text-xs uppercase tracking-tighter ${isActive(menu.href) ? 'text-primary' : 'text-on-surface-variant'}`}
+                    >
+                      {menu.label}
+                    </Link>
+                  );
+                }
+                if ('items' in menu) {
+                  return (
+                    <div key={key}>
+                      <button
+                        onClick={() => setExpandedMenu(expandedMenu === key ? null : key)}
+                        className="w-full text-left py-3 font-label text-xs uppercase tracking-tighter text-on-surface-variant hover:text-primary transition-colors"
+                      >
+                        {menu.label} <span className="ml-1 text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
+                      </button>
+                      {expandedMenu === key && (
+                        <div className="pl-4 flex flex-col gap-1 mb-2">
+                          {menu.items.map((item) => (
+                            <button
+                              key={item.href}
+                              onClick={() => { setMobileMenuOpen(false); router.push(item.href); }}
+                              className={`text-left py-2 font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline hover:text-primary'}`}
+                            >
+                              {item.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+/* ── Reusable dropdown component ── */
+interface DropdownMenuProps {
+  label: string;
+  items: { href: string; label: string }[];
+  menuKey: string;
+  expanded: string | null;
+  setExpanded: (key: string | null) => void;
+  isActive: boolean;
+  isItemActive: (href: string) => boolean;
+  variants: Variants;
+  linkBase: string;
+  linkActive: string;
+  linkInactive: string;
+}
+
+function DropdownMenu({
+  label, items, menuKey, expanded, setExpanded,
+  isActive, isItemActive, variants, linkBase, linkActive, linkInactive,
+}: DropdownMenuProps) {
+  const isOpen = expanded === menuKey;
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setExpanded(isOpen ? null : menuKey)}
+        className={`${linkBase} ${isActive ? linkActive : linkInactive} flex items-center gap-1`}
+      >
+        {label}
+        <span className="text-[8px] text-outline">{isOpen ? '▲' : '▼'}</span>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="absolute top-full left-0 mt-1 min-w-[160px] bg-surface-container-high/95 backdrop-blur-xl border border-outline-variant/20 overflow-hidden z-50"
+          >
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setExpanded(null)}
+                className={`block px-4 py-3 font-mono text-[11px] uppercase tracking-widest transition-colors ${
+                  isItemActive(item.href)
+                    ? 'text-primary bg-primary/10'
+                    : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

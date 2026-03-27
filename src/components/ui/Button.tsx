@@ -1,41 +1,67 @@
 'use client';
 
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonVariant = 'primary' | 'ghost' | 'tertiary' | 'outline' | 'secondary';
+type ButtonSize = 'sm' | 'md' | 'lg';
+
+interface ButtonProps {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  /** @deprecated use variant instead */
   glow?: 'blue' | 'purple';
 }
 
-export default function Button({ 
-  children, 
-  variant = 'primary', 
-  glow = 'blue',
+const variantClasses: Record<ButtonVariant, string> = {
+  primary:
+    'bg-primary text-on-primary font-headline font-bold uppercase tracking-widest ' +
+    'hover:bg-primary-dim hover:shadow-[0_0_30px_rgba(143,245,255,0.4)] active:scale-95',
+  ghost:
+    'bg-transparent border border-primary/20 text-primary font-headline font-bold uppercase tracking-widest ' +
+    'hover:bg-primary hover:text-surface-container-lowest hover:border-primary active:scale-95',
+  secondary:
+    'bg-transparent border border-secondary/20 text-secondary font-headline font-bold uppercase tracking-widest ' +
+    'hover:bg-secondary hover:text-surface-container-lowest active:scale-95',
+  tertiary:
+    'bg-transparent border border-tertiary-dim/20 text-tertiary-dim font-headline font-bold uppercase tracking-widest ' +
+    'hover:bg-tertiary-dim hover:text-surface-container-lowest active:scale-95',
+  outline:
+    'bg-transparent border border-outline/30 text-on-surface-variant font-headline font-bold uppercase tracking-widest ' +
+    'hover:border-primary hover:text-primary active:scale-95',
+};
+
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'py-2 px-4 text-xs',
+  md: 'py-3 px-6 text-sm',
+  lg: 'py-4 px-8 text-base',
+};
+
+export default function Button({
+  children,
+  variant = 'primary',
+  size = 'md',
   className = '',
   onClick,
   disabled,
   type,
-  ...props 
+  glow: _glow,
 }: ButtonProps) {
-  const baseClasses = 'px-6 py-3 rounded-lg font-medium transition-all duration-300 transform';
-  
-  const variants = {
-    primary: glow === 'blue' 
-      ? 'bg-cyber-blue text-cyber-black border border-cyber-blue hover:bg-cyber-blue-dark hover:shadow-[0_0_20px_rgba(0,240,255,0.5)]'
-      : 'bg-cyber-purple text-white border border-cyber-purple hover:bg-cyber-purple-dark hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]',
-    secondary: 'bg-cyber-black-light text-cyber-blue border border-cyber-blue/50 hover:border-cyber-blue hover:bg-cyber-blue/10',
-    outline: glow === 'blue'
-      ? 'bg-transparent text-cyber-blue border border-cyber-blue hover:bg-cyber-blue/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)]'
-      : 'bg-transparent text-cyber-purple border border-cyber-purple hover:bg-cyber-purple/10 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]',
-  };
-
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={`${baseClasses} ${variants[variant]} ${className}`}
+      className={`
+        inline-flex items-center gap-2 transition-all duration-200
+        ${variantClasses[variant]}
+        ${sizeClasses[size]}
+        ${disabled ? 'opacity-40 pointer-events-none' : ''}
+        ${className}
+      `}
       onClick={onClick}
       disabled={disabled}
       type={type}
@@ -44,4 +70,3 @@ export default function Button({
     </motion.button>
   );
 }
-

@@ -1,464 +1,212 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import Card from '@/components/ui/Card';
+import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import Link from 'next/link';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
+
+const appContent = {
+  en: {
+    title: 'FRONTIER APP_BUILDING',
+    subtitle: 'Custom mobile and web apps with blockchain & AI at the core.',
+    description: 'We design and build custom applications — from MVPs to production systems — integrating frontier tech.',
+    features: [
+      { code: 'MOB', title: 'Mobile Apps', desc: 'Native and cross-platform for iOS and Android.' },
+      { code: 'WEB', title: 'Web Applications', desc: 'Progressive web apps and full-stack platforms.' },
+      { code: 'BC3', title: 'Blockchain Integration', desc: 'Web3 apps with smart contracts and crypto wallets.' },
+      { code: 'AI_', title: 'AI-Powered Features', desc: 'Intelligent automation and LLM-driven functionality.' },
+      { code: 'API', title: 'API Development', desc: 'RESTful and GraphQL APIs for seamless integrations.' },
+      { code: 'CLD', title: 'Cloud Infrastructure', desc: 'Scalable deployment and infrastructure management.' },
+    ],
+    techStacks: [
+      { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
+      { name: 'Backend', items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Redis'] },
+      { name: 'Blockchain', items: ['Ethereum', 'Base', 'Solidity', 'Hardhat', 'Viem'] },
+      { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
+    ],
+    process: [
+      { num: '01', title: 'Discovery', desc: 'Requirements and goal alignment.' },
+      { num: '02', title: 'Design', desc: 'Wireframes and UX flows.' },
+      { num: '03', title: 'Development', desc: 'Build with best practices.' },
+      { num: '04', title: 'Testing', desc: 'QA and security review.' },
+      { num: '05', title: 'Deployment', desc: 'Production launch.' },
+      { num: '06', title: 'Support', desc: 'Ongoing maintenance.' },
+    ],
+    cta: 'Request Consultation',
+  },
+  es: {
+    title: 'CONSTRUCCIÓN DE APPS FRONTERA',
+    subtitle: 'Apps móviles y web con blockchain e IA en el núcleo.',
+    description: 'Diseñamos y construimos aplicaciones a medida — desde MVPs hasta sistemas en producción — integrando tecnología de frontera.',
+    features: [
+      { code: 'MOB', title: 'Apps Móviles', desc: 'Nativas y multiplataforma para iOS y Android.' },
+      { code: 'WEB', title: 'Aplicaciones Web', desc: 'Progressive web apps y plataformas full-stack.' },
+      { code: 'BC3', title: 'Integración Blockchain', desc: 'Apps Web3 con smart contracts y wallets.' },
+      { code: 'AI_', title: 'Funciones con IA', desc: 'Automatización inteligente y funcionalidad LLM.' },
+      { code: 'API', title: 'Desarrollo de APIs', desc: 'APIs RESTful y GraphQL para integraciones.' },
+      { code: 'CLD', title: 'Infraestructura Cloud', desc: 'Despliegue escalable y gestión de infraestructura.' },
+    ],
+    techStacks: [
+      { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
+      { name: 'Backend', items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Redis'] },
+      { name: 'Blockchain', items: ['Ethereum', 'Base', 'Solidity', 'Hardhat', 'Viem'] },
+      { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
+    ],
+    process: [
+      { num: '01', title: 'Descubrimiento', desc: 'Alineación de requisitos y objetivos.' },
+      { num: '02', title: 'Diseño', desc: 'Wireframes y flujos UX.' },
+      { num: '03', title: 'Desarrollo', desc: 'Construcción con mejores prácticas.' },
+      { num: '04', title: 'Pruebas', desc: 'QA y revisión de seguridad.' },
+      { num: '05', title: 'Despliegue', desc: 'Lanzamiento a producción.' },
+      { num: '06', title: 'Soporte', desc: 'Mantenimiento continuo.' },
+    ],
+    cta: 'Solicitar Consulta',
+  },
+};
 
 export default function AppBuildingPage() {
   const { language } = useLanguage();
-  const t = content[language].services;
-
-  const appBuildingContent = {
-    en: {
-      title: "App Building",
-      headline: "Transform your ideas into powerful applications",
-      subheadline: "Custom mobile and web apps built with cutting-edge technology",
-      description: "We design and develop custom applications that integrate blockchain, AI, and modern web technologies. From MVPs to production-ready solutions, we bring your vision to life.",
-      features: {
-        title: "What We Build",
-        items: [
-          {
-            icon: "📱",
-            title: "Mobile Apps",
-            description: "Native and cross-platform mobile applications for iOS and Android"
-          },
-          {
-            icon: "🌐",
-            title: "Web Applications",
-            description: "Progressive web apps and responsive web applications"
-          },
-          {
-            icon: "⛓️",
-            title: "Blockchain Integration",
-            description: "Web3 applications with smart contracts and crypto wallets"
-          },
-          {
-            icon: "🤖",
-            title: "AI-Powered Features",
-            description: "Intelligent automation and AI-driven functionality"
-          },
-          {
-            icon: "🔗",
-            title: "API Development",
-            description: "RESTful and GraphQL APIs for seamless integrations"
-          },
-          {
-            icon: "☁️",
-            title: "Cloud Infrastructure",
-            description: "Scalable cloud deployment and infrastructure management"
-          }
-        ]
-      },
-      technologies: {
-        title: "Technologies We Use",
-        categories: [
-          {
-            name: "Frontend",
-            items: ["React", "Next.js", "React Native", "TypeScript", "Tailwind CSS"]
-          },
-          {
-            name: "Backend",
-            items: ["Node.js", "Python", "PostgreSQL", "MongoDB", "Redis"]
-          },
-          {
-            name: "Blockchain",
-            items: ["Ethereum", "Base", "Solidity", "Hardhat", "Web3.js"]
-          },
-          {
-            name: "AI/ML",
-            items: ["OpenAI", "Claude", "TensorFlow", "LangChain", "Vector DBs"]
-          }
-        ]
-      },
-      process: {
-        title: "Our Development Process",
-        steps: [
-          {
-            number: "1",
-            title: "Discovery",
-            description: "Understanding your requirements and goals"
-          },
-          {
-            number: "2",
-            title: "Design",
-            description: "Creating wireframes and user experience flows"
-          },
-          {
-            number: "3",
-            title: "Development",
-            description: "Building your application with best practices"
-          },
-          {
-            number: "4",
-            title: "Testing",
-            description: "Comprehensive testing and quality assurance"
-          },
-          {
-            number: "5",
-            title: "Deployment",
-            description: "Launching your app to production"
-          },
-          {
-            number: "6",
-            title: "Support",
-            description: "Ongoing maintenance and updates"
-          }
-        ]
-      }
-    },
-    es: {
-      title: "Desarrollo de Aplicaciones",
-      headline: "Transforma tus ideas en aplicaciones poderosas",
-      subheadline: "Apps móviles y web personalizadas construidas con tecnología de vanguardia",
-      description: "Diseñamos y desarrollamos aplicaciones personalizadas que integran blockchain, IA y tecnologías web modernas. Desde MVPs hasta soluciones listas para producción, damos vida a tu visión.",
-      features: {
-        title: "Qué Construimos",
-        items: [
-          {
-            icon: "📱",
-            title: "Apps Móviles",
-            description: "Aplicaciones móviles nativas y multiplataforma para iOS y Android"
-          },
-          {
-            icon: "🌐",
-            title: "Aplicaciones Web",
-            description: "Progressive web apps y aplicaciones web responsivas"
-          },
-          {
-            icon: "⛓️",
-            title: "Integración Blockchain",
-            description: "Aplicaciones Web3 con smart contracts y wallets cripto"
-          },
-          {
-            icon: "🤖",
-            title: "Funciones con IA",
-            description: "Automatización inteligente y funcionalidad impulsada por IA"
-          },
-          {
-            icon: "🔗",
-            title: "Desarrollo de APIs",
-            description: "APIs RESTful y GraphQL para integraciones sin problemas"
-          },
-          {
-            icon: "☁️",
-            title: "Infraestructura en la Nube",
-            description: "Despliegue escalable en la nube y gestión de infraestructura"
-          }
-        ]
-      },
-      technologies: {
-        title: "Tecnologías Que Usamos",
-        categories: [
-          {
-            name: "Frontend",
-            items: ["React", "Next.js", "React Native", "TypeScript", "Tailwind CSS"]
-          },
-          {
-            name: "Backend",
-            items: ["Node.js", "Python", "PostgreSQL", "MongoDB", "Redis"]
-          },
-          {
-            name: "Blockchain",
-            items: ["Ethereum", "Base", "Solidity", "Hardhat", "Web3.js"]
-          },
-          {
-            name: "AI/ML",
-            items: ["OpenAI", "Claude", "TensorFlow", "LangChain", "Vector DBs"]
-          }
-        ]
-      },
-      process: {
-        title: "Nuestro Proceso de Desarrollo",
-        steps: [
-          {
-            number: "1",
-            title: "Descubrimiento",
-            description: "Entendiendo tus requisitos y objetivos"
-          },
-          {
-            number: "2",
-            title: "Diseño",
-            description: "Creando wireframes y flujos de experiencia de usuario"
-          },
-          {
-            number: "3",
-            title: "Desarrollo",
-            description: "Construyendo tu aplicación con mejores prácticas"
-          },
-          {
-            number: "4",
-            title: "Pruebas",
-            description: "Pruebas exhaustivas y aseguramiento de calidad"
-          },
-          {
-            number: "5",
-            title: "Despliegue",
-            description: "Lanzando tu app a producción"
-          },
-          {
-            number: "6",
-            title: "Soporte",
-            description: "Mantenimiento y actualizaciones continuas"
-          }
-        ]
-      }
-    }
-  };
-
-  const appContent = appBuildingContent[language];
+  const t = appContent[language];
+  const services = content[language].services;
 
   return (
-    <AnimatedBackground variant="gradient">
-      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+    <AnimatedBackground variant="ambient">
+      <div className="min-h-screen py-24 px-6">
+        <div className="max-w-screen-2xl mx-auto">
+
+          {/* Breadcrumb + Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="mb-20"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-glow">
-              {appContent.title}
-            </h1>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-cyber-blue">
-              {appContent.headline}
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+              <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
+              <span className="text-outline">/</span>
+              <span className="border border-primary/30 px-2 py-1">APP_BUILDING</span>
+            </motion.div>
+
+            <motion.h1
+              variants={fadeInUp}
+              className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+            >
+              {t.title}
+            </motion.h1>
+
+            <motion.p
+              variants={fadeInUp}
+              className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed"
+            >
+              {t.description}
+            </motion.p>
+          </motion.div>
+
+          {/* What We Build */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
+          >
+            {t.features.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeInUp}
+                className="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors duration-500"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <ScanBadge variant="primary">{feature.code}</ScanBadge>
+                </div>
+                <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-3">
+                  {feature.title}
+                </h3>
+                <p className="font-body text-sm text-on-surface-variant leading-relaxed">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Tech Stack */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-surface-container-low p-10 mb-px"
+          >
+            <div className="mb-6">
+              <ScanBadge variant="secondary">TECH_STACK</ScanBadge>
+            </div>
+            <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
+              {language === 'en' ? 'Technologies We Use' : 'Tecnologías Que Usamos'}
             </h2>
-            <p className="text-xl md:text-2xl text-cyber-purple/80 mb-6">
-              {appContent.subheadline}
-            </p>
-            <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-              {appContent.description}
-            </p>
-          </motion.div>
-
-          {/* Features Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-16"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow-purple">
-                {appContent.features.title}
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {appContent.features.items.map((feature, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 + idx * 0.1 }}
-                >
-                  <Card glow={idx % 2 === 0 ? 'blue' : 'purple'} className="h-full p-8">
-                    <div className="text-5xl mb-4">{feature.icon}</div>
-                    <h3 className="text-2xl font-bold mb-3 text-cyber-blue">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-300 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Technologies Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mb-16"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow">
-                {appContent.technologies.title}
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {appContent.technologies.categories.map((category, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
-                >
-                  <Card glow="purple" className="p-6">
-                    <h3 className="text-xl font-bold mb-4 text-cyber-purple text-center">
-                      {category.name}
-                    </h3>
-                    <ul className="space-y-2">
-                      {category.items.map((item, itemIdx) => (
-                        <li key={itemIdx} className="text-gray-300 text-center">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Process Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mb-16"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow-purple">
-                {appContent.process.title}
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {appContent.process.steps.map((step, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.7 + idx * 0.1 }}
-                >
-                  <Card glow="blue" className="p-6 text-center h-full">
-                    <div className="text-5xl font-bold text-cyber-purple mb-4">
-                      {step.number}
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-cyber-blue">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-300">{step.description}</p>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Pricing Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mb-16"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-glow">
-                {t.pricing.title}
-              </h2>
-              <p className="text-xl text-cyber-blue/80 max-w-2xl mx-auto">
-                {t.pricing.description}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {t.pricing.plans.map((plan, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.9 + idx * 0.1 }}
-                >
-                  <Card
-                    glow={plan.popular ? 'purple' : 'blue'}
-                    className={`h-full p-8 relative ${plan.popular ? 'border-2 border-cyber-purple' : ''}`}
-                  >
-                    {plan.popular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-cyber-purple text-white text-sm font-bold rounded-full">
-                        {language === 'en' ? 'POPULAR' : 'POPULAR'}
-                      </div>
-                    )}
-                    <div className="text-center mb-6">
-                      <h3 className="text-2xl font-bold mb-2 text-cyber-blue">
-                        {plan.name}
-                      </h3>
-                      <div className="mb-4">
-                        <span className="text-4xl font-bold text-cyber-purple">
-                          {plan.price}
-                        </span>
-                        {plan.period !== 'quote' && plan.period !== 'cotización' && (
-                          <span className="text-gray-400 text-sm ml-2">
-                            / {plan.period}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <ul className="space-y-3 mb-8">
-                      {plan.features.map((feature, featureIdx) => (
-                        <li key={featureIdx} className="flex items-start">
-                          <svg
-                            className="w-5 h-5 text-cyber-blue mr-2 flex-shrink-0 mt-0.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span className="text-gray-300 text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <a
-                      href={t.calendarLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full"
-                    >
-                      <Button
-                        variant={plan.popular ? 'primary' : 'outline'}
-                        glow={plan.popular ? 'purple' : 'blue'}
-                        className="w-full"
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {t.techStacks.map((stack, idx) => (
+                <div key={idx}>
+                  <p className="font-mono text-xs text-primary uppercase tracking-widest mb-4">{stack.name}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {stack.items.map((item) => (
+                      <span
+                        key={item}
+                        className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
                       >
-                        {language === 'en' ? 'Schedule Meeting' : 'Agendar Reunión'}
-                      </Button>
-                    </a>
-                  </Card>
-                </motion.div>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>
 
-          {/* CTA Section */}
+          {/* Process */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            className="text-center"
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-primary/10 mb-px"
           >
-            <Card glow="purple" className="p-12">
-              <h2 className="text-4xl font-bold mb-4 text-cyber-purple">
-                {language === 'en' ? 'Ready to Build Your App?' : '¿Listo para Construir Tu App?'}
-              </h2>
-              <p className="text-xl text-gray-300 mb-8">
-                {language === 'en'
-                  ? 'Let\'s discuss your project and bring your ideas to life with cutting-edge technology.'
-                  : 'Discutamos tu proyecto y demos vida a tus ideas con tecnología de vanguardia.'}
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a href={t.calendarLink} target="_blank" rel="noopener noreferrer">
-                  <Button variant="primary" glow="blue">
-                    {language === 'en' ? 'Request Consultation' : 'Solicitar Consulta'}
-                  </Button>
-                </a>
-                <Link href="/services">
-                  <Button variant="outline" glow="purple">
-                    {language === 'en' ? 'Back to Services' : 'Volver a Servicios'}
-                  </Button>
-                </Link>
+            {t.process.map((step, idx) => (
+              <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
+                <p className="font-mono text-primary text-xs mb-4">{step.num}</p>
+                <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
+                  {step.title}
+                </h4>
+                <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
               </div>
-            </Card>
+            ))}
           </motion.div>
+
+          {/* Pricing from content.ts + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="bg-surface-container-low border-t border-primary/10 p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+          >
+            <div>
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">PRICING_MODEL</p>
+              <p className="font-body text-on-surface-variant text-sm max-w-lg">
+                {services.pricing?.description ?? (language === 'en'
+                  ? 'Custom scoping. Let\'s discuss your project requirements and timeline.'
+                  : 'Alcance personalizado. Hablemos de los requisitos y el timeline de tu proyecto.')}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <a href={services.calendarLink ?? '#'} target="_blank" rel="noopener noreferrer">
+                <Button variant="primary">{t.cta}</Button>
+              </a>
+              <Link href="/services">
+                <Button variant="ghost">
+                  {language === 'en' ? 'All Services' : 'Servicios'}
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </AnimatedBackground>

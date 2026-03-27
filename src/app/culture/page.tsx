@@ -4,115 +4,131 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
+import ScanBadge from '@/components/ui/ScanBadge';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 export default function CulturePage() {
   const { language } = useLanguage();
   const t = content[language].culture;
 
   return (
-    <AnimatedBackground variant="particles">
-      <div className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-        {/* Cypher overlay */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 opacity-25 [background:radial-gradient(circle_at_20%_10%,rgba(0,240,255,0.12),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.12),transparent_45%),radial-gradient(circle_at_50%_80%,rgba(0,240,255,0.08),transparent_50%)]" />
-          <div className="absolute inset-0 opacity-[0.08] [background:linear-gradient(to_right,rgba(0,240,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,240,255,0.18)_1px,transparent_1px)] [background-size:48px_48px]" />
-          <div className="absolute inset-0 opacity-[0.06] [background:repeating-linear-gradient(180deg,transparent_0px,transparent_6px,rgba(168,85,247,0.25)_7px,transparent_8px)]" />
-        </div>
+    <AnimatedBackground variant="ambient">
+      <div className="min-h-screen py-24 px-6">
+        <div className="max-w-screen-2xl mx-auto">
 
-        <div className="max-w-5xl mx-auto relative">
-          {/* Header */}
+          {/* Page Header */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-14"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="mb-20"
           >
-            <h1 className="text-center text-5xl md:text-6xl font-bold mb-4 text-glow-purple">
-              {t.title}
-            </h1>
-            <p className="text-center text-xl md:text-2xl text-cyber-white/85 max-w-4xl mx-auto">
-              {t.description}
-            </p>
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
+              <span className="text-outline">/</span>
+              <span className="border border-primary/30 px-2 py-1">CULTURE_V3.2</span>
+            </motion.div>
 
-            <div className="mt-10 max-w-4xl mx-auto rounded-2xl border border-cyber-blue/25 bg-black/45 px-6 py-5">
-              <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-xs tracking-wider text-cyber-blue/70">
-                <span>{language === 'en' ? 'status: online' : 'estado: online'}</span>
-                <span>{language === 'en' ? 'mode: cypher' : 'modo: cypher'}</span>
-                <span>innovation_by_default=true</span>
-              </div>
-              <div className="mt-3 font-mono text-xs text-gray-400 leading-relaxed">
-                {language === 'en'
-                  ? 'We treat culture like an executable protocol: repeatable behaviors, clear trade-offs, and a commitment to privacy, openness, and shipping frontier technology.'
-                  : 'Tratamos la cultura como un protocolo ejecutable: comportamientos repetibles, trade-offs claros y un compromiso con privacidad, apertura y shipping de tecnología de frontera.'}
-              </div>
+            <motion.h1
+              variants={fadeInUp}
+              className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+            >
+              {t.title}
+            </motion.h1>
+
+            <motion.p
+              variants={fadeInUp}
+              className="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed"
+            >
+              {t.description}
+            </motion.p>
+          </motion.div>
+
+          {/* Values Grid */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10"
+          >
+            {t.values.map((value: any, idx: number) => (
+              <motion.div
+                key={value.title}
+                variants={fadeInUp}
+                className="relative bg-surface-container-low p-10 group hover:bg-surface-container transition-colors duration-500"
+              >
+                {/* UID top-right */}
+                <div className="absolute top-4 right-4">
+                  <ScanBadge variant="muted">
+                    VAL_{String(idx + 1).padStart(2, '0')}
+                  </ScanBadge>
+                </div>
+
+                {/* Index */}
+                <span className="font-mono text-primary text-sm mb-4 block">
+                  {String(idx + 1).padStart(2, '0')} / {language === 'en' ? 'VALUE' : 'VALOR'}
+                </span>
+
+                {/* Title */}
+                <h2 className="font-headline text-3xl font-bold tracking-tighter mb-4 text-on-surface group-hover:text-primary transition-colors duration-300">
+                  {value.title}
+                </h2>
+
+                {/* Description */}
+                <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
+                  {value.description}
+                </p>
+
+                {/* Details */}
+                {value.details?.length ? (
+                  <div className="border-l-2 border-primary/30 pl-4 space-y-2">
+                    {value.details.map((item: string) => (
+                      <div key={item} className="flex gap-2">
+                        <span className="font-mono text-primary/50 text-[11px] mt-0.5">{'>'}</span>
+                        <span className="font-mono text-[11px] text-outline uppercase tracking-wider leading-relaxed">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {/* Bottom glow on hover */}
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Bottom Stats Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="mt-px bg-surface-container-low border-t border-primary/10 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-primary/10"
+          >
+            <div className="p-10">
+              <span className="font-mono text-primary text-xs mb-2 block">SYSTEM_STATUS</span>
+              <p className="font-headline text-2xl font-bold text-on-surface">FRONTIER_ACTIVE</p>
+              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+                {language === 'en' ? 'Innovation by default' : 'Innovación por defecto'}
+              </p>
+            </div>
+            <div className="p-10">
+              <span className="font-mono text-primary text-xs mb-2 block">OPERATOR_COUNT</span>
+              <p className="font-headline text-2xl font-bold text-on-surface">10+</p>
+              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+                {language === 'en' ? 'The frontier of LATAM devs' : 'La frontera de los devs LATAM'}
+              </p>
+            </div>
+            <div className="p-10">
+              <span className="font-mono text-primary text-xs mb-2 block">LOCATION_VECTOR</span>
+              <p className="font-headline text-2xl font-bold text-on-surface">CALI // WY</p>
+              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+                {language === 'en' ? 'Pacific coast origin' : 'Origen costa pacífica'}
+              </p>
             </div>
           </motion.div>
 
-          {/* Values as sections */}
-          <div className="space-y-6">
-            {t.values.map((value: any, idx: number) => {
-              const hex = (idx + 1).toString(16).padStart(2, '0');
-              const details: string[] | undefined = value.details;
-
-              return (
-                <motion.section
-                  key={value.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.12 + idx * 0.08 }}
-                  className="group relative overflow-hidden rounded-2xl border border-cyber-blue/20 bg-black/40"
-                >
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 [background:radial-gradient(circle_at_20%_10%,rgba(0,240,255,0.10),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(168,85,247,0.10),transparent_40%)]" />
-                  <div className="relative p-7 md:p-9">
-                    <div className="flex items-start gap-6">
-                      <div className="hidden sm:block flex-shrink-0">
-                        <div className="font-mono text-xs tracking-widest text-cyber-blue/60">
-                          {language === 'en' ? 'VALUE' : 'VALOR'}
-                        </div>
-                        <div className="mt-2 font-mono text-2xl text-cyber-blue">
-                          {`0x${hex}`}
-                        </div>
-                        <div className="mt-3 h-px w-14 bg-gradient-to-r from-cyber-blue/60 to-transparent" />
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="sm:hidden font-mono text-xs tracking-widest text-cyber-blue/60">
-                            {`0x${hex}`}
-                          </div>
-                          <h2 className="text-3xl md:text-4xl font-bold text-cyber-white text-glow-blue">
-                            {value.title}
-                          </h2>
-                        </div>
-                        <p className="text-gray-200/90 text-lg leading-relaxed">
-                          {value.description}
-                        </p>
-
-                        {details?.length ? (
-                          <div className="mt-6 rounded-xl border border-purple-500/25 bg-black/45 px-5 py-4">
-                            <div className="font-mono text-xs tracking-widest text-purple-300/80 mb-3">
-                              {language === 'en' ? 'DEFAULT_BEHAVIORS' : 'COMPORTAMIENTOS_POR_DEFECTO'}
-                            </div>
-                            <ul className="space-y-2 text-gray-300 text-sm leading-relaxed">
-                              {details.map((item) => (
-                                <li key={item} className="flex gap-3">
-                                  <span className="font-mono text-cyber-blue/70">{'>'}</span>
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </motion.section>
-              );
-            })}
-          </div>
         </div>
       </div>
     </AnimatedBackground>
   );
 }
-

@@ -6,33 +6,45 @@ import { motion } from 'framer-motion';
 interface CardProps {
   children: ReactNode;
   className?: string;
-  glow?: 'blue' | 'purple' | 'none';
+  uid?: string;
   hover?: boolean;
   onClick?: () => void;
+  /** @deprecated — new design uses surface tone shifts, not glow variants */
+  glow?: 'blue' | 'purple' | 'none';
 }
 
-export default function Card({ 
-  children, 
+export default function Card({
+  children,
   className = '',
-  glow = 'blue',
+  uid,
   hover = true,
-  onClick
+  onClick,
 }: CardProps) {
-  const glowClasses = {
-    blue: 'border-cyber-blue/30 hover:border-glow bg-cyber-black-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]',
-    purple: 'border-cyber-purple/30 hover:border-glow-purple bg-cyber-black-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]',
-    none: 'border-cyber-blue/20 bg-cyber-black-card backdrop-blur-sm',
-  };
+  const base =
+    'relative bg-surface-container-low border border-outline-variant/[0.15] p-6 transition-all duration-500';
 
-  const baseClasses = 'rounded-xl p-6 border transition-all duration-300';
+  const hoverClasses = hover
+    ? 'hover:bg-surface-container hover:border-primary/10 cursor-pointer'
+    : '';
+
+  const content = (
+    <>
+      {uid && (
+        <span className="absolute top-0 right-0 p-2 font-mono text-[8px] text-outline bg-surface-container-high tracking-widest uppercase">
+          {uid}
+        </span>
+      )}
+      {children}
+    </>
+  );
 
   if (!hover) {
     return (
-      <div 
+      <div
         onClick={onClick}
-        className={`${baseClasses} ${glowClasses[glow]} ${className} ${onClick ? 'cursor-pointer' : ''}`}
+        className={`${base} ${className}`}
       >
-        {children}
+        {content}
       </div>
     );
   }
@@ -40,11 +52,10 @@ export default function Card({
   return (
     <motion.div
       onClick={onClick}
-      whileHover={{ scale: 1.02, y: -5 }}
-      className={`${baseClasses} ${glowClasses[glow]} ${className} ${onClick ? 'cursor-pointer' : ''}`}
+      whileTap={onClick ? { scale: 0.98 } : undefined}
+      className={`${base} ${hoverClasses} ${className}`}
     >
-      {children}
+      {content}
     </motion.div>
   );
 }
-
