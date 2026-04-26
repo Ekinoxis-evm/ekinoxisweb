@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
@@ -10,7 +10,6 @@ import { motion, AnimatePresence, type Variants } from 'framer-motion';
 export default function Navigation() {
   const { language, setLanguage } = useLanguage();
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -210,13 +209,14 @@ export default function Navigation() {
                       {expandedMenu === key && (
                         <div className="pl-4 flex flex-col gap-1 mb-2">
                           {menu.items.map((item) => (
-                            <button
+                            <Link
                               key={item.href}
-                              onClick={() => { setMobileMenuOpen(false); router.push(item.href); }}
-                              className={`text-left py-2 font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline hover:text-primary'}`}
+                              href={item.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className={`py-2 font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline hover:text-primary'}`}
                             >
                               {item.label}
-                            </button>
+                            </Link>
                           ))}
                         </div>
                       )}
