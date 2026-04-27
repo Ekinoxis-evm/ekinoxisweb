@@ -77,21 +77,20 @@ export default function Navigation() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl">
-      {/* Bottom gradient line */}
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl">
+        {/* Bottom gradient line */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-      <nav className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-16">
+        <nav className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-16">
 
-        {/* Logo */}
-        <Link href="/" className="font-headline text-xl font-bold tracking-tighter text-primary uppercase hover:text-glow transition-all">
-          EKINOXIS
-        </Link>
+          {/* Logo */}
+          <Link href="/" className="font-headline text-xl font-bold tracking-tighter text-primary uppercase hover:text-glow transition-all">
+            EKINOXIS
+          </Link>
 
-        {/* Desktop nav */}
-        {(
+          {/* Desktop nav */}
           <div className="hidden lg:flex items-center" ref={menuRef}>
-            {/* About dropdown */}
             <DropdownMenu
               label={menuItems['about-us'].label}
               items={menuItems['about-us'].items}
@@ -105,7 +104,6 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            {/* Services dropdown */}
             <DropdownMenu
               label={menuItems['services'].label}
               items={menuItems['services'].items}
@@ -119,7 +117,6 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            {/* Our Value dropdown */}
             <DropdownMenu
               label={menuItems['our-value'].label}
               items={menuItems['our-value'].items}
@@ -133,14 +130,12 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            {/* Products */}
             <Link
               href="/products"
               className={`${linkBase} ${isActive('/products') ? linkActive : linkInactive}`}
             >
               {menuItems['products'].label}
             </Link>
-            {/* Hacker House */}
             <Link
               href="/hacker-house"
               className={`${linkBase} ${isActive('/hacker-house') ? linkActive : linkInactive}`}
@@ -148,51 +143,50 @@ export default function Navigation() {
               {menuItems['hacker-house'].label}
             </Link>
           </div>
-        )}
 
-        {/* Right controls */}
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-            className="font-mono text-xs text-primary hover:bg-primary/5 px-2 py-1 transition-all"
-          >
-            {language === 'en' ? 'EN/ES' : 'ES/EN'}
-          </button>
+          {/* Right controls */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
+              className="font-mono text-xs text-primary hover:bg-primary/5 px-2 py-1 transition-all"
+            >
+              {language === 'en' ? 'EN/ES' : 'ES/EN'}
+            </button>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-primary p-1"
-            aria-label="Toggle menu"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-              }
-            </svg>
-          </button>
-        </div>
-      </nav>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden text-primary p-1"
+              aria-label="Toggle menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen
+                  ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                  : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                }
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — fixed overlay OUTSIDE the header to avoid touch-event clipping */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20"
+            className="fixed top-16 left-0 right-0 z-40 lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20"
           >
-            <div className="px-6 py-4 flex flex-col">
+            <div className="px-6 py-2 flex flex-col">
               {Object.entries(menuItems).map(([key, menu]) => {
                 if ('href' in menu && menu.href) {
                   return (
                     <Link
                       key={key}
                       href={menu.href}
-                      onClick={() => { setMobileMenuOpen(false); setExpandedMenu(null); }}
                       className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary' : 'text-on-surface-variant'}`}
                     >
                       {menu.label}
@@ -204,7 +198,7 @@ export default function Navigation() {
                     <div key={key} className="border-b border-outline-variant/10">
                       <button
                         onClick={() => setExpandedMenu(expandedMenu === key ? null : key)}
-                        className="w-full text-left py-4 font-label text-xs uppercase tracking-tighter text-on-surface-variant hover:text-primary transition-colors flex items-center justify-between"
+                        className="w-full text-left py-4 font-label text-xs uppercase tracking-tighter text-on-surface-variant flex items-center justify-between"
                       >
                         {menu.label}
                         <span className="text-[8px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
@@ -231,11 +225,11 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
 
-/* ── Reusable dropdown component ── */
+/* ── Reusable desktop dropdown component ── */
 interface DropdownMenuProps {
   label: string;
   items: { href: string; label: string }[];
