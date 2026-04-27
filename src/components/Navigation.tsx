@@ -179,19 +179,21 @@ export default function Navigation() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20 overflow-hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
+            className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20"
           >
-            <div className="px-6 py-4 flex flex-col gap-1">
+            <div className="px-6 py-4 flex flex-col">
               {Object.entries(menuItems).map(([key, menu]) => {
                 if ('href' in menu && menu.href) {
                   return (
                     <Link
                       key={key}
                       href={menu.href}
-                      className={`py-3 font-label text-xs uppercase tracking-tighter ${isActive(menu.href) ? 'text-primary' : 'text-on-surface-variant'}`}
+                      onClick={() => { setMobileMenuOpen(false); setExpandedMenu(null); }}
+                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary' : 'text-on-surface-variant'}`}
                     >
                       {menu.label}
                     </Link>
@@ -199,21 +201,21 @@ export default function Navigation() {
                 }
                 if ('items' in menu) {
                   return (
-                    <div key={key}>
+                    <div key={key} className="border-b border-outline-variant/10">
                       <button
                         onClick={() => setExpandedMenu(expandedMenu === key ? null : key)}
-                        className="w-full text-left py-3 font-label text-xs uppercase tracking-tighter text-on-surface-variant hover:text-primary transition-colors"
+                        className="w-full text-left py-4 font-label text-xs uppercase tracking-tighter text-on-surface-variant hover:text-primary transition-colors flex items-center justify-between"
                       >
-                        {menu.label} <span className="ml-1 text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
+                        {menu.label}
+                        <span className="text-[8px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
                       </button>
                       {expandedMenu === key && (
-                        <div className="pl-4 flex flex-col gap-1 mb-2">
+                        <div className="pb-2 flex flex-col">
                           {menu.items.map((item) => (
                             <Link
                               key={item.href}
                               href={item.href}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className={`py-2 font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline hover:text-primary'}`}
+                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline'}`}
                             >
                               {item.label}
                             </Link>
