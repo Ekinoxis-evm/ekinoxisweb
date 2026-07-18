@@ -13,13 +13,18 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const t = content[language].nav;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setExpandedMenu(null);
-      }
+      const target = event.target as Node;
+      // menuRef covers the desktop nav; mobileMenuRef covers the mobile overlay.
+      // On touch devices the emulated mousedown fires before click — collapsing
+      // the accordion here would unmount sub-links before their tap completes.
+      if (menuRef.current?.contains(target)) return;
+      if (mobileMenuRef.current?.contains(target)) return;
+      setExpandedMenu(null);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -178,6 +183,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
+            ref={mobileMenuRef}
             className="fixed top-16 left-0 right-0 z-40 lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20"
           >
             <div className="px-6 py-2 flex flex-col">

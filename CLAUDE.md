@@ -64,7 +64,8 @@ Dynamic content is stored in Supabase and fetched at build/request time. Static 
 | `education_partners` | University/gov partner logos |
 | `certification_partners` | Certification partner logos |
 | `product_hackers` | Join table: product ↔ hacker (many-to-many) |
-| `product_hackathons` | Join table: product ↔ hackathon |
+
+Products link to a hackathon directly via the `products.hackathon_id` FK column (there is no `product_hackathons` join table).
 
 ### Types
 
