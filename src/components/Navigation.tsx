@@ -72,7 +72,7 @@ export default function Navigation() {
   };
 
   const linkBase = 'font-label text-xs uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
-  const linkActive = 'text-primary border-b-2 border-primary pb-1';
+  const linkActive = 'text-primary bg-primary/10 border-b-2 border-primary shadow-[0_0_12px_rgba(143,245,255,0.15)]';
   const linkInactive = 'text-on-surface-variant hover:text-primary';
 
   const dropdownVariants: Variants = {
@@ -193,7 +193,7 @@ export default function Navigation() {
                     <Link
                       key={key}
                       href={menu.href}
-                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary' : 'text-on-surface-variant'}`}
+                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary border-l-2 border-l-primary pl-3 bg-primary/5' : 'text-on-surface-variant'}`}
                     >
                       {menu.label}
                     </Link>
@@ -215,7 +215,7 @@ export default function Navigation() {
                             <Link
                               key={item.href}
                               href={item.href}
-                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary' : 'text-outline'}`}
+                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary border-l-2 border-primary bg-primary/5' : 'text-outline'}`}
                             >
                               {item.label}
                             </Link>
