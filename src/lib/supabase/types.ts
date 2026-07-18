@@ -241,10 +241,12 @@ export type Database = {
           id: string
           image_url: string
           name: string
+          project_type: string
           repo_backend: string | null
           repo_contracts: string | null
           repo_frontend: string | null
           status: Database["public"]["Enums"]["product_status"]
+          sub_links: Json
           technologies: string[]
           updated_at: string
           website_url: string | null
@@ -261,10 +263,12 @@ export type Database = {
           id?: string
           image_url: string
           name: string
+          project_type?: string
           repo_backend?: string | null
           repo_contracts?: string | null
           repo_frontend?: string | null
           status?: Database["public"]["Enums"]["product_status"]
+          sub_links?: Json
           technologies?: string[]
           updated_at?: string
           website_url?: string | null
@@ -281,10 +285,12 @@ export type Database = {
           id?: string
           image_url?: string
           name?: string
+          project_type?: string
           repo_backend?: string | null
           repo_contracts?: string | null
           repo_frontend?: string | null
           status?: Database["public"]["Enums"]["product_status"]
+          sub_links?: Json
           technologies?: string[]
           updated_at?: string
           website_url?: string | null
@@ -532,6 +538,12 @@ export type CultureValue = Tables<'culture_values'>
 export type TechCategory = Tables<'tech_categories'>
 export type SiteContent = Tables<'site_content'>
 export type ProductStatus = Database['public']['Enums']['product_status']
+
+// Project classification: in-house product, client work, or lab experiment
+export type ProjectType = 'product' | 'client' | 'experiment'
+
+// Sub-project link shown on umbrella cards (e.g. the CONVEXO suite)
+export type SubLink = { label: string; url?: string | null; repo?: string | null }
 
 // Product with joined hackathon + hackers
 export type ProductWithRelations = Product & {

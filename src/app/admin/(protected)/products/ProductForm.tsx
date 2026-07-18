@@ -7,7 +7,7 @@ import AdminTextarea from '../components/AdminTextarea';
 import AdminSelect from '../components/AdminSelect';
 import TagInput from '../components/TagInput';
 import ImageUpload from '../components/ImageUpload';
-import type { ProductWithRelations, Hackathon, Hacker } from '@/lib/supabase/types';
+import type { ProductWithRelations, Hackathon, Hacker, SubLink } from '@/lib/supabase/types';
 
 interface ProductFormProps {
   product?: ProductWithRelations
@@ -20,6 +20,12 @@ const STATUS_OPTIONS = [
   { value: 'MVP', label: 'MVP' },
   { value: 'BETA', label: 'BETA' },
   { value: 'LAUNCHED', label: 'LAUNCHED' },
+]
+
+const TYPE_OPTIONS = [
+  { value: 'product', label: 'PRODUCT' },
+  { value: 'client', label: 'CLIENT WORK' },
+  { value: 'experiment', label: 'EXPERIMENT' },
 ]
 
 export default function ProductForm({ product, hackathons, allHackers }: ProductFormProps) {
@@ -47,6 +53,14 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
     product?.hackers?.map((h) => h.id) ?? []
   );
   const [displayOrder, setDisplayOrder] = useState(product?.display_order ?? 0);
+  const [projectType, setProjectType] = useState(product?.project_type ?? 'product');
+  const [subLinks, setSubLinks] = useState<SubLink[]>(
+    Array.isArray(product?.sub_links) ? (product!.sub_links as SubLink[]) : []
+  );
+
+  function updateSubLink(idx: number, field: keyof SubLink, value: string) {
+    setSubLinks((prev) => prev.map((sl, i) => (i === idx ? { ...sl, [field]: value } : sl)));
+  }
 
   function toggleHacker(id: string) {
     setSelectedHackers((prev) =>
@@ -68,6 +82,10 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         repo_contracts: repoContracts || null,
         hackathon_id: hackathonId || null, hackathon_link: hackathonLink || null,
         technologies, categories, display_order: displayOrder,
+        project_type: projectType,
+        sub_links: subLinks
+          .filter((sl) => sl.label?.trim())
+          .map((sl) => ({ label: sl.label.trim(), url: sl.url || null, repo: sl.repo || null })),
         hackerIds: selectedHackers,
       };
 
@@ -135,6 +153,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
           <ImageUpload label="Product Image *" value={imageUrl} onChange={setImageUrl} folder="products" hint="Upload new or keep existing /products/ path" />
           <AdminSelect label="Status" value={status} onChange={(e) => setStatus(e.target.value as typeof status)} options={STATUS_OPTIONS} required />
           <AdminInput label="Display Order" type="number" value={displayOrder} onChange={(e) => setDisplayOrder(Number(e.target.value))} />
+          <AdminSelect label="Project Type" value={projectType} onChange={(e) => setProjectType(e.target.value)} options={TYPE_OPTIONS} required />
         </div>
       </div>
 
@@ -154,6 +173,37 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
           <AdminInput label="Frontend Repo" value={repoFrontend} onChange={(e) => setRepoFrontend(e.target.value)} placeholder="https://github.com/org/repo-fe" />
           <AdminInput label="Backend Repo" value={repoBackend} onChange={(e) => setRepoBackend(e.target.value)} placeholder="https://github.com/org/repo-be" />
           <AdminInput label="Contracts Repo" value={repoContracts} onChange={(e) => setRepoContracts(e.target.value)} placeholder="https://github.com/org/repo-contracts" />
+        </div>
+      </div>
+
+      {/* Sub-links / suite modules */}
+      <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
+        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-2">SUITE MODULES</p>
+        <p className="font-mono text-[9px] text-outline/60 tracking-widest uppercase mb-6">
+          Sub-projects shown inside this card (e.g. CONVEXO → Payments, Loans, Fund)
+        </p>
+        <div className="flex flex-col gap-4">
+          {subLinks.map((sl, idx) => (
+            <div key={idx} className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr_1.5fr_auto] gap-3 items-end">
+              <AdminInput label="Label" value={sl.label ?? ''} onChange={(e) => updateSubLink(idx, 'label', e.target.value)} placeholder="PAYMENTS" />
+              <AdminInput label="Live URL" value={sl.url ?? ''} onChange={(e) => updateSubLink(idx, 'url', e.target.value)} placeholder="https://pay.example.xyz" />
+              <AdminInput label="Repo URL" value={sl.repo ?? ''} onChange={(e) => updateSubLink(idx, 'repo', e.target.value)} placeholder="https://github.com/org/repo" />
+              <button
+                type="button"
+                onClick={() => setSubLinks((prev) => prev.filter((_, i) => i !== idx))}
+                className="font-mono text-[10px] uppercase tracking-widest px-4 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
+              >
+                REMOVE
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setSubLinks((prev) => [...prev, { label: '', url: '', repo: '' }])}
+            className="self-start font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60 transition-colors duration-200"
+          >
+            + ADD MODULE
+          </button>
         </div>
       </div>
 

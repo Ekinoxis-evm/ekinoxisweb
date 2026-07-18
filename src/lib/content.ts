@@ -69,6 +69,15 @@ export const content = {
     products: {
       title: "PRODUCTS",
       description: " We design, develop and build prototypes, MVPs and proof of concepts products based on blockchain, crypto and AI.",
+      clientWork: {
+        title: "CLIENT WORK",
+        description: "Custom platforms designed, built and delivered for clients by Ekinoxis Labs.",
+      },
+      experiments: {
+        title: "EXPERIMENTS",
+        description: "Early prototypes and lab explorations — testing frontier ideas before they become products.",
+      },
+      modulesLabel: "MODULES",
       categories: {
         blockchain: "Blockchain Solutions",
         crypto: "Cryptocurrency Products",
@@ -559,6 +568,15 @@ export const content = {
     products: {
       title: "PRODUCTOS",
       description: "Creamos productos basados en blockchain, cripto e IA. Diseñamos, desarrollamos y construimos prototipos, MVPs y pruebas de conceptos que integren WEB3 y AI.",
+      clientWork: {
+        title: "TRABAJO PARA CLIENTES",
+        description: "Plataformas a la medida diseñadas, construidas y entregadas a clientes por Ekinoxis Labs.",
+      },
+      experiments: {
+        title: "EXPERIMENTOS",
+        description: "Prototipos tempranos y exploraciones del laboratorio — probando ideas de frontera antes de convertirse en productos.",
+      },
+      modulesLabel: "MÓDULOS",
       categories: {
         blockchain: "Soluciones Blockchain",
         crypto: "Productos Criptográficos",

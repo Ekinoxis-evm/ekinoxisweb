@@ -67,6 +67,13 @@ Dynamic content is stored in Supabase and fetched at build/request time. Static 
 
 Products link to a hackathon directly via the `products.hackathon_id` FK column (there is no `product_hackathons` join table).
 
+The `products` table doubles as the registry for all showcased work, classified by `project_type`:
+- `product` — in-house IP (default)
+- `client` — client work (shown under "CLIENT WORK" on /products)
+- `experiment` — lab prototypes (shown under "EXPERIMENTS" on /products)
+
+`products.sub_links` (jsonb array of `{ label, url?, repo? }`) holds sub-project links for umbrella cards — e.g. the CONVEXO card lists its whole suite (Payments, Loans Protocol, Fund, Kreditos, ETHFund, Onix) as modules.
+
 ### Types
 
 Generated TypeScript types live in `src/lib/supabase/types.ts`. Key types:
