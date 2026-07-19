@@ -69,9 +69,16 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface uppercase"
             >
-              INNOVATION<br />
-              <span className="text-primary text-glow italic">WITHOUT</span><br />
-              FRONTIERS
+              {t.hero.titleLines.map((line, i) => (
+                <span key={i}>
+                  {i > 0 && <br />}
+                  {i === 1 ? (
+                    <span className="text-primary text-glow italic">{line}</span>
+                  ) : (
+                    line
+                  )}
+                </span>
+              ))}
             </motion.h1>
 
             {/* Description */}
@@ -82,7 +89,7 @@ export default function Home() {
               className="max-w-xl text-lg md:text-xl text-on-surface-variant font-light leading-relaxed"
             >
               {language === 'en' ? (
-                <>We are the first <span className="text-primary">Innovation Laboratory</span> from the Colombian Pacific specialized in <span className="text-secondary">Blockchain</span>, <span className="text-tertiary-dim">Cryptography</span> and <span className="text-secondary">Artificial Intelligence</span>.</>
+                <>We are the first <span className="text-primary">Innovation Laboratory</span> of the Colombian Pacific specialized in <span className="text-secondary">Blockchain</span>, <span className="text-tertiary-dim">Cryptography</span> and <span className="text-secondary">Artificial Intelligence</span>.</>
               ) : (
                 <>Somos el primer <span className="text-primary">Laboratorio de Innovación</span> del Pacífico Colombiano especializado en <span className="text-secondary">Blockchain</span>, <span className="text-tertiary-dim">Criptografía</span> e <span className="text-secondary">Inteligencia Artificial</span>.</>
               )}
@@ -123,13 +130,18 @@ export default function Home() {
 
             {/* Logo with sphere animation */}
             <div className="relative w-72 h-72 md:w-full md:aspect-square max-w-[440px] hero-visual-glitch">
-              <Image
-                src="/logo/logo.png"
-                alt="Ekinoxis"
-                fill
-                className="object-contain animate-hero-core"
-                priority
-              />
+              {/* Breathing wrapper — scale animates here so it doesn't conflict with rotation */}
+              <div className="absolute inset-0 animate-hero-breathe">
+                {/* Compositor-friendly glow — opacity animates instead of drop-shadow */}
+                <div className="absolute inset-[12%] rounded-full bg-primary/40 blur-[60px] animate-hero-glow pointer-events-none" />
+                <Image
+                  src="/logo/logo.png"
+                  alt="Ekinoxis"
+                  fill
+                  className="object-contain animate-hero-core"
+                  priority
+                />
+              </div>
 
               {/* Floating readout — top right */}
               <div className="absolute top-0 right-0 bg-surface-container/80 backdrop-blur-md p-3 border-l-2 border-primary">

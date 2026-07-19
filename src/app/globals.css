@@ -12,6 +12,9 @@
     background-color: #000000;
     cursor: crosshair;
     overflow-x: hidden;
+    /* Notched-device landscape: keep content out of the safe-area insets */
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 
   html {
@@ -26,13 +29,21 @@
 
 @layer utilities {
 
-  /* ── Scanline CRT overlay ── */
+  /* ── Scanline CRT overlay ──
+     Third background layer: static SVG-turbulence noise (data URI, zero JS).
+     The rect opacity (0.18) combined with the overlay's opacity-20 yields
+     an effective ~3.6% noise on screen. */
   .scanline-overlay {
     background:
       linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 3px 100%;
+      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+    background-size: 100% 4px, 3px 100%, 128px 128px;
     pointer-events: none;
+    /* Barely-perceptible CRT flicker — fires roughly once every 7s.
+       Values stay around 0.2 (the overlay's base opacity-20) so the
+       dip is a 0.98x multiple of the resting state. */
+    animation: crt-flicker 7s steps(1, end) infinite;
   }
 
   /* ── Glass panel (floating modules) ── */
@@ -71,9 +82,19 @@
     border: 1px solid rgba(63, 73, 81, 0.15);
   }
 
-  /* ── Hero sphere animations ── */
+  /* ── Hero sphere animations ──
+     Rotation and breathing are split across two elements: both animate
+     `transform`, so combining them on one element cancels the scale. */
   .animate-hero-core {
-    animation: pulse-breathing 8s ease-in-out infinite, slow-rotate 60s linear infinite;
+    animation: slow-rotate 60s linear infinite;
+  }
+
+  .animate-hero-breathe {
+    animation: pulse-breathing 8s ease-in-out infinite;
+  }
+
+  .animate-hero-glow {
+    animation: hero-glow-pulse 8s ease-in-out infinite;
   }
 
   .hero-visual-glitch {
@@ -148,8 +169,15 @@
 
 /* ── Keyframes (global scope for CSS animations) ── */
 @keyframes pulse-breathing {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(0,240,255,0.3)); }
-  50% { transform: scale(1.05); filter: drop-shadow(0 0 70px rgba(0,240,255,0.6)); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Glow lives on a separate blurred div behind the sphere — animating its
+   opacity is compositor-friendly, unlike animating drop-shadow filters. */
+@keyframes hero-glow-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
 }
 
 @keyframes slow-rotate {
@@ -173,4 +201,23 @@
 @keyframes scan {
   0% { left: -100%; }
   100% { left: 100%; }
+}
+
+@keyframes crt-flicker {
+  0%, 96%, 98.5%, 100% { opacity: 0.2; }
+  97% { opacity: 0.196; }
+  98% { opacity: 0.198; }
+}
+
+/* ── Reduced motion — disable decorative animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-core,
+  .animate-hero-breathe,
+  .animate-hero-glow,
+  .hero-visual-glitch,
+  .scanline-overlay,
+  .cyber-grid::before,
+  [class*="animate-"] {
+    animation: none !important;
+  }
 }

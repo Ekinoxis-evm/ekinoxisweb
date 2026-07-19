@@ -45,7 +45,7 @@ export default function Footer() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-xs uppercase text-outline hover:text-tertiary-dim hover:translate-x-0.5 transition-all duration-200"
+              className="py-2 inline-flex items-center font-mono text-xs uppercase text-outline hover:text-tertiary-dim hover:translate-x-0.5 transition-all duration-200"
             >
               {label}
             </Link>

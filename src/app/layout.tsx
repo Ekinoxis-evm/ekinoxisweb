@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, Inter, Space_Mono } from 'next/font/google';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
@@ -25,6 +25,13 @@ const spaceMono = Space_Mono({
   variable: '--font-space-mono',
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#000000',
+};
 
 export const metadata: Metadata = {
   title: 'Ekinoxis Labs',

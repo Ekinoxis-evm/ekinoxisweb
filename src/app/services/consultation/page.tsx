@@ -66,7 +66,7 @@ const consultationContent = {
         { people: '16', price: '$500' },
         { people: '32', price: '$850' },
         { people: '64', price: '$1,500' },
-        { people: '+64', price: '$2,500' },
+        { people: '64+', price: '$2,500' },
       ],
     },
     cta: 'Solicitar Consulta',
@@ -78,8 +78,8 @@ export default function ConsultationPage() {
   const t = consultationContent[language];
 
   return (
-    <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+    <AnimatedBackground variant="gradient">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Breadcrumb + Header */}
@@ -87,7 +87,7 @@ export default function ConsultationPage() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
@@ -97,7 +97,7 @@ export default function ConsultationPage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+              className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
             >
               {t.title}
             </motion.h1>
@@ -117,7 +117,7 @@ export default function ConsultationPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="lg:col-span-1 bg-surface-container-low p-10"
+              className="lg:col-span-1 bg-surface-container-low p-6 md:p-10"
             >
               <div className="mb-6">
                 <ScanBadge variant="primary">DELIVERABLES</ScanBadge>
@@ -140,7 +140,7 @@ export default function ConsultationPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="lg:col-span-2 bg-surface-container-low p-10"
+              className="lg:col-span-2 bg-surface-container-low p-6 md:p-10"
             >
               <div className="mb-6">
                 <ScanBadge variant="secondary">PRICING_MATRIX</ScanBadge>
@@ -183,7 +183,7 @@ export default function ConsultationPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-surface-container-low border-t border-primary/10 p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            className="bg-surface-container-low border-t border-primary/10 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
               <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">

@@ -58,8 +58,8 @@ export default function WebDevelopmentPage() {
   const t = webDevContent[language];
 
   return (
-    <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+    <AnimatedBackground variant="gradient">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Breadcrumb + Header */}
@@ -67,7 +67,7 @@ export default function WebDevelopmentPage() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
@@ -77,7 +77,7 @@ export default function WebDevelopmentPage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+              className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
             >
               {t.title}
             </motion.h1>
@@ -108,7 +108,7 @@ export default function WebDevelopmentPage() {
               {t.pricing.plans.map((plan, idx) => (
                 <div
                   key={idx}
-                  className={`relative bg-surface-container-low p-10 flex flex-col group ${plan.popular ? 'ring-1 ring-inset ring-primary/40' : ''}`}
+                  className={`relative bg-surface-container-low p-6 md:p-10 flex flex-col group ${plan.popular ? 'ring-1 ring-inset ring-primary/40' : ''}`}
                 >
                   {plan.badge && (
                     <div className="mb-6">
@@ -151,7 +151,7 @@ export default function WebDevelopmentPage() {
             className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 mt-px"
           >
             {/* How It Works */}
-            <div className="bg-surface-container-low p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
                 <ScanBadge variant="muted">PROCESS_FLOW</ScanBadge>
               </div>
@@ -170,7 +170,7 @@ export default function WebDevelopmentPage() {
             </div>
 
             {/* What You Get */}
-            <div className="bg-surface-container-low p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
                 <ScanBadge variant="tertiary">DELIVERABLES</ScanBadge>
               </div>
@@ -193,7 +193,7 @@ export default function WebDevelopmentPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
               <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">READY_TO_DEPLOY?</p>

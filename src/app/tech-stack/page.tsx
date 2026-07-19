@@ -22,15 +22,15 @@ export default function TechStackPage() {
   ];
 
   return (
-    <AnimatedBackground variant="ambient">
+    <AnimatedBackground variant="terminal">
       <div className="min-h-screen flex flex-col">
 
         {/* Top OS bar */}
         <div className="border-b border-primary/10 px-6 py-3 flex items-center justify-between font-mono text-[10px] text-outline uppercase tracking-widest bg-surface-container-lowest">
           <div className="flex items-center gap-6">
             <span className="text-primary">EKX_OS v2.4</span>
-            <span>MODULE: TECH_REGISTRY</span>
-            <span>USER: ROOT</span>
+            <span className="hidden sm:inline">MODULE: TECH_REGISTRY</span>
+            <span className="hidden sm:inline">USER: ROOT</span>
           </div>
           <div className="hidden md:flex items-center gap-6">
             <span>{t.title}</span>
@@ -38,21 +38,21 @@ export default function TechStackPage() {
           </div>
         </div>
 
-        <div className="flex-1 flex">
+        <div className="flex-1 flex flex-col lg:flex-row">
 
-          {/* Sidebar — category list */}
-          <aside className="w-56 border-r border-primary/10 bg-surface-container-lowest flex-shrink-0 flex flex-col">
-            <div className="p-4 border-b border-primary/10">
+          {/* Category selector — horizontal scroll row on mobile, sidebar on lg+ */}
+          <aside className="w-full lg:w-56 border-b lg:border-b-0 lg:border-r border-primary/10 bg-surface-container-lowest flex-shrink-0 flex flex-col">
+            <div className="hidden lg:block p-4 border-b border-primary/10">
               <p className="font-mono text-[10px] text-outline uppercase tracking-widest">CATEGORIES</p>
             </div>
-            <nav className="flex-1 overflow-y-auto">
+            <nav className="flex overflow-x-auto lg:flex-1 lg:flex-col lg:overflow-x-visible lg:overflow-y-auto">
               {categories.map(([key, cat], idx) => {
                 const isActive = selectedCategory === key;
                 return (
                   <button
                     key={key}
                     onClick={() => setSelectedCategory(key)}
-                    className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors duration-200 border-b border-primary/5 ${
+                    className={`flex-shrink-0 lg:w-full text-left px-4 py-3 flex items-center gap-3 transition-colors duration-200 border-b border-primary/5 ${
                       isActive
                         ? 'bg-primary/10 text-primary border-l-4 border-l-primary'
                         : 'text-on-surface-variant hover:bg-surface-container hover:text-primary border-l-4 border-l-transparent'
@@ -68,7 +68,7 @@ export default function TechStackPage() {
               })}
             </nav>
             {/* Status */}
-            <div className="p-4 border-t border-primary/10">
+            <div className="hidden lg:block p-4 border-t border-primary/10">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse flex-shrink-0" />
                 <span className="font-mono text-[9px] text-tertiary-dim uppercase tracking-widest">ALL_SYSTEMS_OK</span>
@@ -101,7 +101,7 @@ export default function TechStackPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-px bg-primary/10"
+                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 gap-px bg-primary/10"
                 >
                   {allLogos.map((logo: string, idx: number) => (
                     <motion.div
@@ -116,7 +116,7 @@ export default function TechStackPage() {
                           src={logo}
                           alt="Tech logo"
                           fill
-                          className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-110"
+                          className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                           sizes="80px"
                         />
                       </div>

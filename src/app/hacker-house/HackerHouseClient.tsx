@@ -31,8 +31,8 @@ export default function HackerHouseClient({ hackathons }: Props) {
   const t = content[language].hackerHouse;
 
   return (
-    <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+    <AnimatedBackground variant="grid">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Page Header */}
@@ -40,7 +40,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
@@ -50,13 +50,15 @@ export default function HackerHouseClient({ hackathons }: Props) {
 
             <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
               <div>
-                <h1 className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6">
+                <h1 className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6">
                   {t.title}
                 </h1>
                 <p className="font-body text-lg text-on-surface-variant leading-relaxed mb-8">
                   {t.description}
                 </p>
-                <Button variant="primary">{t.cta}</Button>
+                <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
+                  <Button variant="primary">{t.cta}</Button>
+                </a>
               </div>
               {/* Active OPS counter */}
               <div className="flex flex-col gap-4">
@@ -99,10 +101,10 @@ export default function HackerHouseClient({ hackathons }: Props) {
                 <motion.div
                   key={hackathon.id}
                   variants={fadeInUp}
-                  className="relative bg-surface-container-low p-10 group hover:bg-surface-container transition-colors duration-500"
+                  className="relative bg-surface-container-low p-6 md:p-10 group hover:bg-surface-container transition-colors duration-500"
                 >
                   {/* Status + UID */}
-                  <div className="absolute top-4 right-4 flex items-center gap-2">
+                  <div className="absolute top-4 right-4 flex flex-col items-end gap-1">
                     <ScanBadge variant={STATUS_VARIANT[hackathon.hackathonStatus]}>
                       {STATUS_LABEL[hackathon.hackathonStatus][language]}
                     </ScanBadge>
@@ -164,7 +166,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="flex items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
           >
             <span>HACKATHON_COUNT: {hackathons.length}</span>
             <span>MODE: FRONTIER_BUILDERS</span>

@@ -73,7 +73,7 @@ export default function Navigation() {
 
   const linkBase = 'font-label text-xs uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
   const linkActive = 'text-primary bg-primary/10 border-b-2 border-primary shadow-[0_0_12px_rgba(143,245,255,0.15)]';
-  const linkInactive = 'text-on-surface-variant hover:text-primary';
+  const linkInactive = 'text-on-surface-variant hover:text-primary border-b-2 border-transparent';
 
   const dropdownVariants: Variants = {
     hidden: { opacity: 0, y: -4 },
@@ -153,7 +153,7 @@ export default function Navigation() {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-              className="font-mono text-xs text-primary hover:bg-primary/5 px-2 py-1 transition-all"
+              className="font-mono text-xs text-primary hover:bg-primary/5 min-h-[44px] px-3 flex items-center transition-all"
             >
               {language === 'en' ? 'EN/ES' : 'ES/EN'}
             </button>
@@ -161,7 +161,7 @@ export default function Navigation() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-primary p-1"
+              className="lg:hidden text-primary p-3 -mr-2"
               aria-label="Toggle menu"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,7 +184,7 @@ export default function Navigation() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             ref={mobileMenuRef}
-            className="fixed top-16 left-0 right-0 z-40 lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20"
+            className="fixed top-16 left-0 right-0 z-40 lg:hidden bg-black/95 backdrop-blur-xl border-t border-outline-variant/20 max-h-[calc(100dvh-4rem)] overflow-y-auto"
           >
             <div className="px-6 py-2 flex flex-col">
               {Object.entries(menuItems).map(([key, menu]) => {

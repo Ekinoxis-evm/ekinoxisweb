@@ -38,7 +38,7 @@ export default function SocialLinks({ github, linkedin, x, telegram, discord, we
             target="_blank"
             rel="noopener noreferrer"
             title={icon.label}
-            className="opacity-40 hover:opacity-100 transition-opacity duration-200 grayscale hover:grayscale-0"
+            className="p-2 -m-1 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-200 grayscale hover:grayscale-0"
           >
             <Image
               src={icon.src}

@@ -13,7 +13,7 @@ export default function CulturePage() {
 
   return (
     <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Page Header */}
@@ -21,7 +21,7 @@ export default function CulturePage() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
@@ -31,7 +31,7 @@ export default function CulturePage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+              className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
             >
               {t.title}
             </motion.h1>
@@ -55,7 +55,7 @@ export default function CulturePage() {
               <motion.div
                 key={value.title}
                 variants={fadeInUp}
-                className="relative bg-surface-container-low p-10 group hover:bg-surface-container transition-colors duration-500"
+                className="relative bg-surface-container-low p-6 md:p-10 group hover:bg-surface-container transition-colors duration-500"
               >
                 {/* UID top-right */}
                 <div className="absolute top-4 right-4">
@@ -102,23 +102,23 @@ export default function CulturePage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="mt-px bg-surface-container-low border-t border-primary/10 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-primary/10"
+            className="mt-px grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/10"
           >
-            <div className="p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <span className="font-mono text-primary text-xs mb-2 block">SYSTEM_STATUS</span>
               <p className="font-headline text-2xl font-bold text-on-surface">FRONTIER_ACTIVE</p>
               <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'Innovation by default' : 'Innovación por defecto'}
               </p>
             </div>
-            <div className="p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <span className="font-mono text-primary text-xs mb-2 block">OPERATOR_COUNT</span>
               <p className="font-headline text-2xl font-bold text-on-surface">10+</p>
               <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'The frontier of LATAM devs' : 'La frontera de los devs LATAM'}
               </p>
             </div>
-            <div className="p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <span className="font-mono text-primary text-xs mb-2 block">LOCATION_VECTOR</span>
               <p className="font-headline text-2xl font-bold text-on-surface">CALI // WY</p>
               <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">

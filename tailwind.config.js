@@ -105,7 +105,9 @@ module.exports = {
       },
       animation: {
         // ── New Obsidian Architect animations ──
-        'hero-core': 'pulse-breathing 8s ease-in-out infinite, slow-rotate 60s linear infinite',
+        'hero-core': 'slow-rotate 60s linear infinite',
+        'hero-breathe': 'pulse-breathing 8s ease-in-out infinite',
+        'hero-glow': 'hero-glow-pulse 8s ease-in-out infinite',
         'hero-glitch': 'glitch-flicker 4s infinite step-end',
         'ambient-pulse': 'ambient-pulse 4s ease-in-out infinite',
         'scan-line': 'scan-line-move 3s linear infinite',
@@ -122,8 +124,12 @@ module.exports = {
       keyframes: {
         // ── New Obsidian Architect keyframes ──
         'pulse-breathing': {
-          '0%, 100%': { transform: 'scale(1)', filter: 'drop-shadow(0 0 50px rgba(0,240,255,0.3))' },
-          '50%': { transform: 'scale(1.05)', filter: 'drop-shadow(0 0 70px rgba(0,240,255,0.6))' },
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+        'hero-glow-pulse': {
+          '0%, 100%': { opacity: '0.35' },
+          '50%': { opacity: '0.7' },
         },
         'slow-rotate': {
           'from': { transform: 'rotate(0deg)' },

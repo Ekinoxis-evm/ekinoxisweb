@@ -21,7 +21,7 @@ export default function CertificationsClient({ partners }: Props) {
 
   return (
     <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Page Header */}
@@ -29,7 +29,7 @@ export default function CertificationsClient({ partners }: Props) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
@@ -39,7 +39,7 @@ export default function CertificationsClient({ partners }: Props) {
 
             <motion.h1
               variants={fadeInUp}
-              className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+              className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
             >
               {t.title}
             </motion.h1>
@@ -63,7 +63,7 @@ export default function CertificationsClient({ partners }: Props) {
               <motion.div
                 key={partner.id}
                 variants={fadeInUp}
-                className="relative bg-surface-container-low p-12 flex flex-col items-center group hover:bg-surface-container transition-colors duration-500 min-h-[280px]"
+                className="relative bg-surface-container-low p-8 md:p-12 flex flex-col items-center group hover:bg-surface-container transition-colors duration-500 min-h-[280px]"
               >
                 {/* UID */}
                 <div className="absolute top-4 right-4">
@@ -109,7 +109,7 @@ export default function CertificationsClient({ partners }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="flex items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
           >
             <span>CERT_PROVIDERS: {partners.length}</span>
             <span>CREDENTIAL_STATUS: VERIFIED</span>

@@ -81,7 +81,7 @@ export default function ResearchPage() {
 
   return (
     <AnimatedBackground variant="ambient">
-      <div className="min-h-screen py-24 px-6">
+      <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Page Header */}
@@ -89,7 +89,7 @@ export default function ResearchPage() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="mb-20"
+            className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
@@ -99,7 +99,7 @@ export default function ResearchPage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
+              className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6"
             >
               {t.title}
             </motion.h1>
@@ -125,7 +125,7 @@ export default function ResearchPage() {
               <motion.div
                 key={stream.code}
                 variants={fadeInUp}
-                className="bg-surface-container-low p-10 group hover:bg-surface-container transition-colors duration-500"
+                className="bg-surface-container-low p-6 md:p-10 group hover:bg-surface-container transition-colors duration-500"
               >
                 <div className="flex items-center gap-3 mb-8">
                   <ScanBadge variant="primary">{stream.code}</ScanBadge>
@@ -154,7 +154,7 @@ export default function ResearchPage() {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10"
           >
-            <div className="bg-surface-container-low p-10">
+            <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
                 <ScanBadge variant="secondary">R_AND_D → PRODUCTION</ScanBadge>
               </div>

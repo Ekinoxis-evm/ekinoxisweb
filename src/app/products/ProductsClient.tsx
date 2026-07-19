@@ -39,13 +39,13 @@ function SubLinksBlock({ links, label }: { links: SubLink[]; label: string }) {
             <div className="flex items-center gap-3 flex-shrink-0">
               {sl.url && (
                 <a href={sl.url} target="_blank" rel="noopener noreferrer"
-                  className="font-mono text-[9px] uppercase tracking-widest text-primary/70 hover:text-primary transition-colors duration-200">
+                  className="py-2 px-1 -my-1 font-mono text-[9px] uppercase tracking-widest text-primary/70 hover:text-primary transition-colors duration-200">
                   LIVE
                 </a>
               )}
               {sl.repo && (
                 <a href={sl.repo} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-outline hover:text-on-surface transition-colors duration-200">
+                  className="py-2 px-1 -my-1 flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-outline hover:text-on-surface transition-colors duration-200">
                   <Image src="/socials/github.png" alt="GitHub" width={11} height={11} className="opacity-60" />
                   REPO
                 </a>
@@ -83,7 +83,7 @@ function ProductCard({ product, language, modulesLabel }: {
             src={product.image_url}
             alt={product.name}
             fill
-            className="object-contain p-6 group-hover:scale-105 transition-transform duration-700"
+            className="object-contain p-6"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             unoptimized={product.image_url.startsWith('http')}
           />
@@ -183,7 +183,7 @@ function SectionHeader({ uid, title, description }: { uid: string; title: string
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: '-40px' }}
       className="mt-24 mb-12"
     >
       <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-4">
@@ -219,7 +219,7 @@ export default function ProductsClient({ products, hackathons }: Props) {
   const featuredSubLinks = featured ? getSubLinks(featured) : [];
 
   return (
-    <AnimatedBackground variant="ambient">
+    <AnimatedBackground variant="grid">
       <div className="min-h-screen py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
@@ -254,7 +254,7 @@ export default function ProductsClient({ products, hackathons }: Props) {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative bg-surface-container-low border border-primary/10 mb-px group hover:bg-surface-container transition-colors duration-500"
             >
-              <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+              <div className="absolute top-4 right-4 z-10 flex flex-col items-end sm:flex-row sm:items-center gap-1 sm:gap-2">
                 <ScanBadge variant={STATUS_VARIANT[featured.status] ?? 'muted'}>{featured.status}</ScanBadge>
                 <ScanBadge variant="primary">PROD_01 / FEATURED</ScanBadge>
               </div>
@@ -266,7 +266,7 @@ export default function ProductsClient({ products, hackathons }: Props) {
                       src={featured.image_url}
                       alt={featured.name}
                       fill
-                      className="object-contain p-8 group-hover:scale-105 transition-transform duration-700"
+                      className="object-contain p-8"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       unoptimized={featured.image_url.startsWith('http')}
                     />
@@ -384,7 +384,7 @@ export default function ProductsClient({ products, hackathons }: Props) {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: '-80px' }}
+                viewport={{ once: true, margin: '-40px' }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-secondary/10"
               >
                 {clients.map((product) => (
@@ -402,7 +402,7 @@ export default function ProductsClient({ products, hackathons }: Props) {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: '-80px' }}
+                viewport={{ once: true, margin: '-40px' }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-tertiary-dim/10"
               >
                 {experiments.map((product) => (

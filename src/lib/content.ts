@@ -4,6 +4,7 @@ export const content = {
   en: {
     hero: {
       title: "INNOVATION WITHOUT FRONTIERS",
+      titleLines: ["INNOVATION", "WITHOUT", "FRONTIERS"],
       subtitle: "We are the first Innovation Laboratory from the Colombian Pacific specialized in Blockchain, Cryptography and Artificial Intelligence.",
       contactUs: "Contact Us",
     },
@@ -21,7 +22,7 @@ export const content = {
     },
     education: {
       title: "EDUCATION",
-      description: "We enable free education in high technologies in collaboration with universities and government institutions. We conduct workshops, content and free access activities for the adoption of artificial intelligence, Blockchain and Crypto.",
+      description: "We enable free education in frontier technologies in collaboration with universities and government institutions. We conduct workshops, content and free access activities for the adoption of artificial intelligence, Blockchain and Crypto.",
       universities: {
         title: "University Partners",
         partners: [
@@ -42,7 +43,7 @@ export const content = {
     },
     certifications: {
       title: "CERTIFICATIONS",
-      description: "We encourage our hackers to get certified in cutting-edge technologies with leading certification partners.",
+      description: "We encourage our hackers to get certified and partner with leading certification providers to validate and recognize their skills.",
       partners: [
         { name: "Cyphrin", logo: "/education/certifications/cyphrin/cyphrinupdraft.png" },
         { name: "Speedrun Ethereum", logo: "/education/certifications/speedrunethereum/speedrunethereum.png" },
@@ -59,16 +60,16 @@ export const content = {
         title: "Participated Hackathons",
         items: [
           { name: "ETHGlobal", logo: "/hackathons/ethglobal.png" },
-          { name: "Tech Startup Weeekend", logo: "/hackathons/techstars.png" },
+          { name: "Tech Startup Weekend", logo: "/hackathons/techstars.png" },
           { name: "Base Batches 001", logo: "/hackathons/basebatches001.png" },
           { name: "Base Batches 002", logo: "/hackathons/basebatches002.png" },
-          { name: "Crecimiento Alepth", logo: "/hackathons/crecimientoaleph.png" },
+          { name: "Crecimiento Aleph", logo: "/hackathons/crecimientoaleph.png" },
         ],
       },
     },
     products: {
       title: "PRODUCTS",
-      description: " We design, develop and build prototypes, MVPs and proof of concepts products based on blockchain, crypto and AI.",
+      description: "We design, develop and ship prototypes, MVPs and proof-of-concept products based on blockchain, crypto and AI.",
       clientWork: {
         title: "CLIENT WORK",
         description: "Custom platforms designed, built and delivered for clients by Ekinoxis Labs.",
@@ -84,7 +85,7 @@ export const content = {
         ai: "AI Applications",
       },
       showcase: {
-        title: "Products Created in Ekinoxis Hackers Houses",
+        title: "Products Created in Ekinoxis Hacker Houses",
         items: [
           {
             name: "ETHCALI Wallet",
@@ -132,7 +133,7 @@ export const content = {
           {
             name: "AUKTRAFI",
             image: "/products/auktrafi.png",
-            description: "Onchain Auctions for Real State bookings.",
+            description: "On-chain auctions for real estate bookings.",
             website: "https://www.auktrafi.xyz/",
             github: "https://github.com/Ekinoxis-evm/auktrafi-frontend",
             githubSecondary: "https://github.com/Ekinoxis-evm/auktrafi_contracts",
@@ -391,7 +392,7 @@ export const content = {
         { 
           name: "William Martinez", 
           image: "/hackers/william.png",
-          profile: "Product Manager",
+          profile: "Founder & Product Manager",
           university: "ICESI",
           github: "https://github.com/wmb81321",
           linkedin: "https://www.linkedin.com/in/williammartinez8/",
@@ -400,7 +401,7 @@ export const content = {
         { 
           name: "Juan Urrea", 
           image: "/hackers/Juanurrea.png",
-          profile: "Researcher, Defi Specialist",
+          profile: "Researcher, DeFi Specialist",
           university: "Anon",
           github: "",
           linkedin: "",
@@ -409,7 +410,7 @@ export const content = {
         { 
           name: "Filadelfo Caicedo", 
           image: "/hackers/filadelfo.png",
-          profile: "Researcher, Defi Specialist",
+          profile: "Researcher, DeFi Specialist",
           university: "Anon",
           github: "https://github.com/phill900",
           linkedin: "https://www.linkedin.com/in/filadelfo-caicedo/",
@@ -427,7 +428,7 @@ export const content = {
         { 
           name: "Cristobal Valencia", 
           image: "/hackers/cristobal.jpg",
-          profile: "Full Stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/DevCristobalvc/",
           linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
@@ -463,7 +464,7 @@ export const content = {
         { 
           name: "Jhon Alex Torres", 
           image: "/hackers/jhonalex.jpg",
-          profile: "Full stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/DevJhonnTorres",
           linkedin: "https://www.linkedin.com/in/jhonnalexandertorrescastro",
@@ -472,7 +473,7 @@ export const content = {
         { 
           name: "Tania Agredo", 
           image: "/hackers/taniaagredo.png",
-          profile: "Full stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/taniagredo/",
           linkedin: "https://www.linkedin.com/in/tania-agredoh?trk=contact-info",
@@ -481,7 +482,7 @@ export const content = {
         { 
           name: "Juice Sands", 
           image: "/hackers/juicesands.png",
-          profile: "Smartcontract Developer",
+          profile: "Smart Contract Developer",
           university: "Anon",
           github: "https://github.com/ICREE8",
           linkedin: "",
@@ -511,7 +512,8 @@ export const content = {
   es: {
     hero: {
       title: "EKINOXIS ES INNOVACIÓN SIN FRONTERAS",
-      subtitle: "Somos el primer Laboratorio de Innovación del Pacífico Colombiano especializado en Blockchain, Criptografía e inteligencia artificial.",
+      titleLines: ["INNOVACIÓN", "SIN", "FRONTERAS"],
+      subtitle: "Somos el primer Laboratorio de Innovación del Pacífico Colombiano especializado en Blockchain, Criptografía e Inteligencia Artificial.",
       contactUs: "Contáctanos",
     },
     nav: {
@@ -549,14 +551,14 @@ export const content = {
     },
     certifications: {
       title: "CERTIFICACIONES",
-      description: "Colaboramos con socios certificadores líderes para validar y reconocer habilidades en tecnologías de vanguardia.",
+      description: "Impulsamos a nuestros hackers a certificarse y colaboramos con socios certificadores líderes para validar y reconocer sus habilidades.",
       partners: [
         { name: "Cyphrin", logo: "/education/certifications/cyphrin/Updraft Logo Full - Dark.png" },
       ],
     },
     hackerHouse: {
       title: "HACKER HOUSE",
-      description: "Organizamos hacker houses y sesiones de hacking para participar en hackathones globales. Diseñamos, ejecutamos o apoyamos la creación de espacios gratuitos para desarrolladores que puedan construir productos o participar en hackathon internacionales.",
+      description: "Organizamos hacker houses y sesiones de hacking para participar en hackathones globales. Diseñamos, ejecutamos o apoyamos la creación de espacios gratuitos para desarrolladores que puedan construir productos o participar en hackathones internacionales.",
       cta: "Únete a Nuestra Próxima Sesión",
       hackathons: {
         title: "Hackathones Participados",
@@ -567,7 +569,7 @@ export const content = {
     },
     products: {
       title: "PRODUCTOS",
-      description: "Creamos productos basados en blockchain, cripto e IA. Diseñamos, desarrollamos y construimos prototipos, MVPs y pruebas de conceptos que integren WEB3 y AI.",
+      description: "Creamos productos basados en blockchain, cripto e IA. Diseñamos, desarrollamos y construimos prototipos, MVPs y pruebas de concepto que integren WEB3 y AI.",
       clientWork: {
         title: "TRABAJO PARA CLIENTES",
         description: "Plataformas a la medida diseñadas, construidas y entregadas a clientes por Ekinoxis Labs.",
@@ -609,7 +611,7 @@ export const content = {
           {
             name: "CARP2P / TCARS",
             image: "/products/tcars.png",
-            description: "Tokeniza tu carro, tradéalo sin problemas, o úsalo como colateral para préstamos.",
+            description: "Tokeniza tu carro, intercámbialo sin fricción, o úsalo como colateral para préstamos.",
             website: "https://basebathches-2025.vercel.app/",
             github: "https://github.com/Ekinoxis-evm/tcars_xyz",
             hackathon: "Base Batches 001",
@@ -643,7 +645,7 @@ export const content = {
           {
             name: "1UP ESPORTS / Gaming Tower",
             image: "/products/1up.png",
-            description: "Tokenized Gaming Tower en Base. Desafíos con identidad, NFTs de cursos con pagos en ETH y token 1UP para acciones de gaming.",
+            description: "Torre de Gaming tokenizada en Base. Desafíos con identidad, NFTs de cursos con pagos en ETH y token 1UP para acciones de gaming.",
             website: "https://gamintower-fe.vercel.app/",
             github: "https://github.com/Ekinoxis-evm/gamintower-fe",
             githubSecondary: "https://github.com/Ekinoxis-evm/gaming-tower",
@@ -742,6 +744,9 @@ export const content = {
             "/tecnologies/AI/Claude_AI_logo.png",
             "/tecnologies/AI/cursor.png",
             "/tecnologies/AI/v0-logo-light.png",
+            "/tecnologies/AI/gemini.webp",
+            "/tecnologies/AI/grok.webp",
+            "/tecnologies/AI/deepseek.webp",
           ],
         },
         crypto_networks: {
@@ -768,6 +773,7 @@ export const content = {
           tools: [
             "/tecnologies/Crypto/wallet providers/privy.png",
             "/tecnologies/Crypto/wallet providers/alchemy.png",
+            "/tecnologies/Crypto/wallet providers/thirdweb.png",
           ],
         },
         development: {
@@ -804,6 +810,7 @@ export const content = {
           tools: [
             "/tecnologies/marketing/qK72DSBL_400x400.jpg",
             "/tecnologies/marketing/shopify_logo_white.png",
+            "/tecnologies/marketing/metaads.svg",
           ],
         },
         paymentintegrations: {
@@ -812,6 +819,8 @@ export const content = {
             "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
             "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
             "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
+            "/tecnologies/paymentintegrations/MercadoPago/mercadopago.png",
+            "/tecnologies/paymentintegrations/wompi/wompi.png",
           ],
         },
       },
@@ -883,7 +892,7 @@ export const content = {
         { 
           name: "William Martinez", 
           image: "/hackers/william.png",
-          profile: "Founder",
+          profile: "Fundador & Product Manager",
           university: "ICESI",
           github: "https://github.com/wmb81321",
           linkedin: "https://www.linkedin.com/in/williammartinez8/",
@@ -892,7 +901,7 @@ export const content = {
         { 
           name: "Juan Urrea", 
           image: "/hackers/Juanurrea.png",
-          profile: "Researcher, Defi Specialist",
+          profile: "Researcher, DeFi Specialist",
           university: "Anon",
           github: "",
           linkedin: "",
@@ -901,7 +910,7 @@ export const content = {
         { 
           name: "Filadelfo Caicedo", 
           image: "/hackers/filadelfo.png",
-          profile: "Researcher, Defi Specialist",
+          profile: "Researcher, DeFi Specialist",
           university: "Anon",
           github: "https://github.com/phill900",
           linkedin: "https://www.linkedin.com/in/filadelfo-caicedo/",
@@ -919,7 +928,7 @@ export const content = {
         { 
           name: "Cristobal Valencia", 
           image: "/hackers/cristobal.jpg",
-          profile: "Full Stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/DevCristobalvc/",
           linkedin: "https://www.linkedin.com/in/cristobalvalenciaceron",
@@ -955,7 +964,7 @@ export const content = {
         { 
           name: "Jhon Alex Torres", 
           image: "/hackers/jhonalex.jpg",
-          profile: "Full stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/DevJhonnTorres",
           linkedin: "https://www.linkedin.com/in/jhonnalexandertorrescastro",
@@ -964,16 +973,16 @@ export const content = {
         { 
           name: "Tania Agredo", 
           image: "/hackers/taniaagredo.png",
-          profile: "Full stack Developer",
+          profile: "Full-Stack Developer",
           university: "USC",
           github: "https://github.com/taniagredo/",
           linkedin: "https://www.linkedin.com/in/tania-agredoh?trk=contact-info",
           x: "https://x.com/devil_skyy?s=21"
         },
         { 
-          name: "Juice Sands", 
-          image: "/hackers/william.png",
-          profile: "Smartcontract Developer",
+          name: "Juice Sands",
+          image: "/hackers/juicesands.png",
+          profile: "Smart Contract Developer",
           university: "Anon",
           github: "https://github.com/ICREE8",
           linkedin: "",
@@ -985,6 +994,7 @@ export const content = {
       x: "https://x.com/ekinoxis",
       instagram: "https://www.instagram.com/ekinoxis.labs/",
       telegram: "https://t.me/ekinoxis",
+      linkedin: "https://www.linkedin.com/company/ekinoxis-labs/",
       discord: "https://discord.gg/3AsvCE3Pwq",
       github: "https://github.com/ekinoxis-evm/",
     },
