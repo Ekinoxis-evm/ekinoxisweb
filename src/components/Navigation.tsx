@@ -49,7 +49,7 @@ export default function Navigation() {
       items: [
         { href: '/services/consultation', label: language === 'en' ? 'Consultation' : 'Consultoría' },
         { href: '/services/web-development', label: language === 'en' ? 'Web Dev' : 'Desarrollo Web' },
-        { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Apps' },
+        { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Desarrollo de Apps' },
       ],
     },
     'our-value': {
@@ -62,6 +62,7 @@ export default function Navigation() {
       ],
     },
     products: { label: t.products, href: '/products' },
+    courses: { label: t.courses, href: '/courses' },
     'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
   };
 
@@ -140,6 +141,12 @@ export default function Navigation() {
               className={`${linkBase} ${isActive('/products') ? linkActive : linkInactive}`}
             >
               {menuItems['products'].label}
+            </Link>
+            <Link
+              href="/courses"
+              className={`${linkBase} ${isActive('/courses') ? linkActive : linkInactive}`}
+            >
+              {menuItems['courses'].label}
             </Link>
             <Link
               href="/hacker-house"

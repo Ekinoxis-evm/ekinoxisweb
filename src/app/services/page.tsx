@@ -16,8 +16,8 @@ const SERVICE_TRACKS = {
       code: '01',
       type: 'CONSULTANCY_TRACK',
       title: 'Consultation',
-      tagline: 'Blockchain, crypto & AI guidance.',
-      price: 'FROM $50',
+      tagline: 'Talks, private sessions & roadmaps on AI, payments & agents.',
+      price: 'FROM $350',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
@@ -27,7 +27,7 @@ const SERVICE_TRACKS = {
       type: 'DEVELOPMENT_TRACK',
       title: 'Web Development',
       tagline: 'Online business live in 5 days.',
-      price: 'FROM $300',
+      price: 'FROM $900',
       href: '/services/web-development',
       badgeVariant: 'secondary' as const,
     },
@@ -37,7 +37,7 @@ const SERVICE_TRACKS = {
       type: 'ENGINEERING_TRACK',
       title: 'App Building',
       tagline: 'Custom apps with blockchain & AI.',
-      price: 'ENTERPRISE',
+      price: 'FROM $8,000',
       href: '/services/app-building',
       badgeVariant: 'tertiary' as const,
     },
@@ -48,8 +48,8 @@ const SERVICE_TRACKS = {
       code: '01',
       type: 'CONSULTANCY_TRACK',
       title: 'Consultoría',
-      tagline: 'Orientación en blockchain, cripto e IA.',
-      price: 'DESDE $50',
+      tagline: 'Charlas, sesiones privadas y roadmaps en IA, pagos y agentes.',
+      price: 'DESDE $350',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
@@ -59,7 +59,7 @@ const SERVICE_TRACKS = {
       type: 'DEVELOPMENT_TRACK',
       title: 'Desarrollo Web',
       tagline: 'Negocio online en 5 días.',
-      price: 'DESDE $300',
+      price: 'DESDE $900',
       href: '/services/web-development',
       badgeVariant: 'secondary' as const,
     },
@@ -69,7 +69,7 @@ const SERVICE_TRACKS = {
       type: 'ENGINEERING_TRACK',
       title: 'Desarrollo de Apps',
       tagline: 'Apps a medida con blockchain e IA.',
-      price: 'ENTERPRISE',
+      price: 'DESDE $8,000',
       href: '/services/app-building',
       badgeVariant: 'tertiary' as const,
     },
@@ -168,7 +168,7 @@ export default function ServicesPage() {
           >
             <div>
               <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">
-                UNSURE_WHICH_TRACK?
+                {language === 'en' ? 'UNSURE_WHICH_TRACK?' : '¿NO_SABES_QUÉ_TRACK?'}
               </p>
               <p className="font-body text-on-surface-variant text-sm">
                 {language === 'en' ? 'Talk to us first. Free preliminary diagnosis.' : 'Habla con nosotros primero. Diagnóstico preliminar gratis.'}

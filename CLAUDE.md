@@ -12,7 +12,8 @@
 - **Education** — university partnerships, free workshops, certifications
 - **Community** — hacker houses, hackathon participation
 - **Products** — 8+ internally built blockchain/AI products (IP generation)
-- **Services** — paid consulting ($50–$2,500) and custom app/web development ($5k–enterprise)
+- **Services** — paid consulting ($350 session → $2,000/mo retainer), fast web deployment ($900–$3,500) and custom app building ($8k MVP → $12k/mo dedicated team)
+- **Courses** — cohort-based, project-first courses (`/courses`, registry in `src/lib/courses.ts`)
 - **Research** — frontier tech with institutional partners
 
 **Market Focus**: LATAM blockchain adoption, real-world asset (RWA) tokenization, SME financial inclusion
@@ -185,9 +186,14 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   ├── tech-stack/              # Terminal OS visualization (static content.ts)
 │   ├── services/
 │   │   ├── page.tsx             # 3 track cards (CONSULTANCY / DEVELOPMENT / ENGINEERING)
-│   │   ├── consultation/        # Deliverables sidebar + 4×2 pricing matrix
+│   │   ├── consultation/        # 5 topic cards + talks panel, 4-step funnel, 4 session formats (Focus / Roadmap Sprint / Workshop / Retainer)
 │   │   ├── web-development/     # 3 pricing tiers + process flow + deliverables
-│   │   └── app-building/        # Feature modules + tech stack chips + 6-step process
+│   │   └── app-building/        # Feature modules + tech stack + 6-step process + 3 tiers from content.ts services.pricing
+│   ├── courses/
+│   │   ├── page.tsx             # Course grid from src/lib/courses.ts + "how we teach" + private-cohort CTA
+│   │   └── [slug]/
+│   │       ├── page.tsx         # Server Component — generateStaticParams from registry, notFound() on unknown slug
+│   │       └── CourseClient.tsx # Client Component — spec, price, audience/outcomes/prereqs, syllabus, enroll CTA
 │   ├── admin/
 │   │   ├── login/               # Google OAuth login page
 │   │   └── (protected)/         # Route group — all children require requireAdmin()
@@ -219,6 +225,7 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │
 └── lib/
     ├── content.ts                # Bilingual UI text (nav, page titles, static descriptions, CTAs)
+    ├── courses.ts                # Course registry (static, bilingual) — move to Supabase once there are several
     ├── animations.ts             # Shared Framer Motion variants (hidden/visible keys)
     └── supabase/
         ├── client.ts             # Browser Supabase client
@@ -427,6 +434,7 @@ Value (dropdown)
   ├─ Certifications → /certifications
   └─ Education → /education
 Products → /products
+Courses → /courses
 Hacker House → /hacker-house
 [EN/ES toggle]
 ```
@@ -522,6 +530,12 @@ Go to `/admin/hackers/new` — fill in name, photo, profile (EN + ES), universit
 
 ### Add a new hackathon / hacker house event
 Go to `/admin/hackathons/new` — fill in name, logo, website, start/end dates. Status (incoming/ongoing/past) is derived automatically from dates.
+
+### Add or edit a course
+Edit `src/lib/courses.ts` — one `Course` object per course, every string in both `en` and `es`. `status` drives the badge and CTA label (`open` / `waitlist` / `coming_soon`); `price: null` renders "Price TBA"; `modules: { en: [], es: [] }` renders the "syllabus published with the announcement" note. `enrollUrl` falls back to Telegram. The detail route is prerendered from the registry, so a new slug needs a rebuild/deploy.
+
+### Change service prices
+Consultation formats live in `src/app/services/consultation/page.tsx`; web packages in `src/app/services/web-development/page.tsx` (USD + COP); app-building tiers in `content.ts` → `services.pricing.plans`; the three "FROM $…" teasers on `/services` are in `src/app/services/page.tsx`. Keep all four in agreement and update both `en` and `es`.
 
 ### Add a new technology logo
 1. Add logo to `/public/tecnologies/<Category>/`

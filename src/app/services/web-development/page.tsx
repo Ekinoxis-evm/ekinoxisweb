@@ -12,7 +12,7 @@ const webDevContent = {
   en: {
     title: 'FAST WEB_DEPLOYMENT',
     subtitle: 'Online in 5 days. Payments, WhatsApp & automation ready.',
-    trustLine: 'From $300 · No hidden fees',
+    trustLine: 'From $900 · Fixed price',
     perfectFor: ['Entrepreneurs launching fast', 'Local businesses going digital', 'Consultants & service providers', 'Online stores & digital products'],
     whatYouGet: {
       title: 'Included',
@@ -21,9 +21,9 @@ const webDevContent = {
     pricing: {
       title: 'Choose Your Package',
       plans: [
-        { name: 'Online Business', price: '$300', priceAlt: '1.000.000 COP', badge: 'Best to start', features: ['Admin panel', 'Appointment scheduling', 'WhatsApp integration', 'Stripe or Wompi payments', 'Domain + hosting (1 year*)', 'Corporate email', 'Email confirmations', '5-day delivery'], cta: 'Start' },
-        { name: 'Professional', price: '$600', priceAlt: '2.000.000 COP', badge: 'Most popular', popular: true, features: ['Everything in Basic, plus:', 'AI Agent on WhatsApp or Telegram', 'API billing direct to client', '+1 live feedback meeting', '+2 feedback iterations', '5-day delivery'], cta: 'Go Pro' },
-        { name: 'Complete', price: '$1,000', priceAlt: '4.000.000 COP', badge: 'For teams & scale', features: ['Everything above, plus:', 'CRM — manage & follow up clients', 'Lead tracking & pipeline', 'Control for growth'], cta: 'Build Complete' },
+        { name: 'Online Business', price: '$900', priceAlt: '3.600.000 COP', badge: 'Best to start', features: ['Admin panel', 'Appointment scheduling', 'WhatsApp integration', 'Stripe or Wompi payments', 'Domain + hosting (1 year*)', 'Corporate email', 'Email confirmations', '5-day delivery'], cta: 'Start' },
+        { name: 'Professional', price: '$1,800', priceAlt: '7.200.000 COP', badge: 'Most popular', popular: true, features: ['Everything in Online Business, plus:', 'AI Agent on WhatsApp or Telegram', 'API billing direct to client', '+1 live feedback meeting', '+2 feedback iterations', '5-day delivery'], cta: 'Go Pro' },
+        { name: 'Complete', price: '$3,500', priceAlt: '14.000.000 COP', badge: 'For teams & scale', features: ['Everything above, plus:', 'CRM — manage & follow up clients', 'Lead tracking & pipeline', 'Control for growth'], cta: 'Build Complete' },
       ],
       note: '*Domains and hosting subject to availability',
     },
@@ -33,7 +33,7 @@ const webDevContent = {
   es: {
     title: 'DESPLIEGUE_WEB RÁPIDO',
     subtitle: 'Online en 5 días. Pagos, WhatsApp y automatización listos.',
-    trustLine: 'Desde $300 · Sin costos ocultos',
+    trustLine: 'Desde $900 · Precio fijo',
     perfectFor: ['Emprendedores lanzando rápido', 'Negocios locales digitalizándose', 'Consultores y proveedores de servicios', 'Tiendas online y productos digitales'],
     whatYouGet: {
       title: 'Incluido',
@@ -42,13 +42,13 @@ const webDevContent = {
     pricing: {
       title: 'Elige Tu Paquete',
       plans: [
-        { name: 'Negocio Online', price: '$300', priceAlt: '1.000.000 COP', badge: 'Mejor para empezar', features: ['Panel de administración', 'Agendamiento de citas', 'Integración WhatsApp', 'Stripe o Wompi', 'Dominio + hosting (1 año*)', 'Correo corporativo', 'Confirmaciones email', 'Entrega 5 días'], cta: 'Comenzar' },
-        { name: 'Profesional', price: '$600', priceAlt: '2.000.000 COP', badge: 'Más popular', popular: true, features: ['Todo lo básico, más:', 'Agente IA en WhatsApp o Telegram', 'API facturada al cliente', '+1 reunión de feedback', '+2 iteraciones', 'Entrega 5 días'], cta: 'Ir Pro' },
-        { name: 'Completo', price: '$1,000', priceAlt: '4.000.000 COP', badge: 'Para equipos', features: ['Todo lo anterior, más:', 'CRM para gestión de clientes', 'Pipeline y seguimiento', 'Control para crecer'], cta: 'Construir Completo' },
+        { name: 'Negocio Online', price: '$900', priceAlt: '3.600.000 COP', badge: 'Mejor para empezar', features: ['Panel de administración', 'Agendamiento de citas', 'Integración WhatsApp', 'Stripe o Wompi', 'Dominio + hosting (1 año*)', 'Correo corporativo', 'Confirmaciones email', 'Entrega 5 días'], cta: 'Comenzar' },
+        { name: 'Profesional', price: '$1,800', priceAlt: '7.200.000 COP', badge: 'Más popular', popular: true, features: ['Todo lo de Negocio Online, más:', 'Agente IA en WhatsApp o Telegram', 'API facturada al cliente', '+1 reunión de feedback', '+2 iteraciones', 'Entrega 5 días'], cta: 'Ir Pro' },
+        { name: 'Completo', price: '$3,500', priceAlt: '14.000.000 COP', badge: 'Para equipos', features: ['Todo lo anterior, más:', 'CRM para gestión de clientes', 'Pipeline y seguimiento', 'Control para crecer'], cta: 'Construir Completo' },
       ],
       note: '*Dominios y hosting sujetos a disponibilidad',
     },
-    howItWorks: ['Elige tu plan', 'Paga 50% adelantado', 'Construimos y compartimos progreso', 'Feedback y ajustes', 'Paga el 50% restante', 'Sal en vivo'],
+    howItWorks: ['Elige tu plan', 'Paga 50% adelantado', 'Construimos y compartimos progreso', 'Feedback y ajustes', 'Paga el 50% restante', 'Lanzamiento'],
     finalCta: 'Comienza tu negocio hoy',
   },
 };
@@ -196,14 +196,19 @@ export default function WebDevelopmentPage() {
             className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">READY_TO_DEPLOY?</p>
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{language === 'en' ? 'READY_TO_DEPLOY?' : '¿LISTO_PARA_DESPLEGAR?'}</p>
               <p className="font-body text-on-surface-variant text-sm">{t.finalCta}</p>
             </div>
-            <a href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4" target="_blank" rel="noopener noreferrer">
-              <Button variant="primary">
-                {language === 'en' ? 'Get Started' : 'Comenzar'}
-              </Button>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <a href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4" target="_blank" rel="noopener noreferrer">
+                <Button variant="primary" className="w-full justify-center">
+                  {language === 'en' ? 'Get Started' : 'Comenzar'}
+                </Button>
+              </a>
+              <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-full justify-center">Telegram</Button>
+              </a>
+            </div>
           </motion.div>
 
         </div>

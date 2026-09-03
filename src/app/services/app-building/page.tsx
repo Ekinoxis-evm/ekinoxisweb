@@ -36,10 +36,10 @@ const appContent = {
       { num: '05', title: 'Deployment', desc: 'Production launch.' },
       { num: '06', title: 'Support', desc: 'Ongoing maintenance.' },
     ],
-    cta: 'Request Consultation',
+    cta: 'Book a Call',
   },
   es: {
-    title: 'CONSTRUCCIÓN DE APPS FRONTERA',
+    title: 'DESARROLLO DE APPS_FRONTERA',
     subtitle: 'Apps móviles y web con blockchain e IA en el núcleo.',
     description: 'Diseñamos y construimos aplicaciones a medida — desde MVPs hasta sistemas en producción — integrando tecnología de frontera.',
     features: [
@@ -64,7 +64,7 @@ const appContent = {
       { num: '05', title: 'Despliegue', desc: 'Lanzamiento a producción.' },
       { num: '06', title: 'Soporte', desc: 'Mantenimiento continuo.' },
     ],
-    cta: 'Solicitar Consulta',
+    cta: 'Agendar Llamada',
   },
 };
 
@@ -167,7 +167,7 @@ export default function AppBuildingPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-primary/10 mb-px"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-primary/10 mb-px"
           >
             {t.process.map((step, idx) => (
               <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
@@ -180,30 +180,83 @@ export default function AppBuildingPage() {
             ))}
           </motion.div>
 
-          {/* Pricing from content.ts + CTA */}
+          {/* Pricing tiers from content.ts */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
+            className="mb-px"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
+              <ScanBadge variant="secondary">PRICING_MODEL</ScanBadge>
+              <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
+                {services.pricing.title}
+              </span>
+            </div>
+            <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-6">
+              {services.pricing.description}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/10">
+              {services.pricing.plans.map((plan, idx) => (
+                <div
+                  key={idx}
+                  className={`relative bg-surface-container-low p-6 md:p-10 flex flex-col ${plan.popular ? 'ring-1 ring-inset ring-primary/40' : ''}`}
+                >
+                  <div className="mb-6">
+                    <ScanBadge variant={plan.popular ? 'primary' : 'muted'}>
+                      {plan.popular ? (language === 'en' ? 'Most popular' : 'Más popular') : `TIER_${String(idx + 1).padStart(2, '0')}`}
+                    </ScanBadge>
+                  </div>
+                  <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-2">
+                    {plan.name}
+                  </h3>
+                  <div className="mb-1">
+                    <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
+                  </div>
+                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-8">
+                    {plan.period}
+                  </p>
+                  <ul className="space-y-3 flex-1 mb-8">
+                    {plan.features.map((f, fi) => (
+                      <li key={fi} className="flex gap-2">
+                        <span className="font-mono text-primary/50 text-sm flex-shrink-0">{'>'}</span>
+                        <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a href={services.calendarLink} target="_blank" rel="noopener noreferrer">
+                    <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
+                      {t.cta}
+                    </Button>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">PRICING_MODEL</p>
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{language === 'en' ? 'NOT_SURE_WHICH_TIER?' : '¿NO_SABES_QUÉ_TIER?'}</p>
               <p className="font-body text-on-surface-variant text-sm max-w-lg">
-                {services.pricing?.description ?? (language === 'en'
-                  ? 'Custom scoping. Let\'s discuss your project requirements and timeline.'
-                  : 'Alcance personalizado. Hablemos de los requisitos y el timeline de tu proyecto.')}
+                {language === 'en'
+                  ? 'Book a free diagnosis call. We scope it with you and send a fixed quote within 48 hours.'
+                  : 'Agenda una llamada de diagnóstico gratis. Definimos el alcance contigo y enviamos una cotización fija en 48 horas.'}
               </p>
             </div>
-            <div className="flex gap-3">
-              <a href={services.calendarLink ?? '#'} target="_blank" rel="noopener noreferrer">
-                <Button variant="primary">{t.cta}</Button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <a href={services.calendarLink} target="_blank" rel="noopener noreferrer">
+                <Button variant="primary" className="w-full justify-center">{t.cta}</Button>
               </a>
-              <Link href="/services">
-                <Button variant="ghost">
-                  {language === 'en' ? 'All Services' : 'Servicios'}
-                </Button>
-              </Link>
+              <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="w-full justify-center">Telegram</Button>
+              </a>
             </div>
           </motion.div>
 
