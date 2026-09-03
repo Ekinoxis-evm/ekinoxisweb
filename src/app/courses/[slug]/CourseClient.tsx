@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { COURSES_ENROLL_FALLBACK, type Course, type CourseStatus, type CourseLevel } from '@/lib/courses';
+import type { Course, CourseStatus, CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
+import EnrollButton from '@/components/courses/EnrollButton';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const ui = {
@@ -64,7 +65,6 @@ interface Props { course: Course }
 export default function CourseClient({ course }: Props) {
   const { language } = useLanguage();
   const t = ui[language];
-  const enrollUrl = course.enrollUrl ?? COURSES_ENROLL_FALLBACK;
   const modules = course.modules[language];
 
   const facts = [
@@ -167,9 +167,7 @@ export default function CourseClient({ course }: Props) {
                   <p className="font-headline text-2xl font-bold text-on-surface-variant">{t.priceTbd}</p>
                 )}
               </div>
-              <a href={enrollUrl} target="_blank" rel="noopener noreferrer" className="mt-8">
-                <Button variant="primary" className="w-full justify-center">{t.cta[course.status]}</Button>
-              </a>
+              <EnrollButton course={course} label={t.cta[course.status]} className="mt-8" />
             </div>
           </motion.div>
 
@@ -244,9 +242,7 @@ export default function CourseClient({ course }: Props) {
               <p className="font-body text-on-surface-variant text-sm max-w-lg">{t.nextText}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <a href={enrollUrl} target="_blank" rel="noopener noreferrer">
-                <Button variant="primary" className="w-full justify-center">{t.cta[course.status]}</Button>
-              </a>
+              <EnrollButton course={course} label={t.cta[course.status]} />
               <Link href="/courses">
                 <Button variant="ghost" className="w-full justify-center">{t.allCourses}</Button>
               </Link>

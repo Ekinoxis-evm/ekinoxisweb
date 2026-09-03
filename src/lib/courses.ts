@@ -47,6 +47,11 @@ export interface Course {
   enrollUrl?: string;
   /** Platforms taught, rendered as a logo strip. */
   tools: CourseTool[];
+  /**
+   * Name of the env var holding this course's Stripe price id (price_…).
+   * Only read when status === 'open'. Keeps test/live ids out of the code.
+   */
+  stripePriceEnv?: string;
 }
 
 export const COURSES_ENROLL_FALLBACK = 'https://t.me/ekinoxis';
@@ -79,6 +84,7 @@ export const courses: Course[] = [
     },
     price: '$450',
     priceAlt: '1.800.000 COP',
+    stripePriceEnv: 'STRIPE_PRICE_BUSINESS_STACK',
     tools: [
       { name: 'Shopify', logo: '/tecnologies/marketing/shopify_logo_white.png' },
       { name: 'Stripe', logo: '/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png' },

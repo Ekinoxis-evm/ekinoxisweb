@@ -39,6 +39,51 @@ export type Database = {
         }
         Relationships: []
       }
+      course_enrollments: {
+        Row: {
+          id: string
+          created_at: string
+          stripe_session_id: string
+          stripe_customer_id: string | null
+          stripe_payment_intent: string | null
+          course_slug: string
+          email: string | null
+          name: string | null
+          amount_total: number | null
+          currency: string | null
+          status: string
+          livemode: boolean
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          stripe_session_id: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent?: string | null
+          course_slug: string
+          email?: string | null
+          name?: string | null
+          amount_total?: number | null
+          currency?: string | null
+          status?: string
+          livemode?: boolean
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          stripe_session_id?: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent?: string | null
+          course_slug?: string
+          email?: string | null
+          name?: string | null
+          amount_total?: number | null
+          currency?: string | null
+          status?: string
+          livemode?: boolean
+        }
+        Relationships: []
+      }
       culture_values: {
         Row: {
           created_at: string
