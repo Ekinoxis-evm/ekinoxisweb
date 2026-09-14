@@ -31,16 +31,23 @@ export default function ClientCard({ client, language, uid }: Props) {
         <ScanBadge variant="muted">{uid}</ScanBadge>
       </div>
 
-      {/* Logo plate — greyscale at rest, full colour on hover, like the partner grids */}
+      {/*
+        Client marks arrive in two incompatible shapes: transparent logos drawn
+        for a dark background (Talentum), and opaque light-background profile
+        avatars (LIVE!, SWRFM, MGM). A full-width greyscale plate flatters the
+        first and ruins the second. A fixed square tile suits both — the opaque
+        ones read as deliberate chips instead of glaring bands — so the mark
+        keeps its own colour, which for MGM and SWRFM *is* the brand.
+      */}
       <div className="relative h-40 bg-surface-container flex items-center justify-center px-10 flex-shrink-0">
         {logo ? (
-          <div className="relative w-full h-20">
+          <div className="relative w-24 h-24">
             <Image
               src={logo}
               alt={client.name}
               fill
-              className="object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-contain opacity-85 group-hover:opacity-100 transition-opacity duration-500"
+              sizes="96px"
               unoptimized={logo.startsWith('http')}
             />
           </div>
@@ -93,7 +100,7 @@ export default function ClientCard({ client, language, uid }: Props) {
                 alt=""
                 width={12}
                 height={12}
-                className="grayscale opacity-60 group-hover:grayscale-0 transition-all duration-300"
+                className="opacity-60 group-hover:opacity-100 transition-opacity duration-300"
               />
               Instagram
             </a>
