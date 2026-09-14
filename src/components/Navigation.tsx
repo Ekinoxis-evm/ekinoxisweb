@@ -7,6 +7,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
+/** A leaf link in the nav. `exact` stops a parent route from matching its children. */
+type NavItem = { href: string; label: string; exact?: boolean };
+
 export default function Navigation() {
   const { language, setLanguage } = useLanguage();
   const pathname = usePathname();
@@ -61,15 +64,26 @@ export default function Navigation() {
         { href: '/education', label: t.education },
       ],
     },
-    products: { label: t.products, href: '/products' },
+    portfolio: {
+      label: t.portfolio,
+      href: '/portfolio',
+      items: [
+        { href: '/portfolio', label: language === 'en' ? 'All work' : 'Todo', exact: true },
+        { href: '/portfolio/products', label: language === 'en' ? 'Products' : 'Productos' },
+        { href: '/portfolio/experiments', label: language === 'en' ? 'Experiments' : 'Experimentos' },
+        { href: '/portfolio/proofs-of-concept', label: language === 'en' ? 'Proofs of Concept' : 'Pruebas de Concepto' },
+        { href: '/portfolio/clients', label: language === 'en' ? 'Clients' : 'Clientes' },
+      ],
+    },
     courses: { label: t.courses, href: '/courses' },
     'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
   };
 
-  const isActive = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(href));
+  const isActive = (href: string, exact = false) =>
+    exact ? pathname === href : pathname === href || (href !== '/' && pathname.startsWith(href));
   const isMenuActive = (key: string) => {
     const m = menuItems[key as keyof typeof menuItems];
-    return 'items' in m && m.items?.some((i) => isActive(i.href));
+    return 'items' in m && m.items?.some((i) => isActive(i.href, (i as NavItem).exact));
   };
 
   const linkBase = 'font-label text-xs uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
@@ -136,12 +150,20 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            <Link
-              href="/products"
-              className={`${linkBase} ${isActive('/products') ? linkActive : linkInactive}`}
-            >
-              {menuItems['products'].label}
-            </Link>
+            <DropdownMenu
+              label={menuItems['portfolio'].label}
+              href={menuItems['portfolio'].href}
+              items={menuItems['portfolio'].items}
+              menuKey="portfolio"
+              expanded={expandedMenu}
+              setExpanded={setExpandedMenu}
+              isActive={isMenuActive('portfolio')}
+              isItemActive={isActive}
+              variants={dropdownVariants}
+              linkBase={linkBase}
+              linkActive={linkActive}
+              linkInactive={linkInactive}
+            />
             <Link
               href="/courses"
               className={`${linkBase} ${isActive('/courses') ? linkActive : linkInactive}`}
@@ -195,18 +217,7 @@ export default function Navigation() {
           >
             <div className="px-6 py-2 flex flex-col">
               {Object.entries(menuItems).map(([key, menu]) => {
-                if ('href' in menu && menu.href) {
-                  return (
-                    <Link
-                      key={key}
-                      href={menu.href}
-                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary border-l-2 border-l-primary pl-3 bg-primary/5' : 'text-on-surface-variant'}`}
-                    >
-                      {menu.label}
-                    </Link>
-                  );
-                }
-                if ('items' in menu) {
+                if ('items' in menu && menu.items) {
                   return (
                     <div key={key} className="border-b border-outline-variant/10">
                       <button
@@ -222,7 +233,7 @@ export default function Navigation() {
                             <Link
                               key={item.href}
                               href={item.href}
-                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href) ? 'text-primary border-l-2 border-primary bg-primary/5' : 'text-outline'}`}
+                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href, (item as NavItem).exact) ? 'text-primary border-l-2 border-primary bg-primary/5' : 'text-outline'}`}
                             >
                               {item.label}
                             </Link>
@@ -230,6 +241,17 @@ export default function Navigation() {
                         </div>
                       )}
                     </div>
+                  );
+                }
+                if ('href' in menu && menu.href) {
+                  return (
+                    <Link
+                      key={key}
+                      href={menu.href}
+                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary border-l-2 border-l-primary pl-3 bg-primary/5' : 'text-on-surface-variant'}`}
+                    >
+                      {menu.label}
+                    </Link>
                   );
                 }
                 return null;
@@ -245,12 +267,14 @@ export default function Navigation() {
 /* ── Reusable desktop dropdown component ── */
 interface DropdownMenuProps {
   label: string;
-  items: { href: string; label: string }[];
+  /** when set, the label navigates here and only the caret toggles the menu */
+  href?: string;
+  items: { href: string; label: string; exact?: boolean }[];
   menuKey: string;
   expanded: string | null;
   setExpanded: (key: string | null) => void;
   isActive: boolean;
-  isItemActive: (href: string) => boolean;
+  isItemActive: (href: string, exact?: boolean) => boolean;
   variants: Variants;
   linkBase: string;
   linkActive: string;
@@ -258,19 +282,39 @@ interface DropdownMenuProps {
 }
 
 function DropdownMenu({
-  label, items, menuKey, expanded, setExpanded,
+  label, href, items, menuKey, expanded, setExpanded,
   isActive, isItemActive, variants, linkBase, linkActive, linkInactive,
 }: DropdownMenuProps) {
   const isOpen = expanded === menuKey;
   return (
     <div className="relative">
-      <button
-        onClick={() => setExpanded(isOpen ? null : menuKey)}
-        className={`${linkBase} ${isActive ? linkActive : linkInactive} flex items-center gap-1`}
-      >
-        {label}
-        <span className="text-[8px] text-outline">{isOpen ? '▲' : '▼'}</span>
-      </button>
+      {href ? (
+        <div className={`${isActive ? linkActive : linkInactive} flex items-center`}>
+          <Link
+            href={href}
+            onClick={() => setExpanded(null)}
+            className="font-label text-xs uppercase tracking-tighter transition-colors duration-200 pl-4 py-2"
+          >
+            {label}
+          </Link>
+          <button
+            onClick={() => setExpanded(isOpen ? null : menuKey)}
+            aria-label={`${label} menu`}
+            aria-expanded={isOpen}
+            className="pl-1 pr-4 py-2 text-[8px] text-outline hover:text-primary transition-colors duration-200"
+          >
+            {isOpen ? '▲' : '▼'}
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setExpanded(isOpen ? null : menuKey)}
+          className={`${linkBase} ${isActive ? linkActive : linkInactive} flex items-center gap-1`}
+        >
+          {label}
+          <span className="text-[8px] text-outline">{isOpen ? '▲' : '▼'}</span>
+        </button>
+      )}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -286,7 +330,7 @@ function DropdownMenu({
                 href={item.href}
                 onClick={() => setExpanded(null)}
                 className={`block px-4 py-3 font-mono text-[11px] uppercase tracking-widest transition-colors ${
-                  isItemActive(item.href)
+                  isItemActive(item.href, item.exact)
                     ? 'text-primary bg-primary/10'
                     : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'
                 }`}

@@ -285,6 +285,8 @@ export type Database = {
           hackathon_link: string | null
           id: string
           image_url: string
+          instagram: string | null
+          logo_url: string | null
           name: string
           project_type: string
           repo_backend: string | null
@@ -307,6 +309,8 @@ export type Database = {
           hackathon_link?: string | null
           id?: string
           image_url: string
+          instagram: string | null
+          logo_url: string | null
           name: string
           project_type?: string
           repo_backend?: string | null
@@ -329,6 +333,8 @@ export type Database = {
           hackathon_link?: string | null
           id?: string
           image_url?: string
+          instagram?: string | null
+          logo_url?: string | null
           name?: string
           project_type?: string
           repo_backend?: string | null
@@ -585,7 +591,7 @@ export type SiteContent = Tables<'site_content'>
 export type ProductStatus = Database['public']['Enums']['product_status']
 
 // Project classification: in-house product, client work, or lab experiment
-export type ProjectType = 'product' | 'client' | 'experiment'
+export type ProjectType = 'product' | 'client' | 'experiment' | 'poc'
 
 // Sub-project link shown on umbrella cards (e.g. the CONVEXO suite)
 export type SubLink = { label: string; url?: string | null; repo?: string | null }

@@ -1,9 +1,10 @@
-import { getProducts, getHackathons } from '@/lib/supabase/queries'
-import ProductsClient from './ProductsClient'
+import { permanentRedirect } from 'next/navigation'
 
-export const revalidate = 60
-
-export default async function ProductsPage() {
-  const [products, hackathons] = await Promise.all([getProducts(), getHackathons()])
-  return <ProductsClient products={products} hackathons={hackathons} />
+/**
+ * /products was the single page that held products, client work and
+ * experiments. It is now four divisions under /portfolio — keep the old
+ * URL alive for anything already linking to it.
+ */
+export default function ProductsPage(): never {
+  permanentRedirect('/portfolio')
 }

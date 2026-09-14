@@ -24,8 +24,9 @@ const STATUS_OPTIONS = [
 
 const TYPE_OPTIONS = [
   { value: 'product', label: 'PRODUCT' },
-  { value: 'client', label: 'CLIENT WORK' },
   { value: 'experiment', label: 'EXPERIMENT' },
+  { value: 'poc', label: 'PROOF OF CONCEPT' },
+  { value: 'client', label: 'CLIENT' },
 ]
 
 export default function ProductForm({ product, hackathons, allHackers }: ProductFormProps) {
@@ -54,6 +55,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
   );
   const [displayOrder, setDisplayOrder] = useState(product?.display_order ?? 0);
   const [projectType, setProjectType] = useState(product?.project_type ?? 'product');
+  const [logoUrl, setLogoUrl] = useState(product?.logo_url ?? '');
+  const [instagram, setInstagram] = useState(product?.instagram ?? '');
   const [subLinks, setSubLinks] = useState<SubLink[]>(
     Array.isArray(product?.sub_links) ? (product!.sub_links as SubLink[]) : []
   );
@@ -83,6 +86,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         hackathon_id: hackathonId || null, hackathon_link: hackathonLink || null,
         technologies, categories, display_order: displayOrder,
         project_type: projectType,
+        logo_url: logoUrl || null,
+        instagram: instagram || null,
         sub_links: subLinks
           .filter((sl) => sl.label?.trim())
           .map((sl) => ({ label: sl.label.trim(), url: sl.url || null, repo: sl.repo || null })),
@@ -151,6 +156,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
           <AdminTextarea label="Description (EN)" value={descEn} onChange={(e) => setDescEn(e.target.value)} required rows={4} />
           <AdminTextarea label="Description (ES)" value={descEs} onChange={(e) => setDescEs(e.target.value)} required rows={4} />
           <ImageUpload label="Product Image *" value={imageUrl} onChange={setImageUrl} folder="products" hint="Upload new or keep existing /products/ path" />
+          <ImageUpload label="Client Logo" value={logoUrl} onChange={setLogoUrl} folder="products" hint="CLIENT rows only — transparent mark shown on the logo wall" />
           <AdminSelect label="Status" value={status} onChange={(e) => setStatus(e.target.value as typeof status)} options={STATUS_OPTIONS} required />
           <AdminInput label="Display Order" type="number" value={displayOrder} onChange={(e) => setDisplayOrder(Number(e.target.value))} />
           <AdminSelect label="Project Type" value={projectType} onChange={(e) => setProjectType(e.target.value)} options={TYPE_OPTIONS} required />
@@ -163,6 +169,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <AdminInput label="Website URL" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://myproduct.xyz" />
           <AdminInput label="App URL" value={appUrl} onChange={(e) => setAppUrl(e.target.value)} placeholder="https://app.myproduct.xyz" hint="Separate app if different from website" />
+          <AdminInput label="Instagram" value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="https://www.instagram.com/handle" hint="Full profile URL — for some clients this is the only web presence" />
         </div>
       </div>
 

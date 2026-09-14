@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/supabase/admin-auth'
-import { revalidatePath } from 'next/cache'
+import { revalidatePortfolio } from '@/lib/revalidate-portfolio'
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { error, db } = await requireAdmin()
@@ -28,7 +28,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
   }
 
-  revalidatePath('/products')
+  revalidatePortfolio()
   return NextResponse.json(product)
 }
 
@@ -39,6 +39,6 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
   const { error: dbError } = await db!.from('products').delete().eq('id', params.id)
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
 
-  revalidatePath('/products')
+  revalidatePortfolio()
   return NextResponse.json({ success: true })
 }

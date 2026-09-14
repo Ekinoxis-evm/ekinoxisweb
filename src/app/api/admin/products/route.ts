@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/supabase/admin-auth'
-import { revalidatePath } from 'next/cache'
+import { revalidatePortfolio } from '@/lib/revalidate-portfolio'
 
 export async function GET() {
   const { error, db } = await requireAdmin()
@@ -37,6 +37,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  revalidatePath('/products')
+  revalidatePortfolio()
   return NextResponse.json(product, { status: 201 })
 }
