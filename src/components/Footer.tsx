@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
+import { BrandLockup } from '@/components/ui/BrandLogo';
 
 export default function Footer() {
   const { language } = useLanguage();
@@ -24,13 +25,13 @@ export default function Footer() {
 
         {/* Left — brand */}
         <div className="flex flex-col gap-3">
-          <div className="font-headline text-lg font-bold text-primary uppercase tracking-tight">
-            EKINOXIS LABS
-          </div>
+          <Link href="/brand" aria-label="Ekinoxis brand kit" className="w-fit transition-opacity hover:opacity-80">
+            <BrandLockup size={26} />
+          </Link>
           <p className="font-mono text-xs uppercase text-outline max-w-xs leading-relaxed">
             {language === 'en'
-              ? 'Building the future of sovereign technology from the edges of the world.'
-              : 'Construyendo el futuro de la tecnología soberana desde los bordes del mundo.'}
+              ? 'We build with AI, blockchain and crypto. From Cali, Colombia.'
+              : 'Construimos con IA, blockchain y cripto. Desde Cali, Colombia.'}
           </p>
           <div className="font-mono text-xs uppercase text-outline/60">
             © {currentYear} EKINOXIS LABS // USA - COLOMBIA
@@ -39,6 +40,12 @@ export default function Footer() {
 
         {/* Right — social links */}
         <div className="flex flex-wrap items-end justify-start md:justify-end gap-x-8 gap-y-3">
+          <Link
+            href="/brand"
+            className="py-2 inline-flex items-center font-mono text-xs uppercase text-outline hover:text-primary hover:translate-x-0.5 transition-all duration-200"
+          >
+            {t.nav.brand}
+          </Link>
           {socials.map(({ label, href }) => (
             <Link
               key={label}

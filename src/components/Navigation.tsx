@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { BrandLockup } from '@/components/ui/BrandLogo';
 
 /** A leaf link in the nav. `exact` stops a parent route from matching its children. */
 type NavItem = { href: string; label: string; exact?: boolean };
@@ -62,6 +63,7 @@ export default function Navigation() {
         { href: '/research', label: t.research },
         { href: '/certifications', label: t.certifications },
         { href: '/education', label: t.education },
+        { href: '/brand', label: t.brand },
       ],
     },
     portfolio: {
@@ -104,9 +106,13 @@ export default function Navigation() {
 
         <nav className="max-w-screen-2xl mx-auto px-6 flex justify-between items-center h-16">
 
-          {/* Logo */}
-          <Link href="/" className="font-headline text-xl font-bold tracking-tighter text-primary uppercase hover:text-glow transition-all">
-            EKINOXIS
+          {/* Logo — brand lockup: mark + wordmark */}
+          <Link
+            href="/"
+            aria-label="Ekinoxis"
+            className="group flex items-center shrink-0 transition-opacity hover:opacity-80"
+          >
+            <BrandLockup size={28} className="group-hover:[&_svg_path]:drop-shadow-[0_0_8px_rgba(143,245,255,0.6)]" />
           </Link>
 
           {/* Desktop nav */}

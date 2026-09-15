@@ -1,0 +1,197 @@
+/* ============================================================
+   EKINOXIS LABS — Obsidian Architect
+   Color & Type tokens, lifted from tailwind.config.js + globals.css
+   Source: github.com/Ekinoxis-evm/ekinoxisweb
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* ─── Surface hierarchy (dark-first; black is the canvas) ─── */
+  --surface-container-lowest: #000000;
+  --surface:                 #060f16;
+  --surface-container-low:   #09151c;
+  --surface-container:       #0f1b23;
+  --surface-container-high:  #14212a;
+  --surface-container-highest:#192731;
+  --surface-bright:          #1e2e38;
+  --surface-dim:             #060f16;
+  --background:              #060f16;
+
+  /* ─── On-surface (foreground) ─── */
+  --on-background:           #e8f2fb;
+  --on-surface:              #e8f2fb;
+  --on-surface-variant:      #a2acb5;
+
+  /* ─── Primary: Electric Cyan ─── */
+  --primary:                 #8ff5ff;
+  --primary-fixed:           #00eefc;
+  --primary-dim:             #00deec;
+  --primary-container:       #00eefc;
+  --on-primary:              #005d63;
+  --on-primary-container:    #005359;
+
+  /* ─── Secondary: Cosmic Blue ─── */
+  --secondary:               #9492ff;
+  --secondary-dim:           #625dff;
+  --secondary-container:     #3106ff;
+  --secondary-fixed:         #cfcdff;
+  --on-secondary:            #100077;
+  --on-secondary-container:  #dedcff;
+
+  /* ─── Tertiary: Neon Lime ─── */
+  --tertiary:                #f3ffca;
+  --tertiary-dim:            #beee00;
+  --tertiary-fixed:          #cafd00;
+  --tertiary-container:      #cafd00;
+  --on-tertiary:             #516700;
+  --on-tertiary-container:   #4a5e00;
+
+  /* ─── Outline / dividers ─── */
+  --outline:                 #6c777f;
+  --outline-variant:         #3f4951;
+
+  /* ─── Error ─── */
+  --error:                   #ff716c;
+  --error-dim:               #d7383b;
+  --error-container:         #9f0519;
+  --on-error:                #490006;
+  --on-error-container:      #ffa8a3;
+
+  /* ─── Inverse ─── */
+  --inverse-surface:         #f5faff;
+  --inverse-on-surface:      #4c565e;
+
+  /* ─── Gradients ─── */
+  --gradient-cyber:   linear-gradient(135deg, #8ff5ff 0%, #9492ff 100%); /* @kind color */
+  --gradient-dark:    linear-gradient(180deg, #000000 0%, #060f16 100%); /* @kind color */
+  --gradient-surface: linear-gradient(180deg, #060f16 0%, #000000 100%);
+
+  /* ─── Ambient glows (use INSTEAD of drop-shadows) ─── */
+  --glow-cyan:          0 0 20px rgba(143, 245, 255, 0.20);
+  --glow-cyan-strong:   0 0 30px rgba(143, 245, 255, 0.40);
+  --glow-text:          0 0 10px rgba(143, 245, 255, 0.50);
+  --glow-text-strong:   0 0 10px #8ff5ff, 0 0 20px #8ff5ff, 0 0 30px #8ff5ff;
+  --glow-purple:        0 0 20px rgba(148, 146, 255, 0.20), 0 0 40px rgba(148, 146, 255, 0.10);
+
+  /* ─── Borders ─── */
+  --border-ghost:       1px solid rgba(63, 73, 81, 0.15); /* @kind other */
+  --border-divider:     1px solid rgba(143, 245, 255, 0.10); /* @kind other */
+  --border-cyan-glow:   1px solid #8ff5ff; /* @kind other */
+
+  /* ─── Radius — almost zero; 'rounded-full' (pill) is the only exception ─── */
+  --radius:             0;
+  --radius-pill:        9999px;
+
+  /* ─── Type ─── */
+  --font-headline: 'Space Grotesk', system-ui, sans-serif; /* h1–h3, hero numbers */
+  --font-body:     'Inter', system-ui, sans-serif;          /* body copy */
+  --font-label:    'Space Grotesk', system-ui, sans-serif;  /* nav, buttons, captions */
+  --font-mono:     'Space Mono', ui-monospace, monospace;   /* metadata, UIDs, code, terminal */
+
+  /* ─── Type scale (1920 viewport reference) ─── */
+  --t-display:  clamp(3rem, 7vw, 8rem);     /* @kind font */
+  --t-h1:       clamp(2.5rem, 5vw, 4.5rem); /* @kind font */
+  --t-h2:       2rem;                        /* 32px */
+  --t-h3:       1.5rem;                      /* 24px */
+  --t-body:     1rem;                        /* 16px */
+  --t-body-lg:  1.125rem;                    /* 18px */
+  --t-small:    0.875rem;                    /* 14px */
+  --t-mono:     0.625rem;                    /* 10px — THE metadata size */
+  --t-uid:      0.5rem;                      /* 8px — UID corner badges */
+
+  /* ─── Spacing scale (tailwind defaults) ─── */
+  --space-px:  1px;     /* THE grid-gap, used with bg-primary/10 */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-24:  6rem;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENTS — match the editorial-tech tension of the live site
+   ============================================================ */
+
+body {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  cursor: crosshair;            /* yes — the live site does this */
+  font-variant-numeric: tabular-nums;
+}
+
+::selection { background: var(--primary); color: #000; }
+
+h1, .h1 {
+  font-family: var(--font-headline);
+  font-size: var(--t-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;       /* tracking-tighter */
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--on-surface);
+}
+
+h2, .h2 {
+  font-family: var(--font-headline);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--on-surface);
+}
+
+h3, .h3 {
+  font-family: var(--font-headline);
+  font-size: var(--t-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--on-surface);
+}
+
+p, .body {
+  font-family: var(--font-body);
+  color: var(--on-surface-variant);
+  line-height: 1.65;
+  font-weight: 300;              /* the lab runs body light */
+}
+
+.lead {
+  font-family: var(--font-body);
+  font-size: var(--t-body-lg);
+  color: var(--on-surface-variant);
+  font-weight: 300;
+}
+
+.mono, code, kbd, .uid, .meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.2em;          /* tracking-widest */
+  text-transform: uppercase;
+  color: var(--outline);
+}
+
+.scan-badge {                     /* the ScanBadge primitive */
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(143, 245, 255, 0.30);
+  color: var(--primary);
+  display: inline-block;
+}
+.scan-badge.muted     { color: rgba(108, 119, 127, 0.6); border-color: rgba(63, 73, 81, 0.20); }
+.scan-badge.secondary { color: var(--secondary);   border-color: rgba(148, 146, 255, 0.30); }
+.scan-badge.tertiary  { color: var(--tertiary-dim);border-color: rgba(190, 238, 0, 0.30); }
+.scan-badge.outline   { color: var(--outline);     border-color: rgba(108, 119, 127, 0.30); }
+.scan-badge.error     { color: var(--error);       border-color: rgba(255, 113, 108, 0.30); }

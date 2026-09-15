@@ -38,3 +38,6 @@ yarn-error.log*
 next-env.d.ts
 
 .env*
+
+# Brand design sources with contact details — not needed by the site, and the repo is public
+public/brand/contact-cards/

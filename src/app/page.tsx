@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
+import { BrandMark } from '@/components/ui/BrandLogo';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
@@ -13,33 +14,49 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 const stats = [
   {
     num: '01',
-    label: 'ORIGIN',
+    label: 'FIRST',
     value: '1ST',
-    desc: { en: 'Innovation Lab specialized in emerging tech in the Colombian Pacific.', es: 'Laboratorio de innovación especializado en tecnología emergente en el Pacífico colombiano.' },
+    desc: { en: 'The first innovation lab on the Colombian Pacific coast.', es: 'El primer laboratorio de innovación de la costa Pacífica colombiana.' },
   },
   {
     num: '02',
     label: 'FOCUS',
     value: 'A.I.',
-    desc: { en: 'Pushing frontiers in neural networks and ethical computation models.', es: 'Empujando fronteras en redes neuronales y modelos de computación ética.' },
+    desc: { en: 'We put AI to work inside real businesses.', es: 'Ponemos la IA a trabajar dentro de negocios reales.' },
   },
   {
     num: '03',
     label: 'TRUST',
     value: 'CRPT',
-    desc: { en: 'Cryptography-first approach for sovereign data and blockchain infrastructure.', es: 'Enfoque criptografía primero para datos soberanos e infraestructura blockchain.' },
+    desc: { en: 'Your data stays yours. Cryptography first, always.', es: 'Tus datos siguen siendo tuyos. Criptografía primero, siempre.' },
   },
   {
     num: '04',
-    label: 'TIMELINE',
+    label: 'SINCE',
     value: '2024',
-    desc: { en: 'Founded as a beacon for decentralized innovation from the South.', es: 'Fundado como un faro de innovación descentralizada desde el Sur.' },
+    desc: { en: 'Building from the global South, for the world.', es: 'Construyendo desde el sur global, para el mundo.' },
   },
 ];
 
 export default function Home() {
   const { language } = useLanguage();
   const t = content[language];
+  const coreRef = useRef<HTMLVideoElement>(null);
+
+  // `autoPlay` ignores prefers-reduced-motion — CSS can't pause a <video>, so
+  // freeze it on the poster frame ourselves when the viewer asked for stillness.
+  useEffect(() => {
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => {
+      const v = coreRef.current;
+      if (!v) return;
+      if (still.matches) v.pause();
+      else void v.play().catch(() => {});
+    };
+    apply();
+    still.addEventListener('change', apply);
+    return () => still.removeEventListener('change', apply);
+  }, []);
 
   return (
     <AnimatedBackground variant="ambient">
@@ -57,9 +74,8 @@ export default function Home() {
               transition={{ duration: 0.4 }}
               className="flex flex-wrap items-center gap-3"
             >
-              <ScanBadge variant="primary">SYS_ACTIVE: 2024</ScanBadge>
-              <ScanBadge variant="outline">LOC: PACIFIC_COAST_COL</ScanBadge>
-              <ScanBadge variant="outline">LVL: ROOT_LAB</ScanBadge>
+              <ScanBadge variant="primary">{language === 'en' ? 'SINCE 2024' : 'DESDE 2024'}</ScanBadge>
+              <ScanBadge variant="outline">CALI, COLOMBIA</ScanBadge>
             </motion.div>
 
             {/* Headline */}
@@ -89,9 +105,9 @@ export default function Home() {
               className="max-w-xl text-lg md:text-xl text-on-surface-variant font-light leading-relaxed"
             >
               {language === 'en' ? (
-                <>We are the first <span className="text-primary">Innovation Laboratory</span> of the Colombian Pacific specialized in <span className="text-secondary">Blockchain</span>, <span className="text-tertiary-dim">Cryptography</span> and <span className="text-secondary">Artificial Intelligence</span>.</>
+                <>The first <span className="text-primary">innovation lab</span> on Colombia&apos;s Pacific coast. We build with AI, blockchain and crypto.</>
               ) : (
-                <>Somos el primer <span className="text-primary">Laboratorio de Innovación</span> del Pacífico Colombiano especializado en <span className="text-secondary">Blockchain</span>, <span className="text-tertiary-dim">Criptografía</span> e <span className="text-secondary">Inteligencia Artificial</span>.</>
+                <>El primer <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos con IA, blockchain y cripto.</>
               )}
             </motion.p>
 
@@ -111,8 +127,8 @@ export default function Home() {
                 </Button>
               </Link>
               <div className="flex flex-col font-mono text-[11px] text-outline tracking-tighter">
-                <span>DIRECT_CHANNEL://TELEGRAM_BOT</span>
-                <span className="text-primary">UPLINK_STATUS: SECURE_CONNECTED</span>
+                <span>{language === 'en' ? 'WE REPLY ON TELEGRAM' : 'RESPONDEMOS POR TELEGRAM'}</span>
+                <span className="text-primary">{language === 'en' ? 'USUALLY WITHIN THE DAY' : 'NORMALMENTE EL MISMO DÍA'}</span>
               </div>
             </motion.div>
           </div>
@@ -128,31 +144,45 @@ export default function Home() {
             <div className="absolute w-[300px] h-[300px] bg-primary/20 blur-[100px] pointer-events-none" style={{ borderRadius: '50%' }} />
             <div className="absolute w-[500px] h-[500px] bg-secondary/10 blur-[120px] pointer-events-none" style={{ borderRadius: '50%' }} />
 
-            {/* Logo with sphere animation */}
-            <div className="relative w-72 h-72 md:w-full md:aspect-square max-w-[440px] hero-visual-glitch">
-              {/* Breathing wrapper — scale animates here so it doesn't conflict with rotation */}
-              <div className="absolute inset-0 animate-hero-breathe">
+            {/* Core loop — the reactor ring, with the equinox mark at its centre.
+                No stacking context on the wrapper: `mix-blend-screen` on the video
+                only reaches the page behind it while nothing above isolates it. */}
+            <div className="relative w-72 h-72 md:w-full md:aspect-square max-w-[440px]">
+              <div className="absolute inset-0">
                 {/* Compositor-friendly glow — opacity animates instead of drop-shadow */}
-                <div className="absolute inset-[12%] rounded-full bg-primary/40 blur-[60px] animate-hero-glow pointer-events-none" />
-                <Image
-                  src="/logo/logo.png"
-                  alt="Ekinoxis"
-                  fill
-                  className="object-contain animate-hero-core"
-                  priority
-                />
+                <div className="absolute inset-[12%] rounded-full bg-primary/30 blur-[60px] animate-hero-glow pointer-events-none" />
+                {/* Shot on black. `screen` drops most of the matte; the radial mask
+                    kills the frame's corners so no video box edge is ever visible. */}
+                <video
+                  ref={coreRef}
+                  className="absolute inset-0 w-full h-full object-contain mix-blend-screen pointer-events-none"
+                  style={{
+                    maskImage: 'radial-gradient(circle closest-side at 50% 50%, #000 82%, transparent 99%)',
+                    WebkitMaskImage: 'radial-gradient(circle closest-side at 50% 50%, #000 82%, transparent 99%)',
+                  }}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  poster="/video/hero-core-poster.jpg"
+                  aria-hidden="true"
+                >
+                  <source src="/video/hero-core.webm" type="video/webm" />
+                  <source src="/video/hero-core.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <BrandMark
+                    size={88}
+                    className="animate-hero-breathe drop-shadow-[0_0_24px_rgba(143,245,255,0.45)]"
+                  />
+                </div>
               </div>
 
-              {/* Floating readout — top right */}
+              {/* One readout, and it says something true */}
               <div className="absolute top-0 right-0 bg-surface-container/80 backdrop-blur-md p-3 border-l-2 border-primary">
-                <p className="font-mono text-[10px] text-primary">PROJECT: EKX_LAB_01</p>
-                <p className="font-mono text-[9px] text-outline">LAT: 3.4516° N // LON: 76.5320° W</p>
-              </div>
-
-              {/* Floating readout — bottom left */}
-              <div className="absolute bottom-10 -left-8 bg-surface-container/80 backdrop-blur-md p-3 border-r-2 border-tertiary-dim">
-                <p className="font-mono text-[10px] text-tertiary-dim">DATA_STREAM: ENCRYPTED</p>
-                <p className="font-mono text-[9px] text-outline">BIT_RATE: 1.2 GBPS</p>
+                <p className="font-mono text-[10px] text-primary">CALI, COLOMBIA</p>
+                <p className="font-mono text-[9px] text-outline">3.4516° N // 76.5320° W</p>
               </div>
             </div>
           </motion.div>

@@ -37,9 +37,29 @@ export const metadata: Metadata = {
   title: 'Ekinoxis Labs',
   description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
   keywords: ['Blockchain', 'Cryptography', 'Artificial Intelligence', 'Innovation', 'Colombia', 'WEB3'],
+  // The brand favicon set — the mark, rendered at each size a browser asks for.
   icons: {
-    icon: '/logo/logo.png',
-    apple: '/logo/logo.png',
+    icon: [
+      { url: '/brand/favicon/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/brand/favicon/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/favicon/favicon-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/brand/favicon/favicon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/brand/favicon/favicon-180.png', sizes: '180x180', type: 'image/png' }],
+  },
+  openGraph: {
+    title: 'Ekinoxis Labs',
+    description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
+    url: 'https://ekinoxis.xyz',
+    siteName: 'Ekinoxis Labs',
+    images: [{ url: '/brand/social/ekinoxis-avatar-with-wordmark-1024.png', width: 1024, height: 1024, alt: 'Ekinoxis' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ekinoxis Labs',
+    description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
+    images: ['/brand/social/ekinoxis-avatar-with-wordmark-1024.png'],
   },
 };
 

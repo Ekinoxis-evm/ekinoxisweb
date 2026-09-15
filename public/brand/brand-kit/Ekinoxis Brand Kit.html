@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EKINOXIS — Brand Kit v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="deck-stage.js"></script>
+
+<style>
+:root{
+  --cyan:#8ff5ff;--cyan-dim:#00deec;--secondary:#9492ff;--tertiary:#beee00;
+  --ink:#e8f2fb;--mute:#a2acb5;--label:#6c777f;--ghost:#3f4951;
+  --s-low:#09151c;--s-mid:#0f1b23;--s-high:#192731;
+}
+html,body{margin:0;padding:0;background:#000;color:var(--ink);font-family:'Inter',sans-serif;cursor:crosshair;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+
+deck-stage > section{
+  width:1920px;height:1080px;background:#000;color:var(--ink);position:relative;overflow:hidden;
+}
+/* Page chrome — every slide gets the same operator HUD */
+.hud{position:absolute;inset:0;pointer-events:none;z-index:5}
+.hud-corner{position:absolute;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;color:rgba(108,119,127,.7);text-transform:uppercase}
+.hud-corner.tl{top:24px;left:32px}
+.hud-corner.tr{top:24px;right:32px;color:#8ff5ff;opacity:.7}
+.hud-corner.bl{bottom:24px;left:32px}
+.hud-corner.br{bottom:24px;right:32px}
+.hud-tick{position:absolute;width:14px;height:14px}
+.hud-tick.tl{top:14px;left:14px}.hud-tick.tr{top:14px;right:14px}
+.hud-tick.bl{bottom:14px;left:14px}.hud-tick.br{bottom:14px;right:14px}
+.hud-tick::before,.hud-tick::after{content:'';position:absolute;background:rgba(143,245,255,.45)}
+.hud-tick::before{width:14px;height:1px}
+.hud-tick::after{width:1px;height:14px}
+.hud-tick.tl::before{top:0;left:0}.hud-tick.tl::after{top:0;left:0}
+.hud-tick.tr::before{top:0;right:0}.hud-tick.tr::after{top:0;right:0}
+.hud-tick.bl::before{bottom:0;left:0}.hud-tick.bl::after{bottom:0;left:0}
+.hud-tick.br::before{bottom:0;right:0}.hud-tick.br::after{bottom:0;right:0}
+
+/* Section number + title used at top of content slides */
+.page-head{position:absolute;top:88px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:baseline;z-index:6}
+.page-head .num{font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.3em;color:#8ff5ff;text-transform:uppercase}
+.page-head .title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:64px;letter-spacing:-.04em;color:#e8f2fb;text-transform:uppercase;line-height:.95}
+.page-head .lede{font-family:'Inter',sans-serif;font-weight:300;font-size:18px;color:#a2acb5;max-width:520px;text-align:right;line-height:1.5}
+
+.grid-divider{display:grid;gap:1px;background:rgba(143,245,255,.10)}
+.grid-divider > *{background:#000}
+
+.mono-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;color:#8ff5ff;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(143,245,255,.3)}
+.mono-tag.gray{color:#6c777f;border-color:rgba(108,119,127,.3)}
+.mono-tag.lime{color:#beee00;border-color:rgba(190,238,0,.3)}
+.mono-tag.fill{background:#8ff5ff;color:#001a1c;border-color:#8ff5ff}
+
+.cap{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;color:#6c777f;text-transform:uppercase}
+.k{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.k b{color:#e8f2fb;font-weight:400}
+
+.glow-tr{position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:rgba(143,245,255,.18);filter:blur(180px);border-radius:50%;pointer-events:none}
+.glow-bl{position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;background:rgba(148,146,255,.13);filter:blur(180px);border-radius:50%;pointer-events:none}
+.dots-bg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(143,245,255,.07) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.scanlines{position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,0) 50%,rgba(143,245,255,.03) 50%);background-size:100% 4px;pointer-events:none;mix-blend-mode:overlay}
+</style>
+</head>
+<body>
+<deck-stage>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 01 — COVER
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="01 Cover">
+  <div class="glow-tr"></div>
+  <div class="glow-bl"></div>
+  <div class="dots-bg"></div>
+  <div class="scanlines"></div>
+
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span>
+    <span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">SYS_ACTIVE: 2024</span>
+    <span class="hud-corner bl">LAT: 3.4516°N // LON: 76.5320°W</span>
+    <span class="hud-corner br">PAGE_01 / 11</span>
+  </div>
+
+  <div id="cover-host" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 02 — THE MARK (CONSTRUCTION)
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="02 The Mark">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_01</span>
+    <span class="hud-corner bl">/ SYMBOL</span>
+    <span class="hud-corner br">PAGE_02 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_01 / SYMBOL</div>
+      <div class="title" style="margin-top:18px">The Mark</div>
+    </div>
+    <div class="lede">A half-disc bisected on its axis. Equal day, equal night — the equinox itself, drawn at the smallest possible scale.</div>
+  </div>
+
+  <div id="mark-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 03 — MASTER LOCKUP
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="03 Master Lockup">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_02</span>
+    <span class="hud-corner bl">/ LOCKUP</span>
+    <span class="hud-corner br">PAGE_03 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_02 / LOCKUP</div>
+      <div class="title" style="margin-top:18px">Master Lockup</div>
+    </div>
+    <div class="lede">The mark sits left of bracketed type. Brackets are the system signal — they declare the wordmark as an identifier, not a name.</div>
+  </div>
+
+  <div id="lockup-host" style="position:absolute;top:280px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 04 — LOCKUP VARIATIONS
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="04 Variations">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_02_2</span>
+    <span class="hud-corner bl">/ LOCKUP_SET</span>
+    <span class="hud-corner br">PAGE_04 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_02 / LOCKUP_SET</div>
+      <div class="title" style="margin-top:18px">Lockup Variations</div>
+    </div>
+    <div class="lede">Four canonical lockups. Pick the one that fits the container — never bend, scale, or recolor outside this set.</div>
+  </div>
+
+  <div id="variations-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 05 — CLEAR SPACE + MIN SIZE
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="05 Clear Space">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_03</span>
+    <span class="hud-corner bl">/ SAFETY</span>
+    <span class="hud-corner br">PAGE_05 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_03 / SAFETY</div>
+      <div class="title" style="margin-top:18px">Clear Space &amp; Scale</div>
+    </div>
+    <div class="lede">Reserve <b style="color:#e8f2fb">1×X</b> of breathing room on all sides — where X equals the diameter of the disc. Never set the lockup below 24px tall in digital.</div>
+  </div>
+
+  <div id="clearspace-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 06 — COLOR VERSIONS
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="06 Color Versions">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_04</span>
+    <span class="hud-corner bl">/ COLORWAYS</span>
+    <span class="hud-corner br">PAGE_06 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_04 / COLORWAYS</div>
+      <div class="title" style="margin-top:18px">Color Versions</div>
+    </div>
+    <div class="lede">Five approved colorways. Primary always sits on near-black. Inverse is for print on photography or product; the light variant pairs the cyan mark with black type on clear backgrounds.</div>
+  </div>
+
+  <div id="color-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 07 — DON'TS
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="07 Donts">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_05</span>
+    <span class="hud-corner bl">/ MISUSE</span>
+    <span class="hud-corner br">PAGE_07 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_05 / MISUSE</div>
+      <div class="title" style="margin-top:18px">Don'ts</div>
+    </div>
+    <div class="lede">Six ways to break the mark — all forbidden. The geometry, color, and proportion are non-negotiable. The brackets are not optional.</div>
+  </div>
+
+  <div id="donts-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 08 — COLOR SYSTEM
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="08 Color System">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_06</span>
+    <span class="hud-corner bl">/ COLOR_TOKENS</span>
+    <span class="hud-corner br">PAGE_08 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_06 / COLOR_TOKENS</div>
+      <div class="title" style="margin-top:18px">Color System</div>
+    </div>
+    <div class="lede">Electric Cyan carries every action. Black is the canvas. Lime and Cosmic Blue are reserved for system status and secondary signal.</div>
+  </div>
+
+  <div id="colorsystem-host" style="position:absolute;top:280px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 09 — TYPOGRAPHY
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="09 Typography">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_07</span>
+    <span class="hud-corner bl">/ TYPE_STACK</span>
+    <span class="hud-corner br">PAGE_09 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_07 / TYPE_STACK</div>
+      <div class="title" style="margin-top:18px">Typography</div>
+    </div>
+    <div class="lede">Three families. Space Grotesk shouts. Inter speaks. Space Mono signals — uppercase, tracked wide, always at 10px.</div>
+  </div>
+
+  <div id="type-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 10 — VOICE
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="10 Voice">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_08</span>
+    <span class="hud-corner bl">/ VOICE</span>
+    <span class="hud-corner br">PAGE_10 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_08 / VOICE</div>
+      <div class="title" style="margin-top:18px">Voice &amp; Tone</div>
+    </div>
+    <div class="lede">Manifesto cadence. Builder addressing builder. Cypher-minded, frontier-rooted, never marketing-speak.</div>
+  </div>
+
+  <div id="voice-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SLIDE 11 — APPLICATIONS
+════════════════════════════════════════════════════════════ -->
+<section data-screen-label="11 Applications">
+  <div class="hud">
+    <span class="hud-tick tl"></span><span class="hud-tick tr"></span><span class="hud-tick bl"></span><span class="hud-tick br"></span>
+    <span class="hud-corner tl">// EKX_BRAND_SYSTEM</span>
+    <span class="hud-corner tr">CHAPTER_09</span>
+    <span class="hud-corner bl">/ IN_THE_WILD</span>
+    <span class="hud-corner br">PAGE_11 / 11</span>
+  </div>
+  <div class="page-head">
+    <div>
+      <div class="num">CH_09 / IN_THE_WILD</div>
+      <div class="title" style="margin-top:18px">Applications</div>
+    </div>
+    <div class="lede">Favicon to billboard. Each application uses an approved lockup variant — never a custom recombination.</div>
+  </div>
+
+  <div id="apps-host" style="position:absolute;top:300px;left:96px;right:96px;bottom:96px;z-index:2"></div>
+</section>
+
+</deck-stage>
+
+<script type="text/babel" src="logos-final.jsx"></script>
+<script type="text/babel" src="brand-kit-slides.jsx"></script>
+</body>
+</html>
