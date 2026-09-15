@@ -14,30 +14,30 @@ const SERVICE_TRACKS = {
     {
       id: 'consultation',
       code: '01',
-      type: 'CONSULTANCY_TRACK',
+      type: 'ADVICE',
       title: 'Consultation',
-      tagline: 'Talks, private sessions & roadmaps on AI, payments & agents.',
-      price: 'FROM $350',
+      tagline: 'We tell you what to build. You leave with a written plan.',
+      price: 'FROM $500',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
     {
       id: 'web',
       code: '02',
-      type: 'DEVELOPMENT_TRACK',
+      type: 'WEBSITES',
       title: 'Web Development',
-      tagline: 'Online business live in 5 days.',
-      price: 'FROM $900',
+      tagline: 'Your business online in 5 days.',
+      price: 'FROM $1,500',
       href: '/services/web-development',
       badgeVariant: 'secondary' as const,
     },
     {
       id: 'app',
       code: '03',
-      type: 'ENGINEERING_TRACK',
+      type: 'SOFTWARE',
       title: 'App Building',
-      tagline: 'Custom apps with blockchain & AI.',
-      price: 'FROM $8,000',
+      tagline: 'Software built for you, with AI and blockchain.',
+      price: 'FROM $12,000',
       href: '/services/app-building',
       badgeVariant: 'tertiary' as const,
     },
@@ -46,30 +46,30 @@ const SERVICE_TRACKS = {
     {
       id: 'consultation',
       code: '01',
-      type: 'CONSULTANCY_TRACK',
+      type: 'ASESORÍA',
       title: 'Consultoría',
-      tagline: 'Charlas, sesiones privadas y roadmaps en IA, pagos y agentes.',
-      price: 'DESDE $350',
+      tagline: 'Te decimos qué construir. Te llevas un plan escrito.',
+      price: 'DESDE $500',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
     {
       id: 'web',
       code: '02',
-      type: 'DEVELOPMENT_TRACK',
+      type: 'SITIOS WEB',
       title: 'Desarrollo Web',
-      tagline: 'Negocio online en 5 días.',
-      price: 'DESDE $900',
+      tagline: 'Tu negocio online en 5 días.',
+      price: 'DESDE $1,500',
       href: '/services/web-development',
       badgeVariant: 'secondary' as const,
     },
     {
       id: 'app',
       code: '03',
-      type: 'ENGINEERING_TRACK',
+      type: 'SOFTWARE',
       title: 'Desarrollo de Apps',
-      tagline: 'Apps a medida con blockchain e IA.',
-      price: 'DESDE $8,000',
+      tagline: 'Software hecho para ti, con IA y blockchain.',
+      price: 'DESDE $12,000',
       href: '/services/app-building',
       badgeVariant: 'tertiary' as const,
     },
@@ -94,9 +94,7 @@ export default function ServicesPage() {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">SERVICES_CATALOG</span>
+              <span className="border border-primary/30 px-2 py-1">SERVICES</span>
             </motion.div>
 
             <motion.h1
@@ -110,7 +108,7 @@ export default function ServicesPage() {
               variants={fadeInUp}
               className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed"
             >
-              {language === 'en' ? 'Pick a track. We deploy from there.' : 'Elige un track. Desplegamos desde ahí.'}
+              {language === 'en' ? 'Pick one. We start there.' : 'Elige uno. Empezamos por ahí.'}
             </motion.p>
           </motion.div>
 
@@ -131,7 +129,7 @@ export default function ServicesPage() {
                     </div>
 
                     {/* Code */}
-                    <span className="font-mono text-primary text-sm mb-4 block">{track.code} / SVC</span>
+                    <span className="font-mono text-primary text-sm mb-4 block">{track.code}</span>
 
                     {/* Title */}
                     <h2 className="font-headline text-4xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-4">

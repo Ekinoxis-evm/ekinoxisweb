@@ -33,9 +33,9 @@ export interface Course {
   description: Bilingual;
   format: Bilingual;
   duration: Bilingual;
-  /** USD display price, e.g. "$450". null while unpriced. */
+  /** USD display price, e.g. "$550". null while unpriced. */
   price: string | null;
-  /** Optional COP display price, e.g. "1.800.000 COP". */
+  /** Optional COP display price, e.g. "2.200.000 COP". */
   priceAlt?: string;
   /** ISO date of the first session, if scheduled. */
   startDate?: string;
@@ -71,8 +71,8 @@ export const courses: Course[] = [
       es: 'Shopify, Stripe y Meta, conectados en una sola máquina de ventas.',
     },
     description: {
-      en: 'Four weeks to take a product or service from idea to a store that sells, charges and advertises itself. You set up the store, connect payments, launch your first Meta campaign, automate the follow-up on WhatsApp and put AI to work on copy and support — on your own business, live, with us in the room.',
-      es: 'Cuatro semanas para llevar un producto o servicio de idea a una tienda que vende, cobra y se promociona sola. Montas la tienda, conectas pagos, lanzas tu primera campaña en Meta, automatizas el seguimiento por WhatsApp y pones la IA a trabajar en textos y soporte — sobre tu propio negocio, en vivo, con nosotros al lado.',
+      en: 'Four weeks to turn an idea into a store that sells, charges and advertises itself. You build the store, connect payments, run your first Meta campaign, and set up WhatsApp follow-up — on your own business, with us in the room.',
+      es: 'Cuatro semanas para convertir una idea en una tienda que vende, cobra y se promociona sola. Montas la tienda, conectas pagos, lanzas tu primera campaña en Meta y armas el seguimiento por WhatsApp — sobre tu propio negocio, con nosotros al lado.',
     },
     format: {
       en: 'Live online cohort · EN/ES',
@@ -82,8 +82,8 @@ export const courses: Course[] = [
       en: '4 weeks · 8 sessions of 2h',
       es: '4 semanas · 8 sesiones de 2h',
     },
-    price: '$450',
-    priceAlt: '1.800.000 COP',
+    price: '$550',
+    priceAlt: '2.200.000 COP',
     stripePriceEnv: 'STRIPE_PRICE_BUSINESS_STACK',
     tools: [
       { name: 'Shopify', logo: '/tecnologies/marketing/shopify_logo_white.png' },
@@ -139,8 +139,8 @@ export const courses: Course[] = [
       es: 'Login con wallet, un contrato verificado y swaps onchain — publicado en una URL real.',
     },
     description: {
-      en: 'Go from a Next.js app to a working dApp: embedded wallets and social login with Privy, contracts you deploy and verify on Etherscan, and token swaps through Uniswap. You build one product end to end and leave with it live on Base.',
-      es: 'Pasa de una app en Next.js a una dApp funcional: wallets embebidas y login social con Privy, contratos que despliegas y verificas en Etherscan, y swaps de tokens con Uniswap. Construyes un producto de principio a fin y te lo llevas en vivo en Base.',
+      en: 'Turn a Next.js app into a working crypto app: wallets and social login with Privy, your own contracts on-chain, and token swaps. You leave with it live on Base.',
+      es: 'Convierte una app de Next.js en una app cripto funcional: wallets y login social con Privy, tus propios contratos en cadena, y swaps de tokens. Te lo llevas en vivo en Base.',
     },
     format: {
       en: 'Live online cohort · EN/ES',

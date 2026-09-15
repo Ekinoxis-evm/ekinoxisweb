@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "brand:zip": "cd public/brand && rm -f ekinoxis-brand-kit.zip && zip -r -q -X ekinoxis-brand-kit.zip README.md colors.md typography.md logo favicon social brand-kit -x '*.DS_Store'"
   },
   "dependencies": {
     "@supabase/ssr": "^0.9.0",

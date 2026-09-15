@@ -10,45 +10,45 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const webDevContent = {
   en: {
-    title: 'FAST WEB_DEPLOYMENT',
-    subtitle: 'Online in 5 days. Payments, WhatsApp & automation ready.',
-    trustLine: 'From $900 · Fixed price',
-    perfectFor: ['Entrepreneurs launching fast', 'Local businesses going digital', 'Consultants & service providers', 'Online stores & digital products'],
+    title: 'YOUR BUSINESS ONLINE',
+    subtitle: 'Live in 5 days. Taking payments and answering WhatsApp from day one.',
+    trustLine: 'From $1,500 · Fixed price',
+    perfectFor: ['Entrepreneurs launching fast', 'Local businesses going digital', 'Consultants and service providers', 'Online stores & digital products'],
     whatYouGet: {
       title: 'Included',
-      items: ['Professional website ready to sell', 'Admin panel — products & services', 'Stripe or Wompi payments', 'WhatsApp contact + scheduling', 'Domain, hosting & corporate email', 'Email payment confirmations', '5-day delivery'],
+      items: ['A website that sells, not a brochure', 'A panel to manage products and services', 'Card payments with Stripe or Wompi', 'WhatsApp contact and booking', 'Domain, hosting and business email', 'Automatic payment receipts', 'Ready in 5 days'],
     },
     pricing: {
       title: 'Choose Your Package',
       plans: [
-        { name: 'Online Business', price: '$900', priceAlt: '3.600.000 COP', badge: 'Best to start', features: ['Admin panel', 'Appointment scheduling', 'WhatsApp integration', 'Stripe or Wompi payments', 'Domain + hosting (1 year*)', 'Corporate email', 'Email confirmations', '5-day delivery'], cta: 'Start' },
-        { name: 'Professional', price: '$1,800', priceAlt: '7.200.000 COP', badge: 'Most popular', popular: true, features: ['Everything in Online Business, plus:', 'AI Agent on WhatsApp or Telegram', 'API billing direct to client', '+1 live feedback meeting', '+2 feedback iterations', '5-day delivery'], cta: 'Go Pro' },
-        { name: 'Complete', price: '$3,500', priceAlt: '14.000.000 COP', badge: 'For teams & scale', features: ['Everything above, plus:', 'CRM — manage & follow up clients', 'Lead tracking & pipeline', 'Control for growth'], cta: 'Build Complete' },
+        { name: 'Online Business', price: '$1,500', priceAlt: '6.000.000 COP', badge: 'Best to start', features: ['Admin panel', 'Online booking', 'WhatsApp contact', 'Card payments', 'Domain and hosting (1 year*)', 'Business email', 'Automatic receipts', 'Ready in 5 days'], cta: 'Start' },
+        { name: 'Professional', price: '$3,000', priceAlt: '12.000.000 COP', badge: 'Most popular', popular: true, features: ['Everything in Online Business, plus:', 'An AI assistant that answers on WhatsApp', 'Usage billed straight to you, no markup', 'One live review meeting', 'Two rounds of changes', 'Ready in 5 days'], cta: 'Go Pro' },
+        { name: 'Complete', price: '$6,000', priceAlt: '24.000.000 COP', badge: 'For teams', features: ['Everything above, plus:', 'One place to manage every client', 'See who asked, and who bought', 'Built to keep growing'], cta: 'Build Complete' },
       ],
       note: '*Domains and hosting subject to availability',
     },
-    howItWorks: ['Choose your plan', 'Pay 50% upfront', 'We build & share progress', 'Feedback & adjustments', 'Pay remaining 50%', 'Go live'],
+    howItWorks: ['Choose your plan', 'Pay half', 'We build, you watch it happen', 'You tell us what to change', 'Pay the rest', 'You go live'],
     finalCta: 'Start your business today',
   },
   es: {
-    title: 'DESPLIEGUE_WEB RÁPIDO',
-    subtitle: 'Online en 5 días. Pagos, WhatsApp y automatización listos.',
-    trustLine: 'Desde $900 · Precio fijo',
+    title: 'TU NEGOCIO EN LÍNEA',
+    subtitle: 'En línea en 5 días. Cobrando y respondiendo WhatsApp desde el primer día.',
+    trustLine: 'Desde $1,500 · Precio fijo',
     perfectFor: ['Emprendedores lanzando rápido', 'Negocios locales digitalizándose', 'Consultores y proveedores de servicios', 'Tiendas online y productos digitales'],
     whatYouGet: {
       title: 'Incluido',
-      items: ['Sitio web profesional listo para vender', 'Panel admin — productos y servicios', 'Pagos con Stripe o Wompi', 'WhatsApp + agendamiento', 'Dominio, hosting y correo corporativo', 'Confirmaciones de pago por email', 'Entrega en 5 días'],
+      items: ['Un sitio que vende, no un folleto', 'Un panel para manejar productos y servicios', 'Pagos con tarjeta vía Stripe o Wompi', 'Contacto y agendamiento por WhatsApp', 'Dominio, hosting y correo de empresa', 'Recibos de pago automáticos', 'Listo en 5 días'],
     },
     pricing: {
       title: 'Elige Tu Paquete',
       plans: [
-        { name: 'Negocio Online', price: '$900', priceAlt: '3.600.000 COP', badge: 'Mejor para empezar', features: ['Panel de administración', 'Agendamiento de citas', 'Integración WhatsApp', 'Stripe o Wompi', 'Dominio + hosting (1 año*)', 'Correo corporativo', 'Confirmaciones email', 'Entrega 5 días'], cta: 'Comenzar' },
-        { name: 'Profesional', price: '$1,800', priceAlt: '7.200.000 COP', badge: 'Más popular', popular: true, features: ['Todo lo de Negocio Online, más:', 'Agente IA en WhatsApp o Telegram', 'API facturada al cliente', '+1 reunión de feedback', '+2 iteraciones', 'Entrega 5 días'], cta: 'Ir Pro' },
-        { name: 'Completo', price: '$3,500', priceAlt: '14.000.000 COP', badge: 'Para equipos', features: ['Todo lo anterior, más:', 'CRM para gestión de clientes', 'Pipeline y seguimiento', 'Control para crecer'], cta: 'Construir Completo' },
+        { name: 'Negocio Online', price: '$1,500', priceAlt: '6.000.000 COP', badge: 'Mejor para empezar', features: ['Panel de administración', 'Agendamiento en línea', 'Contacto por WhatsApp', 'Pagos con tarjeta', 'Dominio y hosting (1 año*)', 'Correo de empresa', 'Recibos automáticos', 'Listo en 5 días'], cta: 'Comenzar' },
+        { name: 'Profesional', price: '$3,000', priceAlt: '12.000.000 COP', badge: 'Más popular', popular: true, features: ['Todo lo de Negocio Online, más:', 'Un asistente de IA que responde en WhatsApp', 'El consumo se te factura directo, sin sobrecosto', 'Una reunión de revisión en vivo', 'Dos rondas de cambios', 'Listo en 5 días'], cta: 'Ir Pro' },
+        { name: 'Completo', price: '$6,000', priceAlt: '24.000.000 COP', badge: 'Para equipos', features: ['Todo lo anterior, más:', 'Un solo lugar para manejar cada cliente', 'Mira quién preguntó y quién compró', 'Hecho para seguir creciendo'], cta: 'Construir Completo' },
       ],
       note: '*Dominios y hosting sujetos a disponibilidad',
     },
-    howItWorks: ['Elige tu plan', 'Paga 50% adelantado', 'Construimos y compartimos progreso', 'Feedback y ajustes', 'Paga el 50% restante', 'Lanzamiento'],
+    howItWorks: ['Elige tu plan', 'Pagas la mitad', 'Construimos, tú lo ves avanzar', 'Nos dices qué cambiar', 'Pagas el resto', 'Sales en vivo'],
     finalCta: 'Comienza tu negocio hoy',
   },
 };
@@ -72,7 +72,7 @@ export default function WebDevelopmentPage() {
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
               <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">WEB_DEVELOPMENT</span>
+              <span className="border border-primary/30 px-2 py-1">WEBSITES</span>
             </motion.div>
 
             <motion.h1
