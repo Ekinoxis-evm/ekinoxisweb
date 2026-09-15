@@ -92,9 +92,7 @@ export default function ResearchPage() {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">RESEARCH_LAB</span>
+              <span className="border border-primary/30 px-2 py-1">RESEARCH</span>
             </motion.div>
 
             <motion.h1
@@ -163,8 +161,8 @@ export default function ResearchPage() {
               </h3>
               <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
                 {language === 'en'
-                  ? 'Every research line is connected to a real deployment: hackathon projects, pilots with partners, or internal tools our hackers use every day.'
-                  : 'Cada línea de investigación está conectada con un despliegue real: proyectos de hackathon, pilotos con aliados o herramientas internas que nuestros hackers usan a diario.'}
+                  ? 'Every line of research ends up somewhere real: a hackathon project, a pilot with a partner, or a tool our own team uses daily.'
+                  : 'Cada línea de investigación termina en algo real: un proyecto de hackathon, un piloto con un aliado, o una herramienta que usamos a diario.'}
               </p>
               <div className="space-y-3">
                 {[

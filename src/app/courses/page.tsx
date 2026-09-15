@@ -15,7 +15,7 @@ const coursesContent = {
     title: 'COURSES',
     subtitle: 'Learn by shipping.',
     description:
-      'Cohort-based courses from the lab. Every course ends with something deployed — not a certificate for watching videos. Small groups, live sessions, real code.',
+      'Small groups, live sessions, real code. You finish with something running — not a certificate for watching videos.',
     status: { open: 'Enrolling', waitlist: 'Waitlist', coming_soon: 'Coming soon' } as Record<CourseStatus, string>,
     level: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' } as Record<CourseLevel, string>,
     priceTbd: 'Price TBA',
@@ -39,7 +39,7 @@ const coursesContent = {
     title: 'CURSOS',
     subtitle: 'Aprende lanzando.',
     description:
-      'Cursos por cohortes desde el laboratorio. Cada curso termina con algo desplegado — no con un certificado por ver videos. Grupos pequeños, sesiones en vivo, código real.',
+      'Grupos pequeños, sesiones en vivo, código real. Terminas con algo funcionando — no con un certificado por ver videos.',
     status: { open: 'Inscripciones abiertas', waitlist: 'Lista de espera', coming_soon: 'Muy pronto' } as Record<CourseStatus, string>,
     level: { beginner: 'Principiante', intermediate: 'Intermedio', advanced: 'Avanzado' } as Record<CourseLevel, string>,
     priceTbd: 'Precio por anunciar',
@@ -84,8 +84,6 @@ export default function CoursesPage() {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">COURSES</span>
             </motion.div>
 

@@ -22,9 +22,7 @@ export default function AdminLoginPage() {
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-            <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-            <span className="text-outline">/</span>
-            <span className="border border-primary/30 px-2 py-1">ADMIN_ACCESS</span>
+            <span className="border border-primary/30 px-2 py-1">ADMIN</span>
           </div>
           <h1 className="font-headline text-5xl font-bold tracking-tighter leading-[0.9] uppercase text-on-surface mb-3">
             SYSTEM<span className="text-primary"> ACCESS</span>

@@ -33,9 +33,7 @@ export default function HackersClient({ hackers }: Props) {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">NODE_OPERATORS</span>
+              <span className="border border-primary/30 px-2 py-1">OUR TEAM</span>
             </motion.div>
 
             <motion.h1

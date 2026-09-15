@@ -11,16 +11,16 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const appContent = {
   en: {
-    title: 'FRONTIER APP_BUILDING',
-    subtitle: 'Custom mobile and web apps with blockchain & AI at the core.',
-    description: 'We design and build custom applications — from MVPs to production systems — integrating frontier tech.',
+    title: 'SOFTWARE BUILT FOR YOU',
+    subtitle: 'Mobile and web apps, with AI and blockchain built in.',
+    description: 'We design it, build it and run it — from a first version to software your whole company depends on.',
     features: [
       { code: 'MOB', title: 'Mobile Apps', desc: 'Native and cross-platform for iOS and Android.' },
-      { code: 'WEB', title: 'Web Applications', desc: 'Progressive web apps and full-stack platforms.' },
-      { code: 'BC3', title: 'Blockchain Integration', desc: 'Web3 apps with smart contracts and crypto wallets.' },
-      { code: 'AI_', title: 'AI-Powered Features', desc: 'Intelligent automation and LLM-driven functionality.' },
-      { code: 'API', title: 'API Development', desc: 'RESTful and GraphQL APIs for seamless integrations.' },
-      { code: 'CLD', title: 'Cloud Infrastructure', desc: 'Scalable deployment and infrastructure management.' },
+      { code: 'WEB', title: 'Web Apps', desc: 'Platforms that work in any browser, phone included.' },
+      { code: 'BC3', title: 'Blockchain', desc: 'Smart contracts and crypto wallets, built in properly.' },
+      { code: 'AI_', title: 'AI Features', desc: 'Work that used to need a person, done by software.' },
+      { code: 'API', title: 'APIs', desc: 'So your systems can talk to each other, and to ours.' },
+      { code: 'CLD', title: 'Hosting', desc: 'Servers that stay up as you grow, managed by us.' },
     ],
     techStacks: [
       { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
@@ -29,26 +29,26 @@ const appContent = {
       { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
     ],
     process: [
-      { num: '01', title: 'Discovery', desc: 'Requirements and goal alignment.' },
-      { num: '02', title: 'Design', desc: 'Wireframes and UX flows.' },
-      { num: '03', title: 'Development', desc: 'Build with best practices.' },
-      { num: '04', title: 'Testing', desc: 'QA and security review.' },
-      { num: '05', title: 'Deployment', desc: 'Production launch.' },
-      { num: '06', title: 'Support', desc: 'Ongoing maintenance.' },
+      { num: '01', title: 'Understand', desc: 'What it must do, and why.' },
+      { num: '02', title: 'Design', desc: 'What every screen looks like.' },
+      { num: '03', title: 'Build', desc: 'Written properly, the first time.' },
+      { num: '04', title: 'Test', desc: 'We try to break it before anyone else does.' },
+      { num: '05', title: 'Launch', desc: 'Live, with real users.' },
+      { num: '06', title: 'Support', desc: 'We keep it running.' },
     ],
     cta: 'Book a Call',
   },
   es: {
-    title: 'DESARROLLO DE APPS_FRONTERA',
-    subtitle: 'Apps móviles y web con blockchain e IA en el núcleo.',
-    description: 'Diseñamos y construimos aplicaciones a medida — desde MVPs hasta sistemas en producción — integrando tecnología de frontera.',
+    title: 'SOFTWARE HECHO PARA TI',
+    subtitle: 'Apps móviles y web, con IA y blockchain integrados.',
+    description: 'Lo diseñamos, lo construimos y lo operamos — desde una primera versión hasta el software del que depende toda tu empresa.',
     features: [
       { code: 'MOB', title: 'Apps Móviles', desc: 'Nativas y multiplataforma para iOS y Android.' },
-      { code: 'WEB', title: 'Aplicaciones Web', desc: 'Progressive web apps y plataformas full-stack.' },
-      { code: 'BC3', title: 'Integración Blockchain', desc: 'Apps Web3 con smart contracts y wallets.' },
-      { code: 'AI_', title: 'Funciones con IA', desc: 'Automatización inteligente y funcionalidad LLM.' },
-      { code: 'API', title: 'Desarrollo de APIs', desc: 'APIs RESTful y GraphQL para integraciones.' },
-      { code: 'CLD', title: 'Infraestructura Cloud', desc: 'Despliegue escalable y gestión de infraestructura.' },
+      { code: 'WEB', title: 'Apps Web', desc: 'Plataformas que funcionan en cualquier navegador, celular incluido.' },
+      { code: 'BC3', title: 'Blockchain', desc: 'Contratos inteligentes y wallets, integrados bien.' },
+      { code: 'AI_', title: 'Funciones con IA', desc: 'Trabajo que antes requería una persona, hecho por software.' },
+      { code: 'API', title: 'APIs', desc: 'Para que tus sistemas se hablen entre ellos, y con los nuestros.' },
+      { code: 'CLD', title: 'Hosting', desc: 'Servidores que aguantan tu crecimiento, gestionados por nosotros.' },
     ],
     techStacks: [
       { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
@@ -57,12 +57,12 @@ const appContent = {
       { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
     ],
     process: [
-      { num: '01', title: 'Descubrimiento', desc: 'Alineación de requisitos y objetivos.' },
-      { num: '02', title: 'Diseño', desc: 'Wireframes y flujos UX.' },
-      { num: '03', title: 'Desarrollo', desc: 'Construcción con mejores prácticas.' },
-      { num: '04', title: 'Pruebas', desc: 'QA y revisión de seguridad.' },
-      { num: '05', title: 'Despliegue', desc: 'Lanzamiento a producción.' },
-      { num: '06', title: 'Soporte', desc: 'Mantenimiento continuo.' },
+      { num: '01', title: 'Entender', desc: 'Qué debe hacer, y por qué.' },
+      { num: '02', title: 'Diseño', desc: 'Cómo se ve cada pantalla.' },
+      { num: '03', title: 'Construcción', desc: 'Escrito bien, desde la primera vez.' },
+      { num: '04', title: 'Pruebas', desc: 'Intentamos romperlo antes que nadie.' },
+      { num: '05', title: 'Lanzamiento', desc: 'En vivo, con usuarios reales.' },
+      { num: '06', title: 'Soporte', desc: 'Lo mantenemos funcionando.' },
     ],
     cta: 'Agendar Llamada',
   },
@@ -88,7 +88,7 @@ export default function AppBuildingPage() {
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
               <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">APP_BUILDING</span>
+              <span className="border border-primary/30 px-2 py-1">SOFTWARE</span>
             </motion.div>
 
             <motion.h1
@@ -246,8 +246,8 @@ export default function AppBuildingPage() {
               <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{language === 'en' ? 'NOT_SURE_WHICH_TIER?' : '¿NO_SABES_QUÉ_TIER?'}</p>
               <p className="font-body text-on-surface-variant text-sm max-w-lg">
                 {language === 'en'
-                  ? 'Book a free diagnosis call. We scope it with you and send a fixed quote within 48 hours.'
-                  : 'Agenda una llamada de diagnóstico gratis. Definimos el alcance contigo y enviamos una cotización fija en 48 horas.'}
+                  ? 'Book a free call. We work out what it needs and send a fixed price within 48 hours.'
+                  : 'Agenda una llamada gratis. Definimos qué necesita y enviamos un precio fijo en 48 horas.'}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">

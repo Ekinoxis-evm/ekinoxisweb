@@ -43,9 +43,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">HACKER_HOUSE</span>
+              <span className="border border-primary/30 px-2 py-1">HACKER HOUSE</span>
             </motion.div>
 
             <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">

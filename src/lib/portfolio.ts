@@ -32,13 +32,13 @@ export const DIVISIONS: Division[] = [
       title: 'PRODUCTS',
       short: 'Products',
       description:
-        'In-house IP we own, fund and keep shipping. Live products with real users, not demos.',
+        'Ours. We own them, we pay for them, and real people use them.',
     },
     es: {
       title: 'PRODUCTOS',
       short: 'Productos',
       description:
-        'IP propia que financiamos y seguimos desarrollando. Productos vivos con usuarios reales, no demos.',
+        'Nuestros. Los financiamos nosotros, y los usa gente real.',
     },
   },
   {
@@ -51,13 +51,13 @@ export const DIVISIONS: Division[] = [
       title: 'EXPERIMENTS',
       short: 'Experiments',
       description:
-        'Builds that shipped to a live URL while we test whether the idea earns a product. Some graduate, some stay here.',
+        'Live, but still being tested. Some become products. Some stay here.',
     },
     es: {
       title: 'EXPERIMENTOS',
       short: 'Experimentos',
       description:
-        'Desarrollos publicados en una URL en vivo mientras probamos si la idea merece ser producto. Algunos gradúan, otros se quedan aquí.',
+        'En vivo, pero todavía a prueba. Algunos se vuelven productos. Otros se quedan aquí.',
     },
   },
   {
@@ -70,13 +70,13 @@ export const DIVISIONS: Division[] = [
       title: 'PROOFS OF CONCEPT',
       short: 'Proofs of Concept',
       description:
-        'Built to answer one question — usually in a hackathon weekend. Kept public as evidence of what the lab can do under pressure.',
+        'Built in a weekend to answer one question. Public, so you can see what we do under pressure.',
     },
     es: {
       title: 'PRUEBAS DE CONCEPTO',
       short: 'Pruebas de Concepto',
       description:
-        'Construidas para responder una sola pregunta — casi siempre en un fin de semana de hackathon. Públicas como evidencia de lo que el laboratorio hace bajo presión.',
+        'Construidas en un fin de semana para responder una pregunta. Públicas, para que veas qué hacemos bajo presión.',
     },
   },
   {
@@ -89,13 +89,13 @@ export const DIVISIONS: Division[] = [
       title: 'CLIENTS',
       short: 'Clients',
       description:
-        'Companies that hired Ekinoxis Labs to design and build the software they run on.',
+        'Companies that hired us to build the software they run on.',
     },
     es: {
       title: 'CLIENTES',
       short: 'Clientes',
       description:
-        'Empresas que contrataron a Ekinoxis Labs para diseñar y construir el software con el que operan.',
+        'Empresas que nos contrataron para construir el software con el que operan.',
     },
   },
 ]

@@ -24,9 +24,7 @@ export default function CulturePage() {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
-              <span className="text-outline">/</span>
-              <span className="border border-primary/30 px-2 py-1">CULTURE_V3.2</span>
+              <span className="border border-primary/30 px-2 py-1">CULTURE</span>
             </motion.div>
 
             <motion.h1
@@ -60,7 +58,7 @@ export default function CulturePage() {
                 {/* UID top-right */}
                 <div className="absolute top-4 right-4">
                   <ScanBadge variant="muted">
-                    VAL_{String(idx + 1).padStart(2, '0')}
+                    {String(idx + 1).padStart(2, '0')}
                   </ScanBadge>
                 </div>
 
