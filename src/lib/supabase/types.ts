@@ -243,6 +243,57 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          budget: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          language: string
+          message: string
+          name: string
+          notes: string | null
+          notified_at: string | null
+          source_path: string | null
+          status: string
+          topic: string
+          whatsapp: string | null
+        }
+        Insert: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          language?: string
+          message: string
+          name: string
+          notes?: string | null
+          notified_at?: string | null
+          source_path?: string | null
+          status?: string
+          topic: string
+          whatsapp?: string | null
+        }
+        Update: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          language?: string
+          message?: string
+          name?: string
+          notes?: string | null
+          notified_at?: string | null
+          source_path?: string | null
+          status?: string
+          topic?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       product_hackers: {
         Row: {
           hacker_id: string
@@ -588,6 +639,9 @@ export type CertificationPartner = Tables<'certification_partners'>
 export type CultureValue = Tables<'culture_values'>
 export type TechCategory = Tables<'tech_categories'>
 export type SiteContent = Tables<'site_content'>
+export type Lead = Tables<'leads'>
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'won' | 'lost' | 'spam'
+export type LeadTopic = 'consultation' | 'web' | 'app' | 'course' | 'talk' | 'general'
 export type ProductStatus = Database['public']['Enums']['product_status']
 
 // Project classification: in-house product, client work, or lab experiment

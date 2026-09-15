@@ -7,9 +7,9 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
+import ContactForm from '@/components/ContactForm';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
-const CONSULTATION_FORM = 'https://mcai2mcfwrq.typeform.com/to/PLttpvSa';
 const TELEGRAM = 'https://t.me/ekinoxis';
 
 const consultationContent = {
@@ -402,7 +402,7 @@ export default function ConsultationPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href={CONSULTATION_FORM} target="_blank" rel="noopener noreferrer">
+                  <a href="#contact">
                     <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {plan.cta}
                     </Button>
@@ -413,28 +413,32 @@ export default function ConsultationPage() {
             <p className="font-mono text-[10px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
 
-          {/* CTA Row */}
+          {/* Final step — the form, not a link off the site */}
           <motion.div
+            id="contact"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.65 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
-            <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">
+            <div className="lg:col-span-4">
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
                 {t.cta.label}
               </p>
-              <p className="font-body text-on-surface-variant text-sm max-w-lg">
+              <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">
+                {t.cta.button}
+              </h2>
+              <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-6">
                 {t.cta.text}
               </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <a href={calendarLink} target="_blank" rel="noopener noreferrer">
-                <Button variant="primary" className="w-full justify-center">{t.cta.button}</Button>
+                <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center">
+                  {language === 'en' ? 'Or pick a time' : 'O elige una hora'}
+                </Button>
               </a>
-              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" className="w-full justify-center">Telegram</Button>
-              </a>
+            </div>
+            <div className="lg:col-span-8">
+              <ContactForm topic="consultation" />
             </div>
           </motion.div>
 

@@ -6,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
+import ContactForm from '@/components/ContactForm';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const webDevContent = {
@@ -132,7 +133,7 @@ export default function WebDevelopmentPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4" target="_blank" rel="noopener noreferrer">
+                  <a href="#contact">
                     <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {plan.cta}
                     </Button>
@@ -188,26 +189,29 @@ export default function WebDevelopmentPage() {
             </div>
           </motion.div>
 
-          {/* Final CTA */}
+          {/* Final CTA — the form lives here now, not on Typeform */}
           <motion.div
+            id="contact"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
-            <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{language === 'en' ? 'READY_TO_DEPLOY?' : '¿LISTO_PARA_DESPLEGAR?'}</p>
-              <p className="font-body text-on-surface-variant text-sm">{t.finalCta}</p>
+            <div className="lg:col-span-4">
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
+                {language === 'en' ? 'READY?' : '¿LISTO?'}
+              </p>
+              <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">
+                {t.finalCta}
+              </h2>
+              <p className="font-body text-on-surface-variant text-sm leading-relaxed">
+                {language === 'en'
+                  ? 'Tell us what you sell and which package fits. We reply with a fixed price and a start date.'
+                  : 'Cuéntanos qué vendes y qué paquete te sirve. Respondemos con un precio fijo y una fecha de inicio.'}
+              </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <a href="https://mcai2mcfwrq.typeform.com/to/bXBs9fR4" target="_blank" rel="noopener noreferrer">
-                <Button variant="primary" className="w-full justify-center">
-                  {language === 'en' ? 'Get Started' : 'Comenzar'}
-                </Button>
-              </a>
-              <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" className="w-full justify-center">Telegram</Button>
-              </a>
+            <div className="lg:col-span-8">
+              <ContactForm topic="web" />
             </div>
           </motion.div>
 

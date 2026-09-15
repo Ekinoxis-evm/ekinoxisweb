@@ -7,6 +7,7 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
+import ContactForm from '@/components/ContactForm';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const appContent = {
@@ -235,28 +236,32 @@ export default function AppBuildingPage() {
             </div>
           </motion.div>
 
-          {/* CTA */}
+          {/* CTA — the form, with the calendar as the alternative */}
           <motion.div
+            id="contact"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
-            <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{language === 'en' ? 'NOT_SURE_WHICH_TIER?' : '¿NO_SABES_QUÉ_TIER?'}</p>
-              <p className="font-body text-on-surface-variant text-sm max-w-lg">
-                {language === 'en'
-                  ? 'Book a free call. We work out what it needs and send a fixed price within 48 hours.'
-                  : 'Agenda una llamada gratis. Definimos qué necesita y enviamos un precio fijo en 48 horas.'}
+            <div className="lg:col-span-4">
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
+                {language === 'en' ? 'NOT SURE WHICH ONE?' : '¿NO SABES CUÁL?'}
               </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">
+                {language === 'en' ? 'Tell us what you need' : 'Cuéntanos qué necesitas'}
+              </h2>
+              <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-6">
+                {language === 'en'
+                  ? 'We work out what it needs and send a fixed price within 48 hours.'
+                  : 'Definimos qué necesita y enviamos un precio fijo en 48 horas.'}
+              </p>
               <a href={services.calendarLink} target="_blank" rel="noopener noreferrer">
-                <Button variant="primary" className="w-full justify-center">{t.cta}</Button>
+                <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center">{t.cta}</Button>
               </a>
-              <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" className="w-full justify-center">Telegram</Button>
-              </a>
+            </div>
+            <div className="lg:col-span-8">
+              <ContactForm topic="app" />
             </div>
           </motion.div>
 
