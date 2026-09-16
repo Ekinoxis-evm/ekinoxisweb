@@ -41,7 +41,7 @@ Dark-first system. Black is the canvas; cyan is the voice.
 | Token | Hex |
 |---|---|
 | On-surface variant | `#A2ACB5` |
-| Outline | `#6C777F` |
+| Outline | `#8A949C` |
 | Outline variant / Ghost | `#3F4951` |
 
 ## Error

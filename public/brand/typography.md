@@ -17,8 +17,8 @@ Three faces, three jobs. All free on Google Fonts.
 ## Rules
 - Headlines: Space Grotesk 700, UPPERCASE, tracking −0.04em, line-height 0.9
 - Wordmark: Space Grotesk — 700 for EKINOXIS, 300 for the [ ] brackets
-- Body: Inter 300 (light), line-height 1.65
-- Metadata: Space Mono 400, 10px, UPPERCASE, tracking +0.2em
+- Body: Inter 400 (regular), line-height 1.65 — 300 blooms and goes unreadable on black
+- Metadata: Space Mono 400, 12px minimum, UPPERCASE, tracking +0.15em
 - Numbers: always tabular (`font-variant-numeric: tabular-nums`)
 
 ## Scale (1920 reference)
@@ -30,5 +30,5 @@ Three faces, three jobs. All free on Google Fonts.
 | H3 | 1.5rem |
 | Body | 1rem (lg: 1.125rem) |
 | Small | 0.875rem |
-| Mono meta | 0.625rem |
-| UID badge | 0.5rem |
+| Mono meta | 0.75rem (12px) |
+| UID badge | 0.6875rem (11px) |

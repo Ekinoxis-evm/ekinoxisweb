@@ -32,7 +32,7 @@ export default function EducationClient({ universities, government }: Props) {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EDUCATION</span>
             </motion.div>
 
@@ -104,11 +104,11 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[9px] text-outline/40 uppercase">NO_LOGO</span>
+                        <span className="font-mono text-[11px] text-outline/40 uppercase">NO_LOGO</span>
                       </div>
                     )}
                   </div>
-                  <p className="font-label text-[10px] text-outline uppercase tracking-widest text-center">
+                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest text-center">
                     {partnerName(partner)}
                   </p>
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -154,11 +154,11 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[9px] text-outline/40 uppercase">NO_LOGO</span>
+                        <span className="font-mono text-[11px] text-outline/40 uppercase">NO_LOGO</span>
                       </div>
                     )}
                   </div>
-                  <p className="font-label text-[10px] text-outline uppercase tracking-widest text-center">
+                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest text-center">
                     {partnerName(partner)}
                   </p>
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-secondary/0 via-secondary/60 to-secondary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -172,7 +172,7 @@ export default function EducationClient({ universities, government }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>UNI_PARTNERS: {universities.length}</span>
             <span>GOV_PARTNERS: {government.length}</span>

@@ -248,7 +248,7 @@ export default function ConsultationPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">CONSULTATION</span>
@@ -261,7 +261,7 @@ export default function ConsultationPage() {
               {t.title}
             </motion.h1>
 
-            <motion.p variants={fadeInUp} className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
+            <motion.p variants={fadeInUp} className="font-mono text-[13px] text-primary tracking-widest uppercase mb-6">
               {t.subtitle}
             </motion.p>
 
@@ -293,23 +293,23 @@ export default function ConsultationPage() {
                   key={topic.code}
                   className="relative bg-surface-container-low p-6 md:p-8 group hover:bg-surface-container transition-colors duration-500"
                 >
-                  <span className="font-mono text-[10px] text-primary/70 tracking-widest block mb-6">
+                  <span className="font-mono text-[12px] text-primary/70 tracking-widest block mb-6">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-2">
                     {topic.title}
                   </h3>
                   {/* The technical name, kept small — for the reader who already knows it */}
-                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-4">
+                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">
                     {topic.tech}
                   </p>
                   <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
                     {topic.desc}
                   </p>
-                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">
+                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-2">
                     {language === 'en' ? 'You leave with' : 'Te llevas'}
                   </p>
-                  <p className="font-label text-xs text-tertiary-dim/90 leading-relaxed">
+                  <p className="font-label text-[13px] font-medium text-tertiary-dim/90 leading-relaxed">
                     {topic.outcome}
                   </p>
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -349,11 +349,11 @@ export default function ConsultationPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
               {t.funnel.steps.map((step) => (
                 <div key={step.num} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                  <p className="font-mono text-primary text-xs mb-4">{step.num}</p>
+                  <p className="font-mono text-primary text-[13px] mb-4">{step.num}</p>
                   <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
                     {step.title}
                   </h4>
-                  <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
+                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -372,7 +372,7 @@ export default function ConsultationPage() {
                 {t.pricing.title}
               </span>
             </div>
-            <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-6">
+            <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-6">
               {t.pricing.subtitle}
             </p>
 
@@ -391,14 +391,14 @@ export default function ConsultationPage() {
                   <div className="mb-1">
                     <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
                   </div>
-                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-8">
+                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-8">
                     {plan.meta}
                   </p>
                   <ul className="space-y-3 flex-1 mb-8">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex gap-2">
                         <span className="font-mono text-primary/50 text-sm flex-shrink-0">{'>'}</span>
-                        <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
+                        <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -410,7 +410,7 @@ export default function ConsultationPage() {
                 </div>
               ))}
             </div>
-            <p className="font-mono text-[10px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
+            <p className="font-mono text-[12px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
 
           {/* Final step — the form, not a link off the site */}
@@ -422,7 +422,7 @@ export default function ConsultationPage() {
             className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
             <div className="lg:col-span-4">
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
                 {t.cta.label}
               </p>
               <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">

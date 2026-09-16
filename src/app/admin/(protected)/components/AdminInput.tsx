@@ -8,7 +8,7 @@ interface AdminInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export default function AdminInput({ label, hint, className = '', ...props }: AdminInputProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-mono text-[10px] text-outline tracking-widest uppercase">
+      <label className="font-mono text-[12px] text-outline tracking-widest uppercase">
         {label}
         {props.required && <span className="text-primary ml-1">*</span>}
       </label>
@@ -16,7 +16,7 @@ export default function AdminInput({ label, hint, className = '', ...props }: Ad
         {...props}
         className={`bg-surface-container-high border border-outline-variant/30 focus:border-primary/60 outline-none text-on-surface font-body text-sm px-3 py-2.5 placeholder:text-outline/40 transition-colors duration-200 ${className}`}
       />
-      {hint && <p className="font-mono text-[9px] text-outline/60 tracking-wide">{hint}</p>}
+      {hint && <p className="font-mono text-[11px] text-outline/60 tracking-wide">{hint}</p>}
     </div>
   )
 }

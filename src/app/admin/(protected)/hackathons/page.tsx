@@ -20,7 +20,7 @@ export default async function AdminHackathonsPage() {
 
   return (
     <div>
-      <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-8">
+      <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-8">
         <span className="border border-primary/30 px-2 py-1">EKX_ADMIN</span>
         <span className="text-outline">/</span>
         <span className="border border-primary/30 px-2 py-1">HACKATHONS</span>
@@ -32,7 +32,7 @@ export default async function AdminHackathonsPage() {
         </h1>
         <Link
           href="/admin/hackathons/new"
-          className="font-mono text-[10px] uppercase tracking-widest px-4 py-2 border border-primary/40 text-primary hover:bg-primary/10 transition-colors duration-200"
+          className="font-mono text-[12px] uppercase tracking-widest px-4 py-2 border border-primary/40 text-primary hover:bg-primary/10 transition-colors duration-200"
         >
           + NEW HACKATHON
         </Link>
@@ -41,7 +41,7 @@ export default async function AdminHackathonsPage() {
       <div className="grid grid-cols-1 gap-px bg-primary/10">
         <div className="bg-surface-container-high grid grid-cols-[1fr_130px_220px_80px] gap-4 px-6 py-3">
           {['NAME', 'STATUS', 'DATES', 'ACTIONS'].map((h) => (
-            <span key={h} className="font-mono text-[9px] text-outline tracking-widest uppercase">{h}</span>
+            <span key={h} className="font-mono text-[11px] text-outline tracking-widest uppercase">{h}</span>
           ))}
         </div>
 
@@ -54,9 +54,9 @@ export default async function AdminHackathonsPage() {
             <div key={h.id} className="bg-surface-container-low hover:bg-surface-container grid grid-cols-[1fr_130px_220px_80px] gap-4 px-6 py-4 items-center group transition-colors duration-200">
               <div className="font-label text-sm text-on-surface uppercase tracking-tight">{h.name}</div>
               <ScanBadge variant={status.variant}>{status.label}</ScanBadge>
-              <span className="font-mono text-[10px] text-on-surface-variant tracking-widest">{dateStr}</span>
+              <span className="font-mono text-[12px] text-on-surface-variant tracking-widest">{dateStr}</span>
               <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <Link href={`/admin/hackathons/${h.id}`} className="font-mono text-[9px] text-primary hover:underline uppercase tracking-widest">EDIT</Link>
+                <Link href={`/admin/hackathons/${h.id}`} className="font-mono text-[11px] text-primary hover:underline uppercase tracking-widest">EDIT</Link>
               </div>
             </div>
           )
@@ -64,7 +64,7 @@ export default async function AdminHackathonsPage() {
 
         {(!hackathons || hackathons.length === 0) && (
           <div className="bg-surface-container-low px-6 py-12 text-center">
-            <p className="font-mono text-[10px] text-outline tracking-widest uppercase">NO HACKATHONS FOUND</p>
+            <p className="font-mono text-[12px] text-outline tracking-widest uppercase">NO HACKATHONS FOUND</p>
           </div>
         )}
       </div>

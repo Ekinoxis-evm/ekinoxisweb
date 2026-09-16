@@ -54,7 +54,7 @@ export default function EnrollButton({ course, label, className = '', variant = 
         {loading ? (language === 'en' ? 'Opening checkout…' : 'Abriendo pago…') : label}
       </Button>
       {error && (
-        <p className="font-mono text-[10px] text-error uppercase tracking-widest mt-2">{error}</p>
+        <p className="font-mono text-[12px] text-error uppercase tracking-widest mt-2">{error}</p>
       )}
     </div>
   );

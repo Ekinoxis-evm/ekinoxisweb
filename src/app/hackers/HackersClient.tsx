@@ -32,7 +32,7 @@ export default function HackersClient({ hackers }: Props) {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">OUR TEAM</span>
             </motion.div>
 
@@ -84,7 +84,7 @@ export default function HackersClient({ hackers }: Props) {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full bg-surface-container">
-                      <span className="font-mono text-[10px] text-outline/40 uppercase tracking-widest">NO_PHOTO</span>
+                      <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">NO_PHOTO</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -103,7 +103,7 @@ export default function HackersClient({ hackers }: Props) {
                   )}
 
                   {hacker.university && hacker.university !== 'Anon' && (
-                    <p className="font-label text-[10px] text-outline uppercase tracking-widest">
+                    <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest">
                       {hacker.university}
                     </p>
                   )}
@@ -131,11 +131,11 @@ export default function HackersClient({ hackers }: Props) {
               variants={fadeInUp}
               className="relative bg-surface-container-lowest border-2 border-dashed border-primary/20 group hover:border-primary/40 transition-colors duration-500 flex flex-col items-center justify-center min-h-[280px]"
             >
-              <span className="font-mono text-[10px] text-outline uppercase tracking-widest mb-3">SLOT_OPEN</span>
+              <span className="font-mono text-[12px] text-outline uppercase tracking-widest mb-3">SLOT_OPEN</span>
               <p className="font-headline text-lg font-bold text-on-surface-variant group-hover:text-primary transition-colors text-center px-4">
                 {language === 'en' ? 'YOU?' : '¿TÚ?'}
               </p>
-              <p className="font-label text-[10px] text-outline uppercase tracking-widest mt-2 text-center px-4">
+              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2 text-center px-4">
                 {language === 'en' ? 'Join the frontier' : 'Únete a la frontera'}
               </p>
             </motion.div>
@@ -146,7 +146,7 @@ export default function HackersClient({ hackers }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>OPERATOR_COUNT: {hackers.length}</span>
             <span>STATUS: ACTIVE_RECRUITING</span>

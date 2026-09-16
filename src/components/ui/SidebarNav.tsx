@@ -20,7 +20,7 @@ export default function SidebarNav({ items, title }: SidebarNavProps) {
     <aside className="hidden xl:flex flex-col w-56 fixed top-16 left-0 bottom-0 bg-black border-r border-outline-variant/20 z-40 overflow-y-auto">
       {title && (
         <div className="px-6 py-4 border-b border-outline-variant/20">
-          <span className="font-mono text-[10px] text-outline tracking-widest uppercase">{title}</span>
+          <span className="font-mono text-[12px] text-outline tracking-widest uppercase">{title}</span>
         </div>
       )}
       <nav className="flex flex-col py-4">
@@ -31,7 +31,7 @@ export default function SidebarNav({ items, title }: SidebarNavProps) {
               key={item.href}
               href={item.href}
               className={`
-                flex items-center px-6 py-3 font-label text-xs uppercase tracking-tighter transition-all duration-200
+                flex items-center px-6 py-3 font-label text-[13px] font-medium uppercase tracking-tighter transition-all duration-200
                 ${isActive
                   ? 'bg-primary/10 text-primary border-l-4 border-primary'
                   : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low border-l-4 border-transparent'

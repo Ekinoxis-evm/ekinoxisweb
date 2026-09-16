@@ -70,7 +70,7 @@ export default function HackerForm({ hacker }: HackerFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl">
-      <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-8">
+      <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-8">
         <span className="border border-primary/30 px-2 py-1">EKX_ADMIN</span>
         <span className="text-outline">/</span>
         <a href="/admin/hackers" className="border border-primary/30 px-2 py-1 hover:border-primary/60">HACKERS</a>
@@ -84,12 +84,12 @@ export default function HackerForm({ hacker }: HackerFormProps) {
 
       {error && (
         <div className="mb-6 border border-error/40 bg-error/5 px-4 py-3">
-          <p className="font-mono text-[10px] text-error tracking-widest uppercase">{error}</p>
+          <p className="font-mono text-[12px] text-error tracking-widest uppercase">{error}</p>
         </div>
       )}
 
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">IDENTITY</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">IDENTITY</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <AdminInput label="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
           <ImageUpload label="Photo *" value={imageUrl} onChange={setImageUrl} folder="hackers" hint="Upload new or keep existing /hackers/ path" />
@@ -101,8 +101,8 @@ export default function HackerForm({ hacker }: HackerFormProps) {
       </div>
 
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-2">SOCIAL LINKS</p>
-        <p className="font-mono text-[9px] text-outline/60 tracking-widest mb-6">GITHUB, LINKEDIN, X — REQUIRED</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-2">SOCIAL LINKS</p>
+        <p className="font-mono text-[11px] text-outline/60 tracking-widest mb-6">GITHUB, LINKEDIN, X — REQUIRED</p>
         <div className="grid grid-cols-1 gap-5">
           <AdminInput label="GitHub" value={github} onChange={(e) => setGithub(e.target.value)} required placeholder="https://github.com/username" />
           <AdminInput label="LinkedIn" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} required placeholder="https://linkedin.com/in/username" />
@@ -111,8 +111,8 @@ export default function HackerForm({ hacker }: HackerFormProps) {
       </div>
 
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-8">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-2">OPTIONAL SOCIALS</p>
-        <p className="font-mono text-[9px] text-outline/60 tracking-widest mb-6">TELEGRAM, DISCORD, PORTFOLIO — OPTIONAL</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-2">OPTIONAL SOCIALS</p>
+        <p className="font-mono text-[11px] text-outline/60 tracking-widest mb-6">TELEGRAM, DISCORD, PORTFOLIO — OPTIONAL</p>
         <div className="grid grid-cols-1 gap-5">
           <AdminInput label="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="https://t.me/username" />
           <AdminInput label="Discord" value={discord} onChange={(e) => setDiscord(e.target.value)} placeholder="username#0000 or Discord link" />
@@ -122,15 +122,15 @@ export default function HackerForm({ hacker }: HackerFormProps) {
 
       <div className="flex items-center gap-4">
         <button type="submit" disabled={saving}
-          className="font-mono text-[10px] uppercase tracking-widest px-8 py-3 bg-primary text-surface-container-lowest hover:bg-primary-dim disabled:opacity-40 transition-colors duration-200">
+          className="font-mono text-[12px] uppercase tracking-widest px-8 py-3 bg-primary text-surface-container-lowest hover:bg-primary-dim disabled:opacity-40 transition-colors duration-200">
           {saving ? 'SAVING...' : isEdit ? 'SAVE CHANGES' : 'CREATE HACKER'}
         </button>
-        <a href="/admin/hackers" className="font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-outline-variant/30 text-outline hover:text-on-surface transition-colors duration-200">
+        <a href="/admin/hackers" className="font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-outline-variant/30 text-outline hover:text-on-surface transition-colors duration-200">
           CANCEL
         </a>
         {isEdit && (
           <button type="button" onClick={handleDelete}
-            className="ml-auto font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200">
+            className="ml-auto font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200">
             DELETE
           </button>
         )}

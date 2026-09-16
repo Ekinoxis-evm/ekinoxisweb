@@ -26,7 +26,7 @@ export default function TechStackPage() {
       <div className="min-h-screen flex flex-col">
 
         {/* Top OS bar */}
-        <div className="border-b border-primary/10 px-6 py-3 flex items-center justify-between font-mono text-[10px] text-outline uppercase tracking-widest bg-surface-container-lowest">
+        <div className="border-b border-primary/10 px-6 py-3 flex items-center justify-between font-mono text-[12px] text-outline uppercase tracking-widest bg-surface-container-lowest">
           <div className="flex items-center gap-6">
             <span className="text-primary">EKX_OS v2.4</span>
             <span className="hidden sm:inline">MODULE: TECH_REGISTRY</span>
@@ -43,7 +43,7 @@ export default function TechStackPage() {
           {/* Category selector — horizontal scroll row on mobile, sidebar on lg+ */}
           <aside className="w-full lg:w-56 border-b lg:border-b-0 lg:border-r border-primary/10 bg-surface-container-lowest flex-shrink-0 flex flex-col">
             <div className="hidden lg:block p-4 border-b border-primary/10">
-              <p className="font-mono text-[10px] text-outline uppercase tracking-widest">CATEGORIES</p>
+              <p className="font-mono text-[12px] text-outline uppercase tracking-widest">CATEGORIES</p>
             </div>
             <nav className="flex overflow-x-auto lg:flex-1 lg:flex-col lg:overflow-x-visible lg:overflow-y-auto">
               {categories.map(([key, cat], idx) => {
@@ -58,7 +58,7 @@ export default function TechStackPage() {
                         : 'text-on-surface-variant hover:bg-surface-container hover:text-primary border-l-4 border-l-transparent'
                     }`}
                   >
-                    <span className="font-mono text-[9px] text-outline w-4 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-[11px] text-outline w-4 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
                     <span className="font-mono text-[11px] uppercase tracking-wider truncate">
                       {(cat as any).name}
                     </span>
@@ -71,7 +71,7 @@ export default function TechStackPage() {
             <div className="hidden lg:block p-4 border-t border-primary/10">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse flex-shrink-0" />
-                <span className="font-mono text-[9px] text-tertiary-dim uppercase tracking-widest">ALL_SYSTEMS_OK</span>
+                <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">ALL_SYSTEMS_OK</span>
               </div>
             </div>
           </aside>
@@ -87,7 +87,7 @@ export default function TechStackPage() {
                 </h1>
                 <ScanBadge variant="primary">ACTIVE_SYNC</ScanBadge>
               </div>
-              <span className="font-mono text-[10px] text-outline uppercase tracking-widest">
+              <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
                 NODES: {allLogos.length}
               </span>
             </div>
@@ -129,7 +129,7 @@ export default function TechStackPage() {
         </div>
 
         {/* Bottom status bar */}
-        <div className="border-t border-primary/10 px-6 py-2 flex items-center justify-between font-mono text-[9px] text-outline uppercase tracking-widest bg-surface-container-lowest">
+        <div className="border-t border-primary/10 px-6 py-2 flex items-center justify-between font-mono text-[11px] text-outline uppercase tracking-widest bg-surface-container-lowest">
           <span>{language === 'en' ? 'STACK' : 'STACK'}: {currentCat.name}</span>
           <span className="hidden md:block">{t.description}</span>
           <span className="text-primary">UPLINK: SECURE</span>

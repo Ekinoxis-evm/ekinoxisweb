@@ -46,7 +46,7 @@ export default function ImageUpload({ label, value, onChange, folder, hint }: Im
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-mono text-[10px] text-outline tracking-widest uppercase">
+      <label className="font-mono text-[12px] text-outline tracking-widest uppercase">
         {label}
       </label>
 
@@ -62,7 +62,7 @@ export default function ImageUpload({ label, value, onChange, folder, hint }: Im
               unoptimized={isSupabaseUrl}
             />
           ) : (
-            <span className="font-mono text-[9px] text-outline/40 tracking-widest">NO IMG</span>
+            <span className="font-mono text-[11px] text-outline/40 tracking-widest">NO IMG</span>
           )}
         </div>
 
@@ -82,7 +82,7 @@ export default function ImageUpload({ label, value, onChange, folder, hint }: Im
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={uploading}
-              className="font-mono text-[9px] uppercase tracking-widest px-4 py-1.5 border border-secondary/40 text-secondary hover:bg-secondary/10 disabled:opacity-40 transition-colors duration-200"
+              className="font-mono text-[11px] uppercase tracking-widest px-4 py-1.5 border border-secondary/40 text-secondary hover:bg-secondary/10 disabled:opacity-40 transition-colors duration-200"
             >
               {uploading ? 'UPLOADING...' : '↑ UPLOAD FILE'}
             </button>
@@ -90,7 +90,7 @@ export default function ImageUpload({ label, value, onChange, folder, hint }: Im
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="font-mono text-[9px] uppercase tracking-widest text-outline/50 hover:text-error transition-colors duration-200"
+                className="font-mono text-[11px] uppercase tracking-widest text-outline/50 hover:text-error transition-colors duration-200"
               >
                 CLEAR
               </button>
@@ -98,12 +98,12 @@ export default function ImageUpload({ label, value, onChange, folder, hint }: Im
           </div>
 
           {uploadError && (
-            <p className="font-mono text-[9px] text-error tracking-widest">{uploadError}</p>
+            <p className="font-mono text-[11px] text-error tracking-widest">{uploadError}</p>
           )}
         </div>
       </div>
 
-      {hint && <p className="font-mono text-[9px] text-outline/60 tracking-wide">{hint}</p>}
+      {hint && <p className="font-mono text-[11px] text-outline/60 tracking-wide">{hint}</p>}
 
       <input
         ref={inputRef}

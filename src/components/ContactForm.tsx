@@ -67,7 +67,7 @@ const field =
   'w-full bg-surface-container-high border border-outline-variant/30 focus:border-primary/60 ' +
   'outline-none text-on-surface font-body text-sm px-4 py-3 transition-colors placeholder:text-outline/70';
 
-const label = 'font-mono text-[10px] text-outline uppercase tracking-widest mb-2 block';
+const label = 'font-mono text-[12px] text-outline uppercase tracking-widest mb-2 block';
 
 interface Props {
   topic: LeadTopic;
@@ -221,7 +221,7 @@ export default function ContactForm({ topic, showBudget = true, className = '' }
           <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'}>
             {state === 'sending' ? t.sending : t.send}
           </Button>
-          <span className="font-mono text-[10px] text-outline uppercase tracking-widest">
+          <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
             {t.orTelegram}{' '}
             <a
               href={TELEGRAM}

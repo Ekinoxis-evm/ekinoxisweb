@@ -23,21 +23,21 @@ export function SubLinksBlock({ links, label }: { links: SubLink[]; label: strin
   if (links.length === 0) return null;
   return (
     <div className="mb-4">
-      <p className="font-mono text-[9px] text-outline/60 uppercase tracking-widest mb-2">{label}</p>
+      <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">{label}</p>
       <div className="flex flex-col gap-px bg-outline-variant/10">
         {links.map((sl) => (
           <div key={sl.label} className="flex items-center justify-between gap-3 bg-surface-container px-3 py-2">
-            <span className="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest">{sl.label}</span>
+            <span className="font-mono text-[11px] text-on-surface-variant uppercase tracking-widest">{sl.label}</span>
             <div className="flex items-center gap-3 flex-shrink-0">
               {sl.url && (
                 <a href={sl.url} target="_blank" rel="noopener noreferrer"
-                  className="py-2 px-1 -my-1 font-mono text-[9px] uppercase tracking-widest text-primary/70 hover:text-primary transition-colors duration-200">
+                  className="py-2 px-1 -my-1 font-mono text-[11px] uppercase tracking-widest text-primary/70 hover:text-primary transition-colors duration-200">
                   LIVE
                 </a>
               )}
               {sl.repo && (
                 <a href={sl.repo} target="_blank" rel="noopener noreferrer"
-                  className="py-2 px-1 -my-1 flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-outline hover:text-on-surface transition-colors duration-200">
+                  className="py-2 px-1 -my-1 flex items-center gap-1 font-mono text-[11px] uppercase tracking-widest text-outline hover:text-on-surface transition-colors duration-200">
                   <Image src="/socials/github.png" alt="GitHub" width={11} height={11} className="opacity-60" />
                   REPO
                 </a>
@@ -120,14 +120,14 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
         <SubLinksBlock links={subLinks} label={modulesLabel} />
 
         {product.hackathon && (
-          <p className="font-mono text-[9px] text-outline uppercase tracking-widest mb-4">
+          <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4">
             BUILT_AT: {product.hackathon.name}
           </p>
         )}
 
         {product.hackers && product.hackers.length > 0 && (
           <div className="mb-4">
-            <p className="font-mono text-[9px] text-outline/60 uppercase tracking-widest mb-2">BUILT_BY</p>
+            <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">BUILT_BY</p>
             <div className="flex flex-wrap items-center gap-2">
               {product.hackers.map((h) => (
                 <div key={h.id} className="flex items-center gap-1.5">
@@ -136,7 +136,7 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
                       <Image src={h.image_url} alt={h.name} fill className="object-cover grayscale" unoptimized={h.image_url.startsWith('http')} />
                     </div>
                   )}
-                  <span className="font-mono text-[9px] text-outline uppercase tracking-widest">{h.name}</span>
+                  <span className="font-mono text-[11px] text-outline uppercase tracking-widest">{h.name}</span>
                 </div>
               ))}
             </div>
@@ -166,7 +166,7 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
                 .filter(([, href]) => Boolean(href))
                 .map(([label, href, isContract]) => (
                   <a key={label} href={href as string} target="_blank" rel="noopener noreferrer"
-                    className={`flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-colors duration-200 ${
+                    className={`flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-3 py-1.5 border transition-colors duration-200 ${
                       isContract
                         ? 'border-tertiary-dim/30 text-tertiary-dim/60 hover:text-tertiary-dim hover:border-tertiary-dim/60'
                         : 'border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60'

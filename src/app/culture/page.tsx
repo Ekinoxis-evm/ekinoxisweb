@@ -23,7 +23,7 @@ export default function CulturePage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">CULTURE</span>
             </motion.div>
 
@@ -103,23 +103,23 @@ export default function CulturePage() {
             className="mt-px grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/10"
           >
             <div className="bg-surface-container-low p-6 md:p-10">
-              <span className="font-mono text-primary text-xs mb-2 block">SYSTEM_STATUS</span>
+              <span className="font-mono text-primary text-[13px] mb-2 block">{language === 'en' ? 'STATUS' : 'ESTADO'}</span>
               <p className="font-headline text-2xl font-bold text-on-surface">FRONTIER_ACTIVE</p>
-              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'Innovation by default' : 'Innovación por defecto'}
               </p>
             </div>
             <div className="bg-surface-container-low p-6 md:p-10">
-              <span className="font-mono text-primary text-xs mb-2 block">OPERATOR_COUNT</span>
+              <span className="font-mono text-primary text-[13px] mb-2 block">{language === 'en' ? 'PEOPLE' : 'PERSONAS'}</span>
               <p className="font-headline text-2xl font-bold text-on-surface">10+</p>
-              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'The frontier of LATAM devs' : 'La frontera de los devs LATAM'}
               </p>
             </div>
             <div className="bg-surface-container-low p-6 md:p-10">
-              <span className="font-mono text-primary text-xs mb-2 block">LOCATION_VECTOR</span>
+              <span className="font-mono text-primary text-[13px] mb-2 block">{language === 'en' ? 'WHERE' : 'DÓNDE'}</span>
               <p className="font-headline text-2xl font-bold text-on-surface">CALI // WY</p>
-              <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'Pacific coast origin' : 'Origen costa pacífica'}
               </p>
             </div>

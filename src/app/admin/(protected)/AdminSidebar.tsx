@@ -29,7 +29,7 @@ export default function AdminSidebar() {
   return (
     <aside className="hidden xl:flex flex-col w-56 fixed top-12 left-0 bottom-0 bg-black border-r border-outline-variant/20 z-40 overflow-y-auto">
       <div className="px-6 py-4 border-b border-outline-variant/20">
-        <span className="font-mono text-[10px] text-outline tracking-widest uppercase">
+        <span className="font-mono text-[12px] text-outline tracking-widest uppercase">
           CONTROL PANEL
         </span>
       </div>
@@ -42,7 +42,7 @@ export default function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={`
-                flex items-center px-6 py-3 font-mono text-[10px] uppercase tracking-widest transition-all duration-200
+                flex items-center px-6 py-3 font-mono text-[12px] uppercase tracking-widest transition-all duration-200
                 ${isActive
                   ? 'bg-primary/10 text-primary border-l-2 border-primary'
                   : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low border-l-2 border-transparent'
@@ -60,7 +60,7 @@ export default function AdminSidebar() {
       <div className="px-4 py-4 border-t border-outline-variant/20">
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 hover:border-error/40 text-outline hover:text-error font-mono text-[9px] uppercase tracking-widest py-2 transition-all duration-200"
+          className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 hover:border-error/40 text-outline hover:text-error font-mono text-[11px] uppercase tracking-widest py-2 transition-all duration-200"
         >
           SIGN OUT
         </button>

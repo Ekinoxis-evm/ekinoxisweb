@@ -37,7 +37,7 @@ export default function SuccessClient({ course }: { course: Course }) {
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
           <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-2xl">
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/courses" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">COURSES</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">{course.code}</span>
@@ -48,7 +48,7 @@ export default function SuccessClient({ course }: { course: Course }) {
             <motion.h1 variants={fadeInUp} className="font-headline text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-4">
               {t.title}
             </motion.h1>
-            <motion.p variants={fadeInUp} className="font-mono text-xs text-primary tracking-widest uppercase mb-8">
+            <motion.p variants={fadeInUp} className="font-mono text-[13px] text-primary tracking-widest uppercase mb-8">
               {course.title[language]}
             </motion.p>
             <motion.p variants={fadeInUp} className="font-body text-lg text-on-surface-variant leading-relaxed mb-4">

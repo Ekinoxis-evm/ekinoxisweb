@@ -70,7 +70,7 @@ export default function WebDevelopmentPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">WEBSITES</span>
@@ -122,14 +122,14 @@ export default function WebDevelopmentPage() {
                   <div className="mb-1">
                     <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
                   </div>
-                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-8">
+                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-8">
                     {plan.priceAlt}
                   </p>
                   <ul className="space-y-3 flex-1 mb-8">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex gap-2">
                         <span className="font-mono text-primary/50 text-sm flex-shrink-0">{'>'}</span>
-                        <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
+                        <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -141,7 +141,7 @@ export default function WebDevelopmentPage() {
                 </div>
               ))}
             </div>
-            <p className="font-mono text-[10px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
+            <p className="font-mono text-[12px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
 
           {/* How It Works + What You Get row */}
@@ -162,9 +162,9 @@ export default function WebDevelopmentPage() {
               <div className="space-y-4">
                 {t.howItWorks.map((step, idx) => (
                   <div key={idx} className="flex items-center gap-4">
-                    <span className="font-mono text-xs text-primary w-6 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
                     <div className="flex-1 h-px bg-primary/10" />
-                    <span className="font-label text-xs text-on-surface-variant uppercase tracking-wider">{step}</span>
+                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wider">{step}</span>
                   </div>
                 ))}
               </div>
@@ -182,7 +182,7 @@ export default function WebDevelopmentPage() {
                 {t.whatYouGet.items.map((item, idx) => (
                   <div key={idx} className="flex gap-3">
                     <span className="font-mono text-tertiary-dim/70 text-sm flex-shrink-0 mt-0.5">✓</span>
-                    <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{item}</span>
+                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{item}</span>
                   </div>
                 ))}
               </div>
@@ -198,7 +198,7 @@ export default function WebDevelopmentPage() {
             className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
             <div className="lg:col-span-4">
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
                 {language === 'en' ? 'READY?' : '¿LISTO?'}
               </p>
               <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">

@@ -36,11 +36,11 @@ export default function TagInput({ label, value, onChange, hint, placeholder = '
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-mono text-[10px] text-outline tracking-widest uppercase">{label}</label>
+      <label className="font-mono text-[12px] text-outline tracking-widest uppercase">{label}</label>
       <div className="bg-surface-container-high border border-outline-variant/30 focus-within:border-primary/60 px-3 py-2 flex flex-wrap gap-1.5 min-h-[42px] transition-colors duration-200">
         {value.map((tag) => (
           <span key={tag} className="flex items-center gap-1 bg-primary/10 border border-primary/20 px-2 py-0.5">
-            <span className="font-mono text-[10px] text-primary tracking-widest uppercase">{tag}</span>
+            <span className="font-mono text-[12px] text-primary tracking-widest uppercase">{tag}</span>
             <button type="button" onClick={() => removeTag(tag)} className="text-primary/60 hover:text-primary leading-none">×</button>
           </span>
         ))}
@@ -53,7 +53,7 @@ export default function TagInput({ label, value, onChange, hint, placeholder = '
           className="flex-1 min-w-[120px] bg-transparent outline-none text-on-surface font-body text-sm placeholder:text-outline/40"
         />
       </div>
-      {hint && <p className="font-mono text-[9px] text-outline/60 tracking-wide">{hint}</p>}
+      {hint && <p className="font-mono text-[11px] text-outline/60 tracking-wide">{hint}</p>}
     </div>
   );
 }

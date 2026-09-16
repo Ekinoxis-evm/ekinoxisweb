@@ -91,7 +91,7 @@ export default function ResearchPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">RESEARCH</span>
             </motion.div>
 
@@ -106,7 +106,7 @@ export default function ResearchPage() {
               <p className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed">
                 {t.description}
               </p>
-              <p className="font-mono text-xs text-secondary/80 uppercase tracking-widest max-w-sm text-right">
+              <p className="font-mono text-[13px] text-secondary/80 uppercase tracking-widest max-w-sm text-right">
                 {t.focus}
               </p>
             </motion.div>
@@ -135,7 +135,7 @@ export default function ResearchPage() {
                 <div className="space-y-4">
                   {stream.items.map((item, idx) => (
                     <div key={idx} className="flex gap-3">
-                      <span className="font-mono text-primary/40 text-xs mt-0.5 flex-shrink-0">{'>'}</span>
+                      <span className="font-mono text-primary/40 text-[13px] mt-0.5 flex-shrink-0">{'>'}</span>
                       <span className="font-body text-sm text-on-surface-variant leading-relaxed">{item}</span>
                     </div>
                   ))}
@@ -171,7 +171,7 @@ export default function ResearchPage() {
                   language === 'en' ? '"Innovation by default" as a practice, not a slogan.' : '"Innovación por defecto" como práctica, no como slogan.',
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-3">
-                    <span className="font-mono text-secondary/50 text-xs mt-0.5 flex-shrink-0">{'>'}</span>
+                    <span className="font-mono text-secondary/50 text-[13px] mt-0.5 flex-shrink-0">{'>'}</span>
                     <span className="font-body text-sm text-on-surface-variant leading-relaxed">{item}</span>
                   </div>
                 ))}
@@ -187,10 +187,10 @@ export default function ResearchPage() {
                 { label: language === 'en' ? 'Frontier Year' : 'Año Frontera', value: '2024', code: 'YEAR' },
               ].map((stat, idx) => (
                 <div key={idx} className="bg-surface-container-low p-8 flex flex-col justify-between">
-                  <span className="font-mono text-xs text-outline uppercase tracking-widest">{stat.code}</span>
+                  <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{stat.code}</span>
                   <div>
                     <p className="font-headline text-4xl font-bold text-primary mb-1">{stat.value}</p>
-                    <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{stat.label}</p>
+                    <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{stat.label}</p>
                   </div>
                 </div>
               ))}

@@ -93,7 +93,7 @@ export default function ServicesPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">SERVICES</span>
             </motion.div>
 
@@ -143,8 +143,8 @@ export default function ServicesPage() {
 
                     {/* Price */}
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-outline uppercase tracking-widest">{track.price}</span>
-                      <span className="font-mono text-primary text-xs group-hover:translate-x-1 transition-transform duration-200">
+                      <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{track.price}</span>
+                      <span className="font-mono text-primary text-[13px] group-hover:translate-x-1 transition-transform duration-200">
                         {language === 'en' ? 'ENTER →' : 'ENTRAR →'}
                       </span>
                     </div>
@@ -165,7 +165,7 @@ export default function ServicesPage() {
             className="bg-surface-container-low border-t border-primary/10 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-1">
                 {language === 'en' ? 'UNSURE_WHICH_TRACK?' : '¿NO_SABES_QUÉ_TRACK?'}
               </p>
               <p className="font-body text-on-surface-variant text-sm">

@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
   return (
     <div>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-8">
+      <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-8">
         <span className="border border-primary/30 px-2 py-1">EKX_ADMIN</span>
         <span className="text-outline">/</span>
         <span className="border border-primary/30 px-2 py-1">DASHBOARD</span>
@@ -51,16 +51,16 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/10 mb-10">
         {stats.map((stat, idx) => (
           <div key={idx} className="bg-surface-container-low p-8 relative group">
-            <div className="absolute top-4 right-4 font-mono text-[9px] text-outline/50 tracking-widest">
+            <div className="absolute top-4 right-4 font-mono text-[11px] text-outline/50 tracking-widest">
               STAT_{String(idx + 1).padStart(2, '0')}
             </div>
-            <div className="font-mono text-[10px] text-outline tracking-widest uppercase mb-3">
+            <div className="font-mono text-[12px] text-outline tracking-widest uppercase mb-3">
               {stat.label}
             </div>
             <div className="font-headline text-5xl font-bold text-primary tracking-tighter mb-2">
               {stat.value}
             </div>
-            <div className="font-mono text-[9px] text-on-surface-variant tracking-widest uppercase">
+            <div className="font-mono text-[11px] text-on-surface-variant tracking-widest uppercase">
               {stat.sub}
             </div>
             <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/40 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -70,7 +70,7 @@ export default async function AdminDashboardPage() {
 
       {/* Quick actions */}
       <div className="mb-6">
-        <div className="font-mono text-[10px] text-outline tracking-widest uppercase mb-4">
+        <div className="font-mono text-[12px] text-outline tracking-widest uppercase mb-4">
           QUICK ACTIONS
         </div>
         <div className="flex flex-wrap gap-3">
@@ -78,7 +78,7 @@ export default async function AdminDashboardPage() {
             <a
               key={link.href}
               href={link.href}
-              className={`font-mono text-[10px] uppercase tracking-widest px-4 py-2 border transition-all duration-200
+              className={`font-mono text-[12px] uppercase tracking-widest px-4 py-2 border transition-all duration-200
                 ${link.color === 'primary' ? 'border-primary/40 text-primary hover:bg-primary/10' : ''}
                 ${link.color === 'secondary' ? 'border-secondary/40 text-secondary hover:bg-secondary/10' : ''}
                 ${link.color === 'tertiary' ? 'border-tertiary-dim/40 text-tertiary-dim hover:bg-tertiary-dim/10' : ''}

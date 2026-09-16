@@ -31,16 +31,16 @@ export default async function AdminLayout({
 
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 h-12 bg-surface-container-low border-b border-outline-variant/20 z-50 flex items-center px-6 gap-4">
-        <span className="font-mono text-[10px] text-primary tracking-widest uppercase">
+        <span className="font-mono text-[12px] text-primary tracking-widest uppercase">
           EKX_ADMIN
         </span>
         <span className="text-outline-variant/40 text-xs">|</span>
-        <span className="font-mono text-[10px] text-outline tracking-widest uppercase">
+        <span className="font-mono text-[12px] text-outline tracking-widest uppercase">
           {user.email}
         </span>
         <div className="ml-auto flex items-center gap-2">
           <div className="w-1.5 h-1.5 bg-tertiary-dim" />
-          <span className="font-mono text-[9px] text-tertiary-dim tracking-widest uppercase">
+          <span className="font-mono text-[11px] text-tertiary-dim tracking-widest uppercase">
             SESSION ACTIVE
           </span>
         </div>

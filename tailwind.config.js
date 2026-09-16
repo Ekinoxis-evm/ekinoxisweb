@@ -54,7 +54,7 @@ module.exports = {
         'on-tertiary-fixed': '#3a4a00',
         'on-tertiary-fixed-variant': '#526900',
         // ── Outline ──
-        'outline': '#6c777f',
+        'outline': '#8a949c',
         'outline-variant': '#3f4951',
         // ── Error ──
         'error': '#ff716c',

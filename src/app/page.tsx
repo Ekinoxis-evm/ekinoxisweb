@@ -102,7 +102,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="max-w-xl text-lg md:text-xl text-on-surface-variant font-light leading-relaxed"
+              className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
             >
               {language === 'en' ? (
                 <>The first <span className="text-primary">innovation lab</span> on Colombia&apos;s Pacific coast. We build with AI, blockchain and crypto.</>
@@ -181,8 +181,8 @@ export default function Home() {
 
               {/* One readout, and it says something true */}
               <div className="absolute top-0 right-0 bg-surface-container/80 backdrop-blur-md p-3 border-l-2 border-primary">
-                <p className="font-mono text-[10px] text-primary">CALI, COLOMBIA</p>
-                <p className="font-mono text-[9px] text-outline">3.4516° N // 76.5320° W</p>
+                <p className="font-mono text-[12px] text-primary">CALI, COLOMBIA</p>
+                <p className="font-mono text-[11px] text-outline">3.4516° N // 76.5320° W</p>
               </div>
             </div>
           </motion.div>
@@ -206,7 +206,7 @@ export default function Home() {
             >
               <span className="font-mono text-primary text-sm mb-4 block">{s.num} / {s.label}</span>
               <h3 className="font-headline text-4xl font-bold text-on-surface mb-4">{s.value}</h3>
-              <p className="font-label text-xs text-outline uppercase tracking-widest leading-relaxed">
+              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">
                 {s.desc[language]}
               </p>
             </motion.div>

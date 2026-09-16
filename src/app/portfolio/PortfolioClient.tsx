@@ -28,7 +28,7 @@ export default function PortfolioClient({ products }: Props) {
 
           {/* Header */}
           <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="mb-16">
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">PORTFOLIO</span>
             </motion.div>
 
@@ -64,7 +64,7 @@ export default function PortfolioClient({ products }: Props) {
                       </ScanBadge>
                     </div>
 
-                    <p className="font-mono text-[10px] text-primary/50 tracking-widest uppercase mb-4">
+                    <p className="font-mono text-[12px] text-primary/50 tracking-widest uppercase mb-4">
                       {String(idx + 1).padStart(2, '0')} · {division.uid}
                     </p>
 
@@ -81,14 +81,14 @@ export default function PortfolioClient({ products }: Props) {
                       {items.map((p) => (
                         <li
                           key={p.id}
-                          className="font-mono text-[10px] text-outline group-hover:text-on-surface-variant uppercase tracking-widest transition-colors duration-300"
+                          className="font-mono text-[12px] text-outline group-hover:text-on-surface-variant uppercase tracking-widest transition-colors duration-300"
                         >
                           {p.name}
                         </li>
                       ))}
                     </ul>
 
-                    <span className="mt-auto flex items-center gap-2 font-mono text-[10px] text-primary/60 group-hover:text-primary uppercase tracking-widest transition-colors duration-300">
+                    <span className="mt-auto flex items-center gap-2 font-mono text-[12px] text-primary/60 group-hover:text-primary uppercase tracking-widest transition-colors duration-300">
                       {t.viewDivision}
                       <span aria-hidden="true" className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </span>
@@ -105,7 +105,7 @@ export default function PortfolioClient({ products }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>
               {DIVISIONS.map((d) => `${d.uid}: ${byType(d.type).length}`).join(' / ')}

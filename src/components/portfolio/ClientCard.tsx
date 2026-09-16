@@ -72,7 +72,7 @@ export default function ClientCard({ client, language, uid }: Props) {
               href={client.website_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[9px] uppercase tracking-widest px-3 py-2 border border-primary/25 text-primary/80 hover:bg-primary hover:text-surface-container-lowest hover:border-primary transition-colors duration-200"
+              className="font-mono text-[11px] uppercase tracking-widest px-3 py-2 border border-primary/25 text-primary/80 hover:bg-primary hover:text-surface-container-lowest hover:border-primary transition-colors duration-200"
             >
               {language === 'en' ? 'Website' : 'Sitio'}
             </a>
@@ -82,7 +82,7 @@ export default function ClientCard({ client, language, uid }: Props) {
               href={client.app_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[9px] uppercase tracking-widest px-3 py-2 border border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60 transition-colors duration-200"
+              className="font-mono text-[11px] uppercase tracking-widest px-3 py-2 border border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60 transition-colors duration-200"
             >
               App
             </a>
@@ -93,7 +93,7 @@ export default function ClientCard({ client, language, uid }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${client.name} on Instagram`}
-              className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest px-3 py-2 border border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60 transition-colors duration-200"
+              className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-3 py-2 border border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60 transition-colors duration-200"
             >
               <Image
                 src="/socials/instagram.webp"

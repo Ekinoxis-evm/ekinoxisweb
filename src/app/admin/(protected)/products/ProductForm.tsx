@@ -128,7 +128,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-8">
+      <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-8">
         <span className="border border-primary/30 px-2 py-1">EKX_ADMIN</span>
         <span className="text-outline">/</span>
         <a href="/admin/products" className="border border-primary/30 px-2 py-1 hover:border-primary/60">PRODUCTS</a>
@@ -142,13 +142,13 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {error && (
         <div className="mb-6 border border-error/40 bg-error/5 px-4 py-3">
-          <p className="font-mono text-[10px] text-error tracking-widest uppercase">{error}</p>
+          <p className="font-mono text-[12px] text-error tracking-widest uppercase">{error}</p>
         </div>
       )}
 
       {/* Core info */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">CORE INFO</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">CORE INFO</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="md:col-span-2">
             <AdminInput label="Product Name" value={name} onChange={(e) => setName(e.target.value)} required placeholder="ETHCALI Wallet" />
@@ -165,7 +165,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* URLs */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">URLS</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">URLS</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <AdminInput label="Website URL" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://myproduct.xyz" />
           <AdminInput label="App URL" value={appUrl} onChange={(e) => setAppUrl(e.target.value)} placeholder="https://app.myproduct.xyz" hint="Separate app if different from website" />
@@ -175,7 +175,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* Repositories */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">REPOSITORIES</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">REPOSITORIES</p>
         <div className="grid grid-cols-1 gap-5">
           <AdminInput label="Frontend Repo" value={repoFrontend} onChange={(e) => setRepoFrontend(e.target.value)} placeholder="https://github.com/org/repo-fe" />
           <AdminInput label="Backend Repo" value={repoBackend} onChange={(e) => setRepoBackend(e.target.value)} placeholder="https://github.com/org/repo-be" />
@@ -185,8 +185,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* Sub-links / suite modules */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-2">SUITE MODULES</p>
-        <p className="font-mono text-[9px] text-outline/60 tracking-widest uppercase mb-6">
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-2">SUITE MODULES</p>
+        <p className="font-mono text-[11px] text-outline/60 tracking-widest uppercase mb-6">
           Sub-projects shown inside this card (e.g. CONVEXO → Payments, Loans, Fund)
         </p>
         <div className="flex flex-col gap-4">
@@ -198,7 +198,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
               <button
                 type="button"
                 onClick={() => setSubLinks((prev) => prev.filter((_, i) => i !== idx))}
-                className="font-mono text-[10px] uppercase tracking-widest px-4 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
+                className="font-mono text-[12px] uppercase tracking-widest px-4 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
               >
                 REMOVE
               </button>
@@ -207,7 +207,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
           <button
             type="button"
             onClick={() => setSubLinks((prev) => [...prev, { label: '', url: '', repo: '' }])}
-            className="self-start font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60 transition-colors duration-200"
+            className="self-start font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60 transition-colors duration-200"
           >
             + ADD MODULE
           </button>
@@ -216,7 +216,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* Hackathon */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">HACKATHON</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">HACKATHON</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <AdminSelect
             label="Hackathon"
@@ -230,7 +230,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* Tags */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">TAGS</p>
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">TAGS</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <TagInput label="Technologies" value={technologies} onChange={setTechnologies} placeholder="Blockchain, AI..." />
           <TagInput label="Categories" value={categories} onChange={setCategories} placeholder="DeFi, RWA, NFTs..." />
@@ -239,7 +239,7 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
       {/* Hackers */}
       <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-8">
-        <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-6">
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-6">
           HACKERS INVOLVED
           <span className="text-primary ml-2">({selectedHackers.length} selected)</span>
         </p>
@@ -253,10 +253,10 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
                 onClick={() => toggleHacker(h.id)}
                 className={`px-4 py-3 text-left transition-colors duration-200 ${selected ? 'bg-primary/10 border border-primary/30' : 'bg-surface-container hover:bg-surface-container-high border border-transparent'}`}
               >
-                <div className={`font-mono text-[10px] uppercase tracking-widest ${selected ? 'text-primary' : 'text-on-surface-variant'}`}>
+                <div className={`font-mono text-[12px] uppercase tracking-widest ${selected ? 'text-primary' : 'text-on-surface-variant'}`}>
                   {selected && '▶ '}{h.name}
                 </div>
-                <div className="font-mono text-[9px] text-outline mt-0.5">{h.profile_en}</div>
+                <div className="font-mono text-[11px] text-outline mt-0.5">{h.profile_en}</div>
               </button>
             );
           })}
@@ -268,18 +268,18 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         <button
           type="submit"
           disabled={saving}
-          className="font-mono text-[10px] uppercase tracking-widest px-8 py-3 bg-primary text-surface-container-lowest hover:bg-primary-dim disabled:opacity-40 transition-colors duration-200"
+          className="font-mono text-[12px] uppercase tracking-widest px-8 py-3 bg-primary text-surface-container-lowest hover:bg-primary-dim disabled:opacity-40 transition-colors duration-200"
         >
           {saving ? 'SAVING...' : isEdit ? 'SAVE CHANGES' : 'CREATE PRODUCT'}
         </button>
-        <a href="/admin/products" className="font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-outline-variant/30 text-outline hover:text-on-surface transition-colors duration-200">
+        <a href="/admin/products" className="font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-outline-variant/30 text-outline hover:text-on-surface transition-colors duration-200">
           CANCEL
         </a>
         {isEdit && (
           <button
             type="button"
             onClick={handleDelete}
-            className="ml-auto font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
+            className="ml-auto font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
           >
             DELETE
           </button>

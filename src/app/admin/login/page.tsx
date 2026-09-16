@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="mb-10">
-          <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+          <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
             <span className="border border-primary/30 px-2 py-1">ADMIN</span>
           </div>
           <h1 className="font-headline text-5xl font-bold tracking-tighter leading-[0.9] uppercase text-on-surface mb-3">
@@ -36,14 +36,14 @@ export default function AdminLoginPage() {
         <div className="bg-surface-container-low border border-outline-variant/20 p-8">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 bg-primary animate-pulse" />
-            <span className="font-mono text-[10px] text-primary tracking-widest uppercase">
+            <span className="font-mono text-[12px] text-primary tracking-widest uppercase">
               AWAITING AUTHENTICATION
             </span>
           </div>
 
           <button
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 bg-transparent border border-primary/40 hover:border-primary hover:bg-primary/5 text-on-surface hover:text-primary font-label text-xs uppercase tracking-tighter py-4 px-6 transition-all duration-200 group"
+            className="w-full flex items-center justify-center gap-3 bg-transparent border border-primary/40 hover:border-primary hover:bg-primary/5 text-on-surface hover:text-primary font-label text-[13px] font-medium uppercase tracking-tighter py-4 px-6 transition-all duration-200 group"
           >
             {/* Google icon */}
             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
             SIGN IN WITH GOOGLE
           </button>
 
-          <p className="mt-6 font-mono text-[9px] text-outline tracking-widest text-center">
+          <p className="mt-6 font-mono text-[11px] text-outline tracking-widest text-center">
             ACCESS RESTRICTED TO AUTHORIZED ADMIN ACCOUNTS
           </p>
         </div>

@@ -86,7 +86,7 @@ export default function AppBuildingPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">SOFTWARE</span>
@@ -147,12 +147,12 @@ export default function AppBuildingPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {t.techStacks.map((stack, idx) => (
                 <div key={idx}>
-                  <p className="font-mono text-xs text-primary uppercase tracking-widest mb-4">{stack.name}</p>
+                  <p className="font-mono text-[13px] text-primary uppercase tracking-widest mb-4">{stack.name}</p>
                   <div className="flex flex-wrap gap-2">
                     {stack.items.map((item) => (
                       <span
                         key={item}
-                        className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
+                        className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
                       >
                         {item}
                       </span>
@@ -172,11 +172,11 @@ export default function AppBuildingPage() {
           >
             {t.process.map((step, idx) => (
               <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                <p className="font-mono text-primary text-xs mb-4">{step.num}</p>
+                <p className="font-mono text-primary text-[13px] mb-4">{step.num}</p>
                 <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
                   {step.title}
                 </h4>
-                <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
+                <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </motion.div>
@@ -194,7 +194,7 @@ export default function AppBuildingPage() {
                 {services.pricing.title}
               </span>
             </div>
-            <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-6">
+            <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-6">
               {services.pricing.description}
             </p>
 
@@ -215,14 +215,14 @@ export default function AppBuildingPage() {
                   <div className="mb-1">
                     <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
                   </div>
-                  <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-8">
+                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-8">
                     {plan.period}
                   </p>
                   <ul className="space-y-3 flex-1 mb-8">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex gap-2">
                         <span className="font-mono text-primary/50 text-sm flex-shrink-0">{'>'}</span>
-                        <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
+                        <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -245,7 +245,7 @@ export default function AppBuildingPage() {
             className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
             <div className="lg:col-span-4">
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-3">
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
                 {language === 'en' ? 'NOT SURE WHICH ONE?' : '¿NO SABES CUÁL?'}
               </p>
               <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">

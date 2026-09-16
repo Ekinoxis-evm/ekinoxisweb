@@ -28,12 +28,12 @@ export default function Footer() {
           <Link href="/brand" aria-label="Ekinoxis brand kit" className="w-fit transition-opacity hover:opacity-80">
             <BrandLockup size={26} />
           </Link>
-          <p className="font-mono text-xs uppercase text-outline max-w-xs leading-relaxed">
+          <p className="font-mono text-[13px] uppercase text-outline max-w-xs leading-relaxed">
             {language === 'en'
               ? 'We build with AI, blockchain and crypto. From Cali, Colombia.'
               : 'Construimos con IA, blockchain y cripto. Desde Cali, Colombia.'}
           </p>
-          <div className="font-mono text-xs uppercase text-outline/60">
+          <div className="font-mono text-[13px] uppercase text-outline/60">
             © {currentYear} EKINOXIS LABS // USA - COLOMBIA
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function Footer() {
         <div className="flex flex-wrap items-end justify-start md:justify-end gap-x-8 gap-y-3">
           <Link
             href="/brand"
-            className="py-2 inline-flex items-center font-mono text-xs uppercase text-outline hover:text-primary hover:translate-x-0.5 transition-all duration-200"
+            className="py-2 inline-flex items-center font-mono text-[13px] uppercase text-outline hover:text-primary hover:translate-x-0.5 transition-all duration-200"
           >
             {t.nav.brand}
           </Link>
@@ -52,7 +52,7 @@ export default function Footer() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="py-2 inline-flex items-center font-mono text-xs uppercase text-outline hover:text-tertiary-dim hover:translate-x-0.5 transition-all duration-200"
+              className="py-2 inline-flex items-center font-mono text-[13px] uppercase text-outline hover:text-tertiary-dim hover:translate-x-0.5 transition-all duration-200"
             >
               {label}
             </Link>

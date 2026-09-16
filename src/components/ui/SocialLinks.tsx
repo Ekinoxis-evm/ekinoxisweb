@@ -56,7 +56,7 @@ export default function SocialLinks({ github, linkedin, x, telegram, discord, we
           target="_blank"
           rel="noopener noreferrer"
           title="Portfolio"
-          className="font-mono text-[9px] text-outline/50 hover:text-primary transition-colors uppercase tracking-widest"
+          className="font-mono text-[11px] text-outline/50 hover:text-primary transition-colors uppercase tracking-widest"
         >
           WEB
         </a>

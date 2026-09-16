@@ -135,7 +135,7 @@ const PALETTE: { group: string; swatches: Swatch[] }[] = [
     group: 'LINES & STATE',
     swatches: [
       { name: 'On-surface variant', hex: '#A2ACB5', role: { en: 'Muted body text', es: 'Texto atenuado' } },
-      { name: 'Outline', hex: '#6C777F', role: { en: 'Labels, very muted', es: 'Etiquetas, muy atenuado' } },
+      { name: 'Outline', hex: '#8A949C', role: { en: 'Labels, muted but legible', es: 'Etiquetas, atenuado pero legible' } },
       { name: 'Outline variant', hex: '#3F4951', role: { en: 'Ghost borders', es: 'Bordes fantasma' } },
       { name: 'Error', hex: '#FF716C', role: { en: 'Errors, destructive', es: 'Errores, destructivo' } },
     ],
@@ -161,7 +161,7 @@ const FACES = [
     weights: '300 — 700',
     rule: { en: 'Body: 300 (light), line-height 1.65', es: 'Cuerpo: 300 (light), interlineado 1.65' },
     specimen: 'The first innovation laboratory of the Colombian Pacific.',
-    size: 'text-lg md:text-2xl font-light leading-relaxed',
+    size: 'text-lg md:text-2xl font-normal leading-relaxed',
   },
   {
     name: 'Space Mono',
@@ -239,7 +239,7 @@ export default function BrandPage() {
           <motion.div variants={staggerContainer} initial="hidden" animate="visible">
             <motion.div
               variants={fadeInUp}
-              className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6"
+              className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6"
             >
               <span className="border border-primary/30 px-2 py-1">BRAND</span>
             </motion.div>
@@ -254,7 +254,7 @@ export default function BrandPage() {
                 </motion.h1>
                 <motion.p
                   variants={fadeInUp}
-                  className="max-w-2xl text-lg md:text-xl text-on-surface-variant font-light leading-relaxed"
+                  className="max-w-2xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
                 >
                   {t.description}
                 </motion.p>
@@ -278,7 +278,7 @@ export default function BrandPage() {
                     {t.openBook}
                   </Button>
                 </a>
-                <p className="font-mono text-[10px] text-outline tracking-widest uppercase">
+                <p className="font-mono text-[12px] text-outline tracking-widest uppercase">
                   ZIP · 0.9 MB · SVG + PNG + {language === 'en' ? 'DOCS' : 'DOCS'}
                 </p>
               </motion.div>
@@ -305,13 +305,13 @@ export default function BrandPage() {
             </motion.div>
 
             <motion.div variants={fadeInUp} className="lg:col-span-7 bg-surface-container-low p-10 lg:p-14">
-              <span className="font-mono text-[10px] text-primary tracking-widest uppercase block mb-6">
+              <span className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-6">
                 {t.markLabel}
               </span>
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface uppercase mb-6">
                 {t.markTitle}
               </h2>
-              <p className="text-on-surface-variant font-light leading-relaxed mb-8">{t.markBody}</p>
+              <p className="text-on-surface-variant font-normal leading-relaxed mb-8">{t.markBody}</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-primary/10">
                 {[
                   { k: t.markSpecGeometry, v: '95r · 1.6 stroke' },
@@ -319,7 +319,7 @@ export default function BrandPage() {
                   { k: t.markSpecMin, v: '24 px' },
                 ].map((s) => (
                   <div key={s.k} className="bg-surface-container-low p-5">
-                    <span className="font-mono text-[10px] text-outline tracking-widest uppercase block mb-2">{s.k}</span>
+                    <span className="font-mono text-[12px] text-outline tracking-widest uppercase block mb-2">{s.k}</span>
                     <span className="font-mono text-sm text-primary">{s.v}</span>
                   </div>
                 ))}
@@ -359,7 +359,7 @@ export default function BrandPage() {
                     <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface uppercase mb-3">
                       {l.name}
                     </h3>
-                    <p className="text-sm text-on-surface-variant font-light leading-relaxed mb-8">
+                    <p className="text-sm text-on-surface-variant font-normal leading-relaxed mb-8">
                       {l.use[language]}
                     </p>
 
@@ -409,7 +409,7 @@ export default function BrandPage() {
             <div className="space-y-12">
               {PALETTE.map((group) => (
                 <div key={group.group}>
-                  <span className="font-mono text-[10px] text-outline tracking-widest uppercase block mb-4">
+                  <span className="font-mono text-[12px] text-outline tracking-widest uppercase block mb-4">
                     {group.group}
                   </span>
                   <motion.div
@@ -433,13 +433,13 @@ export default function BrandPage() {
                           style={{ background: s.hex }}
                         />
                         <div className="p-5">
-                          <span className="font-label text-xs text-on-surface uppercase tracking-wide block mb-2">
+                          <span className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wide block mb-2">
                             {s.name}
                           </span>
                           <span className="font-mono text-[11px] text-primary block mb-3">
                             {copied === s.hex ? t.copied : s.hex}
                           </span>
-                          <span className="font-mono text-[10px] text-outline uppercase tracking-widest leading-relaxed block">
+                          <span className="font-mono text-[12px] text-outline uppercase tracking-widest leading-relaxed block">
                             {s.role[language]}
                           </span>
                         </div>
@@ -459,10 +459,10 @@ export default function BrandPage() {
                 <div key={g.name} className="bg-surface-container-low">
                   <div className="h-24 border-b border-primary/10" style={{ background: g.css }} />
                   <div className="p-5">
-                    <span className="font-label text-xs text-on-surface uppercase tracking-wide block mb-2">
+                    <span className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wide block mb-2">
                       {g.name}
                     </span>
-                    <code className="font-mono text-[10px] text-outline break-all">{g.css}</code>
+                    <code className="font-mono text-[12px] text-outline break-all">{g.css}</code>
                   </div>
                 </div>
               ))}
@@ -492,10 +492,10 @@ export default function BrandPage() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-baseline">
                     <div className="lg:col-span-3">
                       <h3 className={`${f.className} text-xl text-on-surface mb-2`}>{f.name}</h3>
-                      <p className="font-mono text-[10px] text-outline tracking-widest uppercase mb-1">
+                      <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-1">
                         {f.weights}
                       </p>
-                      <p className="font-mono text-[10px] text-primary/70 tracking-widest uppercase leading-relaxed">
+                      <p className="font-mono text-[12px] text-primary/70 tracking-widest uppercase leading-relaxed">
                         {f.role[language]}
                       </p>
                     </div>
@@ -503,7 +503,7 @@ export default function BrandPage() {
                       <p className={`${f.className} ${f.size} text-on-surface mb-4 break-words`}>
                         {f.specimen}
                       </p>
-                      <p className="font-mono text-[10px] text-outline tracking-widest uppercase">
+                      <p className="font-mono text-[12px] text-outline tracking-widest uppercase">
                         {f.rule[language]}
                       </p>
                     </div>
@@ -516,7 +516,7 @@ export default function BrandPage() {
               href="https://fonts.google.com/?query=Space+Grotesk+Inter+Space+Mono"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-6 font-mono text-[10px] text-primary/70 hover:text-primary tracking-widest uppercase transition-colors"
+              className="inline-flex items-center gap-2 mt-6 font-mono text-[12px] text-primary/70 hover:text-primary tracking-widest uppercase transition-colors"
             >
               {t.fontsLink} →
             </a>
@@ -550,7 +550,7 @@ export default function BrandPage() {
                           style={{ width: Math.min(s, 64), height: Math.min(s, 64) }}
                         />
                       </span>
-                      <span className="font-mono text-[10px] text-outline group-hover:text-primary tracking-widest transition-colors">
+                      <span className="font-mono text-[12px] text-outline group-hover:text-primary tracking-widest transition-colors">
                         {s}PX
                       </span>
                     </a>
@@ -578,7 +578,7 @@ export default function BrandPage() {
                           className="w-full h-auto block"
                         />
                       </span>
-                      <span className="font-mono text-[10px] text-outline group-hover:text-primary tracking-widest uppercase mt-3 block transition-colors">
+                      <span className="font-mono text-[12px] text-outline group-hover:text-primary tracking-widest uppercase mt-3 block transition-colors">
                         {a.label} · 1024 →
                       </span>
                     </a>
@@ -594,26 +594,26 @@ export default function BrandPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
               <div className="bg-surface-container-low p-10 lg:p-14">
-                <span className="font-mono text-[10px] text-tertiary-dim tracking-widest uppercase block mb-6">
+                <span className="font-mono text-[12px] text-tertiary-dim tracking-widest uppercase block mb-6">
                   {t.doLabel}
                 </span>
                 <ul className="space-y-5">
                   {RULES.do[language].map((r) => (
-                    <li key={r} className="flex gap-4 text-on-surface-variant font-light leading-relaxed">
-                      <span className="text-tertiary-dim font-mono text-xs mt-1 shrink-0">+</span>
+                    <li key={r} className="flex gap-4 text-on-surface-variant font-normal leading-relaxed">
+                      <span className="text-tertiary-dim font-mono text-[13px] mt-1 shrink-0">+</span>
                       {r}
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="bg-surface-container-low p-10 lg:p-14">
-                <span className="font-mono text-[10px] text-error tracking-widest uppercase block mb-6">
+                <span className="font-mono text-[12px] text-error tracking-widest uppercase block mb-6">
                   {t.dontLabel}
                 </span>
                 <ul className="space-y-5">
                   {RULES.dont[language].map((r) => (
-                    <li key={r} className="flex gap-4 text-on-surface-variant font-light leading-relaxed">
-                      <span className="text-error font-mono text-xs mt-1 shrink-0">−</span>
+                    <li key={r} className="flex gap-4 text-on-surface-variant font-normal leading-relaxed">
+                      <span className="text-error font-mono text-[13px] mt-1 shrink-0">−</span>
                       {r}
                     </li>
                   ))}
@@ -628,7 +628,7 @@ export default function BrandPage() {
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface uppercase mb-3">
                 {t.ctaTitle}
               </h2>
-              <p className="text-on-surface-variant font-light max-w-xl leading-relaxed">{t.ctaBody}</p>
+              <p className="text-on-surface-variant font-normal max-w-xl leading-relaxed">{t.ctaBody}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 shrink-0">
               <a href="/brand/ekinoxis-brand-kit.zip" download>
@@ -672,7 +672,7 @@ function SectionHead({
     >
       <motion.span
         variants={fadeInUp}
-        className="font-mono text-[10px] text-primary tracking-widest uppercase block mb-4"
+        className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-4"
       >
         {index} / {label}
       </motion.span>
@@ -682,7 +682,7 @@ function SectionHead({
       >
         {title}
       </motion.h2>
-      <motion.p variants={fadeInUp} className="max-w-2xl text-on-surface-variant font-light leading-relaxed">
+      <motion.p variants={fadeInUp} className="max-w-2xl text-on-surface-variant font-normal leading-relaxed">
         {body}
       </motion.p>
     </motion.div>
@@ -694,7 +694,7 @@ function DownloadChip({ href, label }: { href: string; label: string }) {
     <a
       href={href}
       download
-      className="font-mono text-[10px] tracking-widest uppercase px-2 py-1 border border-outline-variant/60 text-outline hover:border-primary hover:text-primary transition-colors"
+      className="font-mono text-[12px] tracking-widest uppercase px-2 py-1 border border-outline-variant/60 text-outline hover:border-primary hover:text-primary transition-colors"
     >
       {label}
     </a>

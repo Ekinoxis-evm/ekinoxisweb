@@ -67,7 +67,7 @@ export default function PageHeader({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-on-surface-variant text-lg font-light leading-relaxed max-w-2xl"
+              className="text-on-surface-variant text-lg font-normal leading-relaxed max-w-2xl"
             >
               {description}
             </motion.p>
@@ -80,7 +80,7 @@ export default function PageHeader({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="hidden lg:flex flex-col gap-2 font-mono text-[10px] text-outline tracking-widest uppercase text-right"
+            className="hidden lg:flex flex-col gap-2 font-mono text-[12px] text-outline tracking-widest uppercase text-right"
           >
             {metadata.map((m) => (
               <div key={m.label}>

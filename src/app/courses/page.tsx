@@ -83,7 +83,7 @@ export default function CoursesPage() {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">COURSES</span>
             </motion.div>
 
@@ -94,7 +94,7 @@ export default function CoursesPage() {
               {t.title}
             </motion.h1>
 
-            <motion.p variants={fadeInUp} className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
+            <motion.p variants={fadeInUp} className="font-mono text-[13px] text-primary tracking-widest uppercase mb-6">
               {t.subtitle}
             </motion.p>
 
@@ -119,7 +119,7 @@ export default function CoursesPage() {
                   <div className="relative h-full bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 flex flex-col">
                     <div className="flex items-center justify-between mb-8">
                       <ScanBadge variant={statusVariant[course.status]}>{t.status[course.status]}</ScanBadge>
-                      <span className="font-mono text-[10px] text-outline tracking-widest">{course.code}</span>
+                      <span className="font-mono text-[12px] text-outline tracking-widest">{course.code}</span>
                     </div>
 
                     <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-3">
@@ -145,15 +145,15 @@ export default function CoursesPage() {
                     </div>
 
                     <div className="space-y-2 mb-8">
-                      <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest">
+                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Format' : 'Formato'}</span>
                         <span className="text-on-surface-variant text-right">{course.format[language]}</span>
                       </div>
-                      <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest">
+                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Duration' : 'Duración'}</span>
                         <span className="text-on-surface-variant text-right">{course.duration[language]}</span>
                       </div>
-                      <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest">
+                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Level' : 'Nivel'}</span>
                         <span className="text-on-surface-variant text-right">{t.level[course.level]}</span>
                       </div>
@@ -161,9 +161,9 @@ export default function CoursesPage() {
 
                     <div className="flex items-center justify-between">
                       <span className="font-headline text-xl font-bold text-primary">
-                        {course.price ?? <span className="font-mono text-xs text-outline uppercase tracking-widest">{t.priceTbd}</span>}
+                        {course.price ?? <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.priceTbd}</span>}
                       </span>
-                      <span className="font-mono text-primary text-xs group-hover:translate-x-1 transition-transform duration-200">
+                      <span className="font-mono text-primary text-[13px] group-hover:translate-x-1 transition-transform duration-200">
                         {t.enter}
                       </span>
                     </div>
@@ -188,11 +188,11 @@ export default function CoursesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
               {t.principles.items.map((p) => (
                 <div key={p.num} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                  <p className="font-mono text-primary text-xs mb-4">{p.num}</p>
+                  <p className="font-mono text-primary text-[13px] mb-4">{p.num}</p>
                   <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
                     {p.title}
                   </h4>
-                  <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{p.desc}</p>
+                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -206,7 +206,7 @@ export default function CoursesPage() {
             className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{t.cta.label}</p>
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-1">{t.cta.label}</p>
               <p className="font-body text-on-surface-variant text-sm max-w-lg">{t.cta.text}</p>
             </div>
             <a href={COURSES_ENROLL_FALLBACK} target="_blank" rel="noopener noreferrer">

@@ -42,7 +42,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">HACKER HOUSE</span>
             </motion.div>
 
@@ -61,19 +61,19 @@ export default function HackerHouseClient({ hackathons }: Props) {
               {/* Active OPS counter */}
               <div className="flex flex-col gap-4">
                 <div className="bg-surface-container-low border border-primary/10 p-8">
-                  <span className="font-mono text-primary text-xs mb-2 block">ACTIVE_OPS</span>
+                  <span className="font-mono text-primary text-[13px] mb-2 block">{language === 'en' ? 'RUNNING NOW' : 'EN CURSO'}</span>
                   <p className="font-headline text-5xl font-bold text-on-surface">
                     {hackathons.length}
                   </p>
-                  <p className="font-label text-xs text-outline uppercase tracking-widest mt-2">
+                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2">
                     {language === 'en' ? 'Hackathons participated' : 'Hackathons participados'}
                   </p>
                 </div>
                 <div className="bg-surface-container-low border border-primary/10 p-6 flex items-center gap-4">
                   <div className="w-2 h-2 bg-tertiary-dim animate-pulse flex-shrink-0" />
                   <div>
-                    <span className="font-mono text-[10px] text-outline uppercase tracking-widest">STATUS</span>
-                    <p className="font-mono text-xs text-tertiary-dim uppercase tracking-widest">ALWAYS_BUILDING</p>
+                    <span className="font-mono text-[12px] text-outline uppercase tracking-widest">STATUS</span>
+                    <p className="font-mono text-[13px] text-tertiary-dim uppercase tracking-widest">ALWAYS_BUILDING</p>
                   </div>
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[10px] text-outline/40 uppercase tracking-widest">NO_LOGO</span>
+                        <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">NO_LOGO</span>
                       </div>
                     )}
                   </div>
@@ -134,7 +134,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
 
                   {/* Dates */}
                   {(hackathon.start_date || hackathon.end_date) && (
-                    <p className="font-mono text-[9px] text-outline uppercase tracking-widest">
+                    <p className="font-mono text-[11px] text-outline uppercase tracking-widest">
                       {hackathon.start_date && new Date(hackathon.start_date).toLocaleDateString(language === 'en' ? 'en-US' : 'es-CO', { month: 'short', year: 'numeric' })}
                       {hackathon.start_date && hackathon.end_date && ' → '}
                       {hackathon.end_date && new Date(hackathon.end_date).toLocaleDateString(language === 'en' ? 'en-US' : 'es-CO', { month: 'short', year: 'numeric' })}
@@ -147,7 +147,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
                       href={hackathon.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 inline-block font-mono text-[9px] text-outline hover:text-primary transition-colors uppercase tracking-widest"
+                      className="mt-3 inline-block font-mono text-[11px] text-outline hover:text-primary transition-colors uppercase tracking-widest"
                     >
                       {language === 'en' ? 'VIEW_EVENT →' : 'VER_EVENTO →'}
                     </a>
@@ -164,7 +164,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>HACKATHON_COUNT: {hackathons.length}</span>
             <span>MODE: FRONTIER_BUILDERS</span>

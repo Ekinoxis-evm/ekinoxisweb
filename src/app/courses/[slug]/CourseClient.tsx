@@ -86,7 +86,7 @@ export default function CourseClient({ course }: Props) {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/courses" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">COURSES</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">{course.code}</span>
@@ -103,7 +103,7 @@ export default function CourseClient({ course }: Props) {
               {course.title[language]}
             </motion.h1>
 
-            <motion.p variants={fadeInUp} className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
+            <motion.p variants={fadeInUp} className="font-mono text-[13px] text-primary tracking-widest uppercase mb-6">
               {course.tagline[language]}
             </motion.p>
 
@@ -135,7 +135,7 @@ export default function CourseClient({ course }: Props) {
                 ))}
               </div>
 
-              <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-4">{t.stack}</p>
+              <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">{t.stack}</p>
               <div className="flex flex-wrap items-center gap-x-10 gap-y-4 group">
                 {course.tools.map((tool) => (
                   <div key={tool.name} className="flex items-center gap-3">
@@ -155,12 +155,12 @@ export default function CourseClient({ course }: Props) {
 
             <div className="bg-surface-container-high p-6 md:p-10 flex flex-col justify-between">
               <div>
-                <p className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">{t.price}</p>
+                <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-2">{t.price}</p>
                 {course.price ? (
                   <>
                     <p className="font-headline text-4xl font-bold text-primary mb-1">{course.price}</p>
                     {course.priceAlt && (
-                      <p className="font-mono text-[10px] text-outline uppercase tracking-widest">{course.priceAlt}</p>
+                      <p className="font-mono text-[12px] text-outline uppercase tracking-widest">{course.priceAlt}</p>
                     )}
                   </>
                 ) : (
@@ -192,7 +192,7 @@ export default function CourseClient({ course }: Props) {
                   {block.items.map((item, idx) => (
                     <div key={idx} className="flex gap-3">
                       <span className="font-mono text-primary/50 text-sm flex-shrink-0 mt-0.5">{block.mark}</span>
-                      <span className="font-label text-xs text-on-surface-variant uppercase tracking-wide leading-relaxed">{item}</span>
+                      <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -215,17 +215,17 @@ export default function CourseClient({ course }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
                 {modules.map((m, idx) => (
                   <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                    <p className="font-mono text-primary text-xs mb-4">M_{String(idx + 1).padStart(2, '0')}</p>
+                    <p className="font-mono text-primary text-[13px] mb-4">{String(idx + 1).padStart(2, '0')}</p>
                     <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
                       {m.title}
                     </h4>
-                    <p className="font-label text-[10px] text-outline uppercase tracking-widest leading-relaxed">{m.desc}</p>
+                    <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{m.desc}</p>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="bg-surface-container-low p-6 md:p-10">
-                <p className="font-mono text-xs text-outline uppercase tracking-widest">{t.syllabusEmpty}</p>
+                <p className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.syllabusEmpty}</p>
               </div>
             )}
           </motion.div>
@@ -238,7 +238,7 @@ export default function CourseClient({ course }: Props) {
             className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           >
             <div>
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-1">{t.next}</p>
+              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-1">{t.next}</p>
               <p className="font-body text-on-surface-variant text-sm max-w-lg">{t.nextText}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">

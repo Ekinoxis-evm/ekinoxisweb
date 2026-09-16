@@ -63,7 +63,7 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
 
   return (
     <div>
-      <div className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-8">
+      <div className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-8">
         <span className="border border-primary/30 px-2 py-1">LEADS</span>
       </div>
 
@@ -76,7 +76,7 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
             <button
               key={s}
               onClick={() => setFilter(s)}
-              className={`font-mono text-[9px] uppercase tracking-widest px-3 py-2 border transition-colors duration-200 ${
+              className={`font-mono text-[11px] uppercase tracking-widest px-3 py-2 border transition-colors duration-200 ${
                 filter === s
                   ? 'border-primary text-primary bg-primary/10'
                   : 'border-outline-variant/30 text-outline hover:border-primary/40'
@@ -89,14 +89,14 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
       </div>
 
       {unnotified > 0 && (
-        <p className="font-mono text-[10px] text-error uppercase tracking-widest border border-error/30 px-4 py-3 mb-6">
+        <p className="font-mono text-[12px] text-error uppercase tracking-widest border border-error/30 px-4 py-3 mb-6">
           {unnotified} new {unnotified === 1 ? 'lead' : 'leads'} never reached Telegram — check
           TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID
         </p>
       )}
 
       {shown.length === 0 ? (
-        <p className="font-mono text-xs text-outline uppercase tracking-widest py-12">
+        <p className="font-mono text-[13px] text-outline uppercase tracking-widest py-12">
           Nothing here yet
         </p>
       ) : (
@@ -117,15 +117,15 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
                       {l.name}
                       {l.company ? ` · ${l.company}` : ''}
                     </span>
-                    <span className="font-mono text-[10px] text-outline truncate block">
+                    <span className="font-mono text-[12px] text-outline truncate block">
                       {l.email}
                       {l.budget ? ` · ${l.budget}` : ''}
                     </span>
                   </span>
-                  <span className="font-mono text-[9px] text-primary/70 tracking-widest uppercase">
+                  <span className="font-mono text-[11px] text-primary/70 tracking-widest uppercase">
                     {TOPIC_LABEL[l.topic] ?? l.topic}
                   </span>
-                  <span className="font-mono text-[9px] text-outline tracking-widest text-right">
+                  <span className="font-mono text-[11px] text-outline tracking-widest text-right">
                     {when(l.created_at)}
                   </span>
                 </button>
@@ -136,7 +136,7 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
                       {l.message}
                     </p>
 
-                    <div className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-[10px] text-outline uppercase tracking-widest mb-6">
+                    <div className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-[12px] text-outline uppercase tracking-widest mb-6">
                       <a href={`mailto:${l.email}`} className="text-primary hover:underline">
                         {l.email}
                       </a>
@@ -161,7 +161,7 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
                           key={s}
                           disabled={busy === l.id || l.status === s}
                           onClick={() => setStatus(l.id, s)}
-                          className={`font-mono text-[9px] uppercase tracking-widest px-3 py-2 border transition-colors duration-200 ${
+                          className={`font-mono text-[11px] uppercase tracking-widest px-3 py-2 border transition-colors duration-200 ${
                             l.status === s
                               ? 'border-primary text-primary bg-primary/10 pointer-events-none'
                               : 'border-outline-variant/30 text-outline hover:border-primary/40 hover:text-primary'

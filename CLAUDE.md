@@ -259,7 +259,7 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 | `tertiary-dim` | `#beee00` | Neon Lime — accents, success, status indicators |
 | `on-surface` | `#e8f2fb` | Main body text |
 | `on-surface-variant` | `#a2acb5` | Muted body text |
-| `outline` | `#6c777f` | Very muted / labels |
+| `outline` | `#8a949c` | Muted labels — lifted from #6c777f for legibility |
 | `outline-variant` | `#3f4951` | Ghost borders |
 | `surface-container-lowest` | `#000000` | Main background |
 | `surface-container-low` | `#09151c` | Card / section backgrounds |
@@ -584,7 +584,7 @@ npm run lint                    # ESLint
 4. **Surface shifts instead of hover scale** — `hover:bg-surface-container` not `hover:scale-105`
 5. **`gap-px bg-primary/10`** — the canonical grid-border pattern for card layouts
 6. **Ambient glow** not drop shadow — `shadow-[0_0_20px_rgba(143,245,255,0.2)]` if glow is needed
-7. **`font-mono text-[10px] tracking-widest uppercase`** — all metadata, UIDs, system labels
+7. **`font-mono text-[12px] tracking-widest uppercase`** — all metadata and labels; 11px is the floor (badges only). Never go below: 9–10px was unreadable on the scanline ground
 8. **Bilingual** — static text goes in `content.ts` (both `en` and `es`); DB data uses `_en`/`_es` column suffix
 9. **Supabase image URLs** — always add `unoptimized={src.startsWith('http')}` to `<Image>` for Supabase Storage URLs
 10. **`revalidatePath` not `revalidateTag`** — use `revalidatePath('/route')` in admin API routes to bust ISR cache

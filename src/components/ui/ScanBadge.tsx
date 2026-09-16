@@ -26,7 +26,7 @@ export default function ScanBadge({
 }: ScanBadgeProps) {
   return (
     <span
-      className={`inline-block font-mono text-[10px] tracking-widest uppercase px-2 py-1 ${bordered ? 'border' : ''} ${variantStyles[variant]} ${className}`}
+      className={`inline-block font-mono text-[11px] tracking-[0.15em] uppercase px-2 py-1 ${bordered ? 'border' : ''} ${variantStyles[variant]} ${className}`}
     >
       {children}
     </span>

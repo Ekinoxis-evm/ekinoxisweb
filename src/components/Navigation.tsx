@@ -88,7 +88,7 @@ export default function Navigation() {
     return 'items' in m && m.items?.some((i) => isActive(i.href, (i as NavItem).exact));
   };
 
-  const linkBase = 'font-label text-xs uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
+  const linkBase = 'font-label text-[13px] font-medium uppercase tracking-tighter transition-colors duration-200 px-4 py-2';
   const linkActive = 'text-primary bg-primary/10 border-b-2 border-primary shadow-[0_0_12px_rgba(143,245,255,0.15)]';
   const linkInactive = 'text-on-surface-variant hover:text-primary border-b-2 border-transparent';
 
@@ -188,7 +188,7 @@ export default function Navigation() {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-              className="font-mono text-xs text-primary hover:bg-primary/5 min-h-[44px] px-3 flex items-center transition-all"
+              className="font-mono text-[13px] text-primary hover:bg-primary/5 min-h-[44px] px-3 flex items-center transition-all"
             >
               {language === 'en' ? 'EN/ES' : 'ES/EN'}
             </button>
@@ -228,7 +228,7 @@ export default function Navigation() {
                     <div key={key} className="border-b border-outline-variant/10">
                       <button
                         onClick={() => setExpandedMenu(expandedMenu === key ? null : key)}
-                        className="w-full text-left py-4 font-label text-xs uppercase tracking-tighter text-on-surface-variant flex items-center justify-between"
+                        className="w-full text-left py-4 font-label text-[13px] font-medium uppercase tracking-tighter text-on-surface-variant flex items-center justify-between"
                       >
                         {menu.label}
                         <span className="text-[8px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
@@ -254,7 +254,7 @@ export default function Navigation() {
                     <Link
                       key={key}
                       href={menu.href}
-                      className={`py-4 font-label text-xs uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary border-l-2 border-l-primary pl-3 bg-primary/5' : 'text-on-surface-variant'}`}
+                      className={`py-4 font-label text-[13px] font-medium uppercase tracking-tighter border-b border-outline-variant/10 ${isActive(menu.href) ? 'text-primary border-l-2 border-l-primary pl-3 bg-primary/5' : 'text-on-surface-variant'}`}
                     >
                       {menu.label}
                     </Link>
@@ -299,7 +299,7 @@ function DropdownMenu({
           <Link
             href={href}
             onClick={() => setExpanded(null)}
-            className="font-label text-xs uppercase tracking-tighter transition-colors duration-200 pl-4 py-2"
+            className="font-label text-[13px] font-medium uppercase tracking-tighter transition-colors duration-200 pl-4 py-2"
           >
             {label}
           </Link>

@@ -31,7 +31,7 @@ export default function CertificationsClient({ partners }: Props) {
             animate="visible"
             className="mb-10 md:mb-20"
           >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">CERTIFICATIONS</span>
             </motion.div>
 
@@ -71,7 +71,7 @@ export default function CertificationsClient({ partners }: Props) {
                 {/* Status dot */}
                 <div className="absolute top-4 left-4 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse" />
-                  <span className="font-mono text-[9px] text-tertiary-dim uppercase tracking-widest">ACTIVE</span>
+                  <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">ACTIVE</span>
                 </div>
 
                 {/* Logo */}
@@ -87,7 +87,7 @@ export default function CertificationsClient({ partners }: Props) {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <span className="font-mono text-[9px] text-outline/40 uppercase">NO_LOGO</span>
+                      <span className="font-mono text-[11px] text-outline/40 uppercase">NO_LOGO</span>
                     </div>
                   )}
                 </div>
@@ -107,7 +107,7 @@ export default function CertificationsClient({ partners }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>CERT_PROVIDERS: {partners.length}</span>
             <span>CREDENTIAL_STATUS: VERIFIED</span>
