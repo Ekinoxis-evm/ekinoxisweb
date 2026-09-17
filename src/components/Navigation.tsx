@@ -46,6 +46,8 @@ export default function Navigation() {
       items: [
         { href: '/culture', label: t.culture },
         { href: '/hackers', label: t.hackers },
+        { href: '/tech-stack', label: t.techStack },
+        { href: '/brand', label: t.brand },
       ],
     },
     services: {
@@ -56,14 +58,11 @@ export default function Navigation() {
         { href: '/services/app-building', label: language === 'en' ? 'App Building' : 'Desarrollo de Apps' },
       ],
     },
-    'our-value': {
-      label: language === 'en' ? 'Value' : 'Valor',
+    learn: {
+      label: t.learn,
       items: [
-        { href: '/tech-stack', label: t.techStack },
-        { href: '/research', label: t.research },
-        { href: '/certifications', label: t.certifications },
-        { href: '/education', label: t.education },
-        { href: '/brand', label: t.brand },
+        { href: '/courses', label: t.courses },
+        { href: '/education', label: t.knowledge },
       ],
     },
     portfolio: {
@@ -77,7 +76,6 @@ export default function Navigation() {
         { href: '/portfolio/clients', label: language === 'en' ? 'Clients' : 'Clientes' },
       ],
     },
-    courses: { label: t.courses, href: '/courses' },
     'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
   };
 
@@ -144,12 +142,12 @@ export default function Navigation() {
               linkInactive={linkInactive}
             />
             <DropdownMenu
-              label={menuItems['our-value'].label}
-              items={menuItems['our-value'].items}
-              menuKey="our-value"
+              label={menuItems['learn'].label}
+              items={menuItems['learn'].items}
+              menuKey="learn"
               expanded={expandedMenu}
               setExpanded={setExpandedMenu}
-              isActive={isMenuActive('our-value')}
+              isActive={isMenuActive('learn')}
               isItemActive={isActive}
               variants={dropdownVariants}
               linkBase={linkBase}
@@ -170,12 +168,6 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            <Link
-              href="/courses"
-              className={`${linkBase} ${isActive('/courses') ? linkActive : linkInactive}`}
-            >
-              {menuItems['courses'].label}
-            </Link>
             <Link
               href="/hacker-house"
               className={`${linkBase} ${isActive('/hacker-house') ? linkActive : linkInactive}`}
@@ -231,7 +223,7 @@ export default function Navigation() {
                         className="w-full text-left py-4 font-label text-[13px] font-medium uppercase tracking-tighter text-on-surface-variant flex items-center justify-between"
                       >
                         {menu.label}
-                        <span className="text-[8px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
+                        <span className="text-[10px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
                       </button>
                       {expandedMenu === key && (
                         <div className="pb-2 flex flex-col">
@@ -239,7 +231,7 @@ export default function Navigation() {
                             <Link
                               key={item.href}
                               href={item.href}
-                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-widest ${isActive(item.href, (item as NavItem).exact) ? 'text-primary border-l-2 border-primary bg-primary/5' : 'text-outline'}`}
+                              className={`pl-4 min-h-[44px] flex items-center font-mono text-[12px] uppercase tracking-widest ${isActive(item.href, (item as NavItem).exact) ? 'text-primary border-l-2 border-primary bg-primary/5' : 'text-on-surface-variant'}`}
                             >
                               {item.label}
                             </Link>
@@ -318,7 +310,7 @@ function DropdownMenu({
           className={`${linkBase} ${isActive ? linkActive : linkInactive} flex items-center gap-1`}
         >
           {label}
-          <span className="text-[8px] text-outline">{isOpen ? '▲' : '▼'}</span>
+          <span className="text-[10px] text-outline">{isOpen ? '▲' : '▼'}</span>
         </button>
       )}
       <AnimatePresence>

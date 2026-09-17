@@ -19,6 +19,11 @@ const nextConfig = {
       // prerendered page emits a 308 with no Location header — only a JS
       // browser follows it, and crawlers hit a dead end.
       { source: '/products', destination: '/portfolio', permanent: true },
+      // /certifications and /research were three pages saying closely related
+      // things. They are now sections of /education — land on the anchor so the
+      // visitor sees the part they asked for.
+      { source: '/certifications', destination: '/education#certifications', permanent: true },
+      { source: '/research', destination: '/education#research', permanent: true },
     ]
   },
 }

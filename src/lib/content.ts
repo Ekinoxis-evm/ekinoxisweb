@@ -22,6 +22,15 @@ export const content = {
       hackers: "Our Hackers",
       courses: "Courses",
       brand: "Brand",
+      learn: "Learn",
+      knowledge: "Education & Research",
+    },
+    learn: {
+      title: "EDUCATION & RESEARCH",
+      description: "What we teach, what we certify, and what we are still figuring out.",
+      navEducation: "Education",
+      navCertifications: "Certifications",
+      navResearch: "Research",
     },
     brand: {
       title: "BRAND KIT",
@@ -581,6 +590,15 @@ export const content = {
       hackers: "Nuestros Hackers",
       courses: "Cursos",
       brand: "Marca",
+      learn: "Aprende",
+      knowledge: "Educación e Investigación",
+    },
+    learn: {
+      title: "EDUCACIÓN E INVESTIGACIÓN",
+      description: "Lo que enseñamos, lo que certificamos, y lo que todavía estamos descubriendo.",
+      navEducation: "Educación",
+      navCertifications: "Certificaciones",
+      navResearch: "Investigación",
     },
     brand: {
       title: "KIT DE MARCA",
