@@ -71,6 +71,7 @@ interface Props {
 export default function ProjectCard({ product, language, modulesLabel, uid }: Props) {
   const desc = language === 'en' ? product.description_en : product.description_es;
   const subLinks = getSubLinks(product);
+  const image = product.logo_url || product.image_url || null;
 
   return (
     <motion.div
@@ -87,14 +88,14 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
       )}
 
       <div className="relative h-48 bg-surface-container overflow-hidden flex-shrink-0">
-        {product.image_url ? (
+        {image ? (
           <Image
-            src={product.image_url}
+            src={image}
             alt={product.name}
             fill
             className="object-contain p-6"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized={product.image_url.startsWith('http')}
+            unoptimized={image.startsWith('http')}
           />
         ) : (
           <NoImage name={product.name} />

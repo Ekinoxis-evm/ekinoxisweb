@@ -32,22 +32,23 @@ export default function ClientCard({ client, language, uid }: Props) {
       </div>
 
       {/*
-        Client marks arrive in two incompatible shapes: transparent logos drawn
-        for a dark background (Talentum), and opaque light-background profile
-        avatars (LIVE!, SWRFM, MGM). A full-width greyscale plate flatters the
-        first and ruins the second. A fixed square tile suits both — the opaque
-        ones read as deliberate chips instead of glaring bands — so the mark
-        keeps its own colour, which for MGM and SWRFM *is* the brand.
+        Every client mark is a transparent PNG cropped tight to the logo and
+        drawn for a dark background (public/clients/). The slot is wide and
+        short so wordmarks (LIVE!, MGM, Talentum) and round or square marks
+        (SWRFM, 1UP) settle at the same visual weight: object-contain fits the
+        height for square marks and the width for wide ones. Never put an opaque
+        avatar here — it reads as a pasted-in square, which is what this
+        replaced.
       */}
       <div className="relative h-40 bg-surface-container flex items-center justify-center px-10 flex-shrink-0">
         {logo ? (
-          <div className="relative w-24 h-24">
+          <div className="relative h-24 w-full max-w-[180px]">
             <Image
               src={logo}
               alt={client.name}
               fill
-              className="object-contain opacity-85 group-hover:opacity-100 transition-opacity duration-500"
-              sizes="96px"
+              className="object-contain"
+              sizes="180px"
               unoptimized={logo.startsWith('http')}
             />
           </div>
