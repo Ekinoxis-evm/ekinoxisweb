@@ -38,7 +38,7 @@ export default function SocialLinks({ github, linkedin, x, telegram, discord, we
             target="_blank"
             rel="noopener noreferrer"
             title={icon.label}
-            className="p-2 -m-1 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-200 grayscale hover:grayscale-0"
+            className="p-2 -m-1 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity duration-200 grayscale hover:grayscale-0"
           >
             <Image
               src={icon.src}
@@ -56,7 +56,7 @@ export default function SocialLinks({ github, linkedin, x, telegram, discord, we
           target="_blank"
           rel="noopener noreferrer"
           title="Portfolio"
-          className="font-mono text-[11px] text-outline/50 hover:text-primary transition-colors uppercase tracking-widest"
+          className="font-mono text-[11px] text-outline hover:text-primary transition-colors uppercase tracking-widest"
         >
           WEB
         </a>

@@ -33,7 +33,7 @@ export default function HackersClient({ hackers }: Props) {
             className="mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">OUR TEAM</span>
+              <span className="border border-primary/30 px-2 py-1">{language === 'en' ? 'Our team' : 'Nuestro equipo'}</span>
             </motion.div>
 
             <motion.h1
@@ -58,66 +58,66 @@ export default function HackersClient({ hackers }: Props) {
             animate="visible"
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-primary/10"
           >
-            {hackers.map((hacker) => (
-              <motion.div
-                key={hacker.id}
-                variants={fadeInUp}
-                className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 overflow-hidden"
-              >
-                {/* Photo */}
-                <div className="relative w-full aspect-square overflow-hidden">
-                  {hacker.image_url ? (
-                    <Image
-                      src={hacker.image_url}
-                      alt={hacker.name}
-                      fill
-                      className="object-cover grayscale contrast-[1.05] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      unoptimized={hacker.image_url.startsWith('http')}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full bg-surface-container">
-                      <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">{language === 'en' ? 'Photo soon' : 'Foto pronto'}</span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-
-                {/* Info */}
-                <div className="p-5">
-                  <h3 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors duration-300 mb-1">
-                    {hacker.name}
-                  </h3>
-
-                  {profile(hacker) && (
-                    <p className="font-mono text-[11px] text-secondary/80 uppercase tracking-wide mb-1">
-                      {profile(hacker)}
-                    </p>
-                  )}
-
-                  {hacker.university && hacker.university !== 'Anon' && (
-                    <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest">
-                      {hacker.university}
-                    </p>
-                  )}
-
-                  {/* Social Links */}
-                  <div className="mt-4">
-                    <SocialLinks
-                      github={hacker.github}
-                      linkedin={hacker.linkedin}
-                      x={hacker.x}
-                      telegram={hacker.telegram}
-                      discord={hacker.discord}
-                      website={hacker.website}
-                      size={16}
-                    />
+            {hackers.map((hacker) => {
+              const initials = hacker.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+              return (
+                <motion.article
+                  key={hacker.id}
+                  variants={fadeInUp}
+                  className="relative bg-surface-container-low group overflow-hidden flex flex-col"
+                >
+                  {/* One treatment for every portrait: same crop, toned black-and-white, colour on hover */}
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    {hacker.image_url ? (
+                      <>
+                        <Image
+                          src={hacker.image_url}
+                          alt={hacker.name}
+                          fill
+                          className="object-cover object-top grayscale contrast-[1.08] brightness-[0.9] group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-[1.03] transition-all duration-700"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          unoptimized={hacker.image_url.startsWith('http')}
+                        />
+                        <div className="absolute inset-0 bg-primary/15 mix-blend-color group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-surface-container via-surface-container-low to-black">
+                        <div className="absolute w-2/3 h-2/3 bg-primary/10 blur-[60px] pointer-events-none" style={{ borderRadius: '50%' }} />
+                        <span className="relative font-headline text-7xl md:text-8xl font-bold tracking-tighter text-primary/80 group-hover:text-primary transition-colors duration-500">
+                          {initials}
+                        </span>
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface-container-low to-transparent pointer-events-none" />
                   </div>
-                </div>
 
-                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.div>
-            ))}
+                  <div className="relative flex flex-col flex-1 px-6 pb-6 -mt-6">
+                    <h3 className="font-headline text-xl font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors duration-300">
+                      {hacker.name}
+                    </h3>
+                    {profile(hacker) && (
+                      <p className="font-body text-sm text-on-surface-variant leading-snug mt-1">{profile(hacker)}</p>
+                    )}
+                    {hacker.university && hacker.university !== 'Anon' && (
+                      <p className="font-mono text-[11px] text-outline uppercase tracking-widest mt-2">{hacker.university}</p>
+                    )}
+                    <div className="mt-auto pt-5">
+                      <SocialLinks
+                        github={hacker.github}
+                        linkedin={hacker.linkedin}
+                        x={hacker.x}
+                        telegram={hacker.telegram}
+                        discord={hacker.discord}
+                        website={hacker.website}
+                        size={16}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.article>
+              );
+            })}
 
             {/* Open seat — a real way in, not a dashed placeholder */}
             <motion.a
