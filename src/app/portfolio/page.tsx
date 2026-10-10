@@ -5,7 +5,7 @@ import PortfolioClient from './PortfolioClient'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Portfolio — Ekinoxis Labs',
+  title: 'Portfolio',
   description:
     'Products, experiments, proofs of concept and client work built by Ekinoxis Labs — the first Innovation Laboratory of the Colombian Pacific.',
 }

@@ -34,7 +34,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Ekinoxis Labs',
+  metadataBase: new URL('https://www.ekinoxis.xyz'),
+  title: {
+    default: 'Ekinoxis Labs — AI, blockchain and cryptography lab in Cali, Colombia',
+    template: '%s — Ekinoxis Labs',
+  },
   description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
   keywords: ['Blockchain', 'Cryptography', 'Artificial Intelligence', 'Innovation', 'Colombia', 'WEB3'],
   // The brand favicon set — the mark, rendered at each size a browser asks for.
@@ -50,16 +54,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Ekinoxis Labs',
     description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
-    url: 'https://ekinoxis.xyz',
+    url: 'https://www.ekinoxis.xyz',
     siteName: 'Ekinoxis Labs',
-    images: [{ url: '/brand/social/ekinoxis-avatar-with-wordmark-1024.png', width: 1024, height: 1024, alt: 'Ekinoxis' }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ekinoxis Labs',
     description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
-    images: ['/brand/social/ekinoxis-avatar-with-wordmark-1024.png'],
   },
 };
 

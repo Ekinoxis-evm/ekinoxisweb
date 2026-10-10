@@ -1,13 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';
 
+const TELEGRAM = 'https://t.me/ekinoxis';
+
 export default function Footer() {
   const { language } = useLanguage();
   const t = content[language];
+  const en = language === 'en';
   const currentYear = new Date().getFullYear();
 
   const socials = [
@@ -17,54 +21,131 @@ export default function Footer() {
     { label: 'Telegram', href: t.socials.telegram },
     { label: 'Discord', href: t.socials.discord },
     { label: 'GitHub', href: t.socials.github },
+  ].filter((s) => s.href);
+
+  // The same routes, in the same words, as the navigation bar.
+  const columns = [
+    {
+      title: t.nav.services,
+      links: [
+        { href: '/services/consultation', label: en ? 'Consultation' : 'Consultoría' },
+        { href: '/services/web-development', label: en ? 'Websites' : 'Sitios web' },
+        { href: '/services/app-building', label: en ? 'Software & apps' : 'Software y apps' },
+        { href: '/courses', label: t.nav.courses },
+      ],
+    },
+    {
+      title: t.nav.portfolio,
+      links: [
+        { href: '/portfolio/products', label: en ? 'Products' : 'Productos' },
+        { href: '/portfolio/clients', label: en ? 'Clients' : 'Clientes' },
+        { href: '/portfolio/experiments', label: en ? 'Experiments' : 'Experimentos' },
+        { href: '/portfolio/proofs-of-concept', label: en ? 'Proofs of concept' : 'Pruebas de concepto' },
+      ],
+    },
+    {
+      title: en ? 'The lab' : 'El laboratorio',
+      links: [
+        { href: '/hacker-house', label: t.nav.hackerHouse },
+        { href: '/hackers', label: t.nav.hackers },
+        { href: '/education', label: t.nav.knowledge },
+        { href: '/culture', label: t.nav.culture },
+        { href: '/tech-stack', label: t.nav.techStack },
+        { href: '/brand', label: t.nav.brand },
+      ],
+    },
   ];
 
-  return (
-    <footer className="relative z-10 bg-black border-t border-primary/5 py-12 px-6">
-      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+  const linkClass =
+    'inline-flex py-1 font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-200';
 
-        {/* Left — brand */}
-        <div className="flex flex-col gap-3">
-          <Link href="/brand" aria-label="Ekinoxis brand kit" className="w-fit transition-opacity hover:opacity-80">
-            <BrandLockup size={26} />
-          </Link>
-          <p className="font-mono text-[13px] uppercase text-outline max-w-xs leading-relaxed">
-            {language === 'en'
-              ? 'We build with AI, blockchain and crypto. From Cali, Colombia.'
-              : 'Construimos con IA, blockchain y cripto. Desde Cali, Colombia.'}
-          </p>
-          <div className="font-mono text-[13px] uppercase text-outline/60">
-            © {currentYear} EKINOXIS LABS // USA - COLOMBIA
+  return (
+    <footer className="relative z-10 bg-black border-t border-primary/10 px-6 pt-16 pb-10">
+      <div className="max-w-screen-2xl mx-auto">
+        {/* Top: brand + call to action */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-14">
+          <div className="lg:col-span-4 flex flex-col gap-5">
+            <Link href="/" aria-label="Ekinoxis" className="w-fit transition-opacity hover:opacity-80">
+              <BrandLockup size={28} />
+            </Link>
+            <p className="font-body text-base text-on-surface-variant max-w-sm leading-relaxed">
+              {en
+                ? 'A lab in Cali, Colombia. We build software with AI, blockchain and crypto — and teach others to do the same.'
+                : 'Un laboratorio en Cali, Colombia. Construimos software con IA, blockchain y cripto — y enseñamos a otros a hacerlo.'}
+            </p>
+            <div className="flex flex-wrap gap-3 pt-1">
+              <Link
+                href="/services/consultation#contact"
+                className="inline-flex items-center gap-2 bg-primary px-5 py-3 font-label text-[13px] font-bold uppercase tracking-widest text-surface-container-lowest hover:bg-primary-dim transition-colors"
+              >
+                {en ? 'Start a project' : 'Empieza un proyecto'}
+              </Link>
+              <a
+                href={TELEGRAM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-primary/30 px-5 py-3 font-label text-[13px] font-bold uppercase tracking-widest text-primary hover:border-primary transition-colors"
+              >
+                Telegram <ArrowUpRight size={14} />
+              </a>
+            </div>
           </div>
+
+          <nav aria-label={en ? 'Footer' : 'Pie de página'} className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-10">
+            {columns.map((col) => (
+              <div key={col.title}>
+                <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">{col.title}</p>
+                <ul className="space-y-1.5">
+                  {col.links.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className={linkClass}>{l.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            <div>
+              <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">
+                {en ? 'Where we are' : 'Dónde estamos'}
+              </p>
+              <address className="not-italic space-y-5 font-body text-sm text-on-surface-variant leading-relaxed">
+                <div>
+                  <p className="text-on-surface font-medium">Cali, Colombia</p>
+                  <p>Zonamerica, Calle 36 #128-321</p>
+                  <p>Valle del Cauca</p>
+                </div>
+                <div>
+                  <p className="text-on-surface font-medium">Casper, Wyoming</p>
+                  <p>159 N Wolcott St, Suite 133</p>
+                  <p>United States</p>
+                </div>
+              </address>
+            </div>
+          </nav>
         </div>
 
-        {/* Right — social links */}
-        <div className="flex flex-wrap items-end justify-start md:justify-end gap-x-8 gap-y-3">
-          <Link
-            href="/brand"
-            className="py-2 inline-flex items-center font-mono text-[13px] uppercase text-outline hover:text-primary hover:translate-x-0.5 transition-all duration-200"
-          >
-            {t.nav.brand}
-          </Link>
-          {socials.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-2 inline-flex items-center font-mono text-[13px] uppercase text-outline hover:text-tertiary-dim hover:translate-x-0.5 transition-all duration-200"
-            >
-              {label}
-            </Link>
-          ))}
+        {/* Bottom bar */}
+        <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between pt-8 border-t border-primary/5">
+          <p className="font-mono text-[12px] uppercase tracking-widest text-outline/70">
+            © {currentYear} Ekinoxis Labs · Cali — Casper
+          </p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {socials.map(({ label, href }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-1 inline-flex font-mono text-[12px] uppercase tracking-widest text-outline hover:text-primary transition-colors duration-200"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-
-      {/* Hidden addresses for SEO */}
-      <address className="sr-only">
-        <span>159 North Wolcott Street, Suite 133, Casper, WY, USA. Tel: {t.footer.usa.phone}</span>
-        <span>Calle 36#128-321, Zona Franca, Cali, Valle del Cauca, Colombia. Tel: {t.footer.colombia.phone}</span>
-      </address>
     </footer>
   );
 }

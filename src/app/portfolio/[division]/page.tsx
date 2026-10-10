@@ -17,7 +17,7 @@ export async function generateMetadata(
   const division = getDivision(slug)
   if (!division) return {}
   return {
-    title: `${division.en.short} — Ekinoxis Labs`,
+    title: division.en.short,
     description: division.en.description,
   }
 }

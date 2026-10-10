@@ -94,7 +94,7 @@ export const content = {
       title: "CERTIFICATIONS",
       description: "Our hackers certify with the people who set the standard.",
       partners: [
-        { name: "Cyphrin", logo: "/education/certifications/cyphrin/cyphrinupdraft.png" },
+        { name: "Cyfrin", logo: "/education/certifications/cyphrin/cyphrinupdraft.png" },
         { name: "Speedrun Ethereum", logo: "/education/certifications/speedrunethereum/speedrunethereum.png" },
         { name: "Consensys Academy", logo: "/education/certifications/consensysacademy/consensys.png" },
         { name: "Alchemy University", logo: "/education/certifications/alchemyuniversity/alchemyu.png" },
@@ -662,7 +662,7 @@ export const content = {
       title: "CERTIFICACIONES",
       description: "Nuestros hackers se certifican con quienes fijan el estándar.",
       partners: [
-        { name: "Cyphrin", logo: "/education/certifications/cyphrin/Updraft Logo Full - Dark.png" },
+        { name: "Cyfrin", logo: "/education/certifications/cyphrin/Updraft Logo Full - Dark.png" },
       ],
     },
     hackerHouse: {
