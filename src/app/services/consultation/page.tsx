@@ -273,100 +273,14 @@ export default function ConsultationPage() {
             </motion.p>
           </motion.div>
 
-          {/* Topics */}
+          {/* Pricing */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-px"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
-              <ScanBadge variant="primary">{t.topics.label}</ScanBadge>
-              <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
-                {t.topics.title}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10">
-              {t.topics.items.map((topic, idx) => (
-                <div
-                  key={topic.code}
-                  className="relative bg-surface-container-low p-6 md:p-8 group hover:bg-surface-container transition-colors duration-500"
-                >
-                  <span className="font-mono text-[12px] text-primary/70 tracking-widest block mb-6">
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-2">
-                    {topic.title}
-                  </h3>
-                  {/* The technical name, kept small — for the reader who already knows it */}
-                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">
-                    {topic.tech}
-                  </p>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
-                    {topic.desc}
-                  </p>
-                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-2">
-                    {language === 'en' ? 'You leave with' : 'Te llevas'}
-                  </p>
-                  <p className="font-label text-[13px] font-medium text-tertiary-dim/90 leading-relaxed">
-                    {topic.outcome}
-                  </p>
-                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              ))}
-
-              {/* Sixth cell: talks panel */}
-              <div className="relative bg-surface-container-high p-6 md:p-8 flex flex-col justify-between">
-                <div>
-                  <div className="mb-6">
-                    <ScanBadge variant="tertiary">{t.talks.label}</ScanBadge>
-                  </div>
-                  <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface mb-3">
-                    {t.talks.title}
-                  </h3>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
-                    {t.talks.desc}
-                  </p>
-                </div>
-                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
-                  <Button variant="tertiary" className="w-full justify-center">{t.talks.cta}</Button>
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Funnel */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="mt-px mb-px"
-          >
-            <div className="flex items-center gap-4 py-6">
-              <ScanBadge variant="muted">{t.funnel.label}</ScanBadge>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
-              {t.funnel.steps.map((step) => (
-                <div key={step.num} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                  <p className="font-mono text-primary text-[13px] mb-4">{step.num}</p>
-                  <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
-                    {step.title}
-                  </h4>
-                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Pricing */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-px mb-px"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
               <ScanBadge variant="secondary">{t.pricing.label}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {t.pricing.title}
@@ -413,13 +327,81 @@ export default function ConsultationPage() {
             <p className="font-mono text-[12px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
 
+          {/* Topics + How It Works row — same shape as Web Development */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 mt-px"
+          >
+            {/* Topics */}
+            <div className="bg-surface-container-low p-6 md:p-10">
+              <div className="mb-6">
+                <ScanBadge variant="primary">{t.topics.label}</ScanBadge>
+              </div>
+              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
+                {t.topics.title}
+              </h2>
+              <div className="space-y-6">
+                {t.topics.items.map((topic, idx) => (
+                  <div key={topic.code} className="flex gap-4">
+                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0 mt-0.5">{String(idx + 1).padStart(2, '0')}</span>
+                    <div>
+                      <h3 className="font-headline text-base font-bold tracking-tight text-on-surface">
+                        {topic.title}
+                        {/* The technical name, kept small — for the reader who already knows it */}
+                        <span className="font-mono text-[11px] text-outline uppercase tracking-widest ml-2">{topic.tech}</span>
+                      </h3>
+                      <p className="font-body text-sm text-on-surface-variant leading-relaxed mt-1">{topic.desc}</p>
+                      <p className="font-label text-[13px] font-medium text-tertiary-dim/90 leading-relaxed mt-1">
+                        <span className="font-mono text-[11px] text-outline uppercase tracking-widest mr-2">{language === 'en' ? 'You leave with' : 'Te llevas'}</span>
+                        {topic.outcome}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* How It Works + talks */}
+            <div className="bg-surface-container-low p-6 md:p-10 flex flex-col">
+              <div className="mb-6">
+                <ScanBadge variant="muted">{t.funnel.label}</ScanBadge>
+              </div>
+              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
+                {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
+              </h2>
+              <div className="space-y-5 mb-10">
+                {t.funnel.steps.map((step) => (
+                  <div key={step.num} className="flex gap-4">
+                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0 mt-0.5">{step.num}</span>
+                    <div>
+                      <p className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wider">{step.title}</p>
+                      <p className="font-body text-sm text-on-surface-variant leading-relaxed mt-1">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-auto bg-surface-container-high p-6">
+                <div className="mb-4">
+                  <ScanBadge variant="tertiary">{t.talks.label}</ScanBadge>
+                </div>
+                <h3 className="font-headline text-lg font-bold tracking-tighter text-on-surface mb-2">{t.talks.title}</h3>
+                <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-5">{t.talks.desc}</p>
+                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
+                  <Button variant="tertiary" size="sm" className="w-full sm:w-auto justify-center">{t.talks.cta}</Button>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Final step — the form, not a link off the site */}
           <motion.div
             id="contact"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.65 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
             <div className="lg:col-span-4">
               <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">

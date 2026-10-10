@@ -107,88 +107,14 @@ export default function AppBuildingPage() {
             </motion.p>
           </motion.div>
 
-          {/* What We Build */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
-          >
-            {t.features.map((feature, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                className="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors duration-500"
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <ScanBadge variant="primary">{feature.code}</ScanBadge>
-                </div>
-                <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-3">
-                  {feature.title}
-                </h3>
-                <p className="font-body text-sm text-on-surface-variant leading-relaxed">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Tech Stack */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-surface-container-low p-6 md:p-10 mb-px"
-          >
-            <div className="mb-6">
-              <ScanBadge variant="secondary">TECH_STACK</ScanBadge>
-            </div>
-            <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
-              {language === 'en' ? 'Technologies We Use' : 'Tecnologías Que Usamos'}
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {t.techStacks.map((stack, idx) => (
-                <div key={idx}>
-                  <p className="font-mono text-[13px] text-primary uppercase tracking-widest mb-4">{stack.name}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {stack.items.map((item) => (
-                      <span
-                        key={item}
-                        className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Process */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-primary/10 mb-px"
-          >
-            {t.process.map((step, idx) => (
-              <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                <p className="font-mono text-primary text-[13px] mb-4">{step.num}</p>
-                <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
-                  {step.title}
-                </h4>
-                <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </motion.div>
-
           {/* Pricing tiers from content.ts */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.55 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-px"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
               <ScanBadge variant="secondary">PRICING_MODEL</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {services.pricing.title}
@@ -236,13 +162,92 @@ export default function AppBuildingPage() {
             </div>
           </motion.div>
 
+          {/* What We Build + How It Works row — same shape as Web Development */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 mt-px"
+          >
+            {/* What We Build */}
+            <div className="bg-surface-container-low p-6 md:p-10">
+              <div className="mb-6">
+                <ScanBadge variant="tertiary">DELIVERABLES</ScanBadge>
+              </div>
+              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
+                {language === 'en' ? 'What We Build' : 'Qué Construimos'}
+              </h2>
+              <div className="space-y-4">
+                {t.features.map((feature) => (
+                  <div key={feature.code} className="flex gap-3">
+                    <span className="font-mono text-tertiary-dim/70 text-sm flex-shrink-0 mt-0.5">✓</span>
+                    <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+                      <span className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wide">{feature.title}</span>
+                      {' — '}{feature.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="bg-surface-container-low p-6 md:p-10">
+              <div className="mb-6">
+                <ScanBadge variant="muted">PROCESS_FLOW</ScanBadge>
+              </div>
+              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
+                {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
+              </h2>
+              <div className="space-y-4">
+                {t.process.map((step) => (
+                  <div key={step.num} className="flex items-center gap-4">
+                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0">{step.num}</span>
+                    <div className="flex-1 h-px bg-primary/10" />
+                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wider text-right">
+                      {step.title}<span className="hidden sm:inline text-outline normal-case tracking-normal"> · {step.desc}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Tech Stack */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="bg-surface-container-low p-6 md:p-10 mt-px"
+          >
+            <div className="mb-6">
+              <ScanBadge variant="secondary">TECH_STACK</ScanBadge>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {t.techStacks.map((stack, idx) => (
+                <div key={idx}>
+                  <p className="font-mono text-[13px] text-primary uppercase tracking-widest mb-4">{stack.name}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {stack.items.map((item) => (
+                      <span
+                        key={item}
+                        className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
           {/* CTA — the form, with the calendar as the alternative */}
           <motion.div
             id="contact"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
             <div className="lg:col-span-4">
               <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
