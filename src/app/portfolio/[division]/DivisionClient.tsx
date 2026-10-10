@@ -70,6 +70,35 @@ export default function DivisionClient({ division, items }: Props) {
                   />
                 );
               })}
+              {(() => {
+                // Fill the last row instead of leaving an empty tinted box.
+                const lgSpan = (3 - (items.length % 3)) % 3;
+                const mdFill = items.length % 2 === 1;
+                if (lgSpan === 0 && !mdFill) return null;
+                const lgClass = lgSpan === 2 ? 'lg:col-span-2' : lgSpan === 1 ? 'lg:col-span-1' : 'lg:hidden';
+                const mdClass = mdFill ? 'md:flex' : 'md:hidden';
+                return (
+                  <motion.div variants={fadeInUp} className={`hidden ${mdClass} lg:flex ${lgClass} bg-surface-container-low`}>
+                    <Link
+                      href="/services/consultation#contact"
+                      className="group relative flex w-full flex-col justify-end gap-4 p-8 md:p-10 min-h-[280px] hover:bg-surface-container transition-colors duration-500"
+                    >
+                      <div className="absolute -right-16 -top-16 w-64 h-64 bg-primary/10 blur-[80px] pointer-events-none" style={{ borderRadius: '50%' }} />
+                      <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
+                        {language === 'en' ? 'Next one' : 'El siguiente'}
+                      </p>
+                      <h3 className="relative font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface leading-[0.95] max-w-md group-hover:text-primary transition-colors">
+                        {division.layout === 'client'
+                          ? language === 'en' ? 'Your company could be here.' : 'Tu empresa podría estar aquí.'
+                          : language === 'en' ? 'Have an idea worth building?' : '¿Tienes una idea que vale la pena construir?'}
+                      </h3>
+                      <span className="relative inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
+                        {language === 'en' ? 'Book a free call' : 'Agenda una llamada gratis'} →
+                      </span>
+                    </Link>
+                  </motion.div>
+                );
+              })()}
             </motion.div>
           ) : (
             <div className="bg-surface-container-low p-16 text-center">
@@ -111,8 +140,8 @@ export default function DivisionClient({ division, items }: Props) {
 
           {/* Counter */}
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[12px] text-outline tracking-widest uppercase">
-            <span>{division.uid}_COUNT: {items.length}</span>
-            <span>REGISTRY: EKINOXIS_LABS</span>
+            <span>{items.length} {language === 'en' ? (items.length === 1 ? 'project' : 'projects') : (items.length === 1 ? 'proyecto' : 'proyectos')}</span>
+            <span>Ekinoxis Labs</span>
           </div>
 
         </div>

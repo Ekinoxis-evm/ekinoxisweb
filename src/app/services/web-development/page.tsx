@@ -99,7 +99,7 @@ export default function WebDevelopmentPage() {
             className="mb-px"
           >
             <div className="flex items-center gap-4 mb-6">
-              <ScanBadge variant="secondary">PRICING_PLANS</ScanBadge>
+              <ScanBadge variant="secondary">{language === 'en' ? 'Pricing' : 'Precios'}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {t.pricing.title}
               </span>
@@ -154,7 +154,7 @@ export default function WebDevelopmentPage() {
             {/* How It Works */}
             <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
-                <ScanBadge variant="muted">PROCESS_FLOW</ScanBadge>
+                <ScanBadge variant="muted">{language === 'en' ? 'How it works' : 'Cómo funciona'}</ScanBadge>
               </div>
               <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                 {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
@@ -173,7 +173,7 @@ export default function WebDevelopmentPage() {
             {/* What You Get */}
             <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
-                <ScanBadge variant="tertiary">DELIVERABLES</ScanBadge>
+                <ScanBadge variant="tertiary">{language === 'en' ? 'What you get' : 'Qué recibes'}</ScanBadge>
               </div>
               <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                 {t.whatYouGet.title}

@@ -62,7 +62,7 @@ export default function EducationClient({ universities, government }: Props) {
               {language === 'en' ? 'Decentralizing Knowledge' : 'Descentralizando el Conocimiento'}
             </h2>
             <ScanBadge className="bg-on-primary/10 border-on-primary/20 text-on-primary" bordered>
-              {language === 'en' ? 'LATAM_NETWORK' : 'RED_LATAM'}
+              {language === 'en' ? 'Latin America network' : 'Red Latinoamérica'}
             </ScanBadge>
           </motion.div>
 
@@ -74,7 +74,7 @@ export default function EducationClient({ universities, government }: Props) {
             className="mb-px"
           >
             <div className="bg-surface-container-low border-b border-primary/10 px-10 py-5 flex items-center gap-4">
-              <ScanBadge variant="primary">UNIVERSITY_PARTNERS</ScanBadge>
+              <ScanBadge variant="primary">{language === 'en' ? 'University partners' : 'Universidades aliadas'}</ScanBadge>
               <h2 className="font-headline text-xl font-bold tracking-tighter text-on-surface">
                 {t.universities.title}
               </h2>
@@ -104,7 +104,7 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[11px] text-outline/40 uppercase">NO_LOGO</span>
+                        <span className="font-mono text-[11px] text-outline/40 uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
                       </div>
                     )}
                   </div>
@@ -124,7 +124,7 @@ export default function EducationClient({ universities, government }: Props) {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <div className="bg-surface-container-low border-b border-primary/10 px-10 py-5 flex items-center gap-4">
-              <ScanBadge variant="secondary">GOV_PARTNERS</ScanBadge>
+              <ScanBadge variant="secondary">{language === 'en' ? 'Government partners' : 'Aliados de gobierno'}</ScanBadge>
               <h2 className="font-headline text-xl font-bold tracking-tighter text-on-surface">
                 {t.gov.title}
               </h2>
@@ -154,7 +154,7 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[11px] text-outline/40 uppercase">NO_LOGO</span>
+                        <span className="font-mono text-[11px] text-outline/40 uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
                       </div>
                     )}
                   </div>

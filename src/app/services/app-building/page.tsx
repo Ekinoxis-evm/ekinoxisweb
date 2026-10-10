@@ -115,7 +115,7 @@ export default function AppBuildingPage() {
             className="mb-px"
           >
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
-              <ScanBadge variant="secondary">PRICING_MODEL</ScanBadge>
+              <ScanBadge variant="secondary">{language === 'en' ? 'Pricing' : 'Precios'}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {services.pricing.title}
               </span>
@@ -172,7 +172,7 @@ export default function AppBuildingPage() {
             {/* What We Build */}
             <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
-                <ScanBadge variant="tertiary">DELIVERABLES</ScanBadge>
+                <ScanBadge variant="tertiary">{language === 'en' ? 'What we build' : 'Qué construimos'}</ScanBadge>
               </div>
               <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                 {language === 'en' ? 'What We Build' : 'Qué Construimos'}
@@ -193,7 +193,7 @@ export default function AppBuildingPage() {
             {/* How It Works */}
             <div className="bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
-                <ScanBadge variant="muted">PROCESS_FLOW</ScanBadge>
+                <ScanBadge variant="muted">{language === 'en' ? 'How it works' : 'Cómo funciona'}</ScanBadge>
               </div>
               <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                 {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
@@ -220,7 +220,7 @@ export default function AppBuildingPage() {
             className="bg-surface-container-low p-6 md:p-10 mt-px"
           >
             <div className="mb-6">
-              <ScanBadge variant="secondary">TECH_STACK</ScanBadge>
+              <ScanBadge variant="secondary">{language === 'en' ? 'Tech stack' : 'Tecnologías'}</ScanBadge>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {t.techStacks.map((stack, idx) => (

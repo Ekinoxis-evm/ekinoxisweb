@@ -11,7 +11,7 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const ui = {
   en: {
-    badge: 'PAYMENT_RECEIVED',
+    badge: 'Payment received',
     title: 'You are in.',
     body: 'Stripe is sending your receipt now. Within 24 hours you will get an email from hola@ekinoxis.xyz with the cohort calendar, the Telegram group and what to prepare before session one.',
     note: 'Nothing arrived? Check spam, then write to us on Telegram with the email you paid with.',
@@ -19,7 +19,7 @@ const ui = {
     back: 'All Courses',
   },
   es: {
-    badge: 'PAGO_RECIBIDO',
+    badge: 'Pago recibido',
     title: 'Ya estás dentro.',
     body: 'Stripe te está enviando el recibo. En menos de 24 horas recibirás un correo de hola@ekinoxis.xyz con el calendario de la cohorte, el grupo de Telegram y qué preparar antes de la primera sesión.',
     note: '¿No llegó nada? Revisa spam y escríbenos por Telegram con el correo con el que pagaste.',

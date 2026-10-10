@@ -71,7 +71,7 @@ export default function TechStackPage() {
             <div className="hidden lg:block p-4 border-t border-primary/10">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse flex-shrink-0" />
-                <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">ALL_SYSTEMS_OK</span>
+                <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">{language === 'en' ? 'In production' : 'En producción'}</span>
               </div>
             </div>
           </aside>
@@ -85,7 +85,7 @@ export default function TechStackPage() {
                 <h1 className="font-headline text-2xl font-bold tracking-tighter text-on-surface">
                   {currentCat.name}
                 </h1>
-                <ScanBadge variant="primary">ACTIVE_SYNC</ScanBadge>
+                <ScanBadge variant="primary">{language === 'en' ? 'Updated' : 'Actualizado'}</ScanBadge>
               </div>
               <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
                 NODES: {allLogos.length}

@@ -84,7 +84,7 @@ export default function HackersClient({ hackers }: Props) {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full bg-surface-container">
-                      <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">NO_PHOTO</span>
+                      <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">{language === 'en' ? 'Photo soon' : 'Foto pronto'}</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -131,7 +131,7 @@ export default function HackersClient({ hackers }: Props) {
               variants={fadeInUp}
               className="relative bg-surface-container-lowest border-2 border-dashed border-primary/20 group hover:border-primary/40 transition-colors duration-500 flex flex-col items-center justify-center min-h-[280px]"
             >
-              <span className="font-mono text-[12px] text-outline uppercase tracking-widest mb-3">SLOT_OPEN</span>
+              <span className="font-mono text-[12px] text-outline uppercase tracking-widest mb-3">{language === 'en' ? 'Open seat' : 'Cupo abierto'}</span>
               <p className="font-headline text-lg font-bold text-on-surface-variant group-hover:text-primary transition-colors text-center px-4">
                 {language === 'en' ? 'YOU?' : '¿TÚ?'}
               </p>

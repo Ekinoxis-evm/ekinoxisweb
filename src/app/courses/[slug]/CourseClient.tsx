@@ -124,7 +124,7 @@ export default function CourseClient({ course }: Props) {
           >
             <div className="lg:col-span-2 bg-surface-container-low p-6 md:p-10">
               <div className="mb-6">
-                <ScanBadge variant="muted">COURSE_SPEC</ScanBadge>
+                <ScanBadge variant="muted">{language === 'en' ? 'The course' : 'El curso'}</ScanBadge>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 mb-10">
                 {facts.map((f) => (

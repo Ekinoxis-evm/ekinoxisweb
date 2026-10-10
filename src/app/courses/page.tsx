@@ -21,7 +21,7 @@ const coursesContent = {
     priceTbd: 'Price TBA',
     enter: 'ENTER →',
     principles: {
-      label: 'HOW_WE_TEACH',
+      label: 'How we teach',
       items: [
         { num: '01', title: 'Project first', desc: 'You pick the project on day one. Every session moves it forward.' },
         { num: '02', title: 'Live, not recorded', desc: 'Small cohorts. Questions answered in the moment, code reviewed in the moment.' },

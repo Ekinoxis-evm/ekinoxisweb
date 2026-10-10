@@ -18,7 +18,7 @@ interface Props {
   uid: string
 }
 
-export default function ClientCard({ client, language, uid }: Props) {
+export default function ClientCard({ client, language }: Props) {
   const desc = language === 'en' ? client.description_en : client.description_es;
   const logo = client.logo_url || client.image_url || null;
 
@@ -27,9 +27,6 @@ export default function ClientCard({ client, language, uid }: Props) {
       variants={fadeInUp}
       className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 flex flex-col"
     >
-      <div className="absolute top-4 left-4 z-10">
-        <ScanBadge variant="muted">{uid}</ScanBadge>
-      </div>
 
       {/*
         Every client mark is a transparent PNG cropped tight to the logo and

@@ -18,7 +18,7 @@ const STATUS_VARIANT: Record<string, 'primary' | 'tertiary' | 'muted'> = {
 
 const STATUS_LABEL: Record<string, { en: string; es: string }> = {
   incoming: { en: 'INCOMING', es: 'PRÓXIMO' },
-  ongoing: { en: 'ONGOING', es: 'EN_CURSO' },
+  ongoing: { en: 'ONGOING', es: 'En curso' },
   past: { en: 'PAST', es: 'PASADO' },
 }
 
@@ -73,7 +73,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
                   <div className="w-2 h-2 bg-tertiary-dim animate-pulse flex-shrink-0" />
                   <div>
                     <span className="font-mono text-[12px] text-outline uppercase tracking-widest">STATUS</span>
-                    <p className="font-mono text-[13px] text-tertiary-dim uppercase tracking-widest">ALWAYS_BUILDING</p>
+                    <p className="font-mono text-[13px] text-tertiary-dim uppercase tracking-widest">{language === 'en' ? 'Always building' : 'Siempre construyendo'}</p>
                   </div>
                 </div>
               </div>
@@ -83,7 +83,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
           {/* Hackathons grid */}
           <div className="mb-8">
             <div className="bg-surface-container-low border-b border-primary/10 px-8 py-5 flex items-center gap-4">
-              <ScanBadge variant="primary">OPERATIONS_LOG</ScanBadge>
+              <ScanBadge variant="primary">{language === 'en' ? 'Where we have built' : 'Dónde hemos construido'}</ScanBadge>
               <h2 className="font-headline text-xl font-bold tracking-tighter text-on-surface">
                 {t.hackathons.title}
               </h2>
@@ -122,7 +122,7 @@ export default function HackerHouseClient({ hackathons }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">NO_LOGO</span>
+                        <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
                       </div>
                     )}
                   </div>

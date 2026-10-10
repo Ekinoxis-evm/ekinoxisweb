@@ -104,7 +104,7 @@ export default function CulturePage() {
           >
             <div className="bg-surface-container-low p-6 md:p-10">
               <span className="font-mono text-primary text-[13px] mb-2 block">{language === 'en' ? 'STATUS' : 'ESTADO'}</span>
-              <p className="font-headline text-2xl font-bold text-on-surface">FRONTIER_ACTIVE</p>
+              <p className="font-headline text-2xl font-bold text-on-surface">{language === 'en' ? 'Always building' : 'Siempre construyendo'}</p>
               <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2">
                 {language === 'en' ? 'Innovation by default' : 'Innovación por defecto'}
               </p>

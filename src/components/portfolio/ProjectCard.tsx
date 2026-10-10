@@ -68,10 +68,12 @@ interface Props {
   uid?: string
 }
 
-export default function ProjectCard({ product, language, modulesLabel, uid }: Props) {
+export default function ProjectCard({ product, language, modulesLabel }: Props) {
   const desc = language === 'en' ? product.description_en : product.description_es;
   const subLinks = getSubLinks(product);
-  const image = product.logo_url || product.image_url || null;
+  // image_url is the cover (a screenshot of the product); logo_url is the mark on top of it.
+  const cover = product.image_url || null;
+  const logo = product.logo_url || null;
 
   return (
     <motion.div
@@ -81,34 +83,42 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
       <div className="absolute top-4 right-4 z-10 flex flex-col items-end gap-1">
         <ScanBadge variant={STATUS_VARIANT[product.status] ?? 'muted'}>{product.status}</ScanBadge>
       </div>
-      {uid && (
-        <div className="absolute top-4 left-4 z-10">
-          <ScanBadge variant="muted">{uid}</ScanBadge>
+
+      {cover ? (
+        /* A real screenshot of the product; the name sits right below it */
+        <div className="relative aspect-[16/10] overflow-hidden flex-shrink-0 bg-surface-container">
+          <Image
+            src={cover}
+            alt={product.name}
+            fill
+            className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized={cover.startsWith('http')}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface-container-low to-transparent" />
+        </div>
+      ) : (
+        /*
+          No screenshot yet: the transparent mark (public/logos/projects/) in a wide, short
+          box, the same slot ClientCard uses, so every logo settles at one visual weight.
+        */
+        <div className="relative h-48 bg-surface-container overflow-hidden flex-shrink-0 flex items-center justify-center px-10">
+          {logo ? (
+            <div className="relative h-28 w-full max-w-[220px]">
+              <Image
+                src={logo}
+                alt={product.name}
+                fill
+                className="object-contain"
+                sizes="220px"
+                unoptimized={logo.startsWith('http') || logo.endsWith('.svg')}
+              />
+            </div>
+          ) : (
+            <NoImage name={product.name} />
+          )}
         </div>
       )}
-
-      {/*
-        Same slot as ClientCard: a transparent mark (public/logos/projects/) in a wide,
-        short box, so wordmarks and square marks settle at one visual weight. A poster
-        with a baked-in background would read as a pasted-in square — give the product
-        a logo_url instead.
-      */}
-      <div className="relative h-48 bg-surface-container overflow-hidden flex-shrink-0 flex items-center justify-center px-10">
-        {image ? (
-          <div className="relative h-28 w-full max-w-[220px]">
-            <Image
-              src={image}
-              alt={product.name}
-              fill
-              className="object-contain"
-              sizes="220px"
-              unoptimized={image.startsWith('http') || image.endsWith('.svg')}
-            />
-          </div>
-        ) : (
-          <NoImage name={product.name} />
-        )}
-      </div>
 
       <div className="p-8 flex flex-col flex-1">
         <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-3">
@@ -136,7 +146,7 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
 
         {product.hackers && product.hackers.length > 0 && (
           <div className="mb-4">
-            <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">BUILT_BY</p>
+            <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">{language === 'en' ? 'Built by' : 'Hecho por'}</p>
             <div className="flex flex-wrap items-center gap-2">
               {product.hackers.map((h) => (
                 <div key={h.id} className="flex items-center gap-1.5">
