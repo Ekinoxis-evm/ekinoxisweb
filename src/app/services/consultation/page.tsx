@@ -10,7 +10,7 @@ import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import {
-  Check, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
+  CalendarDays, Check, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -100,7 +100,7 @@ const consultationContent = {
         {
           name: 'One Session',
           price: '$500',
-          meta: '90 min · up to 3 people',
+          time: '3 hours', people: 'Up to 5 people', format: 'One topic, one sitting',
           badge: 'One question, answered',
           features: ['One topic, in depth', 'We sketch the solution live', 'A short list of tools to use', 'Recording and summary'],
           cta: 'Book Session',
@@ -108,7 +108,7 @@ const consultationContent = {
         {
           name: 'The Roadmap',
           price: '$2,500',
-          meta: '3 × 2h over 2 weeks · up to 5 people',
+          time: '6 hours · 3 × 2 h', people: 'Up to 5 people', format: 'Over 2 weeks',
           badge: 'Most popular',
           popular: true,
           features: ['We look, we design, you decide', 'A written plan to build from', 'How the pieces fit together', 'What to build and what to buy', 'What year one will cost'],
@@ -117,17 +117,17 @@ const consultationContent = {
         {
           name: 'Team Workshop',
           price: '$3,800',
-          meta: 'Half day · up to 15 people',
+          time: 'Half day', people: 'Up to 15 people', format: 'In person or online',
           badge: 'Full day $6,500',
-          features: ['In person or online', 'We work with your real data', 'Something working by the end of the day', 'Slides and materials to keep'],
+          features: ['We work with your real data', 'Something working by the end of the day', 'Slides and materials to keep'],
           cta: 'Book Workshop',
         },
         {
           name: 'Monthly Advisor',
           price: '$3,000',
-          meta: 'per month · 3-month minimum',
+          time: '6 hours a month', people: 'Your team', format: 'Monthly · 3-month minimum',
           badge: 'For teams that ship',
-          features: ['6 hours of sessions a month', 'Reach us any time on Telegram', 'We review your decisions before you commit', 'First pick of dates'],
+          features: ['Reach us any time on Telegram', 'We review your decisions before you commit', 'First pick of dates'],
           cta: 'Talk to Us',
         },
       ],
@@ -217,7 +217,7 @@ const consultationContent = {
         {
           name: 'Una Sesión',
           price: '$500',
-          meta: '90 min · hasta 3 personas',
+          time: '3 horas', people: 'Hasta 5 personas', format: 'Un tema, una sesión',
           badge: 'Una pregunta, resuelta',
           features: ['Un tema, a fondo', 'Dibujamos la solución en vivo', 'Una lista corta de herramientas a usar', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
@@ -225,7 +225,7 @@ const consultationContent = {
         {
           name: 'El Plan',
           price: '$2,500',
-          meta: '3 × 2h en 2 semanas · hasta 5 personas',
+          time: '6 horas · 3 × 2 h', people: 'Hasta 5 personas', format: 'En 2 semanas',
           badge: 'Más popular',
           popular: true,
           features: ['Miramos, diseñamos, tú decides', 'Un plan escrito para construir', 'Cómo encajan todas las piezas', 'Qué construir y qué comprar', 'Cuánto costará el primer año'],
@@ -234,17 +234,17 @@ const consultationContent = {
         {
           name: 'Taller de Equipo',
           price: '$3,800',
-          meta: 'Medio día · hasta 15 personas',
+          time: 'Medio día', people: 'Hasta 15 personas', format: 'Presencial u online',
           badge: 'Día completo $6,500',
-          features: ['Presencial o en línea', 'Trabajamos con tus datos reales', 'Algo funcionando al final del día', 'Diapositivas y material para conservar'],
+          features: ['Trabajamos con tus datos reales', 'Algo funcionando al final del día', 'Diapositivas y material para conservar'],
           cta: 'Reservar Taller',
         },
         {
           name: 'Asesor Mensual',
           price: '$3,000',
-          meta: 'por mes · mínimo 3 meses',
+          time: '6 horas al mes', people: 'Tu equipo', format: 'Mensual · mínimo 3 meses',
           badge: 'Para equipos que lanzan',
-          features: ['6 horas de sesiones al mes', 'Escríbenos cuando quieras por Telegram', 'Revisamos tus decisiones antes de comprometerte', 'Primera opción de fechas'],
+          features: ['Escríbenos cuando quieras por Telegram', 'Revisamos tus decisiones antes de comprometerte', 'Primera opción de fechas'],
           cta: 'Hablemos',
         },
       ],
@@ -406,12 +406,22 @@ export default function ConsultationPage() {
                   <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-2">
                     {plan.name}
                   </h3>
-                  <div className="mb-1">
+                  <div className="mb-6">
                     <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
                   </div>
-                  <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-8">
-                    {plan.meta}
-                  </p>
+                  {/* Time, group size and format — the three things a buyer compares first */}
+                  <ul className="space-y-2.5 bg-surface-container-lowest/60 p-4 mb-8">
+                    {([
+                      [Clock, plan.time],
+                      [Users, plan.people],
+                      [CalendarDays, plan.format],
+                    ] as const).map(([Icon, text]) => (
+                      <li key={text} className="flex items-center gap-3">
+                        <Icon size={16} strokeWidth={1.75} className="text-primary flex-shrink-0" />
+                        <span className="font-label text-[13px] font-semibold text-on-surface uppercase tracking-wide">{text}</span>
+                      </li>
+                    ))}
+                  </ul>
                   <ul className="space-y-3 flex-1 mb-8">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex gap-2">
