@@ -54,7 +54,7 @@ export function SubLinksBlock({ links, label }: { links: SubLink[]; label: strin
 function NoImage({ name }: { name: string }) {
   return (
     <div className="flex items-center justify-center h-full px-6">
-      <span className="font-headline text-2xl font-bold tracking-tighter text-outline-variant/50 text-center leading-tight">
+      <span className="font-headline text-3xl font-bold tracking-tighter text-on-surface-variant/70 group-hover:text-on-surface transition-colors duration-500 text-center leading-tight">
         {name}
       </span>
     </div>
@@ -87,16 +87,24 @@ export default function ProjectCard({ product, language, modulesLabel, uid }: Pr
         </div>
       )}
 
-      <div className="relative h-48 bg-surface-container overflow-hidden flex-shrink-0">
+      {/*
+        Same slot as ClientCard: a transparent mark (public/logos/projects/) in a wide,
+        short box, so wordmarks and square marks settle at one visual weight. A poster
+        with a baked-in background would read as a pasted-in square — give the product
+        a logo_url instead.
+      */}
+      <div className="relative h-48 bg-surface-container overflow-hidden flex-shrink-0 flex items-center justify-center px-10">
         {image ? (
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="object-contain p-6"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized={image.startsWith('http')}
-          />
+          <div className="relative h-28 w-full max-w-[220px]">
+            <Image
+              src={image}
+              alt={product.name}
+              fill
+              className="object-contain"
+              sizes="220px"
+              unoptimized={image.startsWith('http') || image.endsWith('.svg')}
+            />
+          </div>
         ) : (
           <NoImage name={product.name} />
         )}

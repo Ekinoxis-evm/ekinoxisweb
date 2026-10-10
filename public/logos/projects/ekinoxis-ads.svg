@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 184" role="img" aria-label="Ekinoxis Ads">
+  <circle cx="92" cy="92" r="87.4" fill="#04121a" stroke="#3F4951" stroke-width="1.472"/>
+  <path d="M 92 4.6 A 87.4 87.4 0 0 1 92 179.4 Z" fill="#8FF5FF"/>
+  <line x1="92" y1="0.92" x2="92" y2="183.08" stroke="#04121a" stroke-width="2.208"/>
+  <text x="212" y="112" font-family="Space Grotesk, Arial, sans-serif" font-weight="700" font-size="64" letter-spacing="-1" fill="#E8F2FB">Ekinoxis</text>
+  <text x="212" y="160" font-family="Space Mono, monospace" font-size="34" letter-spacing="8" fill="#8FF5FF">ADS</text>
+</svg>
