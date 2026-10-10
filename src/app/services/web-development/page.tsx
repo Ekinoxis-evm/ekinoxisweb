@@ -7,6 +7,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
+import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const webDevContent = {
@@ -188,6 +189,16 @@ export default function WebDevelopmentPage() {
               </div>
             </div>
           </motion.div>
+
+          <WorkStrip
+            language={language}
+            title={{ en: 'Sites we shipped', es: 'Sitios que lanzamos' }}
+            items={[
+              { name: 'The Guild', href: 'https://theguildapp.vercel.app', img: '/screens/the-guild.jpg', what: { en: 'Booking site for premium barbershops.', es: 'Sitio de reservas para barberías premium.' } },
+              { name: 'Shopper Center', href: 'https://store-shopper-center.vercel.app', img: '/screens/shopper-center.jpg', what: { en: 'Fashion store with cash on delivery.', es: 'Tienda de moda con pago contra entrega.' } },
+              { name: 'Ekinoxis Ads', href: 'https://ads.ekinoxis.xyz', img: '/screens/ekinoxis-ads.jpg', what: { en: 'Landing page that sells a video ad package.', es: 'Landing que vende un paquete de anuncios en video.' } },
+            ]}
+          />
 
           {/* Final CTA — the form lives here now, not on Typeform */}
           <motion.div

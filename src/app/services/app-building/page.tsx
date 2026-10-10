@@ -8,6 +8,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
+import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const appContent = {
@@ -240,6 +241,16 @@ export default function AppBuildingPage() {
               ))}
             </div>
           </motion.div>
+
+          <WorkStrip
+            language={language}
+            title={{ en: 'Software we built and run', es: 'Software que construimos y operamos' }}
+            items={[
+              { name: 'CONVEXO', href: 'https://www.convexo.xyz', img: '/screens/convexo.jpg', what: { en: 'Payments, lending and funding for LATAM SMEs.', es: 'Pagos, préstamos y fondeo para pymes de LATAM.' } },
+              { name: 'ZBricks', href: 'https://zbricks.ekinoxis.xyz', img: '/screens/zbricks.jpg', what: { en: 'Real-estate auctions on-chain, bid in USDC.', es: 'Subastas inmobiliarias on-chain, pujas en USDC.' } },
+              { name: 'Cuadra', href: 'https://cuadra.ekinoxis.xyz', img: '/screens/cuadra.jpg', what: { en: 'What it costs to live in each Cali neighbourhood.', es: 'Cuánto cuesta vivir en cada barrio de Cali.' } },
+            ]}
+          />
 
           {/* CTA — the form, with the calendar as the alternative */}
           <motion.div

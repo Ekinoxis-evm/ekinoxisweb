@@ -1,4 +1,4 @@
-import { getEducationPartners, getCertificationPartners } from '@/lib/supabase/queries'
+import { getEducationPartners, getCertificationPartners, getHackathons, getProducts } from '@/lib/supabase/queries'
 import KnowledgeClient from './KnowledgeClient'
 
 /**
@@ -9,9 +9,11 @@ import KnowledgeClient from './KnowledgeClient'
 export const revalidate = 60
 
 export default async function EducationPage() {
-  const [{ universities, government }, certifications] = await Promise.all([
+  const [{ universities, government }, certifications, products, hackathons] = await Promise.all([
     getEducationPartners(),
     getCertificationPartners(),
+    getProducts(),
+    getHackathons(),
   ])
 
   return (
@@ -19,6 +21,8 @@ export default async function EducationPage() {
       universities={universities}
       government={government}
       certifications={certifications}
+      productCount={products.length}
+      hackathonCount={hackathons.length}
     />
   )
 }

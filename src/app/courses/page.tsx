@@ -145,15 +145,15 @@ export default function CoursesPage() {
                     </div>
 
                     <div className="space-y-2 mb-8">
-                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
+                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Format' : 'Formato'}</span>
                         <span className="text-on-surface-variant text-right">{course.format[language]}</span>
                       </div>
-                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
+                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Duration' : 'Duración'}</span>
                         <span className="text-on-surface-variant text-right">{course.duration[language]}</span>
                       </div>
-                      <div className="flex justify-between font-mono text-[12px] uppercase tracking-widest">
+                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
                         <span className="text-outline">{language === 'en' ? 'Level' : 'Nivel'}</span>
                         <span className="text-on-surface-variant text-right">{t.level[course.level]}</span>
                       </div>
@@ -173,6 +173,32 @@ export default function CoursesPage() {
                 </Link>
               </motion.div>
             ))}
+            {courses.length % 3 !== 0 && (
+              <motion.div variants={fadeInUp} className={courses.length % 3 === 1 ? 'lg:col-span-2' : ''}>
+                <a
+                  href="https://t.me/ekinoxis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative flex h-full min-h-[320px] flex-col justify-end gap-4 bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 overflow-hidden"
+                >
+                  <div className="absolute -right-16 -top-16 w-64 h-64 bg-primary/10 blur-[80px] pointer-events-none" style={{ borderRadius: '50%' }} />
+                  <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
+                    {language === 'en' ? 'For companies' : 'Para empresas'}
+                  </p>
+                  <h2 className="relative font-headline text-3xl font-bold tracking-tighter text-on-surface leading-tight group-hover:text-primary transition-colors">
+                    {language === 'en' ? 'Train your whole team, on your own business.' : 'Entrena a todo tu equipo, sobre tu propio negocio.'}
+                  </h2>
+                  <p className="relative font-body text-sm text-on-surface-variant leading-relaxed max-w-sm">
+                    {language === 'en'
+                      ? 'Any course as a private cohort, in English or Spanish, with your data and your goals.'
+                      : 'Cualquier curso como cohorte privada, en inglés o español, con tus datos y tus metas.'}
+                  </p>
+                  <span className="relative font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
+                    {language === 'en' ? 'Ask on Telegram' : 'Pregunta por Telegram'} →
+                  </span>
+                </a>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Principles */}

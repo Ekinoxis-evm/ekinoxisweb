@@ -85,9 +85,11 @@ interface Props {
   universities: EducationPartner[];
   government: EducationPartner[];
   certifications: CertificationPartner[];
+  productCount: number;
+  hackathonCount: number;
 }
 
-export default function KnowledgeClient({ universities, government, certifications }: Props) {
+export default function KnowledgeClient({ universities, government, certifications, productCount, hackathonCount }: Props) {
   const { language } = useLanguage();
   const t = content[language].learn;
   const edu = content[language].education;
@@ -199,32 +201,26 @@ export default function KnowledgeClient({ universities, government, certificatio
           <section id="certifications" className="scroll-mt-24 mb-20">
             <SectionHead index="02" label={t.navCertifications} title={cert.title} body={cert.description} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10">
-              {certifications.map((partner, idx) => (
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${certifications.length % 4 === 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-px bg-primary/10`}>
+              {certifications.map((partner) => (
                 <div
                   key={partner.id}
-                  className="relative bg-surface-container-low p-8 md:p-12 flex flex-col items-center group hover:bg-surface-container transition-colors duration-500 min-h-[280px]"
+                  className="relative bg-surface-container-low p-6 md:p-8 flex flex-col items-center group hover:bg-surface-container transition-colors duration-500"
                 >
-                  <div className="absolute top-4 right-4">
-                    <ScanBadge variant="muted">{String(idx + 1).padStart(2, '0')}</ScanBadge>
-                  </div>
-                  <div className="absolute top-4 left-4 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse" />
-                    <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">
-                      {language === 'en' ? 'ACTIVE' : 'ACTIVO'}
-                    </span>
-                  </div>
-                  <div className="relative w-full h-36 mb-6 mt-6">
-                    {partner.logo_url ? (
-                      <Image
-                        src={partner.logo_url}
-                        alt={partner.name}
-                        fill
-                        className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        unoptimized={partner.logo_url.startsWith('http')}
-                      />
-                    ) : null}
+                  {/* Every logo on the same light plate — dark marks stay visible, white-box ones blend in */}
+                  <div className="w-full bg-on-surface p-6 mb-6">
+                    <div className="relative w-full h-24">
+                      {partner.logo_url ? (
+                        <Image
+                          src={partner.logo_url}
+                          alt={partner.name}
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                          unoptimized={partner.logo_url.startsWith('http')}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                   <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-secondary transition-colors duration-300 text-center">
                     {partner.name}
@@ -301,8 +297,8 @@ export default function KnowledgeClient({ universities, government, certificatio
 
               <div className="grid grid-cols-2 gap-px bg-primary/10">
                 {[
-                  { label: language === 'en' ? 'Products shipped' : 'Productos lanzados', value: '8+' },
-                  { label: language === 'en' ? 'Hackathons' : 'Hackathones', value: '5+' },
+                  { label: language === 'en' ? 'Products shipped' : 'Productos lanzados', value: String(productCount) },
+                  { label: language === 'en' ? 'Hackathons' : 'Hackathons', value: String(hackathonCount) },
                   { label: language === 'en' ? 'University partners' : 'Universidades aliadas', value: String(universities.length) },
                   { label: language === 'en' ? 'Certification partners' : 'Certificadores aliados', value: String(certifications.length) },
                 ].map((stat, idx) => (
@@ -377,17 +373,19 @@ function PartnerBlock({
             key={partner.id}
             className="relative bg-surface-container-low p-6 md:p-10 flex flex-col items-center justify-center group hover:bg-surface-container transition-colors duration-500 min-h-[180px]"
           >
-            <div className={`relative w-full ${logoHeight} mb-4`}>
-              {partner.logo_url ? (
-                <Image
-                  src={partner.logo_url}
-                  alt={partner.name}
-                  fill
-                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  unoptimized={partner.logo_url.startsWith('http')}
-                />
-              ) : null}
+            <div className="w-full bg-on-surface p-5 mb-4">
+              <div className={`relative w-full ${logoHeight}`}>
+                {partner.logo_url ? (
+                  <Image
+                    src={partner.logo_url}
+                    alt={partner.name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    unoptimized={partner.logo_url.startsWith('http')}
+                  />
+                ) : null}
+              </div>
             </div>
             <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest text-center">
               {partner.name}

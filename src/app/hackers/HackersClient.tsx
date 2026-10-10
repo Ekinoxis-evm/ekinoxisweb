@@ -56,21 +56,14 @@ export default function HackersClient({ hackers }: Props) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-px bg-primary/10"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-primary/10"
           >
-            {hackers.map((hacker, idx) => (
+            {hackers.map((hacker) => (
               <motion.div
                 key={hacker.id}
                 variants={fadeInUp}
                 className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 overflow-hidden"
               >
-                {/* Node ID */}
-                <div className="absolute top-3 left-3 z-10">
-                  <ScanBadge variant="muted">
-                    NODE_{String(idx + 1).padStart(3, '0')}
-                  </ScanBadge>
-                </div>
-
                 {/* Photo */}
                 <div className="relative w-full aspect-square overflow-hidden">
                   {hacker.image_url ? (
@@ -78,7 +71,7 @@ export default function HackersClient({ hackers }: Props) {
                       src={hacker.image_url}
                       alt={hacker.name}
                       fill
-                      className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                      className="object-cover grayscale contrast-[1.05] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                       unoptimized={hacker.image_url.startsWith('http')}
                     />
@@ -126,32 +119,28 @@ export default function HackersClient({ hackers }: Props) {
               </motion.div>
             ))}
 
-            {/* Hiring placeholder */}
-            <motion.div
+            {/* Open seat — a real way in, not a dashed placeholder */}
+            <motion.a
               variants={fadeInUp}
-              className="relative bg-surface-container-lowest border-2 border-dashed border-primary/20 group hover:border-primary/40 transition-colors duration-500 flex flex-col items-center justify-center min-h-[280px]"
+              href="https://t.me/ekinoxis"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 flex flex-col justify-end gap-3 p-6 min-h-[280px] overflow-hidden"
             >
-              <span className="font-mono text-[12px] text-outline uppercase tracking-widest mb-3">{language === 'en' ? 'Open seat' : 'Cupo abierto'}</span>
-              <p className="font-headline text-lg font-bold text-on-surface-variant group-hover:text-primary transition-colors text-center px-4">
-                {language === 'en' ? 'YOU?' : '¿TÚ?'}
+              <div className="absolute -right-12 -top-12 w-48 h-48 bg-primary/15 blur-[70px] pointer-events-none" style={{ borderRadius: '50%' }} />
+              <span className="relative font-mono text-[12px] text-primary uppercase tracking-widest">{language === 'en' ? 'Open seat' : 'Cupo abierto'}</span>
+              <p className="relative font-headline text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors">
+                {language === 'en' ? 'Could be you.' : 'Podrías ser tú.'}
               </p>
-              <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest mt-2 text-center px-4">
-                {language === 'en' ? 'Join the frontier' : 'Únete a la frontera'}
+              <p className="relative font-body text-sm text-on-surface-variant leading-relaxed">
+                {language === 'en' ? 'Build with us at the hacker house in Cali.' : 'Construye con nosotros en el hacker house de Cali.'}
               </p>
-            </motion.div>
+              <span className="relative font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
+                {language === 'en' ? 'Write us on Telegram' : 'Escríbenos por Telegram'} →
+              </span>
+            </motion.a>
           </motion.div>
 
-          {/* Bottom readout */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1 }}
-            className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
-          >
-            <span>OPERATOR_COUNT: {hackers.length}</span>
-            <span>STATUS: ACTIVE_RECRUITING</span>
-            <span>BASE: CALI_CO // CASPER_WY</span>
-          </motion.div>
 
         </div>
       </div>

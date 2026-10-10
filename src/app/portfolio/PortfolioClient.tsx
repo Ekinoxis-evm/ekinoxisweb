@@ -107,11 +107,8 @@ export default function PortfolioClient({ products }: Props) {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[12px] text-outline tracking-widest uppercase"
           >
-            <span>
-              {DIVISIONS.map((d) => `${d.uid}: ${byType(d.type).length}`).join(' / ')}
-            </span>
-            <span>TOTAL: {products.length}</span>
-            <span>IP_STATUS: IN_HOUSE_GENERATED</span>
+            <span>{products.length} {language === 'en' ? 'projects in total' : 'proyectos en total'}</span>
+            <span>Ekinoxis Labs</span>
           </motion.div>
 
         </div>

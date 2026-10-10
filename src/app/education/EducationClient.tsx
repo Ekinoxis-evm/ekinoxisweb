@@ -174,9 +174,8 @@ export default function EducationClient({ universities, government }: Props) {
             transition={{ duration: 0.6, delay: 1 }}
             className="mt-8 flex flex-wrap gap-2 items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
-            <span>UNI_PARTNERS: {universities.length}</span>
-            <span>GOV_PARTNERS: {government.length}</span>
-            <span>REGION: LATAM // PACIFIC_COAST</span>
+            <span>{universities.length} {language === 'en' ? 'universities' : 'universidades'} · {government.length} {language === 'en' ? 'government partners' : 'aliados de gobierno'}</span>
+            <span>{language === 'en' ? 'Latin America' : 'Latinoamérica'}</span>
           </motion.div>
 
         </div>

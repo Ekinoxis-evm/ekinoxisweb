@@ -140,7 +140,7 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
 
         {product.hackathon && (
           <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4">
-            BUILT_AT: {product.hackathon.name}
+            {language === 'en' ? 'Built at' : 'Hecho en'} {product.hackathon.name}
           </p>
         )}
 
