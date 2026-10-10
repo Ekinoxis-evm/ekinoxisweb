@@ -1,140 +1,115 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import ScanBadge from '@/components/ui/ScanBadge';
-import { fadeInUp } from '@/lib/animations';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
+
+/** One line per category: what we actually use that group of tools for. */
+const PURPOSE: Record<string, { en: string; es: string }> = {
+  ai: { en: 'Models and coding tools we build agents and features with.', es: 'Modelos y herramientas con las que construimos agentes y funciones.' },
+  crypto_networks: { en: 'Where our contracts and payments run.', es: 'Donde corren nuestros contratos y pagos.' },
+  crypto_protocols: { en: 'Building blocks we integrate instead of reinventing.', es: 'Piezas que integramos en lugar de reinventar.' },
+  crypto_wallets: { en: 'How users sign in and hold assets without friction.', es: 'Cómo los usuarios entran y guardan activos sin fricción.' },
+  development: { en: 'Frameworks, databases and hosting for everything we ship.', es: 'Frameworks, bases de datos y hosting para todo lo que lanzamos.' },
+  creativity: { en: 'Design, video and brand work.', es: 'Diseño, video y marca.' },
+  automations: { en: 'Workflows that run on their own.', es: 'Flujos que corren solos.' },
+  management: { en: 'How the team plans and tracks work.', es: 'Cómo el equipo planea y sigue el trabajo.' },
+  marketing: { en: 'Stores, ads and growth.', es: 'Tiendas, anuncios y crecimiento.' },
+  paymentintegrations: { en: 'Cards, bank transfers and stablecoins.', es: 'Tarjetas, transferencias y stablecoins.' },
+};
+
+type Category = { name: string; logos?: string[]; tools?: string[] };
+
+const nameFromPath = (p: string) =>
+  decodeURIComponent(p.split('/').pop() ?? '')
+    .replace(/\.(png|svg|webp|jpe?g)$/i, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b(logo|light|dark|uni)\b/gi, '')
+    .trim();
 
 export default function TechStackPage() {
   const { language } = useLanguage();
+  const en = language === 'en';
   const t = content[language].technologies;
-  const [selectedCategory, setSelectedCategory] = useState<string>(() => Object.keys(t.categories)[0]);
-  const categories = Object.entries(t.categories);
-
-  const currentCat = t.categories[selectedCategory as keyof typeof t.categories] as any;
-  const allLogos = [
-    ...('logos' in currentCat ? currentCat.logos : []),
-    ...('tools' in currentCat ? currentCat.tools : []),
-  ];
+  const categories = Object.entries(t.categories as Record<string, Category>);
+  const total = categories.reduce((n, [, c]) => n + (c.logos?.length ?? 0) + (c.tools?.length ?? 0), 0);
 
   return (
     <AnimatedBackground variant="terminal">
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen py-12 md:py-24 px-6">
+        <div className="max-w-screen-2xl mx-auto">
 
-        {/* Top OS bar */}
-        <div className="border-b border-primary/10 px-6 py-3 flex items-center justify-between font-mono text-[12px] text-outline uppercase tracking-widest bg-surface-container-lowest">
-          <div className="flex items-center gap-6">
-            <span className="text-primary">EKX_OS v2.4</span>
-            <span className="hidden sm:inline">MODULE: TECH_REGISTRY</span>
-            <span className="hidden sm:inline">USER: ROOT</span>
-          </div>
-          <div className="hidden md:flex items-center gap-6">
-            <span>{t.title}</span>
-            <span className="text-primary">ACTIVE_SYNC: TRUE</span>
-          </div>
-        </div>
+          {/* Header */}
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="mb-16 md:mb-24">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
+              <span className="border border-primary/30 px-2 py-1">{en ? 'About' : 'Nosotros'}</span>
+              <span className="text-outline">/</span>
+              <span className="border border-primary/30 px-2 py-1">Tech stack</span>
+            </motion.div>
+            <motion.div variants={fadeInUp} className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface">
+                {en ? 'What we build with' : 'Con qué construimos'}
+              </h1>
+              <p className="font-body text-lg text-on-surface-variant max-w-md leading-relaxed">
+                {en
+                  ? `${total} tools across ${categories.length} areas — the ones in production on the work in our portfolio.`
+                  : `${total} herramientas en ${categories.length} áreas — las que están en producción en el trabajo de nuestro portafolio.`}
+              </p>
+            </motion.div>
+          </motion.div>
 
-        <div className="flex-1 flex flex-col lg:flex-row">
-
-          {/* Category selector — horizontal scroll row on mobile, sidebar on lg+ */}
-          <aside className="w-full lg:w-56 border-b lg:border-b-0 lg:border-r border-primary/10 bg-surface-container-lowest flex-shrink-0 flex flex-col">
-            <div className="hidden lg:block p-4 border-b border-primary/10">
-              <p className="font-mono text-[12px] text-outline uppercase tracking-widest">CATEGORIES</p>
-            </div>
-            <nav className="flex overflow-x-auto lg:flex-1 lg:flex-col lg:overflow-x-visible lg:overflow-y-auto">
-              {categories.map(([key, cat], idx) => {
-                const isActive = selectedCategory === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setSelectedCategory(key)}
-                    className={`flex-shrink-0 lg:w-full text-left px-4 py-3 flex items-center gap-3 transition-colors duration-200 border-b border-primary/5 ${
-                      isActive
-                        ? 'bg-primary/10 text-primary border-l-4 border-l-primary'
-                        : 'text-on-surface-variant hover:bg-surface-container hover:text-primary border-l-4 border-l-transparent'
-                    }`}
-                  >
-                    <span className="font-mono text-[11px] text-outline w-4 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
-                    <span className="font-mono text-[11px] uppercase tracking-wider truncate">
-                      {(cat as any).name}
-                    </span>
-                    {isActive && <span className="ml-auto font-mono text-[8px] text-primary">●</span>}
-                  </button>
-                );
-              })}
-            </nav>
-            {/* Status */}
-            <div className="hidden lg:block p-4 border-t border-primary/10">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-tertiary-dim animate-pulse flex-shrink-0" />
-                <span className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest">{language === 'en' ? 'In production' : 'En producción'}</span>
-              </div>
-            </div>
-          </aside>
-
-          {/* Main panel */}
-          <main className="flex-1 overflow-hidden">
-
-            {/* Category header */}
-            <div className="border-b border-primary/10 px-8 py-5 flex items-center justify-between bg-surface-container-lowest">
-              <div className="flex items-center gap-4">
-                <h1 className="font-headline text-2xl font-bold tracking-tighter text-on-surface">
-                  {currentCat.name}
-                </h1>
-                <ScanBadge variant="primary">{language === 'en' ? 'Updated' : 'Actualizado'}</ScanBadge>
-              </div>
-              <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
-                NODES: {allLogos.length}
-              </span>
-            </div>
-
-            {/* Logo Grid */}
-            <div className="p-8 overflow-y-auto">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedCategory}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 gap-px bg-primary/10"
+          {/* Categories */}
+          <div className="space-y-px bg-primary/10">
+            {categories.map(([key, cat]) => {
+              const logos = [...(cat.logos ?? []), ...(cat.tools ?? [])];
+              return (
+                <motion.section
+                  key={key}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-60px' }}
+                  variants={staggerContainer}
+                  className="bg-black grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 md:p-10"
                 >
-                  {allLogos.map((logo: string, idx: number) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.2, delay: idx * 0.03 }}
-                      className="bg-surface-container-lowest p-4 aspect-square flex items-center justify-center group hover:bg-surface-container transition-colors duration-300"
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={logo}
-                          alt="Tech logo"
-                          fill
-                          className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                          sizes="80px"
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </main>
-        </div>
+                  <motion.div variants={fadeInUp} className="lg:col-span-4">
+                    <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface mb-2">{cat.name}</h2>
+                    <p className="font-body text-on-surface-variant leading-relaxed max-w-sm">{PURPOSE[key]?.[language]}</p>
+                    <p className="font-mono text-[11px] text-outline uppercase tracking-widest mt-4">
+                      {logos.length} {en ? 'tools' : 'herramientas'}
+                    </p>
+                  </motion.div>
+                  <ul className="lg:col-span-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-3 self-start">
+                    {logos.map((logo) => {
+                      const label = nameFromPath(logo);
+                      return (
+                        <motion.li
+                          key={logo}
+                          variants={fadeInUp}
+                          className="group bg-surface-container-low border border-primary/10 aspect-square flex flex-col items-center justify-center gap-3 p-5 hover:border-primary/40 hover:bg-surface-container transition-colors duration-300"
+                          title={label}
+                        >
+                          <div className="relative w-full flex-1">
+                            <Image
+                              src={logo}
+                              alt={label}
+                              fill
+                              className="object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                              sizes="120px"
+                            />
+                          </div>
+                        </motion.li>
+                      );
+                    })}
+                  </ul>
+                </motion.section>
+              );
+            })}
+          </div>
 
-        {/* Bottom status bar */}
-        <div className="border-t border-primary/10 px-6 py-2 flex items-center justify-between font-mono text-[11px] text-outline uppercase tracking-widest bg-surface-container-lowest">
-          <span>{language === 'en' ? 'STACK' : 'STACK'}: {currentCat.name}</span>
-          <span className="hidden md:block">{t.description}</span>
-          <span className="text-primary">UPLINK: SECURE</span>
         </div>
-
       </div>
     </AnimatedBackground>
   );
