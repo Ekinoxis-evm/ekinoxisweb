@@ -311,7 +311,9 @@ export default function BrandPage() {
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface uppercase mb-6">
                 {t.markTitle}
               </h2>
-              <p className="text-on-surface-variant font-normal leading-relaxed mb-8">{t.markBody}</p>
+              <p className="text-on-surface-variant font-normal leading-relaxed mb-4">{t.markBody}</p>
+              {/* What the name means — the idea every image on the site is built around */}
+              <p className="text-on-surface font-normal leading-relaxed mb-8 border-l-2 border-primary pl-5">{t.markMeaning}</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-primary/10">
                 {[
                   { k: t.markSpecGeometry, v: '95r · 1.6 stroke' },
