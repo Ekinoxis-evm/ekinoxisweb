@@ -12,6 +12,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
+import { TOOLS } from '@/lib/tools';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 
@@ -69,14 +70,6 @@ function uniqueLogos(rows: { name: string; logo_url: string | null }[], plate?: 
   });
 }
 
-/** "/tecnologies/AI/Claude_AI_logo.png" → "Claude AI" — same rule as the /tech-stack page. */
-const nameFromPath = (p: string) =>
-  decodeURIComponent(p.split('/').pop() ?? '')
-    .replace(/\.(png|svg|webp|jpe?g)$/i, '')
-    .replace(/[-_]+/g, ' ')
-    .replace(/\b(logo|light|dark|uni|\d+)\b/gi, '')
-    .trim();
-
 export default function HomeClient({ products, hackathons, hackerCount, schools, certifications }: Props) {
   const { language } = useLanguage();
   const en = language === 'en';
@@ -109,12 +102,10 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const toolGroups = Object.values(t.technologies.categories as Record<string, { logos?: string[]; tools?: string[] }>).map(
     (c) => [...(c.logos ?? []), ...(c.tools ?? [])],
   );
-  const tools = uniqueLogos(
-    Array.from({ length: Math.max(...toolGroups.map((g) => g.length)) }, (_, i) => toolGroups.map((g) => g[i]))
-      .flat()
-      .filter((src): src is string => Boolean(src))
-      .map((src) => ({ name: nameFromPath(src), logo_url: src })),
-  );
+  const tools: MarqueeLogo[] = Array.from({ length: Math.max(...toolGroups.map((g) => g.length)) }, (_, i) => toolGroups.map((g) => g[i]))
+    .flat()
+    .filter((src): src is string => Boolean(src))
+    .map((src) => ({ name: TOOLS[src]?.name ?? '', src, href: TOOLS[src]?.url }));
 
   const numbers = [
     { value: String(shipped), label: en ? 'Projects shipped' : 'Proyectos lanzados' },

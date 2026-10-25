@@ -2,8 +2,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-/** `plate` overrides the band's plate for one mark — a white wordmark among dark ones. */
-export type MarqueeLogo = { name: string; src: string; plate?: 'dark' | 'light' };
+/**
+ * `plate` overrides the band's plate for one mark — a white wordmark among dark ones.
+ * `href` makes the tile a link to that brand's site.
+ */
+export type MarqueeLogo = { name: string; src: string; plate?: 'dark' | 'light'; href?: string };
 
 interface Props {
   eyebrow: string;
@@ -45,38 +48,45 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
 
   const tile = (logo: MarqueeLogo, key: string, repeat: boolean) => {
     const ground = logo.plate ?? plate;
-    return (
-    <li
-      key={key}
-      title={logo.name}
-      aria-hidden={repeat || undefined}
-      className={`${repeat ? 'motion-reduce:hidden ' : ''}group/tile relative flex-shrink-0 ${
-        shape === 'square' ? 'w-28 h-24 md:w-32 md:h-28 p-4 flex flex-col items-center gap-2' : 'w-36 h-20 md:w-44 md:h-24 p-4 md:p-5'
-      } transition-all duration-500 ${
-        ground === 'light'
-          ? 'bg-on-surface/90 hover:bg-on-surface'
-          : 'bg-surface-container-low border border-primary/10 hover:border-primary/50 hover:bg-surface-container'
-      } hover:shadow-[0_0_24px_rgba(143,245,255,0.25)]`}
-    >
-      <div className={`relative w-full ${shape === 'square' ? 'flex-1' : 'h-full'}`}>
-        <Image
-          src={logo.src}
-          alt={logo.name}
-          fill
-          className={`object-contain transition-all duration-500 ${
-            mono ? 'grayscale opacity-70 group-hover/tile:grayscale-0 group-hover/tile:opacity-100' : ground === 'light' ? 'opacity-80 group-hover/tile:opacity-100' : ''
-          }`}
-          sizes="176px"
-          unoptimized={logo.src.startsWith('http')}
-        />
-      </div>
-      {/* Square tiles carry an icon, not a wordmark — name it so it reads at a glance */}
-      {shape === 'square' && (
-        <span className="w-full truncate text-center font-mono text-[11px] uppercase tracking-wider text-outline group-hover/tile:text-on-surface transition-colors">
-          {logo.name}
+    const face = `group/tile relative flex-shrink-0 ${
+      shape === 'square' ? 'w-28 h-24 md:w-32 md:h-28 p-4 flex flex-col items-center gap-2' : 'w-36 h-20 md:w-44 md:h-24 p-4 md:p-5 block'
+    } transition-all duration-500 ${
+      ground === 'light'
+        ? 'bg-on-surface/90 hover:bg-on-surface'
+        : 'bg-surface-container-low border border-primary/10 hover:border-primary/50 hover:bg-surface-container'
+    } hover:shadow-[0_0_24px_rgba(143,245,255,0.25)]`;
+    const inner = (
+      <>
+        <span className={`relative block w-full ${shape === 'square' ? 'flex-1' : 'h-full'}`}>
+          <Image
+            src={logo.src}
+            alt={logo.name}
+            fill
+            className={`object-contain transition-all duration-500 ${
+              mono ? 'grayscale opacity-70 group-hover/tile:grayscale-0 group-hover/tile:opacity-100' : ground === 'light' ? 'opacity-80 group-hover/tile:opacity-100' : ''
+            }`}
+            sizes="176px"
+            unoptimized={logo.src.startsWith('http')}
+          />
         </span>
-      )}
-    </li>
+        {/* Square tiles carry an icon, not a wordmark — name it so it reads at a glance */}
+        {shape === 'square' && logo.name && (
+          <span className="w-full truncate text-center font-mono text-[11px] uppercase tracking-wider text-outline group-hover/tile:text-on-surface transition-colors">
+            {logo.name}
+          </span>
+        )}
+      </>
+    );
+    return (
+      <li key={key} title={logo.name} aria-hidden={repeat || undefined} className={repeat ? 'motion-reduce:hidden' : undefined}>
+        {logo.href ? (
+          <a href={logo.href} target="_blank" rel="noopener noreferrer" tabIndex={repeat ? -1 : undefined} className={face}>
+            {inner}
+          </a>
+        ) : (
+          <div className={face}>{inner}</div>
+        )}
+      </li>
     );
   };
 

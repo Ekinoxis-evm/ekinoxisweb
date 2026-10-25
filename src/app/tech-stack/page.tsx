@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
+import { TOOLS } from '@/lib/tools';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
@@ -83,23 +84,28 @@ export default function TechStackPage() {
                   </motion.div>
                   <ul className="lg:col-span-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-3 self-start">
                     {logos.map((logo) => {
-                      const label = nameFromPath(logo);
+                      const tool = TOOLS[logo];
+                      const label = tool?.name ?? nameFromPath(logo);
+                      const face = 'group h-full w-full bg-surface-container-low border border-primary/10 aspect-square flex flex-col items-center justify-center gap-3 p-5 hover:border-primary/40 hover:bg-surface-container hover:shadow-[0_0_24px_rgba(143,245,255,0.2)] transition-all duration-300';
+                      const inner = (
+                        <>
+                          <span className="relative block w-full flex-1">
+                            <Image src={logo} alt={label} fill className="object-contain" sizes="120px" />
+                          </span>
+                          <span className="w-full truncate text-center font-mono text-[11px] uppercase tracking-wider text-outline group-hover:text-on-surface transition-colors">
+                            {label}
+                          </span>
+                        </>
+                      );
                       return (
-                        <motion.li
-                          key={logo}
-                          variants={fadeInUp}
-                          className="group bg-surface-container-low border border-primary/10 aspect-square flex flex-col items-center justify-center gap-3 p-5 hover:border-primary/40 hover:bg-surface-container transition-colors duration-300"
-                          title={label}
-                        >
-                          <div className="relative w-full flex-1">
-                            <Image
-                              src={logo}
-                              alt={label}
-                              fill
-                              className="object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                              sizes="120px"
-                            />
-                          </div>
+                        <motion.li key={logo} variants={fadeInUp} title={label}>
+                          {tool ? (
+                            <a href={tool.url} target="_blank" rel="noopener noreferrer" className={face}>
+                              {inner}
+                            </a>
+                          ) : (
+                            <div className={face}>{inner}</div>
+                          )}
                         </motion.li>
                       );
                     })}
