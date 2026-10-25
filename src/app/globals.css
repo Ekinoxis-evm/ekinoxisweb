@@ -17,8 +17,16 @@
     padding-right: env(safe-area-inset-right, 0px);
   }
 
-  html {
+  /* Lenis (SmoothScroll) owns smoothing when it runs; CSS is the fallback only,
+     and nothing glides for reduced motion. Both at once double-smooth and stutter. */
+  html:not(.lenis) {
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   ::selection {

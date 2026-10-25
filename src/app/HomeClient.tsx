@@ -1,11 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Code2, Globe2, MessagesSquare } from 'lucide-react';
-import { BrandMark } from '@/components/ui/BrandLogo';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
@@ -76,23 +74,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const { language } = useLanguage();
   const en = language === 'en';
   const t = content[language];
-  const coreRef = useRef<HTMLVideoElement>(null);
-
-  // `autoPlay` ignores prefers-reduced-motion — CSS can't pause a <video>, so
-  // freeze it on the poster frame ourselves when the viewer asked for stillness.
-  useEffect(() => {
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const apply = () => {
-      const v = coreRef.current;
-      if (!v) return;
-      if (still.matches) v.pause();
-      else void v.play().catch(() => {});
-    };
-    apply();
-    still.addEventListener('change', apply);
-    return () => still.removeEventListener('change', apply);
-  }, []);
-
   const clients = products.filter((p) => p.project_type === 'client' && p.logo_url);
   const featured = FEATURED.map((name) => products.find((p) => p.name === name))
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
@@ -121,143 +102,63 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       {/* ── Hero — the equinox: out of the dark, into the light ── */}
       <div className="relative">
       <HeroBackdrop />
-      <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pt-12 md:pt-20 pb-16 min-h-[calc(100vh-4rem)] flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
-
-          {/* Content column */}
-          <div className="lg:col-span-7 space-y-8">
-
-            {/* Metadata badges */}
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-wrap items-center gap-3"
-            >
-              <ScanBadge variant="primary">{en ? 'SINCE 2024' : 'DESDE 2024'}</ScanBadge>
-              <ScanBadge variant="outline">CALI, COLOMBIA</ScanBadge>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface uppercase"
-            >
-              {t.hero.titleLines.map((line, i) => (
-                <span key={i}>
-                  {i > 0 && <br />}
-                  {i === 1 ? (
-                    <span className="text-primary text-glow italic">{line}</span>
-                  ) : (
-                    line
-                  )}
-                </span>
-              ))}
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
-            >
-              {en ? (
-                <>Colombia&apos;s Pacific <span className="text-primary">innovation lab</span>. We build AI and blockchain software for your business.</>
-              ) : (
-                <>El <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos software con IA y blockchain para tu negocio.</>
-              )}
-            </motion.p>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
-            >
-              <Link href="/services/consultation#contact">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center">
-                  {en ? 'Book a free call' : 'Agenda una llamada gratis'}
-                  <ArrowRight size={18} />
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button variant="ghost" size="lg" className="w-full sm:w-auto justify-center">
-                  {en ? 'See our work' : 'Mira nuestro trabajo'}
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Proof before the scroll — counted from the database, like the numbers below */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: EASE_SETTLE }}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-widest text-outline"
-            >
-              <span><span className="text-on-surface">{shipped}</span> {en ? 'projects shipped' : 'proyectos lanzados'}</span>
-              <span className="text-primary/50">·</span>
-              <span><span className="text-on-surface">{clients.length}</span> {en ? 'client builds' : 'proyectos para clientes'}</span>
-              <span className="text-primary/50">·</span>
-              <span>{en ? 'Colombia & USA' : 'Colombia y EE. UU.'}</span>
-            </motion.p>
-          </div>
-
-          {/* Visual column */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="lg:col-span-5 relative flex justify-center items-center py-12"
+      <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pt-12 md:pt-20 pb-16 min-h-[calc(100svh-4rem)] flex flex-col justify-center">
+        <div className="max-w-3xl space-y-8">
+          {/* The narrative, above the slogan */}
+          <motion.p
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: EASE_SETTLE }}
+            className="font-mono text-[12px] md:text-[13px] uppercase tracking-[0.3em] text-primary"
           >
-            {/* Glow backdrops */}
-            <div className="absolute w-[300px] h-[300px] bg-primary/20 blur-[100px] pointer-events-none" style={{ borderRadius: '50%' }} />
-            <div className="absolute w-[500px] h-[500px] bg-secondary/10 blur-[120px] pointer-events-none" style={{ borderRadius: '50%' }} />
+            {en ? 'Unlocking the power of frontier technologies' : 'Desbloqueando el poder de las tecnologías de frontera'}
+          </motion.p>
 
-            {/* Core loop — the reactor ring, with the equinox mark at its centre.
-                No stacking context on the wrapper: `mix-blend-screen` on the video
-                only reaches the page behind it while nothing above isolates it. */}
-            <div className="relative w-72 h-72 md:w-full md:aspect-square max-w-[440px]">
-              <div className="absolute inset-0">
-                {/* Compositor-friendly glow — opacity animates instead of drop-shadow */}
-                <div className="absolute inset-[12%] rounded-full bg-primary/30 blur-[60px] animate-hero-glow pointer-events-none" />
-                {/* Shot on black. `screen` drops most of the matte; the radial mask
-                    kills the frame's corners so no video box edge is ever visible. */}
-                <video
-                  ref={coreRef}
-                  className="absolute inset-0 w-full h-full object-contain mix-blend-screen pointer-events-none"
-                  style={{
-                    maskImage: 'radial-gradient(circle closest-side at 50% 50%, #000 82%, transparent 99%)',
-                    WebkitMaskImage: 'radial-gradient(circle closest-side at 50% 50%, #000 82%, transparent 99%)',
-                  }}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  poster="/video/hero-core-poster.jpg"
-                  aria-hidden="true"
-                >
-                  <source src="/video/hero-core.webm" type="video/webm" />
-                  <source src="/video/hero-core.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <BrandMark
-                    size={88}
-                    className="animate-hero-breathe drop-shadow-[0_0_24px_rgba(143,245,255,0.45)]"
-                  />
-                </div>
-              </div>
+          {/* The slogan */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.1, ease: EASE_SETTLE }}
+            className="font-headline text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.88] text-on-surface uppercase"
+          >
+            {t.hero.titleLines.map((line, i) => (
+              <span key={i}>
+                {i > 0 && <br />}
+                {i === 1 ? <span className="text-primary text-glow italic">{line}</span> : line}
+              </span>
+            ))}
+          </motion.h1>
 
-              {/* One readout, and it says something true */}
-              <div className="absolute top-0 right-0 bg-surface-container/80 backdrop-blur-md p-3 border-l-2 border-primary">
-                <p className="font-mono text-[12px] text-primary">CALI, COLOMBIA</p>
-                <p className="font-mono text-[11px] text-outline">3.4516° N // 76.5320° W</p>
-              </div>
-            </div>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.25, ease: EASE_SETTLE }}
+            className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
+          >
+            {en ? (
+              <>Colombia&apos;s Pacific <span className="text-primary">innovation lab</span>. We build AI and blockchain software for your business.</>
+            ) : (
+              <>El <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos software con IA y blockchain para tu negocio.</>
+            )}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: EASE_SETTLE }}
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+          >
+            <Link href="/services/consultation#contact">
+              <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center">
+                {en ? 'Book a free call' : 'Agenda una llamada gratis'}
+                <ArrowRight size={18} />
+              </Button>
+            </Link>
+            <Link href="/portfolio">
+              <Button variant="ghost" size="lg" className="w-full sm:w-auto justify-center">
+                {en ? 'See our work' : 'Mira nuestro trabajo'}
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>

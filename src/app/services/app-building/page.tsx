@@ -8,6 +8,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
+import ContactNextSteps from '@/components/ContactNextSteps';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
@@ -260,7 +261,7 @@ export default function AppBuildingPage() {
             transition={{ duration: 0.5, delay: 0.7 }}
             className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
           >
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-4 flex flex-col">
               <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
                 {language === 'en' ? 'NOT SURE WHICH ONE?' : '¿NO SABES CUÁL?'}
               </p>
@@ -275,6 +276,7 @@ export default function AppBuildingPage() {
               <a href={services.calendarLink} target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center">{t.cta}</Button>
               </a>
+              <ContactNextSteps language={language} />
             </div>
             <div className="lg:col-span-8">
               <ContactForm topic="app" />

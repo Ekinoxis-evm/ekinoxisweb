@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MobileCTA from '@/components/MobileCTA';
+import SmoothScroll from '@/components/SmoothScroll';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -37,10 +38,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ekinoxis.xyz'),
   title: {
-    default: 'Ekinoxis Labs — AI, blockchain and cryptography lab in Cali, Colombia',
+    default: 'Ekinoxis Labs — Innovation Without Frontiers',
     template: '%s — Ekinoxis Labs',
   },
-  description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
+  description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
   keywords: ['Blockchain', 'Cryptography', 'Artificial Intelligence', 'Innovation', 'Colombia', 'WEB3'],
   // The brand favicon set — the mark, rendered at each size a browser asks for.
   icons: {
@@ -53,16 +54,16 @@ export const metadata: Metadata = {
     apple: [{ url: '/brand/favicon/favicon-180.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
-    title: 'Ekinoxis Labs',
-    description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
+    title: 'Ekinoxis Labs — Innovation Without Frontiers',
+    description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
     url: 'https://www.ekinoxis.xyz',
     siteName: 'Ekinoxis Labs',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ekinoxis Labs',
-    description: 'First Innovation Laboratory of the Colombian Pacific specialized in Blockchain, Cryptography and AI',
+    title: 'Ekinoxis Labs — Innovation Without Frontiers',
+    description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
   },
 };
 
@@ -86,6 +87,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <MobileCTA />
+          <SmoothScroll />
         </LanguageProvider>
       </body>
     </html>

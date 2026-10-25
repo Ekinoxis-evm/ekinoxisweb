@@ -5,13 +5,18 @@ import { ImageResponse } from 'next/og';
 // The link preview for every page (WhatsApp, LinkedIn, X): 1200×630, the brand mark
 // and headline on the dark half of the equinox horizon — the same frame the home
 // hero settles on. JPEG because the OG renderer cannot decode WebP.
-export const alt = 'Ekinoxis Labs — AI, blockchain and cryptography lab in Cali, Colombia';
+export const alt = 'Ekinoxis — Innovation Without Frontiers. Unlocking the power of frontier technologies.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function OpengraphImage() {
   const horizon = await readFile(join(process.cwd(), 'public/media/og/horizon.jpg'));
   const horizonSrc = `data:image/jpeg;base64,${horizon.toString('base64')}`;
+  // Space Grotesk, the site's headline face (@fontsource/space-grotesk 5.3.0, OFL)
+  const [grotesk400, grotesk700] = await Promise.all([
+    readFile(join(process.cwd(), 'src/assets/fonts/space-grotesk-400.woff')),
+    readFile(join(process.cwd(), 'src/assets/fonts/space-grotesk-700.woff')),
+  ]);
 
   return new ImageResponse(
     (
@@ -23,9 +28,10 @@ export default async function OpengraphImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           background: '#000000',
-          padding: '72px 80px',
+          padding: '56px 80px',
           color: '#e8f2fb',
           position: 'relative',
+          fontFamily: 'Space Grotesk',
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -51,12 +57,15 @@ export default async function OpengraphImage() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div style={{ display: 'flex', fontSize: 84, fontWeight: 700, lineHeight: 0.95, letterSpacing: -3, maxWidth: 980 }}>
-            We build with AI, blockchain and crypto.
+        {/* The slogan, set like the home hero: WITHOUT in cyan italic */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', fontSize: 96, fontWeight: 700, lineHeight: 0.92, letterSpacing: -4 }}>
+            <span>INNOVATION</span>
+            <span style={{ color: '#8ff5ff', transform: 'skewX(-12deg)', marginLeft: 8 }}>WITHOUT</span>
+            <span>FRONTIERS</span>
           </div>
-          <div style={{ display: 'flex', fontSize: 30, color: '#a2acb5' }}>
-            Software, consultation and courses — for businesses in Colombia and the USA.
+          <div style={{ display: 'flex', fontSize: 32, color: '#a2acb5' }}>
+            Unlocking the power of frontier technologies.
           </div>
         </div>
 
@@ -66,6 +75,12 @@ export default async function OpengraphImage() {
         </div>
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [
+        { name: 'Space Grotesk', data: grotesk400, weight: 400, style: 'normal' },
+        { name: 'Space Grotesk', data: grotesk700, weight: 700, style: 'normal' },
+      ],
+    },
   );
 }

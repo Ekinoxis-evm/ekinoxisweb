@@ -197,7 +197,7 @@ export default function ContactForm({ topic, showBudget = true, className = '' }
             id={`message-${topic}`}
             name="message"
             required
-            rows={4}
+            rows={6}
             maxLength={4000}
             className={`${field} resize-y`}
             placeholder={t.messageHint}
