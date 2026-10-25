@@ -104,16 +104,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       <HeroBackdrop />
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pt-12 md:pt-20 pb-16 min-h-[calc(100svh-4rem)] flex flex-col justify-center">
         <div className="max-w-3xl space-y-8">
-          {/* The narrative, above the slogan */}
-          <motion.p
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: EASE_SETTLE }}
-            className="font-mono text-[12px] md:text-[13px] uppercase tracking-[0.3em] text-primary"
-          >
-            {en ? 'Unlocking the power of frontier technologies' : 'Desbloqueando el poder de las tecnologías de frontera'}
-          </motion.p>
-
           {/* The slogan */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}

@@ -70,8 +70,8 @@ export default function Footer() {
             </Link>
             <p className="font-body text-base text-on-surface-variant max-w-sm leading-relaxed">
               {en
-                ? 'A lab in Cali, Colombia. We build software with AI, blockchain and crypto — and teach others to do the same.'
-                : 'Un laboratorio en Cali, Colombia. Construimos software con IA, blockchain y cripto — y enseñamos a otros a hacerlo.'}
+                ? 'We unlock the power of frontier technologies like AI, blockchain and crypto.'
+                : 'Desbloqueamos el poder de las tecnologías de frontera como la IA, el blockchain y las cripto.'}
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <Link
