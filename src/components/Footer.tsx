@@ -5,11 +5,13 @@ import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';
+import { useBookCall } from '@/components/BookCall';
 
 const TELEGRAM = 'https://t.me/ekinoxis';
 
 export default function Footer() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const t = content[language];
   const en = language === 'en';
   const currentYear = new Date().getFullYear();
@@ -74,12 +76,11 @@ export default function Footer() {
                 : 'Desbloqueamos el poder de las tecnologías de frontera como la IA, el blockchain y las cripto.'}
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
-              <Link
-                href="/services/consultation#contact"
-                className="inline-flex items-center gap-2 bg-primary px-5 py-3 font-label text-[13px] font-bold uppercase tracking-widest text-surface-container-lowest hover:bg-primary-dim transition-colors"
+              <button type="button" onClick={() => bookCall()}
+                                className="inline-flex items-center gap-2 bg-primary px-5 py-3 font-label text-[13px] font-bold uppercase tracking-widest text-surface-container-lowest hover:bg-primary-dim transition-colors"
               >
                 {en ? 'Start a project' : 'Empieza un proyecto'}
-              </Link>
+              </button>
               <a
                 href={TELEGRAM}
                 target="_blank"

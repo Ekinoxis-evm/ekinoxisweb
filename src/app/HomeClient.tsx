@@ -15,6 +15,7 @@ import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
 import { ToolsBand } from '@/components/LogoBands';
 import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
+import { useBookCall } from '@/components/BookCall';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
 const FEATURED = ['CONVEXO', 'ETHCALI app'];
@@ -72,6 +73,7 @@ function uniqueLogos(rows: { name: string; logo_url: string | null }[], plate?: 
 
 export default function HomeClient({ products, hackathons, hackerCount, schools, certifications }: Props) {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const en = language === 'en';
   const t = content[language];
   const clients = products.filter((p) => p.project_type === 'client' && p.logo_url);
@@ -128,12 +130,10 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
             transition={{ duration: 0.9, delay: 0.4, ease: EASE_SETTLE }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
           >
-            <Link href="/services/consultation#contact">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center">
+            <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center" onClick={() => bookCall()}>
                 {en ? 'Book a free call' : 'Agenda una llamada gratis'}
                 <ArrowRight size={18} />
               </Button>
-            </Link>
             <Link href="/portfolio">
               <Button variant="ghost" size="lg" className="w-full sm:w-auto justify-center">
                 {en ? 'See our work' : 'Mira nuestro trabajo'}
@@ -336,11 +336,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
             </p>
           </div>
           <div className="relative lg:col-span-4 flex flex-col gap-3">
-            <Link href="/services/consultation#contact">
-              <Button variant="primary" size="lg" className="w-full justify-center">
+            <Button variant="primary" size="lg" className="w-full justify-center" onClick={() => bookCall()}>
                 {en ? 'Book a free call' : 'Agenda una llamada gratis'}
               </Button>
-            </Link>
             <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="lg" className="w-full justify-center">
                 {en ? 'Message us on Telegram' : 'Escríbenos por Telegram'}

@@ -9,6 +9,7 @@ import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ArrowRight, Check, Clock, Code2, Globe2, MessagesSquare } from 'lucide-react';
+import { useBookCall } from '@/components/BookCall';
 
 const ICONS = { chat: MessagesSquare, globe: Globe2, code: Code2 };
 
@@ -105,6 +106,7 @@ const SERVICE_TRACKS = {
 
 export default function ServicesPage() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const t = content[language].services;
   const tracks = SERVICE_TRACKS[language];
 
@@ -210,11 +212,9 @@ export default function ServicesPage() {
                 {language === 'en' ? 'Start with a free 30-minute call. We tell you which one fits — or that you need none.' : 'Empieza con una llamada gratis de 30 minutos. Te decimos cuál encaja — o que no necesitas ninguna.'}
               </p>
             </div>
-            <Link href="/services/consultation#contact">
-              <Button variant="primary">
+            <Button variant="primary" onClick={() => bookCall()}>
                 {language === 'en' ? 'Book a free call' : 'Agenda una llamada gratis'}
               </Button>
-            </Link>
           </motion.div>
 
         </div>

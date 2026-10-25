@@ -18,7 +18,12 @@ export default function SmoothScroll() {
       lerp: 0.1,
       anchors: { offset: -80 },
     });
-    return () => lenis.destroy();
+    // The booking popup pauses smooth scroll while it is open
+    (window as unknown as { lenis?: Lenis }).lenis = lenis;
+    return () => {
+      lenis.destroy();
+      delete (window as unknown as { lenis?: Lenis }).lenis;
+    };
   }, []);
 
   return null;

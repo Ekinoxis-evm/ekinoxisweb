@@ -9,7 +9,6 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
-import ContactNextSteps from '@/components/ContactNextSteps';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import {
   CalendarDays, Check, ChevronLeft, ChevronRight, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
@@ -270,7 +269,6 @@ export default function ConsultationPage() {
     if (step && topicsRef.current) setTopicIdx(Math.round(topicsRef.current.scrollLeft / step));
   };
   const t = consultationContent[language];
-  const calendarLink = content[language].services.calendarLink;
 
   return (
     <AnimatedBackground variant="gradient" banner="/media/banners/consultation.webp">
@@ -555,28 +553,15 @@ export default function ConsultationPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.65 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 scroll-mt-24"
           >
-            <div className="lg:col-span-4 flex flex-col">
-              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
-                {t.cta.label}
-              </p>
-              <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">
-                {t.cta.button}
-              </h2>
-              <p className="font-body text-on-surface-variant text-sm leading-relaxed mb-6">
-                {t.cta.text}
-              </p>
-              <a href={calendarLink} target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center">
-                  {language === 'en' ? 'Or pick a time' : 'O elige una hora'}
-                </Button>
-              </a>
-              <ContactNextSteps language={language} />
-            </div>
-            <div className="lg:col-span-8">
-              <ContactForm topic="consultation" />
-            </div>
+            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
+              {language === 'en' ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
+            </p>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
+              {language === 'en' ? 'Book your free call' : 'Agenda tu llamada gratis'}
+            </h2>
+            <ContactForm topic="consultation" className="max-w-3xl" />
           </motion.div>
 
         </div>

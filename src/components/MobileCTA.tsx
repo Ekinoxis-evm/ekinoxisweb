@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, Send } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useBookCall } from '@/components/BookCall';
 
 /** Pages that already are the contact step, or are not for buyers. */
 const HIDDEN_ON = ['/services/consultation', '/admin'];
@@ -15,6 +15,7 @@ const HIDDEN_ON = ['/services/consultation', '/admin'];
  */
 export default function MobileCTA() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const en = language === 'en';
   const pathname = usePathname();
   const [shown, setShown] = useState(false);
@@ -35,13 +36,12 @@ export default function MobileCTA() {
           shown ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'
         }`}
       >
-        <Link
-          href="/services/consultation#contact"
-          className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-surface-container-lowest font-headline font-bold uppercase tracking-wider text-sm py-3"
+        <button type="button" onClick={() => bookCall()}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-surface-container-lowest font-headline font-bold uppercase tracking-wider text-sm py-3"
         >
           {en ? 'Book a free call' : 'Agenda una llamada'}
           <ArrowRight size={16} />
-        </Link>
+        </button>
         <a
           href="https://t.me/ekinoxis"
           target="_blank"

@@ -251,6 +251,7 @@ export type Database = {
           email: string
           id: string
           language: string
+          meeting_at: string | null
           message: string
           name: string
           notes: string | null
@@ -267,6 +268,7 @@ export type Database = {
           email: string
           id?: string
           language?: string
+          meeting_at?: string | null
           message: string
           name: string
           notes?: string | null
@@ -283,6 +285,7 @@ export type Database = {
           email?: string
           id?: string
           language?: string
+          meeting_at?: string | null
           message?: string
           name?: string
           notes?: string | null

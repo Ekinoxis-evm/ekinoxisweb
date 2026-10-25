@@ -12,6 +12,7 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { DIVISIONS, type Division } from '@/lib/portfolio';
 import type { ProductWithRelations } from '@/lib/supabase/types';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
+import { useBookCall } from '@/components/BookCall';
 
 interface Props {
   division: Division
@@ -20,6 +21,7 @@ interface Props {
 
 export default function DivisionClient({ division, items }: Props) {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const t = content[language].portfolio;
   const copy = division[language];
   const others = DIVISIONS.filter((d) => d.slug !== division.slug);
@@ -80,9 +82,8 @@ export default function DivisionClient({ division, items }: Props) {
                 const mdClass = mdFill ? 'md:flex' : 'md:hidden';
                 return (
                   <motion.div variants={fadeInUp} className={`hidden ${mdClass} lg:flex ${lgClass} bg-surface-container-low`}>
-                    <Link
-                      href="/services/consultation#contact"
-                      className="group relative flex w-full flex-col justify-end gap-4 p-8 md:p-10 min-h-[280px] overflow-hidden hover:bg-surface-container transition-colors duration-500"
+                    <button type="button" onClick={() => bookCall()}
+                                            className="group relative flex w-full flex-col justify-end gap-4 p-8 md:p-10 min-h-[280px] overflow-hidden text-left hover:bg-surface-container transition-colors duration-500"
                     >
                       <PanelBackdrop name="horizon" />
                       <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
@@ -96,7 +97,7 @@ export default function DivisionClient({ division, items }: Props) {
                       <span className="relative inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
                         {language === 'en' ? 'Book a free call' : 'Agenda una llamada gratis'} →
                       </span>
-                    </Link>
+                    </button>
                   </motion.div>
                 );
               })()}

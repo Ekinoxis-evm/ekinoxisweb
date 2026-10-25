@@ -7,7 +7,6 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import ContactForm from '@/components/ContactForm';
-import ContactNextSteps from '@/components/ContactNextSteps';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
@@ -213,25 +212,15 @@ export default function WebDevelopmentPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 scroll-mt-24"
+            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 scroll-mt-24"
           >
-            <div className="lg:col-span-4 flex flex-col">
-              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-3">
-                {language === 'en' ? 'READY?' : '¿LISTO?'}
-              </p>
-              <h2 className="font-headline text-3xl font-bold tracking-tighter text-on-surface uppercase mb-4">
-                {t.finalCta}
-              </h2>
-              <p className="font-body text-on-surface-variant text-sm leading-relaxed">
-                {language === 'en'
-                  ? 'Tell us what you sell and which package fits. We reply with a fixed price and a start date.'
-                  : 'Cuéntanos qué vendes y qué paquete te sirve. Respondemos con un precio fijo y una fecha de inicio.'}
-              </p>
-              <ContactNextSteps language={language} />
-            </div>
-            <div className="lg:col-span-8">
-              <ContactForm topic="web" />
-            </div>
+            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
+              {language === 'en' ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
+            </p>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
+              {language === 'en' ? 'Book your free call' : 'Agenda tu llamada gratis'}
+            </h2>
+            <ContactForm topic="web" className="max-w-3xl" />
           </motion.div>
 
         </div>

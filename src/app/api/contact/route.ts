@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase/server';
-import { notifyTelegram, sendConfirmationEmail, type LeadNotification } from '@/lib/notify';
+import { notifyTelegram, sendConfirmationEmail, sendBookingToTeam, type LeadNotification } from '@/lib/notify';
+import { isBookableSlot } from '@/lib/booking';
 
 /**
  * POST /api/contact — the only way a contact form reaches the database.
@@ -73,10 +74,20 @@ export async function POST(request: NextRequest) {
 
   const name = clean(body.name, LIMITS.name);
   const email = clean(body.email, LIMITS.email);
-  const message = clean(body.message, LIMITS.message);
+  // The form no longer asks for a message — it books a call. leads.message is
+  // NOT NULL, so a lead without one records what they asked for.
+  const message =
+    clean(body.message, LIMITS.message) ?? (body.language === 'es' ? 'Pidió una llamada gratis.' : 'Requested a free call.');
 
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: 'Name, email and message are required.' }, { status: 400 });
+  if (!name || !email) {
+    return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 });
+  }
+
+  // A booked slot must be one the form offers right now — never a time the
+  // browser made up, a weekend, or one already in the past.
+  const meetingAt = typeof body.meeting_at === 'string' && body.meeting_at ? body.meeting_at : null;
+  if (meetingAt && !isBookableSlot(meetingAt)) {
+    return NextResponse.json({ error: 'That time is no longer available. Pick another.' }, { status: 409 });
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'That email does not look right.' }, { status: 400 });
@@ -95,11 +106,19 @@ export async function POST(request: NextRequest) {
     // data and the browser should not get to write whatever it likes into it.
     source_path: clean(request.headers.get('referer'), 300),
     language,
+    meeting_at: meetingAt,
   };
 
   const db = createServiceClient();
   const { data, error } = await db.from('leads').insert(row).select('id').single();
 
+  // 23505 = the unique index on meeting_at: someone booked this slot a moment ago
+  if (error?.code === '23505') {
+    return NextResponse.json(
+      { error: language === 'es' ? 'Alguien acaba de tomar ese horario. Elige otro.' : 'Someone just took that time. Pick another.' },
+      { status: 409 },
+    );
+  }
   if (error || !data) {
     console.error('[contact] insert failed:', error?.message);
     return NextResponse.json({ error: 'Could not save your message.' }, { status: 500 });
@@ -116,12 +135,14 @@ export async function POST(request: NextRequest) {
     budget: row.budget,
     sourcePath: row.source_path,
     language,
+    meetingAt,
   };
 
   // Saved already — from here on, failures are logged and swallowed.
   const [notified] = await Promise.all([
     notifyTelegram(lead),
     sendConfirmationEmail(lead),
+    sendBookingToTeam(lead),
   ]);
 
   if (notified) {

@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MobileCTA from '@/components/MobileCTA';
 import SmoothScroll from '@/components/SmoothScroll';
+import { BookCallProvider } from '@/components/BookCall';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -81,6 +82,7 @@ export default function RootLayout({
         {/* CRT Scanline overlay — fixed, covers all pages */}
         <div className="fixed inset-0 z-[100] scanline-overlay opacity-20 pointer-events-none" />
         <LanguageProvider>
+          <BookCallProvider>
           <Navigation />
           <main className="pt-16">
             {children}
@@ -88,6 +90,7 @@ export default function RootLayout({
           <Footer />
           <MobileCTA />
           <SmoothScroll />
+          </BookCallProvider>
         </LanguageProvider>
       </body>
     </html>
