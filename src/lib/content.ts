@@ -369,7 +369,7 @@ export const content = {
         marketing: {
           name: "Marketing & E-commerce",
           tools: [
-            "/tecnologies/marketing/qK72DSBL_400x400.jpg",
+            "/tecnologies/marketing/luma.jpg",
             "/tecnologies/marketing/shopify_logo_white.png",
             "/tecnologies/marketing/metaads.svg",
           ],
@@ -933,7 +933,7 @@ export const content = {
         marketing: {
           name: "Marketing & E-commerce",
           tools: [
-            "/tecnologies/marketing/qK72DSBL_400x400.jpg",
+            "/tecnologies/marketing/luma.jpg",
             "/tecnologies/marketing/shopify_logo_white.png",
             "/tecnologies/marketing/metaads.svg",
           ],

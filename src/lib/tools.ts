@@ -45,6 +45,7 @@ export const TOOLS: Record<string, { name: string; url: string }> = {
   '/tecnologies/management/g-drive.png': { name: 'Google Drive', url: 'https://drive.google.com' },
   '/tecnologies/management/OCclsw4c_400x400.jpg': { name: 'Notion', url: 'https://www.notion.so' },
 
+  '/tecnologies/marketing/luma.jpg': { name: 'Luma', url: 'https://luma.com' },
   '/tecnologies/marketing/shopify_logo_white.png': { name: 'Shopify', url: 'https://www.shopify.com' },
   '/tecnologies/marketing/metaads.svg': { name: 'Meta Ads', url: 'https://www.facebook.com/business/ads' },
 
