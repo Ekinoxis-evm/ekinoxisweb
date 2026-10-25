@@ -126,7 +126,7 @@ export default function CourseClient({ course }: Props) {
               <div className="mb-6">
                 <ScanBadge variant="muted">{language === 'en' ? 'The course' : 'El curso'}</ScanBadge>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 mb-10">
+              <div className={`grid grid-cols-1 ${facts.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-x-10 gap-y-4 mb-10`}>
                 {facts.map((f) => (
                   <div key={f.label} className="flex justify-between border-b border-primary/10 pb-3 font-mono text-[11px] uppercase tracking-widest">
                     <span className="text-outline">{f.label}</span>

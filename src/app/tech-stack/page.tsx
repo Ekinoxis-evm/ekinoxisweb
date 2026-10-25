@@ -63,9 +63,12 @@ export default function TechStackPage() {
           </motion.div>
 
           {/* Categories */}
-          <div className="space-y-px bg-primary/10">
-            {categories.map(([key, cat]) => {
+          {/* Two categories per row so small ones pair up; the biggest (AI) and an
+              odd one out at the end take the full width — no half-empty rows */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10">
+            {categories.map(([key, cat], idx) => {
               const logos = [...(cat.logos ?? []), ...(cat.tools ?? [])];
+              const wide = idx === 0 || (idx === categories.length - 1 && (categories.length - 1) % 2 === 1);
               return (
                 <motion.section
                   key={key}
@@ -73,16 +76,16 @@ export default function TechStackPage() {
                   whileInView="visible"
                   viewport={{ once: true, margin: '-60px' }}
                   variants={staggerContainer}
-                  className="bg-black grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 md:p-10"
+                  className={`bg-black flex flex-col gap-8 p-6 md:p-10 ${wide ? 'lg:col-span-2' : ''}`}
                 >
-                  <motion.div variants={fadeInUp} className="lg:col-span-4">
+                  <motion.div variants={fadeInUp}>
                     <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface mb-2">{cat.name}</h2>
                     <p className="font-body text-on-surface-variant leading-relaxed max-w-sm">{PURPOSE[key]?.[language]}</p>
                     <p className="font-mono text-[11px] text-outline uppercase tracking-widest mt-4">
                       {logos.length} {en ? 'tools' : 'herramientas'}
                     </p>
                   </motion.div>
-                  <ul className="lg:col-span-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-3 self-start">
+                  <ul className={`grid grid-cols-3 sm:grid-cols-5 gap-3 ${wide ? 'lg:grid-cols-10' : ''}`}>
                     {logos.map((logo) => {
                       const tool = TOOLS[logo];
                       const label = tool?.name ?? nameFromPath(logo);

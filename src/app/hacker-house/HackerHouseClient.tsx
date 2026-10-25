@@ -183,7 +183,8 @@ export default function HackerHouseClient({ hackathons, products }: Props) {
                     </>
                   );
                   return (
-                    <li key={h.id} className="bg-surface-container-low">
+                    // An odd count leaves a dead tinted cell at 2 and 3 columns — the last one widens to close it
+                    <li key={h.id} className={`bg-surface-container-low ${undated.length % 2 === 1 ? 'last:col-span-2 lg:last:col-span-1' : ''}`}>
                       {h.website ? (
                         <a href={h.website} target="_blank" rel="noopener noreferrer" className="block p-6 hover:bg-surface-container transition-colors">{inner}</a>
                       ) : (

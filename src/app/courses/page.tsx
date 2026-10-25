@@ -175,7 +175,10 @@ export default function CoursesPage() {
               </motion.div>
             ))}
             {courses.length % 3 !== 0 && (
-              <motion.div variants={fadeInUp} className={courses.length % 3 === 1 ? 'lg:col-span-2' : ''}>
+              <motion.div
+                variants={fadeInUp}
+                className={`${courses.length % 2 === 0 ? 'md:col-span-2' : ''} ${courses.length % 3 === 1 ? 'lg:col-span-2' : 'lg:col-span-1'}`}
+              >
                 <a
                   href="https://t.me/ekinoxis"
                   target="_blank"

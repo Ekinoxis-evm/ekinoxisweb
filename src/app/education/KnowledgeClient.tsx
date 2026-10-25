@@ -191,7 +191,7 @@ export default function KnowledgeClient({ universities, government, certificatio
               badge={<ScanBadge variant="secondary">{language === 'en' ? 'GOVERNMENT' : 'GOBIERNO'}</ScanBadge>}
               title={edu.gov.title}
               partners={government}
-              columns="grid-cols-2 md:grid-cols-3"
+              columns="grid-cols-2"
               logoHeight="h-28"
               accent="secondary"
             />
