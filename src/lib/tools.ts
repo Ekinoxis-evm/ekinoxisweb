@@ -14,6 +14,7 @@ export const TOOLS: Record<string, { name: string; url: string }> = {
   '/tecnologies/AI/deepseek.webp': { name: 'DeepSeek', url: 'https://www.deepseek.com' },
   '/tecnologies/icons/elevenlabs.svg': { name: 'ElevenLabs', url: 'https://elevenlabs.io' },
   '/tecnologies/icons/higgsfield.svg': { name: 'Higgsfield', url: 'https://higgsfield.ai' },
+  '/tecnologies/AI/typesafe-jev.png': { name: 'Jev', url: 'https://typesafe.ai' },
 
   '/tecnologies/Crypto/Blockchains/Base_Logo_1.png': { name: 'Base', url: 'https://www.base.org' },
   '/tecnologies/Crypto/Blockchains/ethereum.png': { name: 'Ethereum', url: 'https://ethereum.org' },

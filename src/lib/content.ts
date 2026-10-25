@@ -306,6 +306,7 @@ export const content = {
             "/tecnologies/AI/deepseek.webp",
             "/tecnologies/icons/elevenlabs.svg",
             "/tecnologies/icons/higgsfield.svg",
+            "/tecnologies/AI/typesafe-jev.png",
           ],
         },
         crypto_networks: {
@@ -869,6 +870,7 @@ export const content = {
             "/tecnologies/AI/deepseek.webp",
             "/tecnologies/icons/elevenlabs.svg",
             "/tecnologies/icons/higgsfield.svg",
+            "/tecnologies/AI/typesafe-jev.png",
           ],
         },
         crypto_networks: {
