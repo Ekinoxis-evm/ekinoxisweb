@@ -103,9 +103,9 @@ const consultationContent = {
         {
           name: 'Session or Roadmap',
           price: '$500 – $2,500',
-          time: '3 to 6 hours', people: 'Up to 5 people', format: 'One sitting, or 3 × 2 h over 2 weeks',
+          time: '5 to 12 hours', people: 'Up to 5 people', format: '3-hour sessions · you set the pace',
           badge: 'Start here',
-          features: ['One question answered in 3 hours — $500', 'Or a full written roadmap in 6 — $2,500', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
+          features: ['One question answered — from $500', 'Or a full written roadmap — up to $2,500', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
           cta: 'Book a Session',
         },
         {
@@ -212,9 +212,9 @@ const consultationContent = {
         {
           name: 'Sesión o Plan',
           price: '$500 – $2,500',
-          time: '3 a 6 horas', people: 'Hasta 5 personas', format: 'Una sesión, o 3 × 2 h en 2 semanas',
+          time: '5 a 12 horas', people: 'Hasta 5 personas', format: 'Sesiones de 3 horas · tú defines el ritmo',
           badge: 'Empieza aquí',
-          features: ['Una pregunta resuelta en 3 horas — $500', 'O un plan escrito completo en 6 — $2,500', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
+          features: ['Una pregunta resuelta — desde $500', 'O un plan escrito completo — hasta $2,500', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
         },
         {
