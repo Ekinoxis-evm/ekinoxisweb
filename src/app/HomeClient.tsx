@@ -12,7 +12,7 @@ import ScanBadge from '@/components/ui/ScanBadge';
 import HeroBackdrop from '@/components/HeroBackdrop';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
-import { TOOLS } from '@/lib/tools';
+import { ToolsBand } from '@/components/LogoBands';
 import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 
@@ -80,16 +80,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const shipped = products.length;
   const hackathonCount = hackathons.length;
 
-  // Dealt round-robin across categories, so the band mixes AI, chains, payments…
-  // instead of running seven AI logos in a row.
-  const toolGroups = Object.values(t.technologies.categories as Record<string, { logos?: string[]; tools?: string[] }>).map(
-    (c) => [...(c.logos ?? []), ...(c.tools ?? [])],
-  );
-  const tools: MarqueeLogo[] = Array.from({ length: Math.max(...toolGroups.map((g) => g.length)) }, (_, i) => toolGroups.map((g) => g[i]))
-    .flat()
-    .filter((src): src is string => Boolean(src))
-    .map((src) => ({ name: TOOLS[src]?.name ?? '', src, href: TOOLS[src]?.url }));
-
   const numbers = [
     { value: String(shipped), label: en ? 'Projects shipped' : 'Proyectos lanzados' },
     { value: String(clients.length), label: en ? 'Client builds' : 'Proyectos para clientes' },
@@ -155,16 +145,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       </div>
 
       {/* ── Tools ── */}
-      <LogoMarquee
-        eyebrow={en ? 'Our tools' : 'Nuestras herramientas'}
-        title={en ? 'The tools we build with every day.' : 'Las herramientas con las que construimos cada día.'}
-        link={{ href: '/tech-stack', label: en ? 'Full tech stack' : 'Stack completo' }}
-        logos={tools}
-        plate="dark"
-        shape="square"
-        reverse
-        speed={2}
-      />
+      <ToolsBand />
 
       {/* ── Numbers — every one counted from the database ── */}
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 py-16 md:py-20">

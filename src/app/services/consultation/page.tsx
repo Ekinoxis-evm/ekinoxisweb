@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,9 +12,10 @@ import ContactForm from '@/components/ContactForm';
 import ContactNextSteps from '@/components/ContactNextSteps';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import {
-  CalendarDays, Check, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
+  CalendarDays, Check, ChevronLeft, ChevronRight, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
   type LucideIcon,
 } from 'lucide-react';
+import { PlacesBand } from '@/components/LogoBands';
 
 const TELEGRAM = 'https://t.me/ekinoxis';
 
@@ -99,21 +101,12 @@ const consultationContent = {
       subtitle: 'Every session includes a recording, a written summary, and 7 days of follow-up questions',
       plans: [
         {
-          name: 'One Session',
-          price: '$500',
-          time: '3 hours', people: 'Up to 5 people', format: 'One topic, one sitting',
-          badge: 'One question, answered',
-          features: ['One topic, in depth', 'We sketch the solution live', 'A short list of tools to use', 'Recording and summary'],
-          cta: 'Book Session',
-        },
-        {
-          name: 'The Roadmap',
-          price: '$2,500',
-          time: '6 hours · 3 × 2 h', people: 'Up to 5 people', format: 'Over 2 weeks',
-          badge: 'Most popular',
-          popular: true,
-          features: ['We look, we design, you decide', 'A written plan to build from', 'How the pieces fit together', 'What to build and what to buy', 'What year one will cost'],
-          cta: 'Start the Plan',
+          name: 'Session or Roadmap',
+          price: '$500 – $2,500',
+          time: '3 to 6 hours', people: 'Up to 5 people', format: 'One sitting, or 3 × 2 h over 2 weeks',
+          badge: 'Start here',
+          features: ['One question answered in 3 hours — $500', 'Or a full written roadmap in 6 — $2,500', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
+          cta: 'Book a Session',
         },
         {
           name: 'Team Workshop',
@@ -126,9 +119,10 @@ const consultationContent = {
         {
           name: 'Monthly Advisor',
           price: '$3,000',
-          time: '6 hours a month', people: 'Your team', format: 'Monthly · 3-month minimum',
-          badge: 'For teams that ship',
-          features: ['Reach us any time on Telegram', 'We review your decisions before you commit', 'First pick of dates'],
+          time: '16 hours a month · 4 a week', people: 'Your team', format: 'Monthly · 3-month minimum',
+          badge: 'Best value',
+          popular: true,
+          features: ['4 hours with us every week', 'Reach us any time on Telegram', 'We review your decisions before you commit', 'First pick of dates'],
           cta: 'Talk to Us',
         },
       ],
@@ -216,21 +210,12 @@ const consultationContent = {
       subtitle: 'Toda sesión incluye grabación, resumen escrito y 7 días de preguntas de seguimiento',
       plans: [
         {
-          name: 'Una Sesión',
-          price: '$500',
-          time: '3 horas', people: 'Hasta 5 personas', format: 'Un tema, una sesión',
-          badge: 'Una pregunta, resuelta',
-          features: ['Un tema, a fondo', 'Dibujamos la solución en vivo', 'Una lista corta de herramientas a usar', 'Grabación y resumen'],
+          name: 'Sesión o Plan',
+          price: '$500 – $2,500',
+          time: '3 a 6 horas', people: 'Hasta 5 personas', format: 'Una sesión, o 3 × 2 h en 2 semanas',
+          badge: 'Empieza aquí',
+          features: ['Una pregunta resuelta en 3 horas — $500', 'O un plan escrito completo en 6 — $2,500', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
-        },
-        {
-          name: 'El Plan',
-          price: '$2,500',
-          time: '6 horas · 3 × 2 h', people: 'Hasta 5 personas', format: 'En 2 semanas',
-          badge: 'Más popular',
-          popular: true,
-          features: ['Miramos, diseñamos, tú decides', 'Un plan escrito para construir', 'Cómo encajan todas las piezas', 'Qué construir y qué comprar', 'Cuánto costará el primer año'],
-          cta: 'Empezar el Plan',
         },
         {
           name: 'Taller de Equipo',
@@ -243,9 +228,10 @@ const consultationContent = {
         {
           name: 'Asesor Mensual',
           price: '$3,000',
-          time: '6 horas al mes', people: 'Tu equipo', format: 'Mensual · mínimo 3 meses',
-          badge: 'Para equipos que lanzan',
-          features: ['Escríbenos cuando quieras por Telegram', 'Revisamos tus decisiones antes de comprometerte', 'Primera opción de fechas'],
+          time: '16 horas al mes · 4 por semana', people: 'Tu equipo', format: 'Mensual · mínimo 3 meses',
+          badge: 'Mejor valor',
+          popular: true,
+          features: ['4 horas con nosotros cada semana', 'Escríbenos cuando quieras por Telegram', 'Revisamos tus decisiones antes de comprometerte', 'Primera opción de fechas'],
           cta: 'Hablemos',
         },
       ],
@@ -265,8 +251,24 @@ const consultationContent = {
   },
 };
 
+/** One topic card: most of a phone screen, ~1.7 per row on tablet, 3 on laptop — always a peek of the next. */
+const TOPIC_CARD =
+  'relative flex-shrink-0 snap-start w-[85%] sm:w-[58%] lg:w-[calc((100%-2rem)/3)] border border-primary/10 p-6 md:p-8 flex flex-col';
+
 export default function ConsultationPage() {
   const { language } = useLanguage();
+  const topicsRef = useRef<HTMLDivElement>(null);
+  const [topicIdx, setTopicIdx] = useState(0);
+  const cardStep = () => {
+    const track = topicsRef.current;
+    const card = track?.firstElementChild as HTMLElement | null;
+    return card ? card.offsetWidth + 16 : 0; // 16 = gap-4
+  };
+  const slideTopics = (dir: 1 | -1) => topicsRef.current?.scrollBy({ left: dir * cardStep(), behavior: 'smooth' });
+  const onTopicsScroll = () => {
+    const step = cardStep();
+    if (step && topicsRef.current) setTopicIdx(Math.round(topicsRef.current.scrollLeft / step));
+  };
   const t = consultationContent[language];
   const calendarLink = content[language].services.calendarLink;
 
@@ -378,6 +380,11 @@ export default function ConsultationPage() {
             </ol>
           </motion.section>
 
+          {/* Proof before the prices: where we've taught */}
+          <div className="-mx-6 my-12">
+            <PlacesBand />
+          </div>
+
           {/* Pricing */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -395,7 +402,7 @@ export default function ConsultationPage() {
               {t.pricing.subtitle}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-px bg-primary/10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-primary/10">
               {t.pricing.plans.map((plan, idx) => (
                 <div
                   key={idx}
@@ -450,19 +457,47 @@ export default function ConsultationPage() {
             variants={staggerContainer}
             className="mt-px"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
-              <ScanBadge variant="primary">{t.topics.label}</ScanBadge>
-              <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">{t.topics.title}</span>
+            <div className="flex items-end justify-between gap-4 py-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                <ScanBadge variant="primary">{t.topics.label}</ScanBadge>
+                <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">{t.topics.title}</span>
+              </div>
+              {/* Swipe on touch; arrows and a counter for mouse and keyboard */}
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <span className="hidden sm:inline font-mono text-[12px] text-outline tracking-widest">
+                  <span className="text-on-surface">{String(topicIdx + 1).padStart(2, '0')}</span> / {String(t.topics.items.length + 1).padStart(2, '0')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => slideTopics(-1)}
+                  aria-label={language === 'en' ? 'Previous topic' : 'Tema anterior'}
+                  className="flex h-10 w-10 items-center justify-center border border-primary/30 text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => slideTopics(1)}
+                  aria-label={language === 'en' ? 'Next topic' : 'Siguiente tema'}
+                  className="flex h-10 w-10 items-center justify-center border border-primary/30 text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10">
+            <div
+              ref={topicsRef}
+              onScroll={onTopicsScroll}
+              className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-6 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
               {t.topics.items.map((topic, idx) => {
                 const Icon = TOPIC_ICONS[topic.code] ?? Plug;
                 return (
                   <motion.article
                     key={topic.code}
                     variants={fadeInUp}
-                    className="relative bg-surface-container-low p-6 md:p-8 flex flex-col group hover:bg-surface-container transition-colors duration-500"
+                    className={`${TOPIC_CARD} bg-surface-container-low group hover:bg-surface-container transition-colors duration-500`}
                   >
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex h-12 w-12 items-center justify-center border border-primary/30 bg-primary/5 text-primary transition-all duration-500 group-hover:border-primary group-hover:shadow-[0_0_20px_rgba(143,245,255,0.25)]">
@@ -497,8 +532,8 @@ export default function ConsultationPage() {
                 );
               })}
 
-              {/* Sixth cell: talks */}
-              <motion.div variants={fadeInUp} className="relative bg-surface-container-high p-6 md:p-8 flex flex-col">
+              {/* Last card: talks */}
+              <motion.div variants={fadeInUp} className={`${TOPIC_CARD} bg-surface-container-high`}>
                 <div className="flex h-12 w-12 items-center justify-center border border-tertiary-dim/40 bg-tertiary-dim/5 text-tertiary-dim mb-6">
                   <Mic size={22} strokeWidth={1.75} />
                 </div>

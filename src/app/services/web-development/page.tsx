@@ -10,6 +10,7 @@ import ContactForm from '@/components/ContactForm';
 import ContactNextSteps from '@/components/ContactNextSteps';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { ToolsBand } from '@/components/LogoBands';
 
 const webDevContent = {
   en: {
@@ -195,11 +196,16 @@ export default function WebDevelopmentPage() {
             language={language}
             title={{ en: 'Sites we shipped', es: 'Sitios que lanzamos' }}
             items={[
-              { name: 'The Guild', href: 'https://theguildapp.vercel.app', img: '/screens/the-guild.jpg', what: { en: 'Booking site for premium barbershops.', es: 'Sitio de reservas para barberías premium.' } },
-              { name: 'Shopper Center', href: 'https://store-shopper-center.vercel.app', img: '/screens/shopper-center.jpg', what: { en: 'Fashion store with cash on delivery.', es: 'Tienda de moda con pago contra entrega.' } },
-              { name: 'Ekinoxis Ads', href: 'https://ads.ekinoxis.xyz', img: '/screens/ekinoxis-ads.jpg', what: { en: 'Landing page that sells a video ad package.', es: 'Landing que vende un paquete de anuncios en video.' } },
+              { name: 'CONVEXO', href: 'https://www.convexo.xyz', img: '/screens/convexo.jpg', what: { en: 'Fintech site for LATAM businesses.', es: 'Sitio fintech para empresas de LATAM.' } },
+              { name: 'Apalancados', href: 'https://www.apalancados.tech', img: '/screens/apalancados.jpg', what: { en: 'Live trading education with an AI crypto portfolio manager.', es: 'Educación en trading en vivo con un gestor de portafolio cripto con IA.' } },
+              { name: 'MGM Autobroker', href: 'https://mgmautobroker.com', img: '/screens/mgm-autobroker.jpg', what: { en: 'Used-car marketplace with no-interest financing.', es: 'Marketplace de carros usados con financiación sin intereses.' } },
             ]}
           />
+
+          {/* What it's built with — the same band as the home page */}
+          <div className="-mx-6 my-12">
+            <ToolsBand />
+          </div>
 
           {/* Final CTA — the form lives here now, not on Typeform */}
           <motion.div

@@ -11,6 +11,7 @@ import ContactForm from '@/components/ContactForm';
 import ContactNextSteps from '@/components/ContactNextSteps';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { ToolsBand } from '@/components/LogoBands';
 
 const appContent = {
   en: {
@@ -247,11 +248,16 @@ export default function AppBuildingPage() {
             language={language}
             title={{ en: 'Software we built and run', es: 'Software que construimos y operamos' }}
             items={[
-              { name: 'CONVEXO', href: 'https://www.convexo.xyz', img: '/screens/convexo.jpg', what: { en: 'Payments, lending and funding for LATAM SMEs.', es: 'Pagos, préstamos y fondeo para pymes de LATAM.' } },
-              { name: 'ZBricks', href: 'https://zbricks.ekinoxis.xyz', img: '/screens/zbricks.jpg', what: { en: 'Real-estate auctions on-chain, bid in USDC.', es: 'Subastas inmobiliarias on-chain, pujas en USDC.' } },
-              { name: 'Cuadra', href: 'https://cuadra.ekinoxis.xyz', img: '/screens/cuadra.jpg', what: { en: 'What it costs to live in each Cali neighbourhood.', es: 'Cuánto cuesta vivir en cada barrio de Cali.' } },
+              { name: 'ETHCALI', href: 'https://ethcali.org', img: '/screens/ethcali-app.jpg', what: { en: 'Community app with wallet login for Ethereum Cali.', es: 'App de comunidad con login de wallet para Ethereum Cali.' } },
+              { name: '1UP Esports', href: 'https://1upesports.org', img: '/screens/1up-esports.jpg', what: { en: 'Gaming tower with identity-gated challenges.', es: 'Torre gamer con retos que verifican identidad.' } },
+              { name: 'SWRFM', href: 'https://swrfmarket.com', img: '/screens/swrfm.jpg', what: { en: 'Inventory, vendors and reports behind a farm market\'s store.', es: 'Inventario, proveedores y reportes detrás de la tienda de un mercado campesino.' } },
             ]}
           />
+
+          {/* What it's built with — the same band as the home page */}
+          <div className="-mx-6 my-12">
+            <ToolsBand />
+          </div>
 
           {/* CTA — the form, with the calendar as the alternative */}
           <motion.div
