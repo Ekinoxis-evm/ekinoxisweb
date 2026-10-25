@@ -11,8 +11,9 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
+import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
-import type { ProductWithRelations } from '@/lib/supabase/types';
+import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
 const FEATURED = ['CONVEXO', 'ZBricks', 'The Guild', 'Apalancados', 'AUKTRAFI'];
@@ -52,11 +53,31 @@ const SERVICES = [
 
 interface Props {
   products: ProductWithRelations[];
-  hackathonCount: number;
+  hackathons: HackathonWithStatus[];
   hackerCount: number;
+  schools: EducationPartner[];
+  certifications: CertificationPartner[];
 }
 
-export default function HomeClient({ products, hackathonCount, hackerCount }: Props) {
+/** One tile per mark — five ETHGlobal events share one logo. */
+function uniqueLogos(rows: { name: string; logo_url: string | null }[], plate?: MarqueeLogo['plate']): MarqueeLogo[] {
+  const seen = new Set<string>();
+  return rows.flatMap((r) => {
+    if (!r.logo_url || seen.has(r.logo_url)) return [];
+    seen.add(r.logo_url);
+    return [{ name: r.name, src: r.logo_url, plate }];
+  });
+}
+
+/** "/tecnologies/AI/Claude_AI_logo.png" → "Claude AI" — same rule as the /tech-stack page. */
+const nameFromPath = (p: string) =>
+  decodeURIComponent(p.split('/').pop() ?? '')
+    .replace(/\.(png|svg|webp|jpe?g)$/i, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b(logo|light|dark|uni)\b/gi, '')
+    .trim();
+
+export default function HomeClient({ products, hackathons, hackerCount, schools, certifications }: Props) {
   const { language } = useLanguage();
   const en = language === 'en';
   const t = content[language];
@@ -82,6 +103,19 @@ export default function HomeClient({ products, hackathonCount, hackerCount }: Pr
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url))
     .slice(0, 3);
   const shipped = products.length;
+  const hackathonCount = hackathons.length;
+
+  // Dealt round-robin across categories, so the band mixes AI, chains, payments…
+  // instead of running seven AI logos in a row.
+  const toolGroups = Object.values(t.technologies.categories as Record<string, { logos?: string[]; tools?: string[] }>).map(
+    (c) => [...(c.logos ?? []), ...(c.tools ?? [])],
+  );
+  const tools = uniqueLogos(
+    Array.from({ length: Math.max(...toolGroups.map((g) => g.length)) }, (_, i) => toolGroups.map((g) => g[i]))
+      .flat()
+      .filter((src): src is string => Boolean(src))
+      .map((src) => ({ name: nameFromPath(src), logo_url: src })),
+  );
 
   const numbers = [
     { value: String(shipped), label: en ? 'Projects shipped' : 'Proyectos lanzados' },
@@ -222,22 +256,13 @@ export default function HomeClient({ products, hackathonCount, hackerCount }: Pr
 
 
       {/* ── Clients ── */}
-      {clients.length > 0 && (
-        <section className="relative z-10 border-y border-primary/10 bg-black/40">
-          <div className="max-w-screen-2xl mx-auto px-6 py-10 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-16">
-            <p className="font-mono text-[12px] text-outline uppercase tracking-widest flex-shrink-0">
-              {en ? 'Built for' : 'Construido para'}
-            </p>
-            <ul className="flex flex-wrap items-center gap-x-12 gap-y-8">
-              {clients.map((c) => (
-                <li key={c.id} className="relative h-12 w-28 md:w-36 opacity-70 hover:opacity-100 transition-opacity duration-300">
-                  <Image src={c.logo_url as string} alt={c.name} fill className="object-contain object-left" sizes="144px" />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
+      <LogoMarquee
+        eyebrow={en ? 'Clients' : 'Clientes'}
+        title={en ? 'Businesses that run on our work.' : 'Negocios que funcionan con nuestro trabajo.'}
+        link={{ href: '/portfolio/clients', label: en ? 'See client work' : 'Ver trabajo para clientes' }}
+        logos={uniqueLogos(clients)}
+        plate="dark"
+      />
 
       {/* ── Services ── */}
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 py-24 md:py-32">
@@ -287,6 +312,20 @@ export default function HomeClient({ products, hackathonCount, hackerCount }: Pr
           </div>
         </motion.div>
       </section>
+
+      {/* ── Tools ── */}
+      <LogoMarquee
+        eyebrow={en ? 'Our tools' : 'Nuestras herramientas'}
+        title={en ? 'The tools we build with every day.' : 'Las herramientas con las que construimos cada día.'}
+        link={{ href: '/tech-stack', label: en ? 'Full tech stack' : 'Stack completo' }}
+        logos={tools}
+        plate="dark"
+        shape="square"
+        mono
+        reverse
+      />
+
+      <div className="h-24 md:h-32" />
 
       {/* ── Selected work ── */}
       {featured.length > 0 && (
@@ -356,6 +395,17 @@ export default function HomeClient({ products, hackathonCount, hackerCount }: Pr
         </section>
       )}
 
+      {/* ── Where we've been ── */}
+      <LogoMarquee
+        eyebrow={en ? "Where we've been" : 'Dónde hemos estado'}
+        title={en ? 'Universities and governments we teach with.' : 'Universidades y gobiernos con los que enseñamos.'}
+        link={{ href: '/education', label: en ? 'Education' : 'Educación' }}
+        logos={uniqueLogos(schools)}
+        plate="light"
+      />
+
+      <div className="h-24 md:h-32" />
+
       {/* ── Numbers — every one counted from the database ── */}
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pb-24 md:pb-32">
         <motion.dl
@@ -373,6 +423,18 @@ export default function HomeClient({ products, hackathonCount, hackerCount }: Pr
           ))}
         </motion.dl>
       </section>
+
+      {/* ── Partners — hackathon marks are white wordmarks, certification marks dark text ── */}
+      <LogoMarquee
+        eyebrow={en ? 'Partners' : 'Aliados'}
+        title={en ? 'Hackathons and programs we build with.' : 'Hackathons y programas con los que construimos.'}
+        link={{ href: '/hacker-house', label: en ? 'Hacker House' : 'Hacker House' }}
+        logos={[...uniqueLogos(hackathons, 'dark'), ...uniqueLogos(certifications, 'light')]}
+        plate="light"
+        reverse
+      />
+
+      <div className="h-24 md:h-32" />
 
       {/* ── Closing call to action ── */}
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pb-24 md:pb-32">

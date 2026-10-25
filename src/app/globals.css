@@ -203,6 +203,20 @@
   100% { left: 100%; }
 }
 
+/* Logo band — the track is two identical halves, so sliding one half loops seamlessly */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
 @keyframes crt-flicker {
   0%, 96%, 98.5%, 100% { opacity: 0.2; }
   97% { opacity: 0.196; }
