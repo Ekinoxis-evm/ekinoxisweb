@@ -21,6 +21,8 @@ interface Props {
   /** Grey until hovered — matches the /tech-stack grid. */
   mono?: boolean;
   reverse?: boolean;
+  /** Seconds each tile takes to cross; lower is faster. Long lists need a quicker pace. */
+  speed?: number;
 }
 
 /** Enough tiles per half that a short list still fills a 2xl screen before it repeats. */
@@ -37,7 +39,7 @@ function fill(logos: MarqueeLogo[]) {
  * halves and slides by exactly one half, so the loop has no seam. Pauses on
  * hover; with reduced motion the repeats hide and the row wraps.
  */
-export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false }: Props) {
+export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false, speed = 4 }: Props) {
   if (logos.length === 0) return null;
   const half = fill(logos);
 
@@ -49,14 +51,14 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
       title={logo.name}
       aria-hidden={repeat || undefined}
       className={`${repeat ? 'motion-reduce:hidden ' : ''}group/tile relative flex-shrink-0 ${
-        shape === 'square' ? 'w-20 h-20 md:w-24 md:h-24 p-4' : 'w-36 h-20 md:w-44 md:h-24 p-4 md:p-5'
+        shape === 'square' ? 'w-28 h-24 md:w-32 md:h-28 p-4 flex flex-col items-center gap-2' : 'w-36 h-20 md:w-44 md:h-24 p-4 md:p-5'
       } transition-all duration-500 ${
         ground === 'light'
           ? 'bg-on-surface/90 hover:bg-on-surface'
           : 'bg-surface-container-low border border-primary/10 hover:border-primary/50 hover:bg-surface-container'
       } hover:shadow-[0_0_24px_rgba(143,245,255,0.25)]`}
     >
-      <div className="relative w-full h-full">
+      <div className={`relative w-full ${shape === 'square' ? 'flex-1' : 'h-full'}`}>
         <Image
           src={logo.src}
           alt={logo.name}
@@ -68,6 +70,12 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
           unoptimized={logo.src.startsWith('http')}
         />
       </div>
+      {/* Square tiles carry an icon, not a wordmark — name it so it reads at a glance */}
+      {shape === 'square' && (
+        <span className="w-full truncate text-center font-mono text-[11px] uppercase tracking-wider text-outline group-hover/tile:text-on-surface transition-colors">
+          {logo.name}
+        </span>
+      )}
     </li>
     );
   };
@@ -96,7 +104,7 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
       >
         <div
           className={`animate-marquee flex w-max motion-reduce:w-auto ${reverse ? '[animation-direction:reverse]' : ''}`}
-          style={{ ['--marquee-duration' as string]: `${half.length * 4}s` }}
+          style={{ ['--marquee-duration' as string]: `${half.length * speed}s` }}
         >
           <ul className="flex gap-4 pr-4 motion-reduce:flex-wrap motion-reduce:px-6">
             {half.map((logo, i) => tile(logo, `${logo.src}-${i}`, i >= logos.length))}

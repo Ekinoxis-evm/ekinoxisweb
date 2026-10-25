@@ -16,7 +16,7 @@ import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
-const FEATURED = ['CONVEXO', 'ZBricks', 'The Guild', 'Apalancados', 'AUKTRAFI'];
+const FEATURED = ['CONVEXO', 'ETHCALI app'];
 
 const SERVICES = [
   {
@@ -74,7 +74,7 @@ const nameFromPath = (p: string) =>
   decodeURIComponent(p.split('/').pop() ?? '')
     .replace(/\.(png|svg|webp|jpe?g)$/i, '')
     .replace(/[-_]+/g, ' ')
-    .replace(/\b(logo|light|dark|uni)\b/gi, '')
+    .replace(/\b(logo|light|dark|uni|\d+)\b/gi, '')
     .trim();
 
 export default function HomeClient({ products, hackathons, hackerCount, schools, certifications }: Props) {
@@ -100,8 +100,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
 
   const clients = products.filter((p) => p.project_type === 'client' && p.logo_url);
   const featured = FEATURED.map((name) => products.find((p) => p.name === name))
-    .filter((p): p is ProductWithRelations => Boolean(p && p.image_url))
-    .slice(0, 3);
+    .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
   const shipped = products.length;
   const hackathonCount = hackathons.length;
 
@@ -254,6 +253,35 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
         </div>
       </section>
 
+      {/* ── Tools ── */}
+      <LogoMarquee
+        eyebrow={en ? 'Our tools' : 'Nuestras herramientas'}
+        title={en ? 'The tools we build with every day.' : 'Las herramientas con las que construimos cada día.'}
+        link={{ href: '/tech-stack', label: en ? 'Full tech stack' : 'Stack completo' }}
+        logos={tools}
+        plate="dark"
+        shape="square"
+        reverse
+        speed={2}
+      />
+
+      {/* ── Numbers — every one counted from the database ── */}
+      <section className="relative z-10 max-w-screen-2xl mx-auto px-6 py-16 md:py-20">
+        <motion.dl
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10"
+        >
+          {numbers.map((n) => (
+            <motion.div key={n.label} variants={fadeInUp} className="bg-black p-8 md:p-12">
+              <dd className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-surface mb-3">{n.value}</dd>
+              <dt className="font-mono text-[12px] text-outline uppercase tracking-widest">{n.label}</dt>
+            </motion.div>
+          ))}
+        </motion.dl>
+      </section>
 
       {/* ── Clients ── */}
       <LogoMarquee
@@ -313,20 +341,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
         </motion.div>
       </section>
 
-      {/* ── Tools ── */}
-      <LogoMarquee
-        eyebrow={en ? 'Our tools' : 'Nuestras herramientas'}
-        title={en ? 'The tools we build with every day.' : 'Las herramientas con las que construimos cada día.'}
-        link={{ href: '/tech-stack', label: en ? 'Full tech stack' : 'Stack completo' }}
-        logos={tools}
-        plate="dark"
-        shape="square"
-        mono
-        reverse
-      />
-
-      <div className="h-24 md:h-32" />
-
       {/* ── Selected work ── */}
       {featured.length > 0 && (
         <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pb-24 md:pb-32">
@@ -348,11 +362,10 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
               </Link>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-primary/10">
-              {featured.map((p, idx) => {
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10">
+              {featured.map((p) => {
                 const href = p.website_url || p.app_url || '/portfolio';
                 const external = href.startsWith('http');
-                const lead = idx === 0;
                 return (
                   <motion.a
                     key={p.id}
@@ -360,7 +373,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
                     href={href}
                     target={external ? '_blank' : undefined}
                     rel={external ? 'noopener noreferrer' : undefined}
-                    className={`group flex flex-col bg-surface-container-low hover:bg-surface-container transition-colors duration-500 ${lead ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+                    className="group flex flex-col bg-surface-container-low hover:bg-surface-container transition-colors duration-500"
                   >
                     <div className={`relative w-full overflow-hidden aspect-[16/10]`}>
                       <Image
@@ -368,20 +381,20 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
                         alt={p.name}
                         fill
                         className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-                        sizes={lead ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 1024px) 100vw, 33vw'}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         unoptimized={(p.image_url as string).startsWith('http')}
                       />
                       <div className="absolute inset-0 ring-1 ring-inset ring-primary/10 pointer-events-none" />
                     </div>
-                    <div className={`flex items-start justify-between gap-6 ${lead ? 'p-6 md:p-10 lg:flex-1 lg:items-end' : 'p-6 md:p-8'}`}>
+                    <div className="flex items-start justify-between gap-6 p-6 md:p-10 lg:flex-1 lg:items-end">
                       <div>
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className={`font-headline font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors ${lead ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+                          <h3 className="font-headline font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors text-3xl md:text-4xl">
                             {p.name}
                           </h3>
                           <ScanBadge variant="muted">{p.status}</ScanBadge>
                         </div>
-                        <p className={`font-body text-on-surface-variant leading-relaxed line-clamp-2 ${lead ? 'text-base max-w-xl' : 'text-sm'}`}>
+                        <p className="font-body text-on-surface-variant leading-relaxed line-clamp-2 text-base max-w-xl">
                           {en ? p.description_en : p.description_es}
                         </p>
                       </div>
@@ -405,24 +418,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       />
 
       <div className="h-24 md:h-32" />
-
-      {/* ── Numbers — every one counted from the database ── */}
-      <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pb-24 md:pb-32">
-        <motion.dl
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10"
-        >
-          {numbers.map((n) => (
-            <motion.div key={n.label} variants={fadeInUp} className="bg-black p-8 md:p-12">
-              <dd className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-surface mb-3">{n.value}</dd>
-              <dt className="font-mono text-[12px] text-outline uppercase tracking-widest">{n.label}</dt>
-            </motion.div>
-          ))}
-        </motion.dl>
-      </section>
 
       {/* ── Partners — hackathon marks are white wordmarks, certification marks dark text ── */}
       <LogoMarquee
