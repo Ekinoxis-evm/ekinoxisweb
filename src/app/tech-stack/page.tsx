@@ -39,7 +39,7 @@ export default function TechStackPage() {
   const total = categories.reduce((n, [, c]) => n + (c.logos?.length ?? 0) + (c.tools?.length ?? 0), 0);
 
   return (
-    <AnimatedBackground variant="terminal">
+    <AnimatedBackground variant="terminal" banner="/media/banners/techstack.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

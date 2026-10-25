@@ -270,7 +270,7 @@ export default function ConsultationPage() {
   const calendarLink = content[language].services.calendarLink;
 
   return (
-    <AnimatedBackground variant="gradient">
+    <AnimatedBackground variant="gradient" banner="/media/banners/consultation.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

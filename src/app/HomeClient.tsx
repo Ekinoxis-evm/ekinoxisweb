@@ -11,6 +11,7 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
+import HeroBackdrop from '@/components/HeroBackdrop';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
 import { TOOLS } from '@/lib/tools';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
@@ -116,7 +117,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
 
   return (
     <AnimatedBackground variant="ambient">
-      {/* ── Hero ── */}
+      {/* ── Hero — the equinox: out of the dark, into the light ── */}
+      <div className="relative">
+      <HeroBackdrop />
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pt-12 md:pt-20 pb-16 min-h-[calc(100vh-4rem)] flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
 
@@ -243,6 +246,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
           </motion.div>
         </div>
       </section>
+      </div>
 
       {/* ── Tools ── */}
       <LogoMarquee
@@ -431,7 +435,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
           transition={{ duration: 0.6 }}
           className="relative overflow-hidden bg-surface-container-low p-8 md:p-16 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center"
         >
-          <div className="absolute -right-24 -top-24 w-[420px] h-[420px] bg-primary/10 blur-[120px] pointer-events-none" style={{ borderRadius: '50%' }} />
+          {/* Light gathering on the right — the last equinox frame on the page */}
+          <Image src="/media/backgrounds/metal.webp" alt="" fill sizes="100vw" className="object-cover object-right opacity-70 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/85 to-surface-container-low/10 pointer-events-none" />
           <div className="relative lg:col-span-8">
             <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">{en ? 'Next step' : 'Siguiente paso'}</p>
             <h2 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter leading-[0.95] text-on-surface">

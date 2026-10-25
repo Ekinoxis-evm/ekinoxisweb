@@ -76,7 +76,7 @@ export default function AppBuildingPage() {
   const services = content[language].services;
 
   return (
-    <AnimatedBackground variant="gradient">
+    <AnimatedBackground variant="gradient" banner="/media/banners/apps.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

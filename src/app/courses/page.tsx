@@ -72,7 +72,7 @@ export default function CoursesPage() {
   const t = coursesContent[language];
 
   return (
-    <AnimatedBackground variant="ambient">
+    <AnimatedBackground variant="ambient" banner="/media/banners/courses.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

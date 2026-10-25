@@ -22,7 +22,7 @@ export default function PortfolioClient({ products }: Props) {
     products.filter((p) => (p.project_type ?? 'product') === type);
 
   return (
-    <AnimatedBackground variant="grid">
+    <AnimatedBackground variant="grid" banner="/media/banners/portfolio.webp">
       <div className="min-h-screen py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

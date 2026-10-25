@@ -46,7 +46,7 @@ export default function HackerHouseClient({ hackathons, products }: Props) {
   ];
 
   return (
-    <AnimatedBackground variant="grid">
+    <AnimatedBackground variant="grid" banner="/media/banners/hackerhouse.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 

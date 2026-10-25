@@ -203,6 +203,22 @@
   100% { left: 100%; }
 }
 
+/* ── Settle — the site's one motion curve (EASE_SETTLE in lib/animations.ts) ── */
+:root {
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Page banners arrive slightly close and settle back, like eyes adjusting to light */
+@keyframes banner-settle {
+  from { transform: scale(1.08); opacity: 0; }
+  30% { opacity: 1; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-banner-settle {
+  animation: banner-settle 2.8s var(--ease-settle) both;
+}
+
 /* Logo band — the track is two identical halves, so sliding one half loops seamlessly */
 @keyframes marquee {
   from { transform: translate3d(0, 0, 0); }
