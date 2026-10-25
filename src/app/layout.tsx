@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, Space_Mono } from 'next/font/google';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import MobileCTA from '@/components/MobileCTA';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -84,6 +85,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <MobileCTA />
         </LanguageProvider>
       </body>
     </html>

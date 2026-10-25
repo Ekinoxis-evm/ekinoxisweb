@@ -11,6 +11,7 @@ import ClientCard from '@/components/portfolio/ClientCard';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { DIVISIONS, type Division } from '@/lib/portfolio';
 import type { ProductWithRelations } from '@/lib/supabase/types';
+import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 interface Props {
   division: Division
@@ -81,9 +82,9 @@ export default function DivisionClient({ division, items }: Props) {
                   <motion.div variants={fadeInUp} className={`hidden ${mdClass} lg:flex ${lgClass} bg-surface-container-low`}>
                     <Link
                       href="/services/consultation#contact"
-                      className="group relative flex w-full flex-col justify-end gap-4 p-8 md:p-10 min-h-[280px] hover:bg-surface-container transition-colors duration-500"
+                      className="group relative flex w-full flex-col justify-end gap-4 p-8 md:p-10 min-h-[280px] overflow-hidden hover:bg-surface-container transition-colors duration-500"
                     >
-                      <div className="absolute -right-16 -top-16 w-64 h-64 bg-primary/10 blur-[80px] pointer-events-none" style={{ borderRadius: '50%' }} />
+                      <PanelBackdrop name="horizon" />
                       <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
                         {language === 'en' ? 'Next one' : 'El siguiente'}
                       </p>

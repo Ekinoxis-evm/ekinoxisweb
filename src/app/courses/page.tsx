@@ -9,6 +9,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
+import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 const coursesContent = {
   en: {
@@ -181,7 +182,7 @@ export default function CoursesPage() {
                   rel="noopener noreferrer"
                   className="group relative flex h-full min-h-[320px] flex-col justify-end gap-4 bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 overflow-hidden"
                 >
-                  <div className="absolute -right-16 -top-16 w-64 h-64 bg-primary/10 blur-[80px] pointer-events-none" style={{ borderRadius: '50%' }} />
+                  <PanelBackdrop name="fog" />
                   <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
                     {language === 'en' ? 'For companies' : 'Para empresas'}
                   </p>

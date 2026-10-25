@@ -12,9 +12,10 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import HeroBackdrop from '@/components/HeroBackdrop';
+import PanelBackdrop from '@/components/ui/PanelBackdrop';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
 import { TOOLS } from '@/lib/tools';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
@@ -26,8 +27,8 @@ const SERVICES = [
     icon: MessagesSquare,
     title: { en: 'Consultation', es: 'Consultoría' },
     desc: {
-      en: 'Three hours with your team on AI, payments or automation. You leave with a written plan.',
-      es: 'Tres horas con tu equipo sobre IA, pagos o automatización. Sales con un plan escrito.',
+      en: 'Three hours with your team. You leave with a written plan.',
+      es: 'Tres horas con tu equipo. Sales con un plan escrito.',
     },
     from: { en: 'From $500', es: 'Desde $500' },
   },
@@ -36,8 +37,8 @@ const SERVICES = [
     icon: Globe2,
     title: { en: 'Websites', es: 'Sitios web' },
     desc: {
-      en: 'A site that books, sells and answers on WhatsApp — live in five days, at a fixed price.',
-      es: 'Un sitio que agenda, vende y responde por WhatsApp — en vivo en cinco días, a precio fijo.',
+      en: 'A site that sells and books for you. Live in five days.',
+      es: 'Un sitio que vende y agenda por ti. En vivo en cinco días.',
     },
     from: { en: 'From $1,500', es: 'Desde $1,500' },
   },
@@ -46,8 +47,8 @@ const SERVICES = [
     icon: Code2,
     title: { en: 'Software & apps', es: 'Software y apps' },
     desc: {
-      en: 'Web and mobile apps with AI and blockchain built in — from a first version to the system you run on.',
-      es: 'Apps web y móviles con IA y blockchain integrados — desde una primera versión hasta el sistema con el que operas.',
+      en: 'Web and mobile apps with AI and blockchain. From first version to full system.',
+      es: 'Apps web y móviles con IA y blockchain. De la primera versión al sistema completo.',
     },
     from: { en: 'From $12,000', es: 'Desde $12,000' },
   },
@@ -164,9 +165,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
               className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
             >
               {en ? (
-                <>The first <span className="text-primary">innovation lab</span> on Colombia&apos;s Pacific coast. We build with AI, blockchain and crypto.</>
+                <>Colombia&apos;s Pacific <span className="text-primary">innovation lab</span>. We build AI and blockchain software for your business.</>
               ) : (
-                <>El primer <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos con IA, blockchain y cripto.</>
+                <>El <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos software con IA y blockchain para tu negocio.</>
               )}
             </motion.p>
 
@@ -189,6 +190,20 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
                 </Button>
               </Link>
             </motion.div>
+
+            {/* Proof before the scroll — counted from the database, like the numbers below */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: EASE_SETTLE }}
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-widest text-outline"
+            >
+              <span><span className="text-on-surface">{shipped}</span> {en ? 'projects shipped' : 'proyectos lanzados'}</span>
+              <span className="text-primary/50">·</span>
+              <span><span className="text-on-surface">{clients.length}</span> {en ? 'client builds' : 'proyectos para clientes'}</span>
+              <span className="text-primary/50">·</span>
+              <span>{en ? 'Colombia & USA' : 'Colombia y EE. UU.'}</span>
+            </motion.p>
           </div>
 
           {/* Visual column */}
@@ -436,8 +451,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
           className="relative overflow-hidden bg-surface-container-low p-8 md:p-16 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center"
         >
           {/* Light gathering on the right — the last equinox frame on the page */}
-          <Image src="/media/backgrounds/metal.webp" alt="" fill sizes="100vw" className="object-cover object-right opacity-70 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/85 to-surface-container-low/10 pointer-events-none" />
+          <PanelBackdrop name="metal" />
           <div className="relative lg:col-span-8">
             <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">{en ? 'Next step' : 'Siguiente paso'}</p>
             <h2 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter leading-[0.95] text-on-surface">

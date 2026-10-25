@@ -9,6 +9,7 @@ import ScanBadge from '@/components/ui/ScanBadge';
 import SocialLinks from '@/components/ui/SocialLinks';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { Hacker } from '@/lib/supabase/types';
+import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 interface Props {
   hackers: Hacker[]
@@ -127,7 +128,7 @@ export default function HackersClient({ hackers }: Props) {
               rel="noopener noreferrer"
               className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 flex flex-col justify-end gap-3 p-6 min-h-[280px] overflow-hidden"
             >
-              <div className="absolute -right-12 -top-12 w-48 h-48 bg-primary/15 blur-[70px] pointer-events-none" style={{ borderRadius: '50%' }} />
+              <PanelBackdrop name="horizon" />
               <span className="relative font-mono text-[12px] text-primary uppercase tracking-widest">{language === 'en' ? 'Open seat' : 'Cupo abierto'}</span>
               <p className="relative font-headline text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors">
                 {language === 'en' ? 'Could be you.' : 'Podrías ser tú.'}
