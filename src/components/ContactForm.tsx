@@ -221,7 +221,7 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
 
       <div>
         <p className={label}>
-          {t.time} <span className="normal-case text-outline/70">({t.yourTime}{tzName ? ` · ${tzName}` : ''})</span>
+          {t.time} <span className="normal-case text-outline">({t.yourTime}{tzName ? ` · ${tzName}` : ''})</span>
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {day?.slots.map((s) => {

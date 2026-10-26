@@ -84,7 +84,7 @@ export default function PageHeader({
           >
             {metadata.map((m) => (
               <div key={m.label}>
-                <span className="text-outline/60">{m.label}: </span>
+                <span className="text-outline">{m.label}: </span>
                 <span className="text-primary">{m.value}</span>
               </div>
             ))}

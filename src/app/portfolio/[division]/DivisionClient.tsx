@@ -32,7 +32,7 @@ export default function DivisionClient({ division, items }: Props) {
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Header */}
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="mb-16">
+          <motion.div className="rise mb-16">
             <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/portfolio" className="border border-primary/30 px-2 py-1 hover:bg-primary/10 transition-colors duration-200">
                 PORTFOLIO
@@ -104,7 +104,7 @@ export default function DivisionClient({ division, items }: Props) {
             </motion.div>
           ) : (
             <div className="bg-surface-container-low p-16 text-center">
-              <span className="font-mono text-[12px] text-outline/40 uppercase tracking-widest">
+              <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
                 {t.empty}
               </span>
             </div>
@@ -118,7 +118,7 @@ export default function DivisionClient({ division, items }: Props) {
             transition={{ duration: 0.5 }}
             className="mt-24"
           >
-            <p className="font-mono text-[12px] text-outline/60 uppercase tracking-widest mb-4">
+            <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">
               {t.otherDivisions}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-primary/10">

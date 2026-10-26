@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import { DIVISIONS } from '@/lib/portfolio';
 import type { ProductWithRelations } from '@/lib/supabase/types';
 
@@ -27,7 +27,7 @@ export default function PortfolioClient({ products }: Props) {
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Header */}
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="mb-16">
+          <motion.div className="rise mb-16">
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">PORTFOLIO</span>
             </motion.div>
@@ -44,10 +44,7 @@ export default function PortfolioClient({ products }: Props) {
 
           {/* Four divisions */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10"
+            className="rise grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10"
           >
             {DIVISIONS.map((division, idx) => {
               const items = byType(division.type);

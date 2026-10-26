@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import type { EducationPartner } from '@/lib/supabase/types';
 
 interface Props {
@@ -27,10 +27,7 @@ export default function EducationClient({ universities, government }: Props) {
 
           {/* Page Header */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="mb-10 md:mb-20"
+            className="rise mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EDUCATION</span>
@@ -104,7 +101,7 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[11px] text-outline/40 uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
+                        <span className="font-mono text-[11px] text-outline uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
                       </div>
                     )}
                   </div>
@@ -154,7 +151,7 @@ export default function EducationClient({ universities, government }: Props) {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <span className="font-mono text-[11px] text-outline/40 uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
+                        <span className="font-mono text-[11px] text-outline uppercase">{language === 'en' ? 'Logo soon' : 'Logo pronto'}</span>
                       </div>
                     )}
                   </div>

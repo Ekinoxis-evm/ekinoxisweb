@@ -8,7 +8,7 @@ import { courses, COURSES_ENROLL_FALLBACK, type CourseStatus, type CourseLevel }
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 const coursesContent = {
@@ -79,10 +79,7 @@ export default function CoursesPage() {
 
           {/* Header */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="mb-10 md:mb-20"
+            className="rise mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">COURSES</span>
@@ -109,10 +106,7 @@ export default function CoursesPage() {
 
           {/* Course grid */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
+            className="rise grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
           >
             {courses.map((course) => (
               <motion.div key={course.slug} variants={fadeInUp}>

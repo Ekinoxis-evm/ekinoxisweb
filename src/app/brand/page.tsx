@@ -236,7 +236,7 @@ export default function BrandPage() {
         <div className="max-w-screen-2xl mx-auto">
 
           {/* ── Header ── */}
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible">
+          <motion.div className="rise">
             <motion.div
               variants={fadeInUp}
               className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6"

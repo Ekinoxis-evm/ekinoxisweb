@@ -13,7 +13,7 @@ import HeroBackdrop from '@/components/HeroBackdrop';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
 import { ToolsBand } from '@/components/LogoBands';
-import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 import { useBookCall } from '@/components/BookCall';
 
@@ -95,12 +95,10 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       <div className="relative">
       <HeroBackdrop />
       <section className="relative z-10 max-w-screen-2xl mx-auto px-6 pt-12 md:pt-20 pb-16 min-h-[calc(100svh-4rem)] flex flex-col justify-center">
-        <div className="max-w-3xl space-y-8">
+        {/* CSS reveal (.rise) so the slogan paints with the first frame, not after hydration */}
+        <div className="rise max-w-3xl space-y-8">
           {/* The slogan */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: EASE_SETTLE }}
+          <h1
             className="font-headline text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.88] text-on-surface uppercase"
           >
             {t.hero.titleLines.map((line, i) => (
@@ -109,12 +107,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
                 {i === 1 ? <span className="text-primary text-glow italic">{line}</span> : line}
               </span>
             ))}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.25, ease: EASE_SETTLE }}
+          <p
             className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
           >
             {en ? (
@@ -122,12 +117,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
             ) : (
               <>El <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos software con IA y blockchain para tu negocio.</>
             )}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.4, ease: EASE_SETTLE }}
+          <div
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
           >
             <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center" onClick={() => bookCall()}>
@@ -139,7 +131,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
                 {en ? 'See our work' : 'Mira nuestro trabajo'}
               </Button>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
       </div>

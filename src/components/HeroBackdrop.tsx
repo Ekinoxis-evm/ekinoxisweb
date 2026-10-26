@@ -49,8 +49,7 @@ export default function HeroBackdrop() {
         }`}
         muted
         playsInline
-        preload="auto"
-        poster="/media/hero/horizon-still.webp"
+        preload="metadata"
       >
         <source src="/media/hero/horizon.webm" type="video/webm" />
         <source src="/media/hero/horizon.mp4" type="video/mp4" />

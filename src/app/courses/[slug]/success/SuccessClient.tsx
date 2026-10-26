@@ -7,7 +7,7 @@ import type { Course } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 
 const ui = {
   en: {
@@ -36,7 +36,7 @@ export default function SuccessClient({ course }: { course: Course }) {
     <AnimatedBackground variant="gradient">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-2xl">
+          <motion.div className="rise max-w-2xl">
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/courses" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">COURSES</Link>
               <span className="text-outline">/</span>

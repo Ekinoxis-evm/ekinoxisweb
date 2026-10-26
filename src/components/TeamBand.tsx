@@ -58,7 +58,7 @@ export default function TeamBand({ hackers, label, title }: { hackers: Hacker[];
         <span className="relative block aspect-square overflow-hidden">
           <Image
             src={h.image_url}
-            alt={h.name}
+            alt=""
             fill
             sizes="192px"
             unoptimized={h.image_url.startsWith('http')}

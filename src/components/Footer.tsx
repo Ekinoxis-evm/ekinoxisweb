@@ -128,7 +128,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between pt-8 border-t border-primary/5">
-          <p className="font-mono text-[12px] uppercase tracking-widest text-outline/70">
+          <p className="font-mono text-[12px] uppercase tracking-widest text-outline">
             © {currentYear} Ekinoxis Labs · Cali — Casper
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">

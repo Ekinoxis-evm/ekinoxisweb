@@ -60,7 +60,7 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
         <span className={`relative block w-full ${shape === 'square' ? 'flex-1' : 'h-full'}`}>
           <Image
             src={logo.src}
-            alt={logo.name}
+            alt={shape === 'square' ? '' : logo.name}
             fill
             className={`object-contain transition-all duration-500 ${
               mono ? 'grayscale opacity-70 group-hover/tile:grayscale-0 group-hover/tile:opacity-100' : ground === 'light' ? 'opacity-80 group-hover/tile:opacity-100' : ''
@@ -69,7 +69,7 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
             unoptimized={logo.src.startsWith('http')}
           />
         </span>
-        {/* Square tiles carry an icon, not a wordmark — name it so it reads at a glance */}
+        {/* Square tiles carry an icon, not a wordmark — name it so it reads at a glance (the name is the label, so the icon's alt stays empty) */}
         {shape === 'square' && logo.name && (
           <span className="w-full truncate text-center font-mono text-[11px] uppercase tracking-wider text-outline group-hover/tile:text-on-surface transition-colors">
             {logo.name}

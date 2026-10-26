@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import type { EducationPartner, CertificationPartner } from '@/lib/supabase/types';
 
 /**
@@ -124,10 +124,7 @@ export default function KnowledgeClient({ universities, government, certificatio
 
           {/* ── Header ── */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="mb-10 md:mb-16"
+            className="rise mb-10 md:mb-16"
           >
             <motion.div
               variants={fadeInUp}

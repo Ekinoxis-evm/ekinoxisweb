@@ -259,3 +259,22 @@
     animation: none !important;
   }
 }
+
+/*
+ * On-load reveal for page headers. Plain CSS, so the headline is painted with
+ * the first frame instead of waiting for JavaScript to hydrate and fade it in
+ * (that wait was 2.5–3.3 s of LCP on phones). Same curve and stagger as the
+ * Framer fadeInUp + staggerContainer it replaces.
+ */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+}
+.rise > * { animation: rise 0.8s var(--ease-settle) both; }
+.rise > *:nth-child(2) { animation-delay: 0.08s; }
+.rise > *:nth-child(3) { animation-delay: 0.16s; }
+.rise > *:nth-child(4) { animation-delay: 0.24s; }
+.rise > *:nth-child(5) { animation-delay: 0.32s; }
+.rise > *:nth-child(n + 6) { animation-delay: 0.4s; }
+@media (prefers-reduced-motion: reduce) {
+  .rise > * { animation: none; }
+}

@@ -23,7 +23,7 @@ export function SubLinksBlock({ links, label }: { links: SubLink[]; label: strin
   if (links.length === 0) return null;
   return (
     <div className="mb-4">
-      <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">{label}</p>
+      <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-2">{label}</p>
       <div className="flex flex-col gap-px bg-outline-variant/10">
         {links.map((sl) => (
           <div key={sl.label} className="flex items-center justify-between gap-3 bg-surface-container px-3 py-2">
@@ -146,7 +146,7 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
 
         {product.hackers && product.hackers.length > 0 && (
           <div className="mb-4">
-            <p className="font-mono text-[11px] text-outline/60 uppercase tracking-widest mb-2">{language === 'en' ? 'Built by' : 'Hecho por'}</p>
+            <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-2">{language === 'en' ? 'Built by' : 'Hecho por'}</p>
             <div className="flex flex-wrap items-center gap-2">
               {product.hackers.map((h) => (
                 <div key={h.id} className="flex items-center gap-1.5">

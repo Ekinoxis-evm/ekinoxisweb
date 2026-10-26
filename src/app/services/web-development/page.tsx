@@ -11,7 +11,7 @@ import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
 import BuildLoop, { type BuildLoopCopy } from '@/components/BuildLoop';
 import { CreditCard, Eye, Hammer, LayoutTemplate, MessageSquare, Rocket, RefreshCw, Shuffle } from 'lucide-react';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
 
 /** Plan and pay half, we build, rounds with you, live */
@@ -92,10 +92,7 @@ export default function WebDevelopmentPage() {
 
           {/* Breadcrumb + Header */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="mb-10 md:mb-20"
+            className="rise mb-10 md:mb-20"
           >
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <Link href="/services" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">SERVICES</Link>

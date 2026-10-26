@@ -60,7 +60,7 @@ export default function AboutClient({ hackers }: { hackers: Hacker[] }) {
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Header */}
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="mb-20 md:mb-32 max-w-3xl">
+          <motion.div className="rise mb-20 md:mb-32 max-w-3xl">
             <motion.p variants={fadeInUp} className="font-mono text-[12px] text-primary tracking-widest uppercase mb-6">
               {t.eyebrow}
             </motion.p>

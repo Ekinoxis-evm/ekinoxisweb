@@ -14,7 +14,7 @@ const variantStyles: Record<ScanBadgeVariant, string> = {
   secondary: 'text-secondary border-secondary/30',
   tertiary: 'text-tertiary-dim border-tertiary-dim/30',
   outline: 'text-outline border-outline/30',
-  muted: 'text-outline/60 border-outline-variant/20',
+  muted: 'text-outline border-outline-variant/40',
   error: 'text-error border-error/30',
 };
 
