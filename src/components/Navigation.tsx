@@ -43,8 +43,9 @@ export default function Navigation() {
   const menuItems = {
     'about-us': {
       label: language === 'en' ? 'About' : 'Nosotros',
+      href: '/about',
       items: [
-        { href: '/culture', label: t.culture },
+        { href: '/about', label: t.about, exact: true },
         { href: '/hackers', label: t.hackers },
         { href: '/tech-stack', label: t.techStack },
         { href: '/brand', label: t.brand },

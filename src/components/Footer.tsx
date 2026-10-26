@@ -51,7 +51,7 @@ export default function Footer() {
         { href: '/hacker-house', label: t.nav.hackerHouse },
         { href: '/hackers', label: t.nav.hackers },
         { href: '/education', label: t.nav.knowledge },
-        { href: '/culture', label: t.nav.culture },
+        { href: '/about', label: t.nav.about },
         { href: '/tech-stack', label: t.nav.techStack },
         { href: '/brand', label: t.nav.brand },
       ],

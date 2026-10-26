@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/education',
     '/hacker-house',
     '/hackers',
-    '/culture',
+    '/about',
     '/tech-stack',
     '/brand',
   ];

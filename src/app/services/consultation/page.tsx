@@ -387,7 +387,7 @@ export default function ConsultationPage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mt-px mb-px"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
+            <div className="flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4 py-6">
               <ScanBadge variant="secondary">{t.pricing.label}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {t.pricing.title}

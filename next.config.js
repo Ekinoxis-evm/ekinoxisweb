@@ -24,6 +24,8 @@ const nextConfig = {
       // visitor sees the part they asked for.
       { source: '/certifications', destination: '/education#certifications', permanent: true },
       { source: '/research', destination: '/education#research', permanent: true },
+      // /culture merged into /about — land on its culture section.
+      { source: '/culture', destination: '/about#culture', permanent: true },
     ]
   },
 }

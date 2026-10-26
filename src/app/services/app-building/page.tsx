@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button';
 import BookCallPanel from '@/components/BookCallPanel';
 import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
+import BuildLoop, { type BuildLoopCopy } from './BuildLoop';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
 
@@ -18,56 +19,38 @@ const appContent = {
     title: 'SOFTWARE BUILT FOR YOU',
     subtitle: 'Mobile and web apps, with AI and blockchain built in.',
     description: 'We design it, build it and run it — from a first version to software your whole company depends on.',
-    features: [
-      { code: 'MOB', title: 'Mobile Apps', desc: 'Native and cross-platform for iOS and Android.' },
-      { code: 'WEB', title: 'Web Apps', desc: 'Platforms that work in any browser, phone included.' },
-      { code: 'BC3', title: 'Blockchain', desc: 'Smart contracts and crypto wallets, built in properly.' },
-      { code: 'AI_', title: 'AI Features', desc: 'Work that used to need a person, done by software.' },
-      { code: 'API', title: 'APIs', desc: 'So your systems can talk to each other, and to ours.' },
-      { code: 'CLD', title: 'Hosting', desc: 'Servers that stay up as you grow, managed by us.' },
-    ],
-    techStacks: [
-      { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
-      { name: 'Backend', items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Redis'] },
-      { name: 'Blockchain', items: ['Ethereum', 'Base', 'Solidity', 'Hardhat', 'Viem'] },
-      { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
-    ],
-    process: [
-      { num: '01', title: 'Understand', desc: 'What it must do, and why.' },
-      { num: '02', title: 'Design', desc: 'What every screen looks like.' },
-      { num: '03', title: 'Build', desc: 'Written properly, the first time.' },
-      { num: '04', title: 'Test', desc: 'We try to break it before anyone else does.' },
-      { num: '05', title: 'Launch', desc: 'Live, with real users.' },
-      { num: '06', title: 'Support', desc: 'We keep it running.' },
-    ],
+    kinds: ['Mobile apps', 'Web apps', 'AI features', 'Blockchain', 'APIs', 'Hosting'],
+    flow: {
+      label: 'How we build',
+      title: 'From a diagnosis to software that fits',
+      steps: [
+        { num: '01', title: 'Diagnostic', desc: 'We sit with you and map how the business really works, and what to build first.', chip: 'Start' },
+        { num: '02', title: 'Design and demo', desc: 'We design it and build a working demo you can click — the starting point, not the end.', chip: 'First version' },
+        { num: '03', title: 'Rounds with you', desc: 'We build, show you, hear what is wrong, and change course. Again and again, directly with you.', chip: 'Back and forth' },
+        { num: '04', title: 'A product that fits', desc: 'Live with real users, doing what your business needs — and we keep it running.', chip: 'The goal' },
+      ],
+      round: ['Build', 'Show you', 'You tell us', 'Adjust'],
+      center: 'Until it fits',
+    },
     cta: 'Book a Call',
   },
   es: {
     title: 'SOFTWARE HECHO PARA TI',
     subtitle: 'Apps móviles y web, con IA y blockchain integrados.',
     description: 'Lo diseñamos, lo construimos y lo operamos — desde una primera versión hasta el software del que depende toda tu empresa.',
-    features: [
-      { code: 'MOB', title: 'Apps Móviles', desc: 'Nativas y multiplataforma para iOS y Android.' },
-      { code: 'WEB', title: 'Apps Web', desc: 'Plataformas que funcionan en cualquier navegador, celular incluido.' },
-      { code: 'BC3', title: 'Blockchain', desc: 'Contratos inteligentes y wallets, integrados bien.' },
-      { code: 'AI_', title: 'Funciones con IA', desc: 'Trabajo que antes requería una persona, hecho por software.' },
-      { code: 'API', title: 'APIs', desc: 'Para que tus sistemas se hablen entre ellos, y con los nuestros.' },
-      { code: 'CLD', title: 'Hosting', desc: 'Servidores que aguantan tu crecimiento, gestionados por nosotros.' },
-    ],
-    techStacks: [
-      { name: 'Frontend', items: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'] },
-      { name: 'Backend', items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Redis'] },
-      { name: 'Blockchain', items: ['Ethereum', 'Base', 'Solidity', 'Hardhat', 'Viem'] },
-      { name: 'AI / ML', items: ['OpenAI', 'Claude', 'LangChain', 'Vector DBs', 'n8n'] },
-    ],
-    process: [
-      { num: '01', title: 'Entender', desc: 'Qué debe hacer, y por qué.' },
-      { num: '02', title: 'Diseño', desc: 'Cómo se ve cada pantalla.' },
-      { num: '03', title: 'Construcción', desc: 'Escrito bien, desde la primera vez.' },
-      { num: '04', title: 'Pruebas', desc: 'Intentamos romperlo antes que nadie.' },
-      { num: '05', title: 'Lanzamiento', desc: 'En vivo, con usuarios reales.' },
-      { num: '06', title: 'Soporte', desc: 'Lo mantenemos funcionando.' },
-    ],
+    kinds: ['Apps móviles', 'Apps web', 'Funciones con IA', 'Blockchain', 'APIs', 'Hosting'],
+    flow: {
+      label: 'Cómo construimos',
+      title: 'De un diagnóstico a software que encaja',
+      steps: [
+        { num: '01', title: 'Diagnóstico', desc: 'Nos sentamos contigo y entendemos cómo funciona de verdad el negocio, y qué construir primero.', chip: 'Inicio' },
+        { num: '02', title: 'Diseño y demo', desc: 'Lo diseñamos y construimos un demo que funciona — el punto de partida, no el final.', chip: 'Primera versión' },
+        { num: '03', title: 'Rondas contigo', desc: 'Construimos, te mostramos, nos dices qué no sirve y cambiamos el rumbo. Una y otra vez, directo contigo.', chip: 'Ida y vuelta' },
+        { num: '04', title: 'Un producto que encaja', desc: 'En vivo con usuarios reales, haciendo lo que tu negocio necesita — y lo mantenemos funcionando.', chip: 'La meta' },
+      ],
+      round: ['Construimos', 'Te mostramos', 'Nos dices', 'Ajustamos'],
+      center: 'Hasta que encaje',
+    },
     cta: 'Agendar Llamada',
   },
 };
@@ -110,16 +93,43 @@ export default function AppBuildingPage() {
             >
               {t.description}
             </motion.p>
+
+            {/* What we build, at a glance */}
+            <motion.ul variants={fadeInUp} className="flex flex-wrap gap-2 mt-8">
+              {t.kinds.map((k) => (
+                <li key={k} className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-primary/20 bg-surface-container-low/60 px-3 py-1.5">
+                  {k}
+                </li>
+              ))}
+            </motion.ul>
           </motion.div>
+
+          <BuildLoop t={t.flow as BuildLoopCopy} />
+
+          {/* What it's built with — the same band as the home page */}
+          <div className="-mx-6 my-12">
+            <ToolsBand />
+          </div>
+
+          <WorkStrip
+            language={language}
+            title={{ en: 'Software we built and run', es: 'Software que construimos y operamos' }}
+            items={[
+              { name: 'ETHCALI', href: 'https://ethcali.org', img: '/screens/ethcali-app.jpg', what: { en: 'Community app with wallet login for Ethereum Cali.', es: 'App de comunidad con login de wallet para Ethereum Cali.' } },
+              { name: '1UP Esports', href: 'https://1upesports.org', img: '/screens/1up-esports.jpg', what: { en: 'Gaming tower with identity-gated challenges.', es: 'Torre gamer con retos que verifican identidad.' } },
+              { name: 'SWRFM', href: 'https://swrfmarket.com', img: '/screens/swrfm.jpg', what: { en: 'Inventory, vendors and reports behind a farm market\'s store.', es: 'Inventario, proveedores y reportes detrás de la tienda de un mercado campesino.' } },
+            ]}
+          />
 
           {/* Pricing tiers from content.ts */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-px"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5 }}
+            className="mt-12 mb-px"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
+            <div className="flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
               <ScanBadge variant="secondary">{language === 'en' ? 'Pricing' : 'Precios'}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {services.pricing.title}
@@ -164,100 +174,6 @@ export default function AppBuildingPage() {
               ))}
             </div>
           </motion.div>
-
-          {/* What We Build + How It Works row — same shape as Web Development */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 mt-px"
-          >
-            {/* What We Build */}
-            <div className="bg-surface-container-low p-6 md:p-10">
-              <div className="mb-6">
-                <ScanBadge variant="tertiary">{language === 'en' ? 'What we build' : 'Qué construimos'}</ScanBadge>
-              </div>
-              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
-                {language === 'en' ? 'What We Build' : 'Qué Construimos'}
-              </h2>
-              <div className="space-y-4">
-                {t.features.map((feature) => (
-                  <div key={feature.code} className="flex gap-3">
-                    <span className="font-mono text-tertiary-dim/70 text-sm flex-shrink-0 mt-0.5">✓</span>
-                    <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                      <span className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wide">{feature.title}</span>
-                      {' — '}{feature.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* How It Works */}
-            <div className="bg-surface-container-low p-6 md:p-10">
-              <div className="mb-6">
-                <ScanBadge variant="muted">{language === 'en' ? 'How it works' : 'Cómo funciona'}</ScanBadge>
-              </div>
-              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
-                {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
-              </h2>
-              <div className="space-y-4">
-                {t.process.map((step) => (
-                  <div key={step.num} className="flex items-center gap-4">
-                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0">{step.num}</span>
-                    <div className="flex-1 h-px bg-primary/10" />
-                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wider text-right">
-                      {step.title}<span className="hidden sm:inline text-outline normal-case tracking-normal"> · {step.desc}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Tech Stack */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-surface-container-low p-6 md:p-10 mt-px"
-          >
-            <div className="mb-6">
-              <ScanBadge variant="secondary">{language === 'en' ? 'Tech stack' : 'Tecnologías'}</ScanBadge>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {t.techStacks.map((stack, idx) => (
-                <div key={idx}>
-                  <p className="font-mono text-[13px] text-primary uppercase tracking-widest mb-4">{stack.name}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {stack.items.map((item) => (
-                      <span
-                        key={item}
-                        className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/30 px-2 py-1 hover:border-primary/50 hover:text-primary transition-colors"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <WorkStrip
-            language={language}
-            title={{ en: 'Software we built and run', es: 'Software que construimos y operamos' }}
-            items={[
-              { name: 'ETHCALI', href: 'https://ethcali.org', img: '/screens/ethcali-app.jpg', what: { en: 'Community app with wallet login for Ethereum Cali.', es: 'App de comunidad con login de wallet para Ethereum Cali.' } },
-              { name: '1UP Esports', href: 'https://1upesports.org', img: '/screens/1up-esports.jpg', what: { en: 'Gaming tower with identity-gated challenges.', es: 'Torre gamer con retos que verifican identidad.' } },
-              { name: 'SWRFM', href: 'https://swrfmarket.com', img: '/screens/swrfm.jpg', what: { en: 'Inventory, vendors and reports behind a farm market\'s store.', es: 'Inventario, proveedores y reportes detrás de la tienda de un mercado campesino.' } },
-            ]}
-          />
-
-          {/* What it's built with — the same band as the home page */}
-          <div className="-mx-6 my-12">
-            <ToolsBand />
-          </div>
 
           <BookCallPanel topic="app" />
 
