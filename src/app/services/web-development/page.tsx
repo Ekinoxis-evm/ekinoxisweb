@@ -6,7 +6,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import ContactForm from '@/components/ContactForm';
+import BookCallPanel from '@/components/BookCallPanel';
+import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
@@ -58,6 +59,8 @@ const webDevContent = {
 
 export default function WebDevelopmentPage() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
+  const book = () => bookCall('web');
   const t = webDevContent[language];
 
   return (
@@ -135,11 +138,9 @@ export default function WebDevelopmentPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="#contact">
-                    <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
+                  <Button onClick={book} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {plan.cta}
                     </Button>
-                  </a>
                 </div>
               ))}
             </div>
@@ -206,22 +207,7 @@ export default function WebDevelopmentPage() {
             <ToolsBand />
           </div>
 
-          {/* Final CTA — the form lives here now, not on Typeform */}
-          <motion.div
-            id="contact"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 scroll-mt-24"
-          >
-            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
-              {language === 'en' ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
-            </p>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
-              {language === 'en' ? 'Book your free call' : 'Agenda tu llamada gratis'}
-            </h2>
-            <ContactForm topic="web" className="max-w-3xl" />
-          </motion.div>
+          <BookCallPanel topic="web" />
 
         </div>
       </div>

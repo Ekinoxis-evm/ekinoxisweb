@@ -7,7 +7,8 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import ContactForm from '@/components/ContactForm';
+import BookCallPanel from '@/components/BookCallPanel';
+import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
@@ -73,6 +74,8 @@ const appContent = {
 
 export default function AppBuildingPage() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
+  const book = () => bookCall('app');
   const t = appContent[language];
   const services = content[language].services;
 
@@ -154,11 +157,9 @@ export default function AppBuildingPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href={services.calendarLink} target="_blank" rel="noopener noreferrer">
-                    <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
+                  <Button onClick={book} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {t.cta}
-                    </Button>
-                  </a>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -258,22 +259,7 @@ export default function AppBuildingPage() {
             <ToolsBand />
           </div>
 
-          {/* CTA — the form, with the calendar as the alternative */}
-          <motion.div
-            id="contact"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 scroll-mt-24"
-          >
-            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
-              {language === 'en' ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
-            </p>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
-              {language === 'en' ? 'Book your free call' : 'Agenda tu llamada gratis'}
-            </h2>
-            <ContactForm topic="app" className="max-w-3xl" />
-          </motion.div>
+          <BookCallPanel topic="app" />
 
         </div>
       </div>
