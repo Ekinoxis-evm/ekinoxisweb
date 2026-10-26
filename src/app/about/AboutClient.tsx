@@ -9,16 +9,12 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import BookCallPanel from '@/components/BookCallPanel';
+import TeamBand from '@/components/TeamBand';
 import { PlacesBand } from '@/components/LogoBands';
 import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import type { Hacker } from '@/lib/supabase/types';
 
 /** Products, clients, teaching, community, research — same order as the pillars copy. */
-/** Laptop columns for the team row: every photo plus the closing link tile, one row, no empty cells. */
-const TEAM_COLS: Record<number, string> = {
-  4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5', 6: 'lg:grid-cols-6', 7: 'lg:grid-cols-7', 8: 'lg:grid-cols-8',
-};
-
 const PILLAR_ICONS: LucideIcon[] = [Boxes, Briefcase, GraduationCap, Users, FlaskConical];
 
 const reveal = {
@@ -57,9 +53,6 @@ export default function AboutClient({ hackers }: { hackers: Hacker[] }) {
   const { language } = useLanguage();
   const c = content[language];
   const t = c.about;
-  // Up to 7 faces + the link tile; an odd count would leave a hole in the 2-up phone grid
-  let team = hackers.filter((h) => h.image_url).slice(0, 7);
-  if (team.length % 2 === 0 && team.length > 1) team = team.slice(0, -1);
 
   return (
     <AnimatedBackground variant="ambient" banner="/media/banners/about.webp">
@@ -165,61 +158,18 @@ export default function AboutClient({ hackers }: { hackers: Hacker[] }) {
                 <motion.div key={v.title} variants={fadeInUp} className="group relative bg-surface-container-low p-6 md:p-10 transition-colors duration-500 hover:bg-surface-container">
                   <span className="font-mono text-[12px] text-primary tracking-widest block mb-4">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-3">{v.title}</h3>
-                  <p className="font-body text-[15px] text-on-surface leading-relaxed mb-6">{v.description}</p>
-                  <ul className="space-y-2 border-l-2 border-primary/20 pl-4">
-                    {v.details.map((d) => (
-                      <li key={d} className="font-body text-sm text-on-surface-variant leading-relaxed">{d}</li>
-                    ))}
-                  </ul>
+                  <p className="font-body text-[15px] text-on-surface-variant leading-relaxed">{v.description}</p>
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
               ))}
             </motion.div>
           </section>
 
-          {/* The people */}
-          {team.length > 0 && (
-            <motion.section {...reveal} className="mt-24 md:mt-32">
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-                <div>
-                  <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">{t.teamLabel}</p>
-                  <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter leading-[0.95] text-on-surface">{t.teamTitle}</h2>
-                </div>
-                <Link href="/hackers" className="inline-flex items-center gap-2 font-mono text-[12px] text-primary uppercase tracking-widest hover:text-primary-dim min-h-[44px]">
-                  {t.teamCta} <ArrowRight size={14} />
-                </Link>
-              </div>
-              <ul className={`grid grid-cols-2 sm:grid-cols-4 ${TEAM_COLS[team.length + 1] ?? 'lg:grid-cols-8'} gap-px bg-primary/10`}>
-                {team.map((h) => (
-                  <li key={h.id}>
-                    <Link href="/hackers" className="group block bg-surface-container-low">
-                      <div className="relative aspect-square overflow-hidden">
-                        <Image
-                          src={h.image_url}
-                          alt={h.name}
-                          fill
-                          sizes="(min-width: 1024px) 12vw, (min-width: 640px) 25vw, 50vw"
-                          unoptimized={h.image_url.startsWith('http')}
-                          className="object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
-                        />
-                      </div>
-                      <p className="px-3 py-3 font-label text-[13px] font-semibold text-on-surface-variant group-hover:text-primary transition-colors truncate">{h.name}</p>
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <Link href="/hackers" className="group flex h-full min-h-[160px] flex-col justify-between bg-surface-container-high p-4 transition-colors hover:bg-surface-container-highest">
-                    <span className="font-mono text-[12px] text-outline uppercase tracking-widest">{hackers.length > team.length ? `+${hackers.length - team.length}` : ''}</span>
-                    <span className="inline-flex items-center gap-2 font-headline text-[15px] font-bold leading-tight text-primary">
-                      {t.teamCta} <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </Link>
-                </li>
-              </ul>
-            </motion.section>
-          )}
         </div>
       </div>
+
+      {/* The people — slide past; click one for their profile */}
+      <TeamBand hackers={hackers} label={t.teamLabel} title={t.teamTitle} />
 
       {/* Where we have taught */}
       <PlacesBand />

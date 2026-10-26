@@ -23,6 +23,6 @@ export async function POST(request: NextRequest) {
   const { data, error: dbError } = await db!.from('hackers').insert(body).select().single()
 
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
-  revalidatePath('/hackers')
+  revalidatePath('/about')
   return NextResponse.json(data, { status: 201 })
 }

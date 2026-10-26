@@ -17,7 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...courses.map((c) => `/courses/${c.slug}`),
     '/education',
     '/hacker-house',
-    '/hackers',
     '/about',
     '/tech-stack',
     '/brand',

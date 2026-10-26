@@ -46,7 +46,6 @@ export default function Navigation() {
       href: '/about',
       items: [
         { href: '/about', label: t.about, exact: true },
-        { href: '/hackers', label: t.hackers },
         { href: '/tech-stack', label: t.techStack },
         { href: '/brand', label: t.brand },
       ],

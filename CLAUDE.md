@@ -166,7 +166,7 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   ├── layout.tsx               # Root layout: fonts, scanline overlay, Navigation + Footer + LanguageProvider
 │   ├── globals.css              # Global styles, Tailwind directives, animation keyframes, legacy utilities
 │   ├── page.tsx                 # Home / Hero (2-col grid, sphere animation, 4-stat panel)
-│   ├── about/                   # About us: story, equinox meaning, what we do, culture values (#culture), team strip — /culture redirects here
+│   ├── about/                   # About us: story, equinox meaning, what we do, culture (#culture), moving team band with profile popup (#team) — /culture and /hackers redirect here
 │   ├── hackers/
 │   │   ├── page.tsx             # Server Component — fetches getHackers(), revalidate=60
 │   │   └── HackersClient.tsx    # Client Component — renders grid with SocialLinks icons

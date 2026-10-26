@@ -49,7 +49,7 @@ export default function Footer() {
       title: en ? 'The lab' : 'El laboratorio',
       links: [
         { href: '/hacker-house', label: t.nav.hackerHouse },
-        { href: '/hackers', label: t.nav.hackers },
+        { href: '/about#team', label: t.nav.hackers },
         { href: '/education', label: t.nav.knowledge },
         { href: '/about', label: t.nav.about },
         { href: '/tech-stack', label: t.nav.techStack },

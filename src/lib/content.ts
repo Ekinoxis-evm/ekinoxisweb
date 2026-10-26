@@ -270,7 +270,7 @@ export const content = {
       values: [
         {
           title: "Open Source",
-          description: "We build in public and share primitives that others can reuse.",
+          description: "We build in public and share what others can reuse.",
           details: [
             "We open-source reusable modules whenever possible — code, templates, and tooling.",
             "We document what we learn (trade-offs included) so others can replicate faster.",
@@ -279,7 +279,7 @@ export const content = {
         },
         {
           title: "Privacy",
-          description: "User sovereignty by design. Data minimization by default.",
+          description: "We keep as little data as possible. People stay in control.",
           details: [
             "We collect the minimum data needed and keep sensitive logic off-server when possible.",
             "We design for self-custody, consent, and selective disclosure.",
@@ -288,7 +288,7 @@ export const content = {
         },
         {
           title: "Innovation",
-          description: "Frontier tech, shipped. Experiments become production when they earn it.",
+          description: "We try new tech fast, and ship only what works.",
           details: [
             "We prototype fast (hackathons, hacker houses), then harden what works.",
             "We test new ideas safely with measurable outcomes — not hype.",
@@ -297,7 +297,7 @@ export const content = {
         },
         {
           title: "Community",
-          description: "A builders-first network across LATAM and beyond.",
+          description: "We bring builders together, in LATAM and beyond.",
           details: [
             "We run spaces where builders meet: sessions, hacker houses, workshops, and demos.",
             "We connect researchers, founders, and developers to turn ideas into deployments.",
@@ -306,7 +306,7 @@ export const content = {
         },
         {
           title: "Education",
-          description: "Learning loops: teach → build → iterate → teach again.",
+          description: "We teach by building real things.",
           details: [
             "We teach by building: real projects, real repos, real demos.",
             "We create accessible learning paths for AI, crypto, and blockchain adoption.",
@@ -315,7 +315,7 @@ export const content = {
         },
         {
           title: "Collaboration",
-          description: "We partner with institutions to deploy, not just to publish.",
+          description: "We partner to ship, not just to publish.",
           details: [
             "We co-build with universities, enterprises, and governments to reach production outcomes.",
             "We translate research into prototypes and pilots with clear success criteria.",
@@ -868,7 +868,7 @@ export const content = {
       values: [
         {
           title: "Open Source",
-          description: "Construimos en público y compartimos primitivas reutilizables.",
+          description: "Construimos en público y compartimos lo que otros pueden reusar.",
           details: [
             "Open source cuando tiene sentido: módulos, plantillas y tooling reutilizable.",
             "Documentamos lo que aprendemos (incluyendo trade-offs) para acelerar a otros.",
@@ -877,7 +877,7 @@ export const content = {
         },
         {
           title: "Privacidad",
-          description: "Soberanía del usuario por diseño. Minimización de datos por defecto.",
+          description: "Guardamos los menos datos posibles. Las personas tienen el control.",
           details: [
             "Recopilamos lo mínimo necesario y mantenemos lógica sensible fuera del servidor cuando es posible.",
             "Diseñamos para autocustodia, consentimiento y divulgación selectiva.",
@@ -886,7 +886,7 @@ export const content = {
         },
         {
           title: "Innovación",
-          description: "Tecnología de frontera, entregada. De experimento a producción cuando se lo gana.",
+          description: "Probamos tecnología nueva rápido, y lanzamos solo lo que funciona.",
           details: [
             "Prototipamos rápido (hackathons, hacker houses) y endurecemos lo que funciona.",
             "Probamos ideas nuevas con métricas y seguridad — no solo hype.",
@@ -895,7 +895,7 @@ export const content = {
         },
         {
           title: "Comunidad",
-          description: "Una red de constructores en LATAM y más allá.",
+          description: "Reunimos builders, en LATAM y más allá.",
           details: [
             "Creamos espacios para construir: sesiones, hacker houses, workshops y demos.",
             "Conectamos investigadores, founders y developers para llegar a despliegues reales.",
@@ -904,7 +904,7 @@ export const content = {
         },
         {
           title: "Educación",
-          description: "Ciclos de aprendizaje: enseñar → construir → iterar → enseñar.",
+          description: "Enseñamos construyendo cosas reales.",
           details: [
             "Enseñamos construyendo: proyectos reales, repos reales, demos reales.",
             "Creamos rutas accesibles para adoptar IA, cripto y blockchain.",
@@ -913,7 +913,7 @@ export const content = {
         },
         {
           title: "Colaboración",
-          description: "Aliados para desplegar, no solo para publicar.",
+          description: "Nos aliamos para lanzar, no solo para publicar.",
           details: [
             "Co-construimos con universidades, empresas y gobiernos para resultados en producción.",
             "Llevamos investigación a prototipos y pilotos con criterios claros de éxito.",

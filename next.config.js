@@ -26,6 +26,8 @@ const nextConfig = {
       { source: '/research', destination: '/education#research', permanent: true },
       // /culture merged into /about — land on its culture section.
       { source: '/culture', destination: '/about#culture', permanent: true },
+      // /hackers is now the team band on /about.
+      { source: '/hackers', destination: '/about#team', permanent: true },
     ]
   },
 }
