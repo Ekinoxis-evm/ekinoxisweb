@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
 
 /** Pages that already are the contact step, or are not for buyers. */
-const HIDDEN_ON = ['/services/consultation', '/admin'];
+const HIDDEN_ON = ['/admin'];
 
 /**
  * Phones only: once the hero's own button has scrolled away, the next step stays

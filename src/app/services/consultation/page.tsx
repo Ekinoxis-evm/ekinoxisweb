@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -8,10 +7,12 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
-import ContactForm from '@/components/ContactForm';
-import { staggerContainer, fadeInUp } from '@/lib/animations';
+import PanelBackdrop from '@/components/ui/PanelBackdrop';
+import { useBookCall } from '@/components/BookCall';
+import TopicExplorer from './TopicExplorer';
+import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import {
-  CalendarDays, Check, ChevronLeft, ChevronRight, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
+  CalendarDays, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
   type LucideIcon,
 } from 'lucide-react';
 import { PlacesBand } from '@/components/LogoBands';
@@ -39,7 +40,12 @@ const consultationContent = {
       label: 'TOPICS',
       title: 'Five topics. One session each.',
       fitLabel: 'This is for you if',
+      doLabel: 'What we do',
       outcomeLabel: 'You leave with',
+      prev: 'Previous',
+      next: 'Next',
+      book: 'Book a free call about this',
+      swipe: 'Swipe left or right to change topic',
       items: [
         {
           code: 'AI_INT',
@@ -134,9 +140,10 @@ const consultationContent = {
       cta: 'Invite Us',
     },
     cta: {
-      label: 'NEXT STEP',
-      text: 'Start with the free 30-minute call. We tell you which session fits — or that you do not need one.',
-      button: 'Book the Free Call',
+      label: 'Free · 30 minutes',
+      title: 'Not sure which one fits?',
+      text: 'Book the free call. We tell you which session fits — or that you do not need one.',
+      button: 'Book your free call',
     },
   },
   es: {
@@ -148,7 +155,12 @@ const consultationContent = {
       label: 'TEMAS',
       title: 'Cinco temas. Una sesión cada uno.',
       fitLabel: 'Es para ti si',
+      doLabel: 'Qué hacemos',
       outcomeLabel: 'Te llevas',
+      prev: 'Anterior',
+      next: 'Siguiente',
+      book: 'Agenda una llamada gratis sobre esto',
+      swipe: 'Desliza a la izquierda o derecha para cambiar de tema',
       items: [
         {
           code: 'AI_INT',
@@ -243,31 +255,18 @@ const consultationContent = {
       cta: 'Invitarnos',
     },
     cta: {
-      label: 'SIGUIENTE PASO',
-      text: 'Empieza con la llamada gratis de 30 minutos. Te decimos qué sesión te sirve — o que no necesitas ninguna.',
-      button: 'Agendar la Llamada',
+      label: 'Gratis · 30 minutos',
+      title: '¿No sabes cuál te sirve?',
+      text: 'Agenda la llamada gratis. Te decimos qué sesión te sirve — o que no necesitas ninguna.',
+      button: 'Agenda tu llamada gratis',
     },
   },
 };
 
-/** One topic card: most of a phone screen, ~1.7 per row on tablet, 3 on laptop — always a peek of the next. */
-const TOPIC_CARD =
-  'relative flex-shrink-0 snap-start w-[85%] sm:w-[58%] lg:w-[calc((100%-2rem)/3)] border border-primary/10 p-6 md:p-8 flex flex-col';
-
 export default function ConsultationPage() {
   const { language } = useLanguage();
-  const topicsRef = useRef<HTMLDivElement>(null);
-  const [topicIdx, setTopicIdx] = useState(0);
-  const cardStep = () => {
-    const track = topicsRef.current;
-    const card = track?.firstElementChild as HTMLElement | null;
-    return card ? card.offsetWidth + 16 : 0; // 16 = gap-4
-  };
-  const slideTopics = (dir: 1 | -1) => topicsRef.current?.scrollBy({ left: dir * cardStep(), behavior: 'smooth' });
-  const onTopicsScroll = () => {
-    const step = cardStep();
-    if (step && topicsRef.current) setTopicIdx(Math.round(topicsRef.current.scrollLeft / step));
-  };
+  const bookCall = useBookCall();
+  const book = () => bookCall('consultation');
   const t = consultationContent[language];
 
   return (
@@ -323,9 +322,7 @@ export default function ConsultationPage() {
                   {t.funnel.title}
                 </h2>
               </div>
-              <a href="#contact" className="flex-shrink-0">
-                <Button variant="primary" size="sm" className="w-full sm:w-auto justify-center">{t.funnel.book}</Button>
-              </a>
+              <Button variant="primary" size="sm" onClick={book} className="flex-shrink-0 w-full sm:w-auto justify-center">{t.funnel.book}</Button>
             </div>
 
             <ol className="relative grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6">
@@ -436,133 +433,59 @@ export default function ConsultationPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="#contact">
-                    <Button variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
-                      {plan.cta}
-                    </Button>
-                  </a>
+                  <Button variant={plan.popular ? 'primary' : 'ghost'} onClick={book} className="w-full justify-center">
+                    {plan.cta}
+                  </Button>
                 </div>
               ))}
             </div>
             <p className="font-mono text-[12px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
 
-          {/* Topics — each card says who it is for, what it is, and what you leave with */}
+          {/* Topics — one readable view, with back / next */}
           <motion.section
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            variants={staggerContainer}
-            className="mt-px"
+            transition={{ duration: 0.6, ease: EASE_SETTLE }}
+            className="mt-12"
           >
-            <div className="flex items-end justify-between gap-4 py-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <ScanBadge variant="primary">{t.topics.label}</ScanBadge>
-                <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">{t.topics.title}</span>
-              </div>
-              {/* Swipe on touch; arrows and a counter for mouse and keyboard */}
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <span className="hidden sm:inline font-mono text-[12px] text-outline tracking-widest">
-                  <span className="text-on-surface">{String(topicIdx + 1).padStart(2, '0')}</span> / {String(t.topics.items.length + 1).padStart(2, '0')}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => slideTopics(-1)}
-                  aria-label={language === 'en' ? 'Previous topic' : 'Tema anterior'}
-                  className="flex h-10 w-10 items-center justify-center border border-primary/30 text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => slideTopics(1)}
-                  aria-label={language === 'en' ? 'Next topic' : 'Siguiente tema'}
-                  className="flex h-10 w-10 items-center justify-center border border-primary/30 text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
-            </div>
-
-            <div
-              ref={topicsRef}
-              onScroll={onTopicsScroll}
-              className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-6 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {t.topics.items.map((topic, idx) => {
-                const Icon = TOPIC_ICONS[topic.code] ?? Plug;
-                return (
-                  <motion.article
-                    key={topic.code}
-                    variants={fadeInUp}
-                    className={`${TOPIC_CARD} bg-surface-container-low group hover:bg-surface-container transition-colors duration-500`}
-                  >
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex h-12 w-12 items-center justify-center border border-primary/30 bg-primary/5 text-primary transition-all duration-500 group-hover:border-primary group-hover:shadow-[0_0_20px_rgba(143,245,255,0.25)]">
-                        <Icon size={22} strokeWidth={1.75} />
-                      </div>
-                      <span className="font-mono text-[12px] text-outline tracking-widest">{String(idx + 1).padStart(2, '0')}</span>
-                    </div>
-
-                    <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-1">
-                      {topic.title}
-                    </h3>
-                    {/* The technical name, kept small — for the reader who already knows it */}
-                    <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-6">{topic.tech}</p>
-
-                    <div className="bg-secondary/5 px-4 py-3 mb-5">
-                      <p className="font-mono text-[11px] text-secondary uppercase tracking-widest mb-1">{t.topics.fitLabel}</p>
-                      <p className="font-body text-[15px] text-on-surface leading-snug">{topic.fit}</p>
-                    </div>
-
-                    <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">{topic.desc}</p>
-
-                    <div className="mt-auto bg-surface-container-lowest/70 p-4">
-                      <p className="font-mono text-[11px] text-tertiary-dim uppercase tracking-widest mb-2">{t.topics.outcomeLabel}</p>
-                      <p className="flex gap-2 font-label text-[13px] font-medium text-on-surface leading-relaxed">
-                        <Check size={16} className="text-tertiary-dim flex-shrink-0 mt-0.5" />
-                        {topic.outcome}
-                      </p>
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </motion.article>
-                );
-              })}
-
-              {/* Last card: talks */}
-              <motion.div variants={fadeInUp} className={`${TOPIC_CARD} bg-surface-container-high`}>
-                <div className="flex h-12 w-12 items-center justify-center border border-tertiary-dim/40 bg-tertiary-dim/5 text-tertiary-dim mb-6">
-                  <Mic size={22} strokeWidth={1.75} />
-                </div>
-                <div className="mb-3">
-                  <ScanBadge variant="tertiary">{t.talks.label}</ScanBadge>
-                </div>
-                <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface mb-3">{t.talks.title}</h3>
-                <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">{t.talks.desc}</p>
-                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                  <Button variant="tertiary" className="w-full justify-center">{t.talks.cta}</Button>
-                </a>
-              </motion.div>
-            </div>
+            <TopicExplorer topics={t.topics.items} icons={TOPIC_ICONS} fallbackIcon={Plug} t={t.topics} onBook={book} />
           </motion.section>
 
-          {/* Final step — the form, not a link off the site */}
-          <motion.div
-            id="contact"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.65 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-px p-6 md:p-10 scroll-mt-24"
+          {/* Last step — the call opens in the popup; talks sit beside it */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6, ease: EASE_SETTLE }}
+            className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-px bg-primary/10"
           >
-            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
-              {language === 'en' ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
-            </p>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
-              {language === 'en' ? 'Book your free call' : 'Agenda tu llamada gratis'}
-            </h2>
-            <ContactForm topic="consultation" className="max-w-3xl" />
-          </motion.div>
+            <div className="relative overflow-hidden lg:col-span-8 bg-surface-container-low p-8 md:p-12 flex flex-col justify-center">
+              <PanelBackdrop name="metal" />
+              {/* Phones stack the copy over the bright side — dim it */}
+              <div className="absolute inset-0 bg-black/55 lg:hidden pointer-events-none" />
+              <div className="relative">
+                <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">{t.cta.label}</p>
+                <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter leading-[0.95] text-on-surface mb-4">{t.cta.title}</h2>
+                <p className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed mb-8">{t.cta.text}</p>
+                <Button variant="primary" size="lg" onClick={book} className="w-full sm:w-auto justify-center">{t.cta.button}</Button>
+              </div>
+            </div>
+            <div className="lg:col-span-4 bg-surface-container-high p-8 md:p-10 flex flex-col">
+              <div className="flex h-12 w-12 items-center justify-center border border-tertiary-dim/40 bg-tertiary-dim/5 text-tertiary-dim mb-6">
+                <Mic size={22} strokeWidth={1.75} />
+              </div>
+              <div className="mb-3">
+                <ScanBadge variant="tertiary">{t.talks.label}</ScanBadge>
+              </div>
+              <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface mb-3">{t.talks.title}</h3>
+              <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">{t.talks.desc}</p>
+              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                <Button variant="tertiary" className="w-full justify-center">{t.talks.cta}</Button>
+              </a>
+            </div>
+          </motion.section>
 
         </div>
       </div>
