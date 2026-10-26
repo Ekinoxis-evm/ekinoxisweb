@@ -10,7 +10,7 @@ import Button from '@/components/ui/Button';
 import BookCallPanel from '@/components/BookCallPanel';
 import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
-import BuildLoop, { type BuildLoopCopy } from './BuildLoop';
+import BuildLoop, { type BuildLoopCopy } from '@/components/BuildLoop';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
 

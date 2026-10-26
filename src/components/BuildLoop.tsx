@@ -43,7 +43,7 @@ const BEAT_POS = [
 ];
 
 /** The feedback loop: build → show → hear back → adjust, around and around until it fits. */
-function Ring({ round, center, className = '' }: { round: BuildLoopCopy['round']; center: string; className?: string }) {
+function Ring({ round, center, icons, className = '' }: { round: BuildLoopCopy['round']; center: string; icons: LucideIcon[]; className?: string }) {
   const arrow = `loop-arrow-${useId().replace(/:/g, '')}`;
   return (
     <div className={`relative aspect-square ${className}`}>
@@ -77,7 +77,7 @@ function Ring({ round, center, className = '' }: { round: BuildLoopCopy['round']
         <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_14px_rgba(143,245,255,0.9)]" />
       </div>
       {round.map((beat, i) => {
-        const Icon = ROUND_ICONS[i];
+        const Icon = icons[i];
         return (
           <div key={beat} className={`absolute ${BEAT_POS[i]} flex flex-col items-center gap-1 bg-surface-container-low px-2 py-1`}>
             <Icon size={16} strokeWidth={1.75} className="text-primary" />
@@ -93,11 +93,19 @@ function Ring({ round, center, className = '' }: { round: BuildLoopCopy['round']
 }
 
 /**
- * How we build software, drawn: a diagnosis, a first demo, then rounds with
- * the client until the product fits. Connected steps like the consultation flow,
- * with the loop drawn out where the real work happens.
+ * How we build, drawn: a start, a first version, then rounds with the client
+ * until it fits. Connected steps like the consultation flow, with the loop drawn
+ * out where the real work happens. Used by app building and websites.
  */
-export default function BuildLoop({ t }: { t: BuildLoopCopy }) {
+export default function BuildLoop({
+  t,
+  stepIcons = STEP_ICONS,
+  roundIcons = ROUND_ICONS,
+}: {
+  t: BuildLoopCopy;
+  stepIcons?: LucideIcon[];
+  roundIcons?: LucideIcon[];
+}) {
   return (
     <motion.section
       initial="hidden"
@@ -126,7 +134,7 @@ export default function BuildLoop({ t }: { t: BuildLoopCopy }) {
           variants={{ hidden: { scaleY: 0 }, visible: { scaleY: 1, transition: { duration: 1.4, ease: 'easeOut', delay: 0.3 } } }}
         />
         {t.steps.map((step, idx) => {
-          const Icon = STEP_ICONS[idx];
+          const Icon = stepIcons[idx];
           const isLoop = idx === 2;
           const isGoal = idx === 3;
           return (
@@ -147,14 +155,14 @@ export default function BuildLoop({ t }: { t: BuildLoopCopy }) {
               >
                 <Icon size={22} strokeWidth={1.75} />
               </div>
-              {isLoop && <Ring round={t.round} center={t.center} className="hidden lg:block relative z-10 w-[260px]" />}
+              {isLoop && <Ring round={t.round} center={t.center} icons={roundIcons} className="hidden lg:block relative z-10 w-[260px]" />}
               <div className="lg:mt-6 min-w-0 flex-1 lg:flex-none">
                 <p className="font-mono text-[12px] text-outline tracking-widest mb-1">{step.num}</p>
                 <h3 className="font-headline text-lg font-bold tracking-tight text-on-surface mb-2">{step.title}</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-4 lg:max-w-[260px] lg:mx-auto">{step.desc}</p>
                 <ScanBadge variant={isLoop ? 'primary' : isGoal ? 'tertiary' : 'muted'}>{step.chip}</ScanBadge>
                 {/* Phones: the loop sits inside its step, on the vertical line */}
-                {isLoop && <Ring round={t.round} center={t.center} className="lg:hidden mt-8 -ml-2 w-full max-w-[280px]" />}
+                {isLoop && <Ring round={t.round} center={t.center} icons={roundIcons} className="lg:hidden mt-8 -ml-2 w-full max-w-[280px]" />}
               </div>
             </motion.li>
           );

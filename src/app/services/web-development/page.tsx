@@ -9,8 +9,14 @@ import Button from '@/components/ui/Button';
 import BookCallPanel from '@/components/BookCallPanel';
 import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
+import BuildLoop, { type BuildLoopCopy } from '@/components/BuildLoop';
+import { CreditCard, Eye, Hammer, LayoutTemplate, MessageSquare, Rocket, RefreshCw, Shuffle } from 'lucide-react';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
+
+/** Plan and pay half, we build, rounds with you, live */
+const STEP_ICONS = [CreditCard, LayoutTemplate, RefreshCw, Rocket];
+const ROUND_ICONS = [Hammer, Eye, MessageSquare, Shuffle];
 
 const webDevContent = {
   en: {
@@ -18,9 +24,18 @@ const webDevContent = {
     subtitle: 'Live in 5 days. Taking payments and answering WhatsApp from day one.',
     trustLine: 'From $1,500 · Fixed price',
     perfectFor: ['Entrepreneurs launching fast', 'Local businesses going digital', 'Consultants and service providers', 'Online stores & digital products'],
-    whatYouGet: {
-      title: 'Included',
-      items: ['A website that sells, not a brochure', 'A panel to manage products and services', 'Card payments with Stripe or Wompi', 'WhatsApp contact and booking', 'Domain, hosting and business email', 'Automatic payment receipts', 'Ready in 5 days'],
+    included: ['A site that sells', 'Admin panel', 'Card payments', 'WhatsApp booking', 'Domain and hosting', 'Business email', 'Automatic receipts'],
+    flow: {
+      label: 'How it works',
+      title: 'From a plan to a site that sells',
+      steps: [
+        { num: '01', title: 'Pick your plan', desc: 'Choose a package and pay half. We agree on what your site must do.', chip: 'Day 1' },
+        { num: '02', title: 'We build it', desc: 'We set up your site, payments and WhatsApp. You watch it take shape.', chip: 'First version' },
+        { num: '03', title: 'Rounds with you', desc: 'We show you, you tell us what to change, we adjust. Directly with you.', chip: 'Back and forth' },
+        { num: '04', title: 'You go live', desc: 'Pay the rest and your business is online, taking payments.', chip: 'Day 5' },
+      ],
+      round: ['Build', 'Show you', 'You tell us', 'Adjust'],
+      center: 'Ready in 5\u00a0days',
     },
     pricing: {
       title: 'Choose Your Package',
@@ -31,7 +46,6 @@ const webDevContent = {
       ],
       note: '*Domains and hosting subject to availability',
     },
-    howItWorks: ['Choose your plan', 'Pay half', 'We build, you watch it happen', 'You tell us what to change', 'Pay the rest', 'You go live'],
     finalCta: 'Start your business today',
   },
   es: {
@@ -39,9 +53,18 @@ const webDevContent = {
     subtitle: 'En línea en 5 días. Cobrando y respondiendo WhatsApp desde el primer día.',
     trustLine: 'Desde $1,500 · Precio fijo',
     perfectFor: ['Emprendedores lanzando rápido', 'Negocios locales digitalizándose', 'Consultores y proveedores de servicios', 'Tiendas online y productos digitales'],
-    whatYouGet: {
-      title: 'Incluido',
-      items: ['Un sitio que vende, no un folleto', 'Un panel para manejar productos y servicios', 'Pagos con tarjeta vía Stripe o Wompi', 'Contacto y agendamiento por WhatsApp', 'Dominio, hosting y correo de empresa', 'Recibos de pago automáticos', 'Listo en 5 días'],
+    included: ['Un sitio que vende', 'Panel de administración', 'Pagos con tarjeta', 'Agenda por WhatsApp', 'Dominio y hosting', 'Correo de empresa', 'Recibos automáticos'],
+    flow: {
+      label: 'Cómo funciona',
+      title: 'De un plan a un sitio que vende',
+      steps: [
+        { num: '01', title: 'Elige tu plan', desc: 'Escoges un paquete y pagas la mitad. Acordamos qué debe hacer tu sitio.', chip: 'Día 1' },
+        { num: '02', title: 'Lo construimos', desc: 'Montamos tu sitio, los pagos y WhatsApp. Tú lo ves tomar forma.', chip: 'Primera versión' },
+        { num: '03', title: 'Rondas contigo', desc: 'Te mostramos, nos dices qué cambiar y ajustamos. Directo contigo.', chip: 'Ida y vuelta' },
+        { num: '04', title: 'Sales en vivo', desc: 'Pagas el resto y tu negocio queda en línea, cobrando.', chip: 'Día 5' },
+      ],
+      round: ['Construimos', 'Te mostramos', 'Nos dices', 'Ajustamos'],
+      center: 'Listo en 5\u00a0días',
     },
     pricing: {
       title: 'Elige Tu Paquete',
@@ -52,7 +75,6 @@ const webDevContent = {
       ],
       note: '*Dominios y hosting sujetos a disponibilidad',
     },
-    howItWorks: ['Elige tu plan', 'Pagas la mitad', 'Construimos, tú lo ves avanzar', 'Nos dices qué cambiar', 'Pagas el resto', 'Sales en vivo'],
     finalCta: 'Comienza tu negocio hoy',
   },
 };
@@ -94,16 +116,44 @@ export default function WebDevelopmentPage() {
               </p>
               <ScanBadge variant="primary">{t.trustLine}</ScanBadge>
             </motion.div>
+
+            {/* What every site comes with, at a glance */}
+            <motion.ul variants={fadeInUp} className="flex flex-wrap gap-2 mt-8">
+              {t.included.map((k) => (
+                <li key={k} className="font-mono text-[12px] text-on-surface-variant uppercase tracking-widest border border-primary/20 bg-surface-container-low/60 px-3 py-1.5">
+                  {k}
+                </li>
+              ))}
+            </motion.ul>
           </motion.div>
+
+          <BuildLoop t={t.flow as BuildLoopCopy} stepIcons={STEP_ICONS} roundIcons={ROUND_ICONS} />
+
+          {/* What it's built with — the same band as the home page */}
+          <div className="-mx-6 my-12">
+            <ToolsBand />
+          </div>
+
+          <WorkStrip
+            language={language}
+            title={{ en: 'Sites we shipped', es: 'Sitios que lanzamos' }}
+            items={[
+              { name: 'CONVEXO', href: 'https://www.convexo.xyz', img: '/screens/convexo.jpg', what: { en: 'Fintech site for LATAM businesses.', es: 'Sitio fintech para empresas de LATAM.' } },
+              { name: 'Apalancados', href: 'https://www.apalancados.tech', img: '/screens/apalancados.jpg', what: { en: 'Live trading education with an AI crypto portfolio manager.', es: 'Educación en trading en vivo con un gestor de portafolio cripto con IA.' } },
+              { name: 'MGM Autobroker', href: 'https://mgmautobroker.com', img: '/screens/mgm-autobroker.jpg', what: { en: 'Used-car marketplace with no-interest financing.', es: 'Marketplace de carros usados con financiación sin intereses.' } },
+            ]}
+          />
+
 
           {/* Pricing Plans */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-px"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5 }}
+            className="mt-12 mb-px"
           >
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
               <ScanBadge variant="secondary">{language === 'en' ? 'Pricing' : 'Precios'}</ScanBadge>
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">
                 {t.pricing.title}
@@ -146,66 +196,6 @@ export default function WebDevelopmentPage() {
             </div>
             <p className="font-mono text-[12px] text-outline uppercase tracking-widest mt-3">{t.pricing.note}</p>
           </motion.div>
-
-          {/* How It Works + What You Get row */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 mt-px"
-          >
-            {/* How It Works */}
-            <div className="bg-surface-container-low p-6 md:p-10">
-              <div className="mb-6">
-                <ScanBadge variant="muted">{language === 'en' ? 'How it works' : 'Cómo funciona'}</ScanBadge>
-              </div>
-              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
-                {language === 'en' ? 'How It Works' : 'Cómo Funciona'}
-              </h2>
-              <div className="space-y-4">
-                {t.howItWorks.map((step, idx) => (
-                  <div key={idx} className="flex items-center gap-4">
-                    <span className="font-mono text-[13px] text-primary w-6 flex-shrink-0">{String(idx + 1).padStart(2, '0')}</span>
-                    <div className="flex-1 h-px bg-primary/10" />
-                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wider">{step}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* What You Get */}
-            <div className="bg-surface-container-low p-6 md:p-10">
-              <div className="mb-6">
-                <ScanBadge variant="tertiary">{language === 'en' ? 'What you get' : 'Qué recibes'}</ScanBadge>
-              </div>
-              <h2 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
-                {t.whatYouGet.title}
-              </h2>
-              <div className="space-y-3">
-                {t.whatYouGet.items.map((item, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <span className="font-mono text-tertiary-dim/70 text-sm flex-shrink-0 mt-0.5">✓</span>
-                    <span className="font-label text-[13px] font-medium text-on-surface-variant uppercase tracking-wide leading-relaxed">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          <WorkStrip
-            language={language}
-            title={{ en: 'Sites we shipped', es: 'Sitios que lanzamos' }}
-            items={[
-              { name: 'CONVEXO', href: 'https://www.convexo.xyz', img: '/screens/convexo.jpg', what: { en: 'Fintech site for LATAM businesses.', es: 'Sitio fintech para empresas de LATAM.' } },
-              { name: 'Apalancados', href: 'https://www.apalancados.tech', img: '/screens/apalancados.jpg', what: { en: 'Live trading education with an AI crypto portfolio manager.', es: 'Educación en trading en vivo con un gestor de portafolio cripto con IA.' } },
-              { name: 'MGM Autobroker', href: 'https://mgmautobroker.com', img: '/screens/mgm-autobroker.jpg', what: { en: 'Used-car marketplace with no-interest financing.', es: 'Marketplace de carros usados con financiación sin intereses.' } },
-            ]}
-          />
-
-          {/* What it's built with — the same band as the home page */}
-          <div className="-mx-6 my-12">
-            <ToolsBand />
-          </div>
 
           <BookCallPanel topic="web" />
 

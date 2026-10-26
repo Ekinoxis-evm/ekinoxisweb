@@ -187,8 +187,8 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   ├── services/
 │   │   ├── page.tsx             # 3 track cards (CONSULTANCY / DEVELOPMENT / ENGINEERING)
 │   │   ├── consultation/        # 5 topic cards + talks panel, 4-step funnel, 4 session formats (Focus / Roadmap Sprint / Workshop / Retainer)
-│   │   ├── web-development/     # 3 pricing tiers + process flow + deliverables
-│   │   └── app-building/        # Feature modules + tech stack + 6-step process + 3 tiers from content.ts services.pricing
+│   │   ├── web-development/     # Included chips → BuildLoop diagram (plan → build → rounds ring → live in 5 days) → tools → sites shipped → 3 packages → book-call panel
+│   │   └── app-building/        # BuildLoop diagram (diagnostic → demo → rounds ring → fit) → tools → work → 3 tiers from content.ts services.pricing (BuildLoop lives in src/components)
 │   ├── courses/
 │   │   ├── page.tsx             # Course grid from src/lib/courses.ts + "how we teach" + private-cohort CTA
 │   │   └── [slug]/
