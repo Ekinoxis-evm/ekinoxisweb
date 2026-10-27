@@ -212,7 +212,7 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
                   {date.toLocaleDateString(locale, { weekday: 'short' })}
                 </span>
                 <span className="block font-headline text-lg font-bold">{date.toLocaleDateString(locale, { day: 'numeric' })}</span>
-                <span className="block font-mono text-[10px] uppercase">{date.toLocaleDateString(locale, { month: 'short' })}</span>
+                <span className="block font-mono text-[11px] uppercase">{date.toLocaleDateString(locale, { month: 'short' })}</span>
               </button>
             );
           })}

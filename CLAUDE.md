@@ -240,6 +240,8 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 
 ## Design System — The Obsidian Architect
 
+> **`DESIGN.md` (visual system, north star "The Ekinox Lab") and `PRODUCT.md` (users, positioning, evidence) at the repo root are the authority for design work.** Read them before any UI change; this section is the quick reference. Run `impeccable detect --json src/app src/components` after UI edits.
+
 **Aesthetic**: Cypherpunk innovation lab. Sharp edges, high contrast, terminal viewports. No softness.
 
 ### Core Rules

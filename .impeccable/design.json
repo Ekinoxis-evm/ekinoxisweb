@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-27T00:43:16.902442+00:00",
+  "title": "Design System: Ekinoxis Labs",
+  "extensions": {
+    "colorMeta": {
+      "equinox-cyan": {
+        "role": "primary",
+        "displayName": "Equinox Cyan",
+        "canonical": "#8ff5ff",
+        "tonalRamp": [
+          "#003f43",
+          "#005d63",
+          "#006a71",
+          "#00a3ad",
+          "#00deec",
+          "#00eefc",
+          "#8ff5ff",
+          "#d6fbff"
+        ]
+      },
+      "cosmic-blue": {
+        "role": "secondary",
+        "displayName": "Cosmic Blue",
+        "canonical": "#9492ff",
+        "tonalRamp": [
+          "#100077",
+          "#1e00b1",
+          "#320aff",
+          "#3106ff",
+          "#625dff",
+          "#9492ff",
+          "#bfbdff",
+          "#dedcff"
+        ]
+      },
+      "signal-lime": {
+        "role": "tertiary",
+        "displayName": "Signal Lime",
+        "canonical": "#beee00",
+        "tonalRamp": [
+          "#3a4a00",
+          "#4a5e00",
+          "#516700",
+          "#7a9a00",
+          "#beee00",
+          "#cafd00",
+          "#e2ff7a",
+          "#f3ffca"
+        ]
+      },
+      "obsidian": {
+        "role": "neutral",
+        "displayName": "Obsidian",
+        "canonical": "#060f16",
+        "tonalRamp": [
+          "#000000",
+          "#060f16",
+          "#09151c",
+          "#0f1b23",
+          "#14212a",
+          "#192731",
+          "#1e2e38",
+          "#3f4951"
+        ]
+      },
+      "first-light": {
+        "role": "neutral",
+        "displayName": "First Light",
+        "canonical": "#e8f2fb",
+        "tonalRamp": [
+          "#3f4951",
+          "#4c565e",
+          "#8a949c",
+          "#a2acb5",
+          "#c3cdd6",
+          "#e8f2fb",
+          "#f5faff",
+          "#ffffff"
+        ]
+      },
+      "alert-coral": {
+        "role": "error",
+        "displayName": "Alert Coral",
+        "canonical": "#ff716c",
+        "tonalRamp": [
+          "#490006",
+          "#9f0519",
+          "#d7383b",
+          "#ff716c",
+          "#ffa8a3",
+          "#ffd2cf",
+          "#ffe8e6",
+          "#fff4f3"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles and the hero slogan; huge, tight, often uppercase."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and step titles, button labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, under ~65ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Mono eyebrows, metadata, chips and badges; 12px (11px badges only)."
+      },
+      "label-sm": {
+        "displayName": "Label Small",
+        "purpose": "Badges and tiny captions; the 11px floor."
+      },
+      "label-lg": {
+        "displayName": "Label Large",
+        "purpose": "Pricing and feature list items."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Card and popup descriptions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "action-glow",
+        "value": "0 0 30px rgba(143,245,255,0.4)",
+        "purpose": "Primary button hover."
+      },
+      {
+        "name": "ambient-glow",
+        "value": "0 0 20px rgba(143,245,255,0.2)",
+        "purpose": "Active node, icon tile or focused card."
+      },
+      {
+        "name": "arrival-glow",
+        "value": "0 0 20px rgba(190,238,0,0.25)",
+        "purpose": "The goal node of a diagram."
+      },
+      {
+        "name": "popup-halo",
+        "value": "0 0 60px rgba(143,245,255,0.12)",
+        "purpose": "Modals and the booking popup."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-settle",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one curve: reveals, banners, hero video, transitions."
+      },
+      {
+        "name": "rise",
+        "value": "rise 0.8s var(--ease-settle) both, 80ms stagger",
+        "purpose": "Above-the-fold header reveal in CSS (.rise)."
+      },
+      {
+        "name": "banner-settle",
+        "value": "2.8s var(--ease-settle)",
+        "purpose": "Page banners arrive slightly close and settle back."
+      },
+      {
+        "name": "surface-hover",
+        "value": "background-color 500ms",
+        "purpose": "Card hover surface shift."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1536px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action per screen, usually Book a free call.",
+      "html": "<button class=\"ds-btn-primary\">BOOK A FREE CALL <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14M12 5l7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;background:#8ff5ff;color:#005d63;font-family:'Space Grotesk',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-size:16px;padding:16px 32px;border:none;border-radius:0;cursor:pointer;transition:all .2s}.ds-btn-primary:hover{background:#00deec;box-shadow:0 0 30px rgba(143,245,255,0.4)}.ds-btn-primary:active{transform:scale(.95)}.ds-btn-primary:focus-visible{outline:2px solid #8ff5ff;outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The second action, e.g. See our work.",
+      "html": "<button class=\"ds-btn-ghost\">SEE OUR WORK</button>",
+      "css": ".ds-btn-ghost{background:transparent;color:#8ff5ff;border:1px solid rgba(143,245,255,0.2);font-family:'Space Grotesk',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-size:16px;padding:16px 32px;border-radius:0;cursor:pointer;transition:all .2s}.ds-btn-ghost:hover{background:#8ff5ff;color:#000;border-color:#8ff5ff}.ds-btn-ghost:focus-visible{outline:2px solid #8ff5ff;outline-offset:2px}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "One real label per section.",
+      "html": "<span class=\"ds-badge\">HOW WE BUILD</span> <span class=\"ds-badge ds-badge-muted\">DAY 1</span> <span class=\"ds-badge ds-badge-lime\">DAY 5</span>",
+      "css": ".ds-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:4px 8px;border:1px solid rgba(143,245,255,.3);color:#8ff5ff}.ds-badge-muted{color:#8a949c;border-color:rgba(63,73,81,.4)}.ds-badge-lime{color:#beee00;border-color:rgba(190,238,0,.3)}"
+    },
+    {
+      "name": "Chip Row",
+      "kind": "chip",
+      "refersTo": "badge-muted",
+      "description": "What's included, under a page title.",
+      "html": "<ul class=\"ds-chips\"><li>Admin panel</li><li>Card payments</li><li>WhatsApp booking</li></ul>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}.ds-chips li{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a2acb5;border:1px solid rgba(143,245,255,.2);background:rgba(9,21,28,.6);padding:6px 12px}"
+    },
+    {
+      "name": "Card Grid",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Gap-px grid: the 1px gap is the border.",
+      "html": "<div class=\"ds-grid\"><div class=\"ds-card\"><span class=\"ds-num\">01</span><h3>We build in public</h3><p>We share what others can reuse.</p></div><div class=\"ds-card\"><span class=\"ds-num\">02</span><h3>Privacy first</h3><p>We keep as little data as possible.</p></div></div>",
+      "css": ".ds-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(143,245,255,.1)}.ds-card{background:#09151c;padding:40px;transition:background-color .5s}.ds-card:hover{background:#0f1b23}.ds-card h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;letter-spacing:-.05em;color:#e8f2fb;margin:12px 0 8px}.ds-card:hover h3{color:#8ff5ff}.ds-card p{font-family:Inter,sans-serif;font-size:15px;line-height:1.6;color:#a2acb5;margin:0}.ds-num{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;color:#8ff5ff}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Booking form field.",
+      "html": "<label class=\"ds-label\">EMAIL<input class=\"ds-input\" placeholder=\"you@company.com\"></label>",
+      "css": ".ds-label{display:block;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a949c}.ds-input{display:block;width:100%;margin-top:8px;background:#14212a;border:1px solid rgba(63,73,81,.3);border-radius:0;color:#e8f2fb;font-family:Inter,sans-serif;font-size:16px;padding:12px 16px;outline:none;transition:border-color .2s}.ds-input:focus{border-color:rgba(143,245,255,.6)}.ds-input::placeholder{color:#8a949c}"
+    },
+    {
+      "name": "Light Line",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Steps as nodes on one cyan line that warms to lime at the goal.",
+      "html": "<div class=\"ds-line\"><div class=\"ds-rail\"></div><div class=\"ds-node\">1</div><div class=\"ds-node\">2</div><div class=\"ds-node ds-goal\">✓</div></div>",
+      "css": ".ds-line{position:relative;display:flex;justify-content:space-between;padding:20px 8px;background:#09151c}.ds-rail{position:absolute;left:36px;right:36px;top:47px;height:1px;background:linear-gradient(90deg,rgba(143,245,255,.7),rgba(143,245,255,.4),rgba(190,238,0,.7))}.ds-node{position:relative;width:56px;height:56px;border-radius:9999px;border:1px solid rgba(143,245,255,.4);background:#000;color:#8ff5ff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700}.ds-goal{border-color:#beee00;color:#beee00;box-shadow:0 0 20px rgba(190,238,0,.25)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ekinox Lab",
+    "overview": "Ekinoxis takes its name from the equinox, the moment light and dark stand in balance.\nThe site is that moment, built as a lab: a near-black ground (the dark before), one\nline of Equinox Cyan light running through it (the technology), and everything on the\npage *settling into the light* as it arrives. Imagery follows the same rule: a dark\nhalf and a lit half, cyan light, no text, no logos, no faces.\n\nThe lab part is precision, not noise. Sharp corners, hairline grid gaps, a single\nmonospaced label per section, prices and steps stated plainly. The terminal heritage\n(the old \"Obsidian Architect\" system) survives as a touch, mono labels and one badge,\nnever as fake UIDs, glitch effects or console chatter. It reads as high-end and\ncalm: glow is earned by the one action that matters on screen, usually *Book a free\ncall*.\n\nIt must work first on a phone, in English and in Spanish, for a business owner who\ndecides in minutes. Ambition shows as clarity and craft, not as decoration.",
+    "keyCharacteristics": [
+      "Near-black tonal layers, never flat grey; depth by surface shift, not shadow.",
+      "One cyan line of light per composition: the hero horizon, the step line, the active",
+      "0px corners everywhere; pills (`rounded-full`) only for dots and nodes.",
+      "Space Grotesk headlines set huge and tight against tiny mono labels.",
+      "Motion on one curve, *Settle*: fast out, long soft landing."
+    ],
+    "rules": [
+      {
+        "name": "The One Light Rule",
+        "body": "Each screen has one cyan focal point: the primary action or the",
+        "section": "colors"
+      },
+      {
+        "name": "The Full-Strength Text Rule",
+        "body": "Text never uses an opacity step of a colour",
+        "section": "colors"
+      },
+      {
+        "name": "The Lime Means Arrival Rule",
+        "body": "Signal Lime marks an end state: done, live, the goal.",
+        "section": "colors"
+      },
+      {
+        "name": "The 11px Floor Rule",
+        "body": "Nothing on the site is smaller than 11px, and 11px is for",
+        "section": "typography"
+      },
+      {
+        "name": "The Plain Headline Rule",
+        "body": "Headlines say what the visitor gets, in plain words; the",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Drop-Shadow Rule",
+        "body": "No dark drop shadows anywhere. If something must lift, it",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep every text colour at full strength; Slate Label (#8a949c) is the floor for",
+      "Do reveal above-the-fold headers with the CSS `.rise` class so they paint with the",
+      "Do use the Settle curve (`cubic-bezier(0.16, 1, 0.3, 1)`, `EASE_SETTLE` /",
+      "Do draw grid borders with `gap-px bg-primary/10`, not `border` lines.",
+      "Do give images an empty alt when the name is printed beside them.",
+      "Do keep one primary action per screen and route every booking button to the",
+      "Do keep tap targets ≥44px and the main CTA full width on phones."
+    ],
+    "donts": [
+      "Don't use `rounded-sm` through `rounded-3xl`; corners are 0px, pills only for dots",
+      "Don't use dark drop shadows; use surface steps or a cyan glow.",
+      "Don't fade text with opacity steps (`text-outline/40–70`); it fails contrast.",
+      "Don't set text below 11px (glyph arrows and calendar captions included), or running labels below 12px.",
+      "Don't add fake terminal chrome: system UIDs, glitch flicker, console prompts.",
+      "Don't start above-the-fold content at `opacity: 0` in JavaScript; it delays the",
+      "Don't let a badge stretch full width in a stacked flex column (`items-start`).",
+      "Don't use `cyber-blue` / `cyber-purple` aliases in new code."
+    ]
+  }
+}

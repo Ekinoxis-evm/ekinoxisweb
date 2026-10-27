@@ -223,7 +223,7 @@ export default function Navigation() {
                         className="w-full text-left py-4 font-label text-[13px] font-medium uppercase tracking-tighter text-on-surface-variant flex items-center justify-between"
                       >
                         {menu.label}
-                        <span className="text-[10px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
+                        <span className="text-[11px] text-outline">{expandedMenu === key ? '▲' : '▼'}</span>
                       </button>
                       {expandedMenu === key && (
                         <div className="pb-2 flex flex-col">
@@ -299,7 +299,7 @@ function DropdownMenu({
             onClick={() => setExpanded(isOpen ? null : menuKey)}
             aria-label={`${label} menu`}
             aria-expanded={isOpen}
-            className="pl-1 pr-4 py-2 text-[8px] text-outline hover:text-primary transition-colors duration-200"
+            className="pl-1 pr-4 py-2 text-[11px] text-outline hover:text-primary transition-colors duration-200"
           >
             {isOpen ? '▲' : '▼'}
           </button>
@@ -310,7 +310,7 @@ function DropdownMenu({
           className={`${linkBase} ${isActive ? linkActive : linkInactive} flex items-center gap-1`}
         >
           {label}
-          <span className="text-[10px] text-outline">{isOpen ? '▲' : '▼'}</span>
+          <span className="text-[11px] text-outline">{isOpen ? '▲' : '▼'}</span>
         </button>
       )}
       <AnimatePresence>

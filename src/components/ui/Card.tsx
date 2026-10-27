@@ -30,7 +30,7 @@ export default function Card({
   const content = (
     <>
       {uid && (
-        <span className="absolute top-0 right-0 p-2 font-mono text-[8px] text-outline bg-surface-container-high tracking-widest uppercase">
+        <span className="absolute top-0 right-0 p-2 font-mono text-[11px] text-outline bg-surface-container-high tracking-widest uppercase">
           {uid}
         </span>
       )}
