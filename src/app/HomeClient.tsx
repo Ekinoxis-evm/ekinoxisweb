@@ -16,6 +16,7 @@ import { ToolsBand } from '@/components/LogoBands';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 import { useBookCall } from '@/components/BookCall';
+import { DIVISIONS } from '@/lib/portfolio';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
 const FEATURED = ['CONVEXO', 'ETHCALI app'];
@@ -79,12 +80,15 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const clients = products.filter((p) => p.project_type === 'client' && p.logo_url);
   const featured = FEATURED.map((name) => products.find((p) => p.name === name))
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
-  const shipped = products.length;
   const hackathonCount = hackathons.length;
 
-  const numbers = [
-    { value: String(shipped), label: en ? 'Projects shipped' : 'Proyectos lanzados' },
-    { value: String(clients.length), label: en ? 'Client builds' : 'Proyectos para clientes' },
+  // One tile per portfolio division, so the total is split the same way /portfolio is.
+  const numbers: { value: string; label: string; href?: string }[] = [
+    ...DIVISIONS.map((d) => ({
+      value: String(products.filter((p) => p.project_type === d.type).length),
+      label: d[language].short,
+      href: `/portfolio/${d.slug}`,
+    })),
     { value: String(hackathonCount), label: en ? 'Hackathons' : 'Hackathons' },
     { value: String(hackerCount), label: en ? 'Builders in the lab' : 'Builders en el lab' },
   ];
@@ -146,14 +150,30 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10"
         >
-          {numbers.map((n) => (
-            <motion.div key={n.label} variants={fadeInUp} className="bg-black p-8 md:p-12">
-              <dd className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-surface mb-3">{n.value}</dd>
-              <dt className="font-mono text-[12px] text-outline uppercase tracking-widest">{n.label}</dt>
-            </motion.div>
-          ))}
+          {numbers.map((n) => {
+            const body = (
+              <>
+                <dd className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-surface mb-3 group-hover:text-primary transition-colors">{n.value}</dd>
+                <dt className="flex items-center gap-2 font-mono text-[12px] text-outline uppercase tracking-widest">
+                  {n.label}
+                  {n.href && <ArrowUpRight size={14} className="text-outline group-hover:text-primary transition-colors" />}
+                </dt>
+              </>
+            );
+            return (
+              <motion.div key={n.label} variants={fadeInUp} className="bg-black">
+                {n.href ? (
+                  <Link href={n.href} className="group block h-full p-8 md:p-12 hover:bg-surface-container-low transition-colors duration-500">
+                    {body}
+                  </Link>
+                ) : (
+                  <div className="p-8 md:p-12">{body}</div>
+                )}
+              </motion.div>
+            );
+          })}
         </motion.dl>
       </section>
 

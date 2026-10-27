@@ -44,6 +44,14 @@ description: The complete map of the Ekinoxis Labs ecosystem — every product, 
 | Nido App | (links closed) | — | Tokenized governance community channeling public tech budgets to accelerate Valle del Cauca's tech industry; supports Cámara de Comercio de Cali, Alcaldía, Gobernación del Valle, Comfandi |
 | DogCare AI | — | `dogcareai` | Consumer AI agent experiment |
 
+## SPLIT RULE (settled 2026-10-27) — supersedes the tables above where they disagree
+
+- **Experiments** (`experiment`) = built at a hackathon, linked via `hackathon_id`. ORBIT (orbit.ekinoxis.xyz, `orbit`, 30X Hackathon 2026) · KREDITOS (www.kreditos.xyz, `thelender`, ETHGlobal New York 2026) · P2PAI (www.p2pai.xyz, `wmb81321/p2pai`, ETHGlobal HackMoney 2026 — built 1–14 May, not ETHOnline) · ZBricks · AUKTRAFI · Conservationix.
+- **Proofs of concept** (`poc`) = built for a client or for us. The Guild · DogChain · CARP2P/TCARS · Shopper Center · Cuadra · Ekinoxis Ads (moved 2026-10-27; none came from a hackathon).
+- **DogChain** replaced the DogCare AI row (`wmb81321/dogchain`, dog-space rental on Base); dogcareai is a sub-link. It is being rebuilt as **Dogi** (`~/Documents/ekinoxis/dogi`, Privy + Mercado Pago marketplace, target dogi.ekinoxis.xyz). Rename the card and add the live link only once Dogi is deployed.
+- Kreditos and P2PAI are both their own experiment cards and modules inside the CONVEXO `sub_links`.
+- The home page counts one tile per division (from `DIVISIONS`) plus hackathons and builders.
+
 ## People
 
 - William Martinez — Founder & Product Manager — personal site www.0xwomb.xyz (Vercel `0xwmb`)

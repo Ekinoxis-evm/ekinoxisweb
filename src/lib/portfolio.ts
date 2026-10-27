@@ -51,13 +51,13 @@ export const DIVISIONS: Division[] = [
       title: 'EXPERIMENTS',
       short: 'Experiments',
       description:
-        'Live, but still being tested. Some become products. Some stay here.',
+        'Built at hackathons, against the clock. Public, so you can see what we ship under pressure. Some become products.',
     },
     es: {
       title: 'EXPERIMENTOS',
       short: 'Experimentos',
       description:
-        'En vivo, pero todavía a prueba. Algunos se vuelven productos. Otros se quedan aquí.',
+        'Construidos en hackathons, contra el reloj. Públicos, para que veas qué entregamos bajo presión. Algunos se vuelven productos.',
     },
   },
   {
@@ -70,13 +70,13 @@ export const DIVISIONS: Division[] = [
       title: 'PROOFS OF CONCEPT',
       short: 'Proofs of Concept',
       description:
-        'Built in a weekend to answer one question. Public, so you can see what we do under pressure.',
+        'Built to answer one question before anyone spends real money: will this idea work? Some for a client, some for us.',
     },
     es: {
       title: 'PRUEBAS DE CONCEPTO',
       short: 'Pruebas de Concepto',
       description:
-        'Construidas en un fin de semana para responder una pregunta. Públicas, para que veas qué hacemos bajo presión.',
+        'Construidas para responder una pregunta antes de invertir en serio: ¿funciona esta idea? Algunas para un cliente, otras para nosotros.',
     },
   },
   {
