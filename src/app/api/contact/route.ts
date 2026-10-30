@@ -40,6 +40,35 @@ function rateLimited(ip: string): boolean {
   return false;
 }
 
+/**
+ * Only a production deployment may write to `public.leads`. Local dev (`next dev`
+ * after `vercel env pull`) and preview deployments carry the same service-role
+ * key as production, so without this guard every test booking lands in the real
+ * table (that is how the localhost lead of 2026-10-25 got there).
+ *
+ * - VERCEL_ENV is set by Vercel: 'production' | 'preview' | 'development'.
+ *   It is unset under a plain `next dev`.
+ * - LEADS_WRITE_ENABLED=true is the explicit opt-in for a separate dev database.
+ */
+function leadsWritesEnabled(): boolean {
+  return process.env.VERCEL_ENV === 'production' || process.env.LEADS_WRITE_ENABLED === 'true';
+}
+
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '[::1]', '::1']);
+
+/** True when the form was submitted from a local dev server (Origin or Referer). */
+function fromLocalhost(request: NextRequest): boolean {
+  for (const h of [request.headers.get('origin'), request.headers.get('referer')]) {
+    if (!h) continue;
+    try {
+      if (LOCAL_HOSTS.has(new URL(h).hostname)) return true;
+    } catch {
+      /* not a URL — ignore */
+    }
+  }
+  return false;
+}
+
 function clean(v: unknown, max: number): string | null {
   if (typeof v !== 'string') return null;
   const t = v.trim();
@@ -108,6 +137,13 @@ export async function POST(request: NextRequest) {
     language,
     meeting_at: meetingAt,
   };
+
+  // Dev / preview / localhost: validate as usual, but never touch the production
+  // table or ping Telegram. The form still sees a success so it can be tested.
+  if (!leadsWritesEnabled() || fromLocalhost(request)) {
+    console.info('[contact] dry run, lead not saved:', { env: process.env.VERCEL_ENV ?? 'local', topic, language, source_path: row.source_path });
+    return NextResponse.json({ ok: true, dryRun: true });
+  }
 
   const db = createServiceClient();
   const { data, error } = await db.from('leads').insert(row).select('id').single();
