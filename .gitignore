@@ -41,3 +41,7 @@ next-env.d.ts
 
 # Brand design sources with contact details — not needed by the site, and the repo is public
 public/brand/contact-cards/
+
+# local tool output
+.playwright-mcp/
+.impeccable/critique/

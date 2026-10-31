@@ -48,7 +48,7 @@ description: The complete map of the Ekinoxis Labs ecosystem — every product, 
 
 - **Experiments** (`experiment`) = built at a hackathon, linked via `hackathon_id`. ORBIT (orbit.ekinoxis.xyz, `orbit`, 30X Hackathon 2026) · KREDITOS (www.kreditos.xyz, `thelender`, ETHGlobal New York 2026) · P2PAI (www.p2pai.xyz, `wmb81321/p2pai`, ETHGlobal HackMoney 2026 — built 1–14 May, not ETHOnline) · ZBricks · AUKTRAFI · Conservationix.
 - **Proofs of concept** (`poc`) = built for a client or for us. The Guild · DogChain · CARP2P/TCARS · Shopper Center · Cuadra · Ekinoxis Ads (moved 2026-10-27; none came from a hackathon).
-- **DogChain** replaced the DogCare AI row (`wmb81321/dogchain`, dog-space rental on Base); dogcareai is a sub-link. It is being rebuilt as **Dogi** (`~/Documents/ekinoxis/dogi`, Privy + Mercado Pago marketplace, target dogi.ekinoxis.xyz). Rename the card and add the live link only once Dogi is deployed.
+- **DOGI** (dogi.ekinoxis.xyz, `Ekinoxis-evm/dogi`) replaced the DogChain / DogCare AI card on 2026-10-27; DogChain is legacy and not shown.
 - Kreditos and P2PAI are both their own experiment cards and modules inside the CONVEXO `sub_links`.
 - The home page counts one tile per division (from `DIVISIONS`) plus hackathons and builders.
 
