@@ -103,3 +103,21 @@ export const DIVISIONS: Division[] = [
 export function getDivision(slug: string): Division | undefined {
   return DIVISIONS.find((d) => d.slug === slug)
 }
+
+/** The division a product row is shown in. */
+export function divisionForType(type: string | null | undefined): Division | undefined {
+  return DIVISIONS.find((d) => d.type === (type ?? 'product'))
+}
+
+/**
+ * A row has a case-study page once it has a slug and a body in at least one
+ * language. Cards link to it only then, so a half-filled row never 404s.
+ */
+export function hasCaseStudy(p: { slug?: string | null; case_study_en?: string | null; case_study_es?: string | null }): boolean {
+  return Boolean(p.slug && (p.case_study_en?.trim() || p.case_study_es?.trim()))
+}
+
+export function caseStudyHref(p: { slug?: string | null; project_type?: string | null }): string | null {
+  const division = divisionForType(p.project_type)
+  return p.slug && division ? `/portfolio/${division.slug}/${p.slug}` : null
+}

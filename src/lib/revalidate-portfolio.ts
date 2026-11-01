@@ -8,4 +8,6 @@ import { DIVISIONS } from '@/lib/portfolio'
 export function revalidatePortfolio() {
   revalidatePath('/portfolio')
   for (const d of DIVISIONS) revalidatePath(`/portfolio/${d.slug}`)
+  // Case-study pages: a slug can be added, renamed or removed in one save.
+  revalidatePath('/portfolio/[division]/[slug]', 'page')
 }

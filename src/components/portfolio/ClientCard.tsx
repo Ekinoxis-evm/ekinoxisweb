@@ -2,6 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { content } from '@/lib/content';
+import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { fadeInUp } from '@/lib/animations';
 import type { ProductWithRelations } from '@/lib/supabase/types';
@@ -21,6 +24,7 @@ interface Props {
 export default function ClientCard({ client, language }: Props) {
   const desc = language === 'en' ? client.description_en : client.description_es;
   const logo = client.logo_url || client.image_url || null;
+  const study = hasCaseStudy(client) ? caseStudyHref(client) : null;
 
   return (
     <motion.div
@@ -65,6 +69,14 @@ export default function ClientCard({ client, language }: Props) {
         </p>
 
         <div className="mt-auto border-t border-outline-variant/20 pt-4 flex flex-wrap items-center gap-2">
+          {study && (
+            <Link
+              href={study}
+              className="font-mono text-[11px] uppercase tracking-widest px-3 py-2 bg-primary/10 border border-primary/40 text-primary hover:bg-primary hover:text-surface-container-lowest hover:border-primary transition-colors duration-200"
+            >
+              {content[language].portfolio.caseStudy.read}
+            </Link>
+          )}
           {client.website_url && (
             <a
               href={client.website_url}

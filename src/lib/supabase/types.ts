@@ -330,11 +330,14 @@ export type Database = {
       products: {
         Row: {
           app_url: string | null
+          case_study_en: string | null
+          case_study_es: string | null
           categories: string[]
           created_at: string
           description_en: string
           description_es: string
           display_order: number
+          gallery: string[]
           hackathon_id: string | null
           hackathon_link: string | null
           id: string
@@ -343,9 +346,11 @@ export type Database = {
           logo_url: string | null
           name: string
           project_type: string
+          proof: Json
           repo_backend: string | null
           repo_contracts: string | null
           repo_frontend: string | null
+          slug: string | null
           status: Database["public"]["Enums"]["product_status"]
           sub_links: Json
           technologies: string[]
@@ -354,11 +359,14 @@ export type Database = {
         }
         Insert: {
           app_url?: string | null
+          case_study_en?: string | null
+          case_study_es?: string | null
           categories?: string[]
           created_at?: string
           description_en: string
           description_es: string
           display_order?: number
+          gallery?: string[]
           hackathon_id?: string | null
           hackathon_link?: string | null
           id?: string
@@ -367,9 +375,11 @@ export type Database = {
           logo_url: string | null
           name: string
           project_type?: string
+          proof?: Json
           repo_backend?: string | null
           repo_contracts?: string | null
           repo_frontend?: string | null
+          slug?: string | null
           status?: Database["public"]["Enums"]["product_status"]
           sub_links?: Json
           technologies?: string[]
@@ -378,11 +388,14 @@ export type Database = {
         }
         Update: {
           app_url?: string | null
+          case_study_en?: string | null
+          case_study_es?: string | null
           categories?: string[]
           created_at?: string
           description_en?: string
           description_es?: string
           display_order?: number
+          gallery?: string[]
           hackathon_id?: string | null
           hackathon_link?: string | null
           id?: string
@@ -391,9 +404,11 @@ export type Database = {
           logo_url?: string | null
           name?: string
           project_type?: string
+          proof?: Json
           repo_backend?: string | null
           repo_contracts?: string | null
           repo_frontend?: string | null
+          slug?: string | null
           status?: Database["public"]["Enums"]["product_status"]
           sub_links?: Json
           technologies?: string[]
@@ -652,6 +667,9 @@ export type ProjectType = 'product' | 'client' | 'experiment' | 'poc'
 
 // Sub-project link shown on umbrella cards (e.g. the CONVEXO suite)
 export type SubLink = { label: string; url?: string | null; repo?: string | null }
+
+/** One piece of evidence on a case study: a contract on an explorer, an archived deck, press. */
+export type ProofItem = { label: string; url?: string | null; chain?: string | null; address?: string | null }
 
 // Product with joined hackathon + hackers
 export type ProductWithRelations = Product & {

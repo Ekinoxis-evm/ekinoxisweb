@@ -79,6 +79,13 @@ export async function getProductById(id: string): Promise<ProductWithRelations |
   }
 }
 
+/** A portfolio row by its case-study slug, or null when there is none. */
+export async function getProductBySlug(slug: string): Promise<ProductWithRelations | null> {
+  const supabase = await createClient()
+  const { data } = await supabase.from('products').select('id').eq('slug', slug).maybeSingle()
+  return data ? getProductById(data.id) : null
+}
+
 // ============================================
 // HACKERS
 // ============================================

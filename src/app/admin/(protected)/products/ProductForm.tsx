@@ -7,7 +7,15 @@ import AdminTextarea from '../components/AdminTextarea';
 import AdminSelect from '../components/AdminSelect';
 import TagInput from '../components/TagInput';
 import ImageUpload from '../components/ImageUpload';
-import type { ProductWithRelations, Hackathon, Hacker, SubLink } from '@/lib/supabase/types';
+import type { ProductWithRelations, Hackathon, Hacker, SubLink, ProofItem } from '@/lib/supabase/types';
+import { caseStudyHref } from '@/lib/portfolio';
+
+const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** "Isla Cangrejo!" → "isla-cangrejo" */
+function slugify(v: string) {
+  return v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
 
 interface ProductFormProps {
   product?: ProductWithRelations
@@ -61,6 +69,18 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
     Array.isArray(product?.sub_links) ? (product!.sub_links as SubLink[]) : []
   );
 
+  const [slug, setSlug] = useState(product?.slug ?? '');
+  const [caseEn, setCaseEn] = useState(product?.case_study_en ?? '');
+  const [caseEs, setCaseEs] = useState(product?.case_study_es ?? '');
+  const [proof, setProof] = useState<ProofItem[]>(
+    Array.isArray(product?.proof) ? (product!.proof as ProofItem[]) : []
+  );
+  const [gallery, setGallery] = useState<string[]>(product?.gallery ?? []);
+
+  function updateProof(idx: number, field: keyof ProofItem, value: string) {
+    setProof((prev) => prev.map((p, i) => (i === idx ? { ...p, [field]: value } : p)));
+  }
+
   function updateSubLink(idx: number, field: keyof SubLink, value: string) {
     setSubLinks((prev) => prev.map((sl, i) => (i === idx ? { ...sl, [field]: value } : sl)));
   }
@@ -73,8 +93,16 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setSaving(true);
     setError('');
+    if (slug && !SLUG_RE.test(slug)) {
+      setError('Slug: lowercase letters, numbers and single dashes only (e.g. isla-cangrejo)');
+      return;
+    }
+    if ((caseEn.trim() || caseEs.trim()) && !slug) {
+      setError('A case study needs a slug — it is the page URL');
+      return;
+    }
+    setSaving(true);
 
     try {
       const payload = {
@@ -91,6 +119,18 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         sub_links: subLinks
           .filter((sl) => sl.label?.trim())
           .map((sl) => ({ label: sl.label.trim(), url: sl.url || null, repo: sl.repo || null })),
+        slug: slug || null,
+        case_study_en: caseEn.trim() || null,
+        case_study_es: caseEs.trim() || null,
+        proof: proof
+          .filter((p) => p.label?.trim())
+          .map((p) => ({
+            label: p.label.trim(),
+            url: p.url?.trim() || null,
+            chain: p.chain?.trim().toLowerCase() || null,
+            address: p.address?.trim() || null,
+          })),
+        gallery: gallery.map((g) => g.trim()).filter(Boolean),
         hackerIds: selectedHackers,
       };
 
@@ -212,6 +252,88 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
             + ADD MODULE
           </button>
         </div>
+      </div>
+
+      {/* Case study */}
+      <div className="bg-surface-container-low border border-outline-variant/20 p-8 mb-4">
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mb-2">CASE STUDY</p>
+        <p className="font-mono text-[11px] text-outline tracking-widest uppercase mb-6">
+          The page appears once it has a slug and a body. Format: ## heading · - list item · **bold** · [text](https://…)
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="md:col-span-2">
+            <AdminInput
+              label="Slug"
+              value={slug}
+              onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-'))}
+              onBlur={() => setSlug((v) => slugify(v))}
+              placeholder="isla-cangrejo"
+              hint={slug ? `URL: ${caseStudyHref({ slug, project_type: projectType }) ?? '—'}` : 'Lowercase, dashes. Becomes the page URL.'}
+            />
+          </div>
+          <AdminTextarea label="Case study (EN)" value={caseEn} onChange={(e) => setCaseEn(e.target.value)} rows={16} />
+          <AdminTextarea label="Case study (ES)" value={caseEs} onChange={(e) => setCaseEs(e.target.value)} rows={16} />
+        </div>
+
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mt-8 mb-2">PROOF</p>
+        <p className="font-mono text-[11px] text-outline tracking-widest uppercase mb-6">
+          Contracts, archived decks, press. With chain + address and no URL, the link goes to Blockscout.
+        </p>
+        <div className="flex flex-col gap-4">
+          {proof.map((p, idx) => (
+            <div key={idx} className="grid grid-cols-1 md:grid-cols-[1.2fr_1.5fr_0.8fr_1.5fr_auto] gap-3 items-end">
+              <AdminInput label="Label" value={p.label ?? ''} onChange={(e) => updateProof(idx, 'label', e.target.value)} placeholder="Fauna NFT collection" />
+              <AdminInput label="URL" value={p.url ?? ''} onChange={(e) => updateProof(idx, 'url', e.target.value)} placeholder="https://…" />
+              <AdminInput label="Chain" value={p.chain ?? ''} onChange={(e) => updateProof(idx, 'chain', e.target.value)} placeholder="optimism" />
+              <AdminInput label="Address" value={p.address ?? ''} onChange={(e) => updateProof(idx, 'address', e.target.value)} placeholder="0x…" />
+              <button
+                type="button"
+                onClick={() => setProof((prev) => prev.filter((_, i) => i !== idx))}
+                className="font-mono text-[12px] uppercase tracking-widest px-4 py-3 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
+              >
+                REMOVE
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setProof((prev) => [...prev, { label: '', url: '', chain: '', address: '' }])}
+            className="self-start font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60 transition-colors duration-200"
+          >
+            + ADD PROOF
+          </button>
+        </div>
+
+        <p className="font-mono text-[12px] text-outline tracking-widest uppercase mt-8 mb-2">GALLERY</p>
+        <p className="font-mono text-[11px] text-outline tracking-widest uppercase mb-6">
+          Screenshots. Take them before a project&apos;s hosting or database is shut down.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {gallery.map((g, idx) => (
+            <div key={idx} className="flex flex-col gap-2">
+              <ImageUpload
+                label={`Screen ${idx + 1}`}
+                value={g}
+                onChange={(url) => setGallery((prev) => prev.map((x, i) => (i === idx ? url : x)))}
+                folder="products"
+              />
+              <button
+                type="button"
+                onClick={() => setGallery((prev) => prev.filter((_, i) => i !== idx))}
+                className="self-start font-mono text-[12px] uppercase tracking-widest px-4 py-2 border border-error/30 text-error/60 hover:text-error hover:border-error/60 transition-colors duration-200"
+              >
+                REMOVE
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setGallery((prev) => [...prev, ''])}
+          className="mt-4 font-mono text-[12px] uppercase tracking-widest px-6 py-3 border border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60 transition-colors duration-200"
+        >
+          + ADD SCREEN
+        </button>
       </div>
 
       {/* Hackathon */}

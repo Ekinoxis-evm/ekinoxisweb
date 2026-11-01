@@ -1,10 +1,19 @@
 import type { MetadataRoute } from 'next';
 import { courses } from '@/lib/courses';
-import { DIVISIONS } from '@/lib/portfolio';
+import { DIVISIONS, caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
+import { getProducts } from '@/lib/supabase/queries';
 
 const BASE = 'https://www.ekinoxis.xyz';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Case studies come from the database; an empty list just leaves them out.
+  const studies = (await getProducts())
+    .filter(hasCaseStudy)
+    .map(caseStudyHref)
+    .filter((h): h is string => Boolean(h));
+
   const routes = [
     '',
     '/services',
@@ -13,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/services/app-building',
     '/portfolio',
     ...DIVISIONS.map((d) => `/portfolio/${d.slug}`),
+    ...studies,
     '/courses',
     ...courses.map((c) => `/courses/${c.slug}`),
     '/education',

@@ -2,6 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { content } from '@/lib/content';
+import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import { fadeInUp } from '@/lib/animations';
@@ -74,6 +77,7 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
   // image_url is the cover (a screenshot of the product); logo_url is the mark on top of it.
   const cover = product.image_url || null;
   const logo = product.logo_url || null;
+  const study = hasCaseStudy(product) ? caseStudyHref(product) : null;
 
   return (
     <motion.div
@@ -164,6 +168,14 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
 
         <div className="mt-auto border-t border-outline-variant/20 pt-4 flex flex-col gap-2">
           <div className="flex gap-2 flex-wrap">
+            {study && (
+              <Link
+                href={study}
+                className="inline-flex items-center py-2 px-4 text-xs bg-primary/10 border border-primary/40 text-primary font-headline font-bold uppercase tracking-widest hover:bg-primary hover:text-surface-container-lowest transition-colors duration-200"
+              >
+                {content[language].portfolio.caseStudy.read}
+              </Link>
+            )}
             {product.app_url && (
               <a href={product.app_url} target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="sm">App</Button>
