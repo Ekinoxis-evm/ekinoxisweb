@@ -704,30 +704,22 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         <input id={id('website')} name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* Step marker: one light on the current step */}
-      <ol className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-widest" aria-label={`${stepIndex + 1} ${t.of} ${steps.length}`}>
-        {steps.map((s, i) => {
-          const current = s.n === step;
-          const done = s.n < step;
-          return (
-            <li key={s.n} className="flex items-center gap-3">
-              {i > 0 && <span aria-hidden className={`h-px w-5 ${done || current ? 'bg-primary' : 'bg-outline-variant'}`} />}
-              <button
-                type="button"
-                onClick={() => done && setStep(s.n)}
-                disabled={!done}
-                aria-current={current ? 'step' : undefined}
-                className={`flex items-center gap-2 py-1 ${current ? 'text-primary' : done ? 'text-on-surface-variant hover:text-primary' : 'text-outline'} disabled:cursor-default`}
-              >
-                <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] ${current ? 'border-primary bg-primary text-surface-container-lowest' : done ? 'border-primary text-primary' : 'border-outline-variant'}`}>
-                  {i + 1}
-                </span>
-                {s.name}
-              </button>
-            </li>
-          );
-        })}
-      </ol>
+      {/* Progress: one segment per step, the current one lit; the same bar on a phone and a laptop */}
+      <div aria-label={`${stepIndex + 1} ${t.of} ${steps.length}`}>
+        <div className="mb-2 flex items-baseline justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
+          <span className="text-primary">{steps[stepIndex]?.name}</span>
+          <span className="text-outline">{stepIndex + 1} / {steps.length}</span>
+        </div>
+        <ol className="grid gap-1" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+          {steps.map((s, i) => (
+            <li
+              key={s.n}
+              aria-current={s.n === step ? 'step' : undefined}
+              className={`h-1 transition-colors duration-500 ${i <= stepIndex ? 'bg-primary' : 'bg-outline-variant/40'}`}
+            />
+          ))}
+        </ol>
+      </div>
 
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
