@@ -98,6 +98,9 @@ const COPY = {
     sentBody: 'We will reach out on WhatsApp or email, normally the same working day.',
     sentBodyCall: 'Your call is booked. The invite is on its way to your email, and we will confirm on WhatsApp.',
     errorGeneric: 'Something went wrong. Try again, or write to hola@ekinoxis.xyz.',
+    processTitle: 'What happens next',
+    processCall: ['Pick a time', 'We call you on WhatsApp', 'You leave with the next step'],
+    processMessage: ['Send it', 'We reply within a working day', 'We agree the next step'],
   },
   es: {
     stepService: 'Servicio',
@@ -159,6 +162,9 @@ const COPY = {
     sentBody: 'Te contactamos por WhatsApp o correo, normalmente el mismo día hábil.',
     sentBodyCall: 'Tu llamada quedó agendada. La invitación va en camino a tu correo y confirmamos por WhatsApp.',
     errorGeneric: 'Algo salió mal. Intenta de nuevo, o escribe a hola@ekinoxis.xyz.',
+    processTitle: 'Qué sigue',
+    processCall: ['Elige la hora', 'Te llamamos por WhatsApp', 'Sales con el siguiente paso'],
+    processMessage: ['Envíalo', 'Respondemos en un día hábil', 'Acordamos el siguiente paso'],
   },
 };
 
@@ -356,15 +362,51 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
     }
   }
 
+  /** The three beats after booking, as nodes on the light line (the site's process diagram, small). */
+  const process = (done: boolean) => {
+    const items = slotRequired || slot ? t.processCall : t.processMessage;
+    return (
+      <div>
+        <p className={label}>{t.processTitle}</p>
+        <ol className="relative grid grid-cols-3 gap-2">
+          <span aria-hidden className="absolute left-[16%] right-[16%] top-3 h-px bg-gradient-to-r from-primary/70 via-primary/40 to-tertiary-dim/70" />
+          {items.map((item, i) => {
+            const goal = i === items.length - 1;
+            const lit = done || i === 0;
+            return (
+              <li key={item} className="relative flex flex-col items-center text-center gap-2">
+                <span
+                  className={`flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[11px] ${
+                    goal
+                      ? `border-tertiary-dim ${done ? 'bg-tertiary-dim text-surface-container-lowest shadow-[0_0_20px_rgba(190,238,0,0.25)]' : 'bg-surface-container-low text-tertiary-dim'}`
+                      : lit
+                        ? 'border-primary bg-primary text-surface-container-lowest'
+                        : 'border-primary/50 bg-surface-container-low text-primary'
+                  }`}
+                >
+                  {i + 1}
+                </span>
+                <span className={`font-mono text-[12px] uppercase tracking-wide leading-snug ${goal ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{item}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    );
+  };
+
   if (state === 'sent') {
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`border border-primary/20 bg-primary/5 p-8 ${className}`}
+        className={`border border-primary/20 bg-primary/5 p-8 space-y-6 ${className}`}
       >
-        <h3 className="font-headline text-2xl font-bold tracking-tighter text-primary uppercase mb-3">{t.sentTitle}</h3>
-        <p className="font-body text-on-surface-variant leading-relaxed">{slot ? t.sentBodyCall : t.sentBody}</p>
+        <div>
+          <h3 className="font-headline text-2xl font-bold tracking-tighter text-primary uppercase mb-3">{t.sentTitle}</h3>
+          <p className="font-body text-on-surface-variant leading-relaxed">{slot ? t.sentBodyCall : t.sentBody}</p>
+        </div>
+        {process(true)}
       </motion.div>
     );
   }
@@ -528,6 +570,8 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
   const stepTwo = (
     <div className="space-y-5">
+      {process(false)}
+
       {/* the call: a day, then a time in the visitor's own zone */}
       <div>
         <p className={label}>

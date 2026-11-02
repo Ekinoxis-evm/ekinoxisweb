@@ -81,13 +81,6 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const featured = FEATURED.map((name) => products.find((p) => p.name === name))
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
   const hackathonCount = hackathons.length;
-  const productCount = products.filter((p) => p.project_type === 'product').length;
-  // Proof under the hero button, counted from the database like the numbers below.
-  const proof = [
-    { n: productCount, label: en ? 'products built' : 'productos construidos' },
-    { n: clients.length, label: en ? 'client businesses' : 'negocios cliente' },
-    { n: schools.length, label: en ? 'universities & governments' : 'universidades y gobiernos' },
-  ].filter((p) => p.n > 0);
 
   // One tile per portfolio division, so the total is split the same way /portfolio is.
   const numbers: { value: string; label: string; href?: string }[] = [
@@ -136,21 +129,11 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
               {en ? 'Book a free call' : 'Agenda una llamada gratis'}
               <ArrowRight size={18} />
             </Button>
-            <p className="mt-3 font-mono text-[12px] uppercase tracking-widest text-outline">
-              {en ? '30 minutes · free · in English or Spanish' : '30 minutos · gratis · en español o inglés'}
+            {/* One line, even at 375px: looser tracking than a label */}
+            <p className="mt-3 whitespace-nowrap font-mono text-[12px] uppercase tracking-wide text-outline">
+              {en ? '30 min · free · English or Spanish' : '30 min · gratis · español o inglés'}
             </p>
           </div>
-
-          {proof.length > 0 && (
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 pt-2" aria-label={en ? 'Proof' : 'Pruebas'}>
-              {proof.map((p) => (
-                <li key={p.label} className="flex items-baseline gap-2">
-                  <span className="font-headline text-xl font-bold tracking-tighter text-on-surface">{p.n}</span>
-                  <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{p.label}</span>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </section>
       </div>
