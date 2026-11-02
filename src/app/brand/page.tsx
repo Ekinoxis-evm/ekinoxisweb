@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useBookCall } from '@/components/BookCall';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
@@ -217,6 +218,7 @@ const FAVICONS = [16, 32, 48, 180, 512];
 
 export default function BrandPage() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const t = content[language].brand;
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -638,11 +640,9 @@ export default function BrandPage() {
                   {t.downloadAll}
                 </Button>
               </a>
-              <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" size="lg" className="w-full justify-center">
-                  {t.ctaContact}
-                </Button>
-              </a>
+              <Button variant="ghost" size="lg" onClick={() => bookCall('general')} className="w-full justify-center">
+                {t.ctaContact}
+              </Button>
             </div>
           </section>
         </div>

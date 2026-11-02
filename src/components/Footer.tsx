@@ -1,13 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';
 import { useBookCall } from '@/components/BookCall';
-
-const TELEGRAM = 'https://t.me/ekinoxis';
 
 export default function Footer() {
   const { language } = useLanguage();
@@ -72,8 +69,8 @@ export default function Footer() {
             </Link>
             <p className="font-body text-base text-on-surface-variant max-w-sm leading-relaxed">
               {en
-                ? 'We unlock the power of frontier technologies like AI, blockchain and crypto.'
-                : 'Desbloqueamos el poder de las tecnologías de frontera como la IA, el blockchain y las cripto.'}
+                ? 'We unlock the power of frontier technologies for your business and ideas.'
+                : 'Desbloqueamos el poder de las tecnologías de frontera para tu negocio y tus ideas.'}
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <button type="button" onClick={() => bookCall()}
@@ -81,14 +78,6 @@ export default function Footer() {
               >
                 {en ? 'Start a project' : 'Empieza un proyecto'}
               </button>
-              <a
-                href={TELEGRAM}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-primary/30 px-5 py-3 font-label text-[13px] font-bold uppercase tracking-widest text-primary hover:border-primary transition-colors"
-              >
-                Telegram <ArrowUpRight size={14} />
-              </a>
             </div>
           </div>
 

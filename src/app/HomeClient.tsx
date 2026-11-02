@@ -27,10 +27,10 @@ const SERVICES = [
     icon: MessagesSquare,
     title: { en: 'Consultation', es: 'Consultoría' },
     desc: {
-      en: 'Three hours with your team. You leave with a written plan.',
-      es: 'Tres horas con tu equipo. Sales con un plan escrito.',
+      en: 'From one hour with your team. You leave with a written plan.',
+      es: 'Desde una hora con tu equipo. Sales con un plan escrito.',
     },
-    from: { en: 'From $500', es: 'Desde $500' },
+    from: { en: 'From $100 / hour', es: 'Desde $100 / hora' },
   },
   {
     href: '/services/web-development',
@@ -117,9 +117,9 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
             className="max-w-xl text-lg md:text-xl text-on-surface-variant font-normal leading-relaxed"
           >
             {en ? (
-              <>Colombia&apos;s Pacific <span className="text-primary">innovation lab</span>. We build AI and blockchain software for your business.</>
+              <>The first <span className="text-primary">AI and crypto innovation lab</span> of the Colombian Pacific. We unlock the power of frontier technologies for your business.</>
             ) : (
-              <>El <span className="text-primary">laboratorio de innovación</span> del Pacífico colombiano. Construimos software con IA y blockchain para tu negocio.</>
+              <>El primer <span className="text-primary">laboratorio de innovación en IA y cripto</span> del Pacífico colombiano. Desbloqueamos el poder de las tecnologías de frontera para tu negocio.</>
             )}
           </p>
 
@@ -181,6 +181,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       <LogoMarquee
         eyebrow={en ? 'Clients' : 'Clientes'}
         title={en ? 'Businesses that run on our work.' : 'Negocios que funcionan con nuestro trabajo.'}
+        phoneLine={en ? 'Businesses that run on our work.' : 'Negocios que usan nuestro trabajo.'}
         link={{ href: '/portfolio/clients', label: en ? 'See client work' : 'Ver trabajo para clientes' }}
         logos={uniqueLogos(clients)}
         plate="dark"
@@ -306,6 +307,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       <LogoMarquee
         eyebrow={en ? "Where we've been" : 'Dónde hemos estado'}
         title={en ? 'Universities and governments we teach with.' : 'Universidades y gobiernos con los que enseñamos.'}
+        phoneLine={en ? 'Universities we teach with.' : 'Universidades donde enseñamos.'}
         link={{ href: '/education', label: en ? 'Education' : 'Educación' }}
         logos={uniqueLogos(schools)}
         plate="light"
@@ -317,6 +319,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
       <LogoMarquee
         eyebrow={en ? 'Partners' : 'Aliados'}
         title={en ? 'Hackathons and programs we build with.' : 'Hackathons y programas con los que construimos.'}
+        phoneLine={en ? 'Hackathons we build with.' : 'Hackathons donde construimos.'}
         link={{ href: '/hacker-house', label: en ? 'Hacker House' : 'Hacker House' }}
         logos={[...uniqueLogos(hackathons, 'dark'), ...uniqueLogos(certifications, 'light')]}
         plate="light"
@@ -349,13 +352,13 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
           </div>
           <div className="relative lg:col-span-4 flex flex-col gap-3">
             <Button variant="primary" size="lg" className="w-full justify-center" onClick={() => bookCall()}>
-                {en ? 'Book a free call' : 'Agenda una llamada gratis'}
-              </Button>
-            <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
+              {en ? 'Book a free call' : 'Agenda una llamada gratis'}
+            </Button>
+            <Link href="/services">
               <Button variant="ghost" size="lg" className="w-full justify-center">
-                {en ? 'Message us on Telegram' : 'Escríbenos por Telegram'}
+                {en ? 'See services and prices' : 'Ver servicios y precios'}
               </Button>
-            </a>
+            </Link>
           </div>
         </motion.div>
       </section>

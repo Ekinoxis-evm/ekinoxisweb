@@ -12,7 +12,7 @@
 - **Education** — university partnerships, free workshops, certifications
 - **Community** — hacker houses, hackathon participation
 - **Products** — 8+ internally built blockchain/AI products (IP generation)
-- **Services** — paid consulting ($350 session → $2,000/mo retainer), fast web deployment ($900–$3,500) and custom app building ($8k MVP → $12k/mo dedicated team)
+- **Services** — paid consulting ($100/hour sessions → $3,000/mo advisor), fast web deployment ($900–$3,500) and custom app building ($8k MVP → $12k/mo dedicated team)
 - **Courses** — cohort-based, project-first courses (`/courses`, registry in `src/lib/courses.ts`)
 - **Research** — frontier tech with institutional partners
 
@@ -609,8 +609,22 @@ npm run lint                    # ESLint
 
 ## Team & Contact
 
-- **Primary CTA**: Telegram — `https://t.me/ekinoxis`
+- **Primary CTA**: the booking popup (`useBookCall()(topic, preset?)` → `ContactForm`), which qualifies the lead first (options in `src/lib/leadForms.ts`, answers stored in `leads.details`) and then books the slot. There is no public "message us on Telegram" link; Telegram (`https://t.me/ekinoxis`) stays only as a footer social and the course-success community link.
 - **Consultation form**: `https://mcai2mcfwrq.typeform.com/to/PLttpvSa`
 - **Web dev form**: `https://mcai2mcfwrq.typeform.com/to/bXBs9fR4`
 - **Locations**: Cali, Valle del Cauca, Colombia + Casper, WY, USA
 - **Socials**: X, Instagram, LinkedIn, Telegram, Discord, GitHub
+
+<!-- ekx:portfolio:start -->
+## Ekinoxis portfolio
+
+- **Product:** ekinoxis.xyz — Company (not on the website) · status **LIVE**
+- **What:** The company website + /admin that manages the portfolio, leads, hackers and hackathons.
+- **Live:** https://ekinoxis.xyz
+- **Vercel (ekinoxis-team (team_jxTNRBmimeErr5ULGBepXlL0)):** ekinoxisweb
+- **Supabase:** xaxwqvyieqchydckdtov (ekinoxisweb)
+- **Stack:** Next.js · React · Tailwind · Supabase · Stripe
+- **Scripts:** `dev`, `build`, `start`, `lint`, `brand:zip`
+- **Brain profile:** `../../_brain/projects/company/ekinoxisweb.md` — shared skills (`ekx-*`), registry and the full portfolio live in `~/Documents/ekinoxis/_brain`.
+- Edit this block in `_brain/registry/portfolio.json`, then run `python3 _brain/scripts/align-claude.py --apply`.
+<!-- ekx:portfolio:end -->

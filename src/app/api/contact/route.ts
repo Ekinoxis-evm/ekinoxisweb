@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase/server';
 import { notifyTelegram, sendConfirmationEmail, sendBookingToTeam, type LeadNotification } from '@/lib/notify';
 import { isBookableSlot } from '@/lib/booking';
+import { OPTIONS, TOPIC_KEYS, clampHours, detailLabel, estimateUsd, type DetailKey, type LeadDetails } from '@/lib/leadForms';
 
 /**
  * POST /api/contact — the only way a contact form reaches the database.
@@ -45,6 +46,47 @@ function clean(v: unknown, max: number): string | null {
   const t = v.trim();
   if (!t) return null;
   return t.slice(0, max);
+}
+
+/**
+ * The qualifying answers. Only the keys this topic asks are kept, a choice
+ * must be one of the options the form offers, hours are clamped and the
+ * estimate is recomputed here — the browser's number is never trusted.
+ */
+function cleanDetails(raw: unknown, topic: Topic): LeadDetails {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  const input = raw as Record<string, unknown>;
+  const out: LeadDetails = {};
+  for (const key of TOPIC_KEYS[topic]) {
+    const v = input[key];
+    if (v === undefined || v === null || v === '') continue;
+    const options = OPTIONS[key as DetailKey];
+    if (options) {
+      if (options.some((o) => o.value === String(v))) out[key] = String(v);
+    } else if (key === 'hours') {
+      const n = Number(v);
+      if (Number.isFinite(n)) out.hours = clampHours(n);
+    } else if (key === 'organization') {
+      const t = clean(v, 160);
+      if (t) out.organization = t;
+    }
+  }
+  if (out.hours !== undefined) out.estimate_usd = estimateUsd(Number(out.hours));
+  // Hours only make sense for the hourly format
+  if (topic === 'consultation' && out.format && out.format !== 'hourly') {
+    delete out.hours;
+    delete out.estimate_usd;
+  }
+  return out;
+}
+
+/** The free-text budget band the admin list and Telegram already print. */
+function budgetFrom(details: LeadDetails, topic: Topic): string | null {
+  if (topic === 'consultation' && details.estimate_usd !== undefined) {
+    return `$${details.estimate_usd} est. · ${details.hours}h`;
+  }
+  if (topic === 'app' && details.budget_band) return detailLabel('budget_band', details.budget_band, 'en');
+  return null;
 }
 
 export async function POST(request: NextRequest) {
@@ -94,6 +136,7 @@ export async function POST(request: NextRequest) {
   }
 
   const language = body.language === 'es' ? 'es' : 'en';
+  const details = cleanDetails(body.details, topic);
   const row = {
     topic,
     name,
@@ -101,7 +144,7 @@ export async function POST(request: NextRequest) {
     whatsapp: clean(body.whatsapp, LIMITS.whatsapp),
     company: clean(body.company, LIMITS.company),
     message,
-    budget: clean(body.budget, LIMITS.budget),
+    budget: budgetFrom(details, topic) ?? clean(body.budget, LIMITS.budget),
     // Taken from the referer, never from the client body — it is attribution
     // data and the browser should not get to write whatever it likes into it.
     source_path: clean(request.headers.get('referer'), 300),
@@ -110,7 +153,14 @@ export async function POST(request: NextRequest) {
   };
 
   const db = createServiceClient();
-  const { data, error } = await db.from('leads').insert(row).select('id').single();
+  let { data, error } = await db.from('leads').insert({ ...row, details }).select('id').single();
+  // The details column arrives with the 20261101130000 migration. Until it is
+  // applied, Postgres (42703) or the PostgREST cache (PGRST204) rejects the
+  // column — save the lead without it rather than lose it.
+  if (error && (error.code === '42703' || error.code === 'PGRST204')) {
+    console.error('[contact] leads.details missing — run supabase/migrations/20261101130000_leads_details.sql');
+    ({ data, error } = await db.from('leads').insert(row).select('id').single());
+  }
 
   // 23505 = the unique index on meeting_at: someone booked this slot a moment ago
   if (error?.code === '23505') {
@@ -136,6 +186,7 @@ export async function POST(request: NextRequest) {
     sourcePath: row.source_path,
     language,
     meetingAt,
+    details,
   };
 
   // Saved already — from here on, failures are logged and swallowed.

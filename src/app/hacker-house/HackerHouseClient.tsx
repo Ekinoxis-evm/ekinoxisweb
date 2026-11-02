@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useBookCall } from '@/components/BookCall';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -25,6 +26,7 @@ interface Props {
 
 export default function HackerHouseClient({ hackathons, products }: Props) {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const en = language === 'en';
   const t = content[language].hackerHouse;
   const fmt = (d: string) =>
@@ -66,9 +68,7 @@ export default function HackerHouseClient({ hackathons, products }: Props) {
                     ? 'A room in Cali where developers build together, then take what they built to hackathons — and some of it becomes a product.'
                     : 'Un espacio en Cali donde los desarrolladores construyen juntos, llevan lo construido a hackathons — y parte de eso se vuelve producto.'}
                 </p>
-                <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
-                  <Button variant="primary">{en ? 'Build with us at the next one' : 'Construye con nosotros en el próximo'}</Button>
-                </a>
+                <Button variant="primary" onClick={() => bookCall('general')}>{en ? 'Build with us at the next one' : 'Construye con nosotros en el próximo'}</Button>
               </div>
               <dl className="lg:col-span-5 grid grid-cols-3 gap-px bg-primary/10">
                 {stats.map((s) => (

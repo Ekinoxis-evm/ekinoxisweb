@@ -26,7 +26,8 @@ export function ToolsBand() {
   return (
     <LogoMarquee
       eyebrow={en ? 'Our tools' : 'Nuestras herramientas'}
-      title={en ? 'The tools we build with every day.' : 'Las herramientas con las que construimos cada día.'}
+      title={en ? 'We only build with frontier technologies.' : 'Solo construimos con tecnologías de frontera.'}
+      phoneLine={en ? 'We only use frontier technologies.' : 'Solo usamos tecnologías de frontera.'}
       link={{ href: '/tech-stack', label: en ? 'Full tech stack' : 'Stack completo' }}
       logos={tools}
       plate="dark"
@@ -64,6 +65,7 @@ export function PlacesBand() {
     <LogoMarquee
       eyebrow={en ? "Where we've been" : 'Dónde hemos estado'}
       title={en ? 'Universities and governments we teach with.' : 'Universidades y gobiernos con los que enseñamos.'}
+      phoneLine={en ? 'Universities we teach with.' : 'Universidades donde enseñamos.'}
       link={{ href: '/education', label: en ? 'Education' : 'Educación' }}
       logos={logos}
       plate="light"

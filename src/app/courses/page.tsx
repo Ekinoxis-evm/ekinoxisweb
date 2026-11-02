@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { courses, COURSES_ENROLL_FALLBACK, type CourseStatus, type CourseLevel } from '@/lib/courses';
+import { useBookCall } from '@/components/BookCall';
+import { courses, type CourseStatus, type CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
@@ -70,6 +71,7 @@ const statusVariant: Record<CourseStatus, 'tertiary' | 'primary' | 'muted'> = {
 
 export default function CoursesPage() {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const t = coursesContent[language];
 
   return (
@@ -173,11 +175,10 @@ export default function CoursesPage() {
                 variants={fadeInUp}
                 className={`${courses.length % 2 === 0 ? 'md:col-span-2' : ''} ${courses.length % 3 === 1 ? 'lg:col-span-2' : 'lg:col-span-1'}`}
               >
-                <a
-                  href="https://t.me/ekinoxis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex h-full min-h-[320px] flex-col justify-end gap-4 bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 overflow-hidden"
+                <button
+                  type="button"
+                  onClick={() => bookCall('course', { who: 'team' })}
+                  className="group relative flex h-full w-full min-h-[320px] flex-col justify-end gap-4 bg-surface-container-low p-6 md:p-10 text-left hover:bg-surface-container transition-colors duration-500 overflow-hidden"
                 >
                   <PanelBackdrop name="fog" />
                   <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
@@ -192,9 +193,9 @@ export default function CoursesPage() {
                       : 'Cualquier curso como cohorte privada, en inglés o español, con tus datos y tus metas.'}
                   </p>
                   <span className="relative font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-                    {language === 'en' ? 'Ask on Telegram' : 'Pregunta por Telegram'} →
+                    {language === 'en' ? 'Ask about a private cohort' : 'Pregunta por una cohorte privada'} →
                   </span>
-                </a>
+                </button>
               </motion.div>
             )}
           </motion.div>
@@ -233,9 +234,7 @@ export default function CoursesPage() {
               <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-1">{t.cta.label}</p>
               <p className="font-body text-on-surface-variant text-sm max-w-lg">{t.cta.text}</p>
             </div>
-            <a href={COURSES_ENROLL_FALLBACK} target="_blank" rel="noopener noreferrer">
-              <Button variant="primary">{t.cta.button}</Button>
-            </a>
+            <Button variant="primary" onClick={() => bookCall('course', { who: 'team' })}>{t.cta.button}</Button>
           </motion.div>
 
         </div>

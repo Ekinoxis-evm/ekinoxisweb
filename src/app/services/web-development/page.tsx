@@ -16,6 +16,8 @@ import { ToolsBand } from '@/components/LogoBands';
 
 /** Plan and pay half, we build, rounds with you, live */
 const STEP_ICONS = [CreditCard, LayoutTemplate, RefreshCw, Rocket];
+/** Which booking-form package each pricing card pre-selects. */
+const WEB_PLAN_KEYS = ['online', 'pro', 'complete'] as const;
 const ROUND_ICONS = [Hammer, Eye, MessageSquare, Shuffle];
 
 const webDevContent = {
@@ -185,7 +187,7 @@ export default function WebDevelopmentPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button onClick={book} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
+                  <Button onClick={() => bookCall('web', { plan: WEB_PLAN_KEYS[idx] })} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {plan.cta}
                     </Button>
                 </div>

@@ -26,6 +26,8 @@ interface Props {
   reverse?: boolean;
   /** Seconds each tile takes to cross; lower is faster. Long lists need a quicker pace. */
   speed?: number;
+  /** On phones, replace the header with this one line (plus the link's arrow). */
+  phoneLine?: string;
 }
 
 /** Enough tiles per half that a short list still fills a 2xl screen before it repeats. */
@@ -42,7 +44,7 @@ function fill(logos: MarqueeLogo[]) {
  * halves and slides by exactly one half, so the loop has no seam. Pauses on
  * hover; with reduced motion the repeats hide and the row wraps.
  */
-export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false, speed = 4 }: Props) {
+export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false, speed = 4, phoneLine }: Props) {
   if (logos.length === 0) return null;
   const half = fill(logos);
 
@@ -95,7 +97,16 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
       {/* One slow light sweep across the band */}
       <div className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary/[0.06] to-transparent animate-[scan_9s_linear_infinite]" />
 
-      <div className="max-w-screen-2xl mx-auto px-6 pt-10 pb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      {phoneLine && (
+        <div className="md:hidden max-w-screen-2xl mx-auto px-6 pt-6 pb-4 flex items-center justify-between gap-3">
+          {/* A sentence, not a label: looser tracking so it stays on one line at 375px */}
+          <p className="font-mono text-[12px] text-primary uppercase tracking-wide">{phoneLine}</p>
+          <Link href={link.href} aria-label={link.label} className="flex h-11 w-11 -mr-3 flex-shrink-0 items-center justify-center text-primary hover:text-on-surface transition-colors">
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      )}
+      <div className={`${phoneLine ? 'hidden md:flex' : 'flex'} max-w-screen-2xl mx-auto px-6 pt-10 pb-6 flex-col md:flex-row md:items-end md:justify-between gap-4`}>
         <div>
           <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{eyebrow}</p>
           <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface">{title}</h2>

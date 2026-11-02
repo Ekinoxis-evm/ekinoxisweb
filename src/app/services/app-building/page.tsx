@@ -14,6 +14,9 @@ import BuildLoop, { type BuildLoopCopy } from '@/components/BuildLoop';
 import { fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
 
+/** Which booking-form plan each pricing card pre-selects. */
+const APP_PLAN_KEYS = ['first', 'full', 'team'] as const;
+
 const appContent = {
   en: {
     title: 'SOFTWARE BUILT FOR YOU',
@@ -164,7 +167,7 @@ export default function AppBuildingPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button onClick={book} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
+                  <Button onClick={() => bookCall('app', { plan: APP_PLAN_KEYS[idx] })} variant={plan.popular ? 'primary' : 'ghost'} className="w-full justify-center">
                       {t.cta}
                   </Button>
                 </div>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ScanBadge from '@/components/ui/ScanBadge'
 import type { Lead, LeadStatus } from '@/lib/supabase/types'
+import { DETAIL_TITLE, detailLabel, type DetailKey } from '@/lib/leadForms'
 
 const STATUSES: LeadStatus[] = ['new', 'contacted', 'qualified', 'won', 'lost', 'spam']
 
@@ -23,6 +24,15 @@ const TOPIC_LABEL: Record<string, string> = {
   course: 'COURSE',
   talk: 'TALK',
   general: 'GENERAL',
+}
+
+/** The form's qualifying answers, as readable title/value pairs. */
+function detailsOf(lead: Lead): [string, string][] {
+  const d = lead.details
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return []
+  return (Object.keys(d) as DetailKey[])
+    .filter((k) => DETAIL_TITLE[k] && d[k] !== undefined && d[k] !== null)
+    .map((k) => [DETAIL_TITLE[k].en, detailLabel(k, d[k] as string | number, 'en')])
 }
 
 function when(iso: string): string {
@@ -132,6 +142,16 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
 
                 {isOpen && (
                   <div className="px-6 pb-6 pt-2 border-t border-primary/10">
+                    {detailsOf(l).length > 0 && (
+                      <dl className="flex flex-wrap gap-2 mb-4">
+                        {detailsOf(l).map(([title, value]) => (
+                          <div key={title} className="border border-primary/20 bg-primary/5 px-3 py-2">
+                            <dt className="font-mono text-[11px] text-outline uppercase tracking-widest">{title}</dt>
+                            <dd className="font-label text-[13px] font-semibold text-on-surface uppercase tracking-wide">{value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
                     <p className="font-body text-sm text-on-surface-variant leading-relaxed whitespace-pre-wrap mb-6">
                       {l.message}
                     </p>

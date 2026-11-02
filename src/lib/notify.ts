@@ -8,6 +8,7 @@
  */
 
 import { CALL_MINUTES, formatCot } from './booking';
+import { DETAIL_TITLE, detailLabel, type DetailKey, type LeadDetails } from './leadForms';
 
 export interface LeadNotification {
   id: string;
@@ -22,6 +23,16 @@ export interface LeadNotification {
   language: 'en' | 'es';
   /** Booked free-call slot, UTC ISO. */
   meetingAt?: string | null;
+  /** The qualifying answers from the form (plan, stage, hours…). */
+  details?: LeadDetails;
+}
+
+/** "Topic: AI on my own servers" — one readable line per answer, in English for us. */
+function detailLines(details: LeadDetails | undefined): string[] {
+  if (!details) return [];
+  return (Object.keys(details) as DetailKey[])
+    .filter((k) => details[k] !== undefined && DETAIL_TITLE[k])
+    .map((k) => `${DETAIL_TITLE[k].en}: ${detailLabel(k, details[k] as string | number, 'en')}`);
 }
 
 const FROM = 'Ekinoxis Labs <hola@ekinoxis.xyz>';
@@ -58,6 +69,7 @@ export async function notifyTelegram(lead: LeadNotification): Promise<boolean> {
     `✉️ ${esc(lead.email)}`,
     lead.whatsapp ? `📱 ${esc(lead.whatsapp)}` : null,
     lead.budget ? `💵 ${esc(lead.budget)}` : null,
+    ...detailLines(lead.details).map((l) => `• ${esc(l)}`),
     '',
     esc(lead.message),
     '',
@@ -161,8 +173,8 @@ function shell(inner: string, language: 'en' | 'es'): string {
   <p style="margin:0 0 6px;font-size:13px;letter-spacing:3px;color:#8ff5ff;">INNOVATION WITHOUT FRONTIERS</p>
   <p style="margin:0;font-size:12px;line-height:18px;color:#8a949c;">${
     language === 'es'
-      ? 'Desbloqueamos el poder de las tecnologías de frontera.'
-      : 'We unlock the power of frontier technologies.'
+      ? 'Desbloqueamos el poder de las tecnologías de frontera para tu negocio y tus ideas.'
+      : 'We unlock the power of frontier technologies for your business and ideas.'
   }<br><a href="${SITE}" style="color:#8a949c;">ekinoxis.xyz</a> · <a href="mailto:hola@ekinoxis.xyz" style="color:#8a949c;">hola@ekinoxis.xyz</a></p>
 </td></tr>
 </table>
@@ -251,6 +263,8 @@ export async function sendBookingToTeam(lead: LeadNotification): Promise<boolean
 <h1 style="margin:0 0 16px;font-size:24px;color:#e8f2fb;">${esc(lead.name)}</h1>
 <p style="margin:0 0 6px;font-size:16px;color:#e8f2fb;font-weight:bold;">${esc(formatCot(lead.meetingAt, 'en'))} · Colombia</p>
 <p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a2acb5;">✉️ ${esc(lead.email)}<br>📱 ${esc(lead.whatsapp ?? '—')}<br>🌐 ${lead.language.toUpperCase()}${lead.sourcePath ? ` · ${esc(lead.sourcePath)}` : ''}</p>
+${detailLines(lead.details).length ? `<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#e8f2fb;">${detailLines(lead.details).map(esc).join('<br>')}</p>` : ''}
+<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a2acb5;white-space:pre-wrap;">${esc(lead.message)}</p>
 <p style="margin:0;">${button(googleCalendarUrl(lead), 'Add to Google Calendar')}</p>`;
   return sendEmail({
     from: FROM,

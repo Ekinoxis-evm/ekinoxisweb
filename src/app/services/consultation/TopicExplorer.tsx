@@ -26,7 +26,8 @@ interface Props {
   icons: Record<string, LucideIcon>;
   fallbackIcon: LucideIcon;
   t: TopicLabels;
-  onBook: () => void;
+  /** Called with the topic's code, so the form opens with it selected. */
+  onBook: (code: string) => void;
 }
 
 const num = (i: number) => String(i + 1).padStart(2, '0');
@@ -198,7 +199,7 @@ export default function TopicExplorer({ topics, icons, fallbackIcon, t, onBook }
                 </div>
 
                 <div className="mt-auto">
-                  <Button variant="primary" onClick={onBook} className="w-full sm:w-auto justify-center">
+                  <Button variant="primary" onClick={() => onBook(topic.code)} className="w-full sm:w-auto justify-center">
                     {t.book}
                   </Button>
                 </div>

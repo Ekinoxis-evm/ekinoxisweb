@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
-import { COURSES_ENROLL_FALLBACK, type Course } from '@/lib/courses';
+import { useBookCall } from '@/components/BookCall';
+import type { Course } from '@/lib/courses';
 
 interface Props {
   course: Course;
@@ -14,17 +15,25 @@ interface Props {
 
 /**
  * Open courses go to Stripe Checkout; waitlist / coming-soon go to the
- * enrollUrl (or Telegram). Same visual either way.
+ * enrollUrl, or open the course form in the booking popup. Same visual either way.
  */
 export default function EnrollButton({ course, label, className = '', variant = 'primary' }: Props) {
   const { language } = useLanguage();
+  const bookCall = useBookCall();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const buyable = course.status === 'open' && !!course.stripePriceEnv;
 
   if (!buyable) {
+    if (!course.enrollUrl) {
+      return (
+        <div className={className}>
+          <Button variant={variant} className="w-full justify-center" onClick={() => bookCall('course')}>{label}</Button>
+        </div>
+      );
+    }
     return (
-      <a href={course.enrollUrl ?? COURSES_ENROLL_FALLBACK} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={course.enrollUrl} target="_blank" rel="noopener noreferrer" className={className}>
         <Button variant={variant} className="w-full justify-center">{label}</Button>
       </a>
     );

@@ -21,8 +21,11 @@ page should trade a business owner's clarity for them.
 
 The public site of **Ekinoxis Labs**, the first innovation lab of the Colombian Pacific
 (Cali, Valle del Cauca, with operations in Casper, Wyoming). It turns a visitor into a
-booked call: every service page ends in the booking popup (date, hour, name, email,
-WhatsApp), which sends a branded calendar email and a Telegram alert.
+booked call: every service page ends in the booking popup, which first qualifies the
+lead (the plan or topic, stage, budget band or hours, and what they want to talk about,
+typed or dictated) and then books the slot (date, hour, name, email, WhatsApp). It
+sends a branded calendar email and a Telegram alert to us; there is no public
+"message us on Telegram" link, every call to action goes through the form.
 
 Success = qualified calls booked. Supporting goals: show the work is real (portfolio,
 clients, places we have taught), and grow the community (courses, hackathons).
@@ -35,14 +38,16 @@ price, directly with the founder. A normal dev agency cannot truthfully claim th
 in-house products, the teaching record, or the Pacific-coast lab origin.
 
 Slogan (leads everywhere): **Innovation Without Frontiers**. Supporting line: *We unlock
-the power of frontier technologies like AI, blockchain and crypto.* Market wording is
+the power of frontier technologies for your business and ideas.* The hero names the lab:
+*the first AI and crypto innovation lab of the Colombian Pacific.* Market wording is
 always **Colombia & USA**, never just Florida.
 
 ## Operating Context
 
 - Three paid services, each with its own page and price ladder:
-  - **Consultation**: 5 topics; Session or Roadmap ($500–$2,500, 5–12 h in 3-hour
-    sessions), Team Workshop, Monthly Advisor ($3,000, 16 h/month).
+  - **Consultation**: 5 topics; Session or Roadmap ($100 per hour, from 1 to 12 hours,
+    the visitor estimates the hours in the booking form), Team Workshop, Monthly
+    Advisor ($3,000, 16 h/month).
   - **Websites**: Online Business $1,500 / Professional $3,000 / Complete $6,000, live in
     5 days, fixed price, pay half to start.
   - **App building**: diagnostic → design and demo → rounds with the client until it

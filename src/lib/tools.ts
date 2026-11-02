@@ -52,6 +52,6 @@ export const TOOLS: Record<string, { name: string; url: string }> = {
   '/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png': { name: 'Stripe', url: 'https://stripe.com' },
   '/tecnologies/paymentintegrations/Coinbase/Coinbase.png': { name: 'Coinbase', url: 'https://www.coinbase.com' },
   '/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png': { name: 'PayPal', url: 'https://www.paypal.com' },
-  '/tecnologies/paymentintegrations/MercadoPago/mercadopago.png': { name: 'Mercado Pago', url: 'https://www.mercadopago.com' },
+  '/tecnologies/paymentintegrations/mercadopago/mercadopago.png': { name: 'Mercado Pago', url: 'https://www.mercadopago.com' },
   '/tecnologies/paymentintegrations/wompi/wompi.png': { name: 'Wompi', url: 'https://wompi.com' },
 };

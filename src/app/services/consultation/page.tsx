@@ -17,7 +17,8 @@ import {
 } from 'lucide-react';
 import { PlacesBand } from '@/components/LogoBands';
 
-const TELEGRAM = 'https://t.me/ekinoxis';
+/** Which booking-form format each pricing card pre-selects. */
+const FORMAT_BY_PLAN = ['hourly', 'workshop', 'advisor'] as const;
 
 /** One icon per step of the flow, in order: talk, call, session, plan. */
 const FLOW_ICONS: LucideIcon[] = [Mic, PhoneCall, Users, Rocket];
@@ -96,7 +97,7 @@ const consultationContent = {
       steps: [
         { chip: 'Free', num: '01', title: 'Attend a talk', desc: 'Catch us at an event or invite us to yours.' },
         { chip: 'Free · 30 min', num: '02', title: 'Free call', desc: '30 minutes. We find the problem worth solving first.' },
-        { chip: 'From $500', num: '03', title: 'Private session', desc: 'Pick one below. Your team, your data, one topic.' },
+        { chip: 'From $100 / hour', num: '03', title: 'Private session', desc: 'Pick one below. Your team, your data, one topic.' },
         { chip: 'Your plan', num: '04', title: 'Plan and build', desc: 'You keep the plan. Build it yourself, or with us.' },
       ],
     },
@@ -107,10 +108,10 @@ const consultationContent = {
       plans: [
         {
           name: 'Session or Roadmap',
-          price: '$500 – $2,500',
-          time: '5 to 12 hours', people: 'Up to 5 people', format: '3-hour sessions · you set the pace',
+          price: '$100 / hour',
+          time: 'From 1 hour', people: 'Up to 5 people', format: 'Sessions of 1 to 3 hours · you set the pace',
           badge: 'Start here',
-          features: ['One question answered — from $500', 'Or a full written roadmap — up to $2,500', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
+          features: ['One question answered — one hour', 'Or a full written roadmap — up to 12 hours', 'Estimate your hours when you book', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
           cta: 'Book a Session',
         },
         {
@@ -211,7 +212,7 @@ const consultationContent = {
       steps: [
         { chip: 'Gratis', num: '01', title: 'Asiste a una charla', desc: 'Búscanos en un evento o invítanos al tuyo.' },
         { chip: 'Gratis · 30 min', num: '02', title: 'Llamada gratis', desc: '30 minutos. Encontramos el problema que vale la pena resolver primero.' },
-        { chip: 'Desde $500', num: '03', title: 'Sesión privada', desc: 'Elige una abajo. Tu equipo, tus datos, un tema.' },
+        { chip: 'Desde $100 / hora', num: '03', title: 'Sesión privada', desc: 'Elige una abajo. Tu equipo, tus datos, un tema.' },
         { chip: 'Tu plan', num: '04', title: 'Plan y construcción', desc: 'El plan es tuyo. Constrúyelo tú, o con nosotros.' },
       ],
     },
@@ -222,10 +223,10 @@ const consultationContent = {
       plans: [
         {
           name: 'Sesión o Plan',
-          price: '$500 – $2,500',
-          time: '5 a 12 horas', people: 'Hasta 5 personas', format: 'Sesiones de 3 horas · tú defines el ritmo',
+          price: '$100 / hora',
+          time: 'Desde 1 hora', people: 'Hasta 5 personas', format: 'Sesiones de 1 a 3 horas · tú defines el ritmo',
           badge: 'Empieza aquí',
-          features: ['Una pregunta resuelta — desde $500', 'O un plan escrito completo — hasta $2,500', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
+          features: ['Una pregunta resuelta — una hora', 'O un plan escrito completo — hasta 12 horas', 'Estima tus horas al agendar', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
         },
         {
@@ -430,7 +431,7 @@ export default function ConsultationPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant={plan.popular ? 'primary' : 'ghost'} onClick={book} className="w-full justify-center">
+                  <Button variant={plan.popular ? 'primary' : 'ghost'} onClick={() => bookCall('consultation', { format: FORMAT_BY_PLAN[idx] })} className="w-full justify-center">
                     {plan.cta}
                   </Button>
                 </div>
@@ -447,7 +448,7 @@ export default function ConsultationPage() {
             transition={{ duration: 0.6, ease: EASE_SETTLE }}
             className="mt-12"
           >
-            <TopicExplorer topics={t.topics.items} icons={TOPIC_ICONS} fallbackIcon={Plug} t={t.topics} onBook={book} />
+            <TopicExplorer topics={t.topics.items} icons={TOPIC_ICONS} fallbackIcon={Plug} t={t.topics} onBook={(code) => bookCall('consultation', { type: code })} />
           </motion.section>
 
           {/* Last step — the call opens in the popup; talks sit beside it */}
@@ -478,9 +479,7 @@ export default function ConsultationPage() {
               </div>
               <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface mb-3">{t.talks.title}</h3>
               <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">{t.talks.desc}</p>
-              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                <Button variant="tertiary" className="w-full justify-center">{t.talks.cta}</Button>
-              </a>
+              <Button variant="tertiary" onClick={() => bookCall('talk')} className="mt-auto w-full justify-center">{t.talks.cta}</Button>
             </div>
           </motion.section>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { ArrowRight, Send } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
 
@@ -11,7 +11,7 @@ const HIDDEN_ON = ['/admin'];
 
 /**
  * Phones only: once the hero's own button has scrolled away, the next step stays
- * one tap away — book the free call, or message us on Telegram.
+ * one tap away — book the free call.
  */
 export default function MobileCTA() {
   const { language } = useLanguage();
@@ -42,15 +42,6 @@ export default function MobileCTA() {
           {en ? 'Book a free call' : 'Agenda una llamada'}
           <ArrowRight size={16} />
         </button>
-        <a
-          href="https://t.me/ekinoxis"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={en ? 'Message us on Telegram' : 'Escríbenos por Telegram'}
-          className="inline-flex items-center justify-center w-12 border border-primary/40 text-primary"
-        >
-          <Send size={18} />
-        </a>
       </div>
       {/* Room at the end of the page so the bar never covers the footer */}
       <div className="md:hidden h-20" aria-hidden="true" />

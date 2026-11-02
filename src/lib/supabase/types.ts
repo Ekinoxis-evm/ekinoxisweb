@@ -248,6 +248,7 @@ export type Database = {
           budget: string | null
           company: string | null
           created_at: string
+          details: Json
           email: string
           id: string
           language: string
@@ -265,6 +266,7 @@ export type Database = {
           budget?: string | null
           company?: string | null
           created_at?: string
+          details?: Json
           email: string
           id?: string
           language?: string
@@ -282,6 +284,7 @@ export type Database = {
           budget?: string | null
           company?: string | null
           created_at?: string
+          details?: Json
           email?: string
           id?: string
           language?: string

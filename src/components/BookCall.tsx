@@ -6,30 +6,44 @@ import { X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { EASE_SETTLE } from '@/lib/animations';
 import type { LeadTopic } from '@/lib/supabase/types';
+import type { LeadPreset } from '@/lib/leadForms';
 import ContactForm from './ContactForm';
 
 /**
  * "Book a free call" opens the booking form right where the visitor is — no
- * trip to another page. Any button calls `useBookCall()(topic)`; the provider
- * in the root layout renders one popup for the whole site.
+ * trip to another page. Any button calls `useBookCall()(topic, preset?)`; the
+ * preset pre-answers a question (the pricing card they clicked, the topic they
+ * were reading). The provider in the root layout renders one popup for the
+ * whole site.
  */
 
-const BookCallContext = createContext<(topic?: LeadTopic) => void>(() => {});
+type Open = (topic?: LeadTopic, preset?: LeadPreset) => void;
+
+const BookCallContext = createContext<Open>(() => {});
 
 export const useBookCall = () => useContext(BookCallContext);
 
 type LenisLike = { stop: () => void; start: () => void };
 
+const HEADER: Record<LeadTopic, { en: [string, string]; es: [string, string] }> = {
+  consultation: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
+  web: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
+  app: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
+  talk: { en: ['Talks', 'Invite us to speak'], es: ['Charlas', 'Invítanos a hablar'] },
+  course: { en: ['Courses', 'Ask about the course'], es: ['Cursos', 'Pregunta por el curso'] },
+  general: { en: ['Write to us', 'Tell us what you are building'], es: ['Escríbenos', 'Cuéntanos qué estás construyendo'] },
+};
+
 export function BookCallProvider({ children }: { children: ReactNode }) {
   const { language } = useLanguage();
   const en = language === 'en';
-  const [topic, setTopic] = useState<LeadTopic | null>(null);
-  const open = useCallback((t: LeadTopic = 'consultation') => setTopic(t), []);
-  const close = useCallback(() => setTopic(null), []);
+  const [open, setOpen] = useState<{ topic: LeadTopic; preset?: LeadPreset } | null>(null);
+  const show = useCallback<Open>((topic = 'consultation', preset) => setOpen({ topic, preset }), []);
+  const close = useCallback(() => setOpen(null), []);
 
   // Freeze the page behind the popup — Lenis (when running) and native scroll.
   useEffect(() => {
-    if (!topic) return;
+    if (!open) return;
     const lenis = (window as unknown as { lenis?: LenisLike }).lenis;
     lenis?.stop();
     const prev = document.body.style.overflow;
@@ -41,13 +55,15 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
       document.body.style.overflow = prev;
       window.removeEventListener('keydown', onKey);
     };
-  }, [topic, close]);
+  }, [open, close]);
+
+  const header = open ? HEADER[open.topic][language] : null;
 
   return (
-    <BookCallContext.Provider value={open}>
+    <BookCallContext.Provider value={show}>
       {children}
       <AnimatePresence>
-        {topic && (
+        {open && header && (
           <motion.div
             key="book-call"
             className="fixed inset-0 z-[120] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-md sm:p-6"
@@ -58,7 +74,7 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
             onClick={close}
             role="dialog"
             aria-modal="true"
-            aria-label={en ? 'Book a free call' : 'Agenda una llamada gratis'}
+            aria-label={header[1]}
           >
             <motion.div
               data-lenis-prevent
@@ -73,17 +89,13 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={close}
                 aria-label={en ? 'Close' : 'Cerrar'}
-                className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center text-outline hover:text-primary transition-colors"
+                className="absolute top-4 right-4 flex h-11 w-11 items-center justify-center text-outline hover:text-primary transition-colors"
               >
                 <X size={20} />
               </button>
-              <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">
-                {en ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
-              </p>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8">
-                {en ? 'Book your free call' : 'Agenda tu llamada gratis'}
-              </h2>
-              <ContactForm topic={topic} />
+              <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{header[0]}</p>
+              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8 pr-10">{header[1]}</h2>
+              <ContactForm key={`${open.topic}-${JSON.stringify(open.preset ?? {})}`} topic={open.topic} preset={open.preset} />
             </motion.div>
           </motion.div>
         )}

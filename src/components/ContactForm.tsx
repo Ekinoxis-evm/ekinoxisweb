@@ -2,20 +2,142 @@
 
 import { useEffect, useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, ArrowRight, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
+import VoiceInput from '@/components/VoiceInput';
 import type { LeadTopic } from '@/lib/supabase/types';
 import { bookingDays, type BookingDay } from '@/lib/booking';
+import {
+  APP_PLANS, APP_STAGES, AUDIENCES, BUDGET_BANDS, CONSULTATION_FORMATS, CONSULTATION_TYPES, COURSE_WHO, HAS_SITE, WEB_PLANS,
+  HOURLY_RATE_USD, MIN_HOURS, MAX_HOURS, SLOT_REQUIRED, clampHours, estimateUsd,
+  type DetailKey, type LeadPreset, type Option,
+} from '@/lib/leadForms';
 
 /**
- * The booking form: pick a day and a time for the free call, then four fields —
- * first name, last name, email, WhatsApp with its country code. Every extra field
- * costs completions; what the visitor wants is the call itself, so we ask for
- * that and nothing more. Slots are shown in the visitor's own time zone.
- * Which page, which language and where they came from are recorded for them.
+ * The booking form, in two steps.
+ *
+ * 1. Qualify: two or three choices that depend on the service (which plan,
+ *    what stage, how many hours) and a box for what they want to talk about,
+ *    typed or dictated.
+ * 2. The call: a day and a time in the visitor's own zone, then name, email
+ *    and WhatsApp. Talks, courses and general messages may skip the slot.
+ *
+ * Every answer travels as `details` and is validated again on the server.
  */
 
-const TELEGRAM = 'https://t.me/ekinoxis';
+const COPY = {
+  en: {
+    step1: 'About you',
+    step2: 'The call',
+    of: 'of',
+    continue: 'Continue',
+    back: 'Back',
+    // consultation
+    typeQ: 'What do you want to talk about?',
+    formatQ: 'Which format?',
+    hoursQ: 'How many hours do you estimate?',
+    hoursHint: `$${HOURLY_RATE_USD} per hour · we confirm the scope on the call`,
+    hour: 'hour',
+    hours: 'hours',
+    fewer: 'One hour less',
+    more: 'One hour more',
+    estimate: 'Estimate',
+    // web
+    planQ: 'Which package fits?',
+    siteQ: 'Do you have a website today?',
+    // app
+    tierQ: 'Which plan are you thinking of?',
+    stageQ: 'Where is the project today?',
+    budgetQ: 'What budget are you working with?',
+    // talk / course
+    audienceQ: 'Who is the audience?',
+    orgQ: 'Organization or event',
+    orgPh: 'Universidad del Valle, ETH Bogotá…',
+    whoQ: 'Who is the course for?',
+    // message
+    messageQ: 'Tell us in your own words',
+    messageOptional: 'optional',
+    messagePh: {
+      consultation: 'What is happening in the business, and what you would like to change.',
+      web: 'What the business does, and what the website has to do for you.',
+      app: 'What the software should do, and who will use it.',
+      talk: 'The date, the format and the topic you have in mind.',
+      course: 'Your goal with the course, and when you want to start.',
+      general: 'What is on your mind.',
+    } as Record<LeadTopic, string>,
+    pickOne: 'Pick one option to continue.',
+    // step 2
+    first: 'First name',
+    last: 'Last name',
+    email: 'Email',
+    whatsapp: 'WhatsApp or phone',
+    country: 'Country code',
+    day: 'Pick a day',
+    time: 'Pick a time',
+    optional: 'optional',
+    yourTime: 'your time',
+    pickSlot: 'Pick a day and time for the call.',
+    send: { consultation: 'Book my free call', web: 'Book my free call', app: 'Book my free call', talk: 'Send the invitation', course: 'Send', general: 'Send' } as Record<LeadTopic, string>,
+    sending: 'Sending…',
+    sentTitle: 'Got it.',
+    sentBody: 'We will reach out on WhatsApp or email, normally the same working day.',
+    sentBodyCall: 'Your call is booked. The invite is on its way to your email, and we will confirm on WhatsApp.',
+    errorGeneric: 'Something went wrong. Try again, or write to hola@ekinoxis.xyz.',
+  },
+  es: {
+    step1: 'Sobre ti',
+    step2: 'La llamada',
+    of: 'de',
+    continue: 'Continuar',
+    back: 'Atrás',
+    typeQ: '¿De qué quieres hablar?',
+    formatQ: '¿En qué formato?',
+    hoursQ: '¿Cuántas horas estimas?',
+    hoursHint: `$${HOURLY_RATE_USD} por hora · confirmamos el alcance en la llamada`,
+    hour: 'hora',
+    hours: 'horas',
+    fewer: 'Una hora menos',
+    more: 'Una hora más',
+    estimate: 'Estimado',
+    planQ: '¿Qué paquete te sirve?',
+    siteQ: '¿Tienes sitio web hoy?',
+    tierQ: '¿En qué plan estás pensando?',
+    stageQ: '¿Dónde está el proyecto hoy?',
+    budgetQ: '¿Con qué presupuesto cuentas?',
+    audienceQ: '¿Quién es la audiencia?',
+    orgQ: 'Organización o evento',
+    orgPh: 'Universidad del Valle, ETH Bogotá…',
+    whoQ: '¿Para quién es el curso?',
+    messageQ: 'Cuéntanos con tus palabras',
+    messageOptional: 'opcional',
+    messagePh: {
+      consultation: 'Qué está pasando en el negocio y qué te gustaría cambiar.',
+      web: 'Qué hace el negocio y qué tiene que hacer el sitio por ti.',
+      app: 'Qué debe hacer el software y quién lo va a usar.',
+      talk: 'La fecha, el formato y el tema que tienes en mente.',
+      course: 'Tu meta con el curso y cuándo quieres empezar.',
+      general: 'Lo que tengas en mente.',
+    } as Record<LeadTopic, string>,
+    pickOne: 'Elige una opción para continuar.',
+    first: 'Nombre',
+    last: 'Apellido',
+    email: 'Correo',
+    whatsapp: 'WhatsApp o teléfono',
+    country: 'Indicativo',
+    day: 'Elige un día',
+    time: 'Elige una hora',
+    optional: 'opcional',
+    yourTime: 'tu hora',
+    pickSlot: 'Elige un día y una hora para la llamada.',
+    send: { consultation: 'Agendar mi llamada gratis', web: 'Agendar mi llamada gratis', app: 'Agendar mi llamada gratis', talk: 'Enviar la invitación', course: 'Enviar', general: 'Enviar' } as Record<LeadTopic, string>,
+    sending: 'Enviando…',
+    sentTitle: 'Listo.',
+    sentBody: 'Te contactamos por WhatsApp o correo, normalmente el mismo día hábil.',
+    sentBodyCall: 'Tu llamada quedó agendada. La invitación va en camino a tu correo y confirmamos por WhatsApp.',
+    errorGeneric: 'Algo salió mal. Intenta de nuevo, o escribe a hola@ekinoxis.xyz.',
+  },
+};
 
 /** Our two markets first, then the rest of the Americas and Spain. */
 const COUNTRIES = [
@@ -34,63 +156,39 @@ const COUNTRIES = [
   { code: '+44', flag: '🇬🇧', name: 'UK' },
 ];
 
-const COPY = {
-  en: {
-    first: 'First name',
-    last: 'Last name',
-    email: 'Email',
-    whatsapp: 'WhatsApp or phone',
-    country: 'Country code',
-    day: 'Pick a day',
-    time: 'Pick a time',
-    yourTime: 'your time',
-    pickSlot: 'Pick a day and time for the call.',
-    send: 'Book my free call',
-    sending: 'Sending…',
-    sentTitle: 'Got it.',
-    sentBody: 'We will reach out on WhatsApp or email, normally the same working day.',
-    errorGeneric: 'Something went wrong. Try again, or message us on Telegram.',
-    orTelegram: 'Prefer Telegram?',
-    telegramCta: 'Message us',
-  },
-  es: {
-    first: 'Nombre',
-    last: 'Apellido',
-    email: 'Correo',
-    whatsapp: 'WhatsApp o teléfono',
-    country: 'Indicativo',
-    day: 'Elige un día',
-    time: 'Elige una hora',
-    yourTime: 'tu hora',
-    pickSlot: 'Elige un día y una hora para la llamada.',
-    send: 'Agendar mi llamada gratis',
-    sending: 'Enviando…',
-    sentTitle: 'Listo.',
-    sentBody: 'Te contactamos por WhatsApp o correo, normalmente el mismo día hábil.',
-    errorGeneric: 'Algo salió mal. Intenta de nuevo, o escríbenos por Telegram.',
-    orTelegram: '¿Prefieres Telegram?',
-    telegramCta: 'Escríbenos',
-  },
-};
-
 const field =
   'w-full bg-surface-container-high border border-outline-variant/30 focus:border-primary/60 ' +
-  'outline-none text-on-surface font-body text-base px-4 py-3 transition-colors placeholder:text-outline/70';
+  'outline-none text-on-surface font-body text-base px-4 py-3 transition-colors placeholder:text-outline';
 
 const label = 'font-mono text-[12px] text-outline uppercase tracking-widest mb-2 block';
 
+/** The first question of each topic — the one that must be answered. */
+const REQUIRED: Partial<Record<LeadTopic, DetailKey>> = { consultation: 'type', web: 'plan', app: 'plan', talk: 'audience', course: 'who' };
+
+type Answers = Partial<Record<DetailKey, string>>;
+
 interface Props {
   topic: LeadTopic;
+  preset?: LeadPreset;
   className?: string;
   /** Focus the first field on mount — for the popup, not for inline forms. */
   autoFocus?: boolean;
 }
 
-export default function ContactForm({ topic, className = '', autoFocus = false }: Props) {
+export default function ContactForm({ topic, preset, className = '', autoFocus = false }: Props) {
   const { language } = useLanguage();
   const t = COPY[language];
+  const en = language === 'en';
   const id = (f: string) => `${f}-${topic}`;
+  const slotRequired = SLOT_REQUIRED[topic];
 
+  const [step, setStep] = useState<1 | 2>(1);
+  const [answers, setAnswers] = useState<Answers>(() => ({
+    ...(topic === 'consultation' ? { format: 'hourly' } : {}),
+    ...preset,
+  }));
+  const [hours, setHours] = useState(3);
+  const [message, setMessage] = useState('');
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
 
@@ -121,11 +219,32 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
   const day = days.find((d) => d.key === (dayKey ?? days[0]?.key));
   const locale = language === 'es' ? 'es-CO' : 'en-US';
 
+  const set = (key: DetailKey, value: string) => {
+    setAnswers((a) => ({ ...a, [key]: value }));
+    if (state === 'error') {
+      setState('idle');
+      setError(null);
+    }
+  };
+
+  function next() {
+    const req = REQUIRED[topic];
+    if (req && !answers[req]) {
+      setError(t.pickOne);
+      setState('error');
+      return;
+    }
+    setError(null);
+    setState('idle');
+    setStep(2);
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (step === 1) return next();
     if (state === 'sending') return;
 
-    if (!slot) {
+    if (slotRequired && !slot) {
       setError(t.pickSlot);
       setState('error');
       return;
@@ -133,6 +252,11 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
     const form = new FormData(e.currentTarget);
     const name = `${String(form.get('first') ?? '').trim()} ${String(form.get('last') ?? '').trim()}`.trim();
     const phone = String(form.get('phone') ?? '').trim();
+    const hourly = topic === 'consultation' && answers.format === 'hourly';
+    const details = {
+      ...answers,
+      ...(hourly ? { hours: clampHours(hours), estimate_usd: estimateUsd(hours) } : {}),
+    };
     setState('sending');
     setError(null);
 
@@ -147,6 +271,8 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
           email: form.get('email'),
           whatsapp: phone ? `${form.get('country')} ${phone}` : '',
           meeting_at: slot,
+          message: message.trim(),
+          details,
           website: form.get('website'), // honeypot — people never see this
         }),
       });
@@ -176,22 +302,138 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
         className={`border border-primary/20 bg-primary/5 p-8 ${className}`}
       >
         <h3 className="font-headline text-2xl font-bold tracking-tighter text-primary uppercase mb-3">{t.sentTitle}</h3>
-        <p className="font-body text-on-surface-variant leading-relaxed">{t.sentBody}</p>
+        <p className="font-body text-on-surface-variant leading-relaxed">{slot ? t.sentBodyCall : t.sentBody}</p>
       </motion.div>
     );
   }
 
-  return (
-    <form onSubmit={onSubmit} className={`space-y-5 ${className}`}>
-      {/* Honeypot: off-screen, not display:none — some bots skip hidden fields. */}
-      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
-        <label htmlFor={id('website')}>Website</label>
-        <input id={id('website')} name="website" type="text" tabIndex={-1} autoComplete="off" />
-      </div>
+  /* ── pieces ─────────────────────────────────────────────────────────── */
 
-      {/* 1 — the call: a day, then a time in the visitor's own zone */}
+  const choices = (key: DetailKey, question: string, options: Option[], cols: 1 | 2 = 2) => (
+    <fieldset>
+      <legend className={label}>{question}</legend>
+      <div className={`grid grid-cols-1 ${cols === 2 ? 'sm:grid-cols-2' : ''} gap-2`}>
+        {options.map((o) => {
+          const active = answers[key] === o.value;
+          return (
+            <button
+              key={o.value}
+              type="button"
+              onClick={() => set(key, o.value)}
+              aria-pressed={active}
+              className={`min-h-[44px] border px-4 py-3 text-left transition-colors ${
+                active ? 'border-primary bg-primary/10' : 'border-outline-variant/30 hover:border-primary/60'
+              }`}
+            >
+              <span className={`block font-label text-[13px] font-semibold uppercase tracking-wide leading-snug ${active ? 'text-primary' : 'text-on-surface'}`}>
+                {o[language]}
+              </span>
+              {o.hint && <span className="block mt-1 font-mono text-[12px] text-outline tracking-wider">{o.hint[language]}</span>}
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+
+  const hoursStepper = (
+    <div>
+      <p className={label}>{t.hoursQ}</p>
+      <div className="flex flex-col sm:flex-row sm:items-stretch gap-2">
+        <div className="flex items-stretch border border-outline-variant/30">
+          <button
+            type="button"
+            onClick={() => setHours((h) => clampHours(h - 1))}
+            disabled={hours <= MIN_HOURS}
+            aria-label={t.fewer}
+            className="flex h-12 w-12 items-center justify-center text-primary hover:bg-primary/10 disabled:text-outline disabled:hover:bg-transparent transition-colors"
+          >
+            <Minus size={18} />
+          </button>
+          <div className="flex min-w-[6.5rem] flex-1 items-center justify-center gap-2 bg-surface-container-high px-4" aria-live="polite">
+            <span className="font-headline text-2xl font-bold tracking-tighter text-on-surface">{hours}{hours >= MAX_HOURS ? '+' : ''}</span>
+            <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{hours === 1 ? t.hour : t.hours}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setHours((h) => clampHours(h + 1))}
+            disabled={hours >= MAX_HOURS}
+            aria-label={t.more}
+            className="flex h-12 w-12 items-center justify-center text-primary hover:bg-primary/10 disabled:text-outline disabled:hover:bg-transparent transition-colors"
+          >
+            <Plus size={18} />
+          </button>
+        </div>
+        <div className="flex flex-1 items-center justify-between gap-4 border border-primary/30 bg-primary/5 px-4 py-2">
+          <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{t.estimate}</span>
+          <span className="font-headline text-2xl font-bold tracking-tighter text-primary">
+            {hours >= MAX_HOURS ? `${en ? 'from' : 'desde'} ` : '≈ '}${estimateUsd(hours).toLocaleString('en-US')}
+          </span>
+        </div>
+      </div>
+      <p className="mt-2 font-mono text-[12px] text-outline tracking-wider">{t.hoursHint}</p>
+    </div>
+  );
+
+  const stepOne = (
+    <div className="space-y-6">
+      {topic === 'consultation' && (
+        <>
+          {choices('type', t.typeQ, CONSULTATION_TYPES)}
+          {choices('format', t.formatQ, CONSULTATION_FORMATS)}
+          {answers.format === 'hourly' && hoursStepper}
+        </>
+      )}
+      {topic === 'web' && (
+        <>
+          {choices('plan', t.planQ, WEB_PLANS)}
+          {choices('has_site', t.siteQ, HAS_SITE)}
+        </>
+      )}
+      {topic === 'app' && (
+        <>
+          {choices('plan', t.tierQ, APP_PLANS)}
+          {choices('stage', t.stageQ, APP_STAGES, 1)}
+          {choices('budget_band', t.budgetQ, BUDGET_BANDS)}
+        </>
+      )}
+      {topic === 'talk' && (
+        <>
+          {choices('audience', t.audienceQ, AUDIENCES)}
+          <div>
+            <label className={label} htmlFor={id('organization')}>{t.orgQ}</label>
+            <input
+              id={id('organization')}
+              type="text"
+              maxLength={160}
+              value={answers.organization ?? ''}
+              onChange={(e) => set('organization', e.target.value)}
+              placeholder={t.orgPh}
+              className={field}
+              autoComplete="organization"
+            />
+          </div>
+        </>
+      )}
+      {topic === 'course' && choices('who', t.whoQ, COURSE_WHO)}
+
       <div>
-        <p className={label}>{t.day}</p>
+        <label className={label} htmlFor={id('message')}>
+          {t.messageQ} <span className="normal-case text-outline">({t.messageOptional})</span>
+        </label>
+        <VoiceInput id={id('message')} value={message} onChange={setMessage} language={language} placeholder={t.messagePh[topic]} rows={4} />
+      </div>
+    </div>
+  );
+
+  const stepTwo = (
+    <div className="space-y-5">
+      {/* the call: a day, then a time in the visitor's own zone */}
+      <div>
+        <p className={label}>
+          {t.day}
+          {!slotRequired && <span className="normal-case text-outline"> ({t.optional})</span>}
+        </p>
         <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {days.map((d) => {
             const date = new Date(d.slots[0]);
@@ -233,11 +475,12 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
                 type="button"
                 disabled={isTaken}
                 onClick={() => {
-                  setSlot(s);
+                  setSlot(active && !slotRequired ? null : s);
                   if (state === 'error') setState('idle');
                   setError(null);
                 }}
-                className={`py-2.5 border font-mono text-[13px] transition-colors ${
+                aria-pressed={active}
+                className={`min-h-[44px] py-2.5 border font-mono text-[13px] transition-colors ${
                   isTaken
                     ? 'border-outline-variant/20 text-outline/40 line-through cursor-not-allowed'
                     : active
@@ -252,7 +495,7 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
         </div>
       </div>
 
-      {/* 2 — who to call */}
+      {/* who to call */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className={label} htmlFor={id('first')}>{t.first}</label>
@@ -299,6 +542,53 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <form onSubmit={onSubmit} className={`space-y-6 ${className}`}>
+      {/* Honeypot: off-screen, not display:none — some bots skip hidden fields. */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor={id('website')}>Website</label>
+        <input id={id('website')} name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
+      {/* Step marker: one light on the current step */}
+      <ol className="flex items-center gap-3 font-mono text-[12px] uppercase tracking-widest" aria-label={`${step} ${t.of} 2`}>
+        {[t.step1, t.step2].map((name, i) => {
+          const n = (i + 1) as 1 | 2;
+          const current = n === step;
+          return (
+            <li key={name} className="flex items-center gap-3">
+              {i > 0 && <span aria-hidden className={`h-px w-6 ${step === 2 ? 'bg-primary' : 'bg-outline-variant'}`} />}
+              <button
+                type="button"
+                onClick={() => n < step && setStep(n)}
+                disabled={n >= step}
+                aria-current={current ? 'step' : undefined}
+                className={`flex items-center gap-2 py-1 ${current ? 'text-primary' : n < step ? 'text-on-surface-variant hover:text-primary' : 'text-outline'} disabled:cursor-default`}
+              >
+                <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] ${current ? 'border-primary bg-primary text-surface-container-lowest' : n < step ? 'border-primary text-primary' : 'border-outline-variant'}`}>
+                  {n}
+                </span>
+                {name}
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: step === 2 ? 16 : -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: step === 2 ? -16 : 16 }}
+          transition={{ duration: 0.25 }}
+        >
+          {step === 1 ? stepOne : stepTwo}
+        </motion.div>
+      </AnimatePresence>
 
       <AnimatePresence>
         {error && (
@@ -307,6 +597,7 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="font-mono text-[12px] text-error uppercase tracking-widest"
+            role="alert"
           >
             {error}
           </motion.p>
@@ -314,15 +605,24 @@ export default function ContactForm({ topic, className = '', autoFocus = false }
       </AnimatePresence>
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
-        <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'} className="justify-center">
-          {state === 'sending' ? t.sending : t.send}
-        </Button>
-        <span className="font-mono text-[12px] text-outline uppercase tracking-widest">
-          {t.orTelegram}{' '}
-          <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-primary/80 hover:text-primary transition-colors">
-            {t.telegramCta} →
-          </a>
-        </span>
+        {step === 1 ? (
+          <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto justify-center">
+            {t.continue} <ArrowRight size={18} />
+          </Button>
+        ) : (
+          <>
+            <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'} className="w-full sm:w-auto justify-center">
+              {state === 'sending' ? t.sending : t.send[topic]}
+            </Button>
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 font-mono text-[12px] uppercase tracking-widest text-outline hover:text-primary transition-colors"
+            >
+              <ArrowLeft size={14} /> {t.back}
+            </button>
+          </>
+        )}
       </div>
     </form>
   );

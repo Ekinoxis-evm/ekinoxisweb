@@ -5,7 +5,7 @@ export const content = {
     hero: {
       title: "INNOVATION WITHOUT FRONTIERS",
       titleLines: ["INNOVATION", "WITHOUT", "FRONTIERS"],
-      subtitle: "The first innovation lab on Colombia's Pacific coast. We build with AI, blockchain and crypto.",
+      subtitle: "The first AI and crypto innovation lab of the Colombian Pacific. We unlock the power of frontier technologies for your business.",
       contactUs: "Contact Us",
     },
     nav: {
@@ -428,7 +428,7 @@ export const content = {
             "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
             "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
             "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
-            "/tecnologies/paymentintegrations/MercadoPago/mercadopago.png",
+            "/tecnologies/paymentintegrations/mercadopago/mercadopago.png",
             "/tecnologies/paymentintegrations/wompi/wompi.png",
           ],
         },
@@ -625,7 +625,7 @@ export const content = {
     hero: {
       title: "EKINOXIS ES INNOVACIÓN SIN FRONTERAS",
       titleLines: ["INNOVACIÓN", "SIN", "FRONTERAS"],
-      subtitle: "El primer laboratorio de innovación del Pacífico colombiano. Construimos con IA, blockchain y cripto.",
+      subtitle: "El primer laboratorio de innovación en IA y cripto del Pacífico colombiano. Desbloqueamos el poder de las tecnologías de frontera para tu negocio.",
       contactUs: "Contáctanos",
     },
     nav: {
@@ -1040,7 +1040,7 @@ export const content = {
             "/tecnologies/paymentintegrations/Stripe/Stripe_Logo_1.png",
             "/tecnologies/paymentintegrations/Coinbase/Coinbase.png",
             "/tecnologies/paymentintegrations/PayPal/PayPal_Logo_Alternative_1.png",
-            "/tecnologies/paymentintegrations/MercadoPago/mercadopago.png",
+            "/tecnologies/paymentintegrations/mercadopago/mercadopago.png",
             "/tecnologies/paymentintegrations/wompi/wompi.png",
           ],
         },

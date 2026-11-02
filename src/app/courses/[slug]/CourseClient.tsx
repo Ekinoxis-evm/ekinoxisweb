@@ -29,7 +29,7 @@ const ui = {
     stack: 'You will work with',
     syllabusEmpty: 'Full syllabus published with the cohort announcement.',
     next: 'NEXT STEP',
-    nextText: 'Seats are limited per cohort. Reserve yours or ask us anything on Telegram.',
+    nextText: 'Seats are limited per cohort. Reserve yours, or send us your questions first.',
     allCourses: 'All Courses',
   },
   es: {
@@ -49,7 +49,7 @@ const ui = {
     stack: 'Trabajarás con',
     syllabusEmpty: 'El programa completo se publica con el anuncio de la cohorte.',
     next: 'SIGUIENTE PASO',
-    nextText: 'Los cupos por cohorte son limitados. Reserva el tuyo o pregúntanos lo que quieras por Telegram.',
+    nextText: 'Los cupos por cohorte son limitados. Reserva el tuyo, o mándanos tus preguntas primero.',
     allCourses: 'Todos los Cursos',
   },
 };

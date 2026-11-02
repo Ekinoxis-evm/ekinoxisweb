@@ -43,7 +43,7 @@ export interface Course {
   outcomes: BilingualList;
   prerequisites: BilingualList;
   modules: Record<Language, CourseModule[]>;
-  /** Enrollment or waitlist link. Falls back to Telegram when absent. */
+  /** Enrollment or waitlist link. When absent, the button opens the course form in the booking popup. */
   enrollUrl?: string;
   /** Platforms taught, rendered as a logo strip. */
   tools: CourseTool[];
@@ -54,6 +54,7 @@ export interface Course {
   stripePriceEnv?: string;
 }
 
+/** Community channel — not a call to action; the forms are. Kept for the course success page. */
 export const COURSES_ENROLL_FALLBACK = 'https://t.me/ekinoxis';
 
 export const courses: Course[] = [
