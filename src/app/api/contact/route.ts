@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase/server';
 import { notifyTelegram, sendConfirmationEmail, sendBookingToTeam, type LeadNotification } from '@/lib/notify';
 import { isBookableSlot } from '@/lib/booking';
-import { OPTIONS, TOPIC_KEYS, clampHours, detailLabel, estimateUsd, type DetailKey, type LeadDetails } from '@/lib/leadForms';
+import { MULTI_KEYS, OPTIONS, TOPIC_KEYS, clampHours, detailLabel, estimateUsd, type DetailKey, type LeadDetails } from '@/lib/leadForms';
 
 /**
  * POST /api/contact — the only way a contact form reaches the database.
@@ -61,7 +61,10 @@ function cleanDetails(raw: unknown, topic: Topic): LeadDetails {
     const v = input[key];
     if (v === undefined || v === null || v === '') continue;
     const options = OPTIONS[key as DetailKey];
-    if (options) {
+    if (options && MULTI_KEYS.includes(key)) {
+      const picked = (Array.isArray(v) ? v : [v]).map(String).filter((x) => options.some((o) => o.value === x));
+      if (picked.length) out[key] = Array.from(new Set(picked)).slice(0, options.length);
+    } else if (options) {
       if (options.some((o) => o.value === String(v))) out[key] = String(v);
     } else if (key === 'hours') {
       const n = Number(v);

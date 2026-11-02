@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { EASE_SETTLE } from '@/lib/animations';
 import type { LeadTopic } from '@/lib/supabase/types';
@@ -17,7 +18,8 @@ import ContactForm from './ContactForm';
  * whole site.
  */
 
-type Open = (topic?: LeadTopic, preset?: LeadPreset) => void;
+/** No topic: the popup first asks which service (the master form). */
+type Open = (topic?: LeadTopic | null, preset?: LeadPreset) => void;
 
 const BookCallContext = createContext<Open>(() => {});
 
@@ -25,7 +27,8 @@ export const useBookCall = () => useContext(BookCallContext);
 
 type LenisLike = { stop: () => void; start: () => void };
 
-const HEADER: Record<LeadTopic, { en: [string, string]; es: [string, string] }> = {
+const HEADER: Record<LeadTopic | 'any', { en: [string, string]; es: [string, string] }> = {
+  any: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
   consultation: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
   web: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
   app: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
@@ -37,8 +40,11 @@ const HEADER: Record<LeadTopic, { en: [string, string]; es: [string, string] }> 
 export function BookCallProvider({ children }: { children: ReactNode }) {
   const { language } = useLanguage();
   const en = language === 'en';
-  const [open, setOpen] = useState<{ topic: LeadTopic; preset?: LeadPreset } | null>(null);
-  const show = useCallback<Open>((topic = 'consultation', preset) => setOpen({ topic, preset }), []);
+  const [open, setOpen] = useState<{ topic: LeadTopic | null; preset?: LeadPreset } | null>(null);
+  const show = useCallback<Open>((topic = null, preset) => {
+    setOpen({ topic, preset });
+    track('book_call_open', { topic: topic ?? 'any' });
+  }, []);
   const close = useCallback(() => setOpen(null), []);
 
   // Freeze the page behind the popup — Lenis (when running) and native scroll.
@@ -57,7 +63,7 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
     };
   }, [open, close]);
 
-  const header = open ? HEADER[open.topic][language] : null;
+  const header = open ? HEADER[open.topic ?? 'any'][language] : null;
 
   return (
     <BookCallContext.Provider value={show}>
@@ -95,7 +101,7 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
               </button>
               <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{header[0]}</p>
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8 pr-10">{header[1]}</h2>
-              <ContactForm key={`${open.topic}-${JSON.stringify(open.preset ?? {})}`} topic={open.topic} preset={open.preset} />
+              <ContactForm key={`${open.topic ?? 'any'}-${JSON.stringify(open.preset ?? {})}`} topic={open.topic} preset={open.preset} />
             </motion.div>
           </motion.div>
         )}

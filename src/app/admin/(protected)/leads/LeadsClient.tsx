@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ScanBadge from '@/components/ui/ScanBadge'
 import type { Lead, LeadStatus } from '@/lib/supabase/types'
-import { DETAIL_TITLE, detailLabel, type DetailKey } from '@/lib/leadForms'
+import { DETAIL_TITLE, detailLabel, type DetailKey, type DetailValue } from '@/lib/leadForms'
 
 const STATUSES: LeadStatus[] = ['new', 'contacted', 'qualified', 'won', 'lost', 'spam']
 
@@ -32,7 +32,7 @@ function detailsOf(lead: Lead): [string, string][] {
   if (!d || typeof d !== 'object' || Array.isArray(d)) return []
   return (Object.keys(d) as DetailKey[])
     .filter((k) => DETAIL_TITLE[k] && d[k] !== undefined && d[k] !== null)
-    .map((k) => [DETAIL_TITLE[k].en, detailLabel(k, d[k] as string | number, 'en')])
+    .map((k) => [DETAIL_TITLE[k].en, detailLabel(k, d[k] as DetailValue, 'en')])
 }
 
 function when(iso: string): string {

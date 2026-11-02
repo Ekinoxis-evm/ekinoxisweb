@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useBookCall } from '@/components/BookCall';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { BrandLockup } from '@/components/ui/BrandLogo';
@@ -13,6 +14,7 @@ type NavItem = { href: string; label: string; exact?: boolean };
 
 export default function Navigation() {
   const { language, setLanguage } = useLanguage();
+  const bookCall = useBookCall();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
@@ -178,6 +180,14 @@ export default function Navigation() {
 
           {/* Right controls */}
           <div className="flex items-center space-x-4">
+            {/* The same next step as the hero, always in reach on a laptop (phones have the bottom bar) */}
+            <button
+              type="button"
+              onClick={() => bookCall()}
+              className="hidden lg:inline-flex items-center border border-primary/40 px-4 min-h-[44px] font-label text-[12px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
+            >
+              {language === 'en' ? 'Book a free call' : 'Agenda una llamada'}
+            </button>
             <button
               onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
               className="font-mono text-[13px] text-primary hover:bg-primary/5 min-h-[44px] px-3 flex items-center transition-all"

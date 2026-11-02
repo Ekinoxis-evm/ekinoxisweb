@@ -607,6 +607,13 @@ npm run lint                    # ESLint
 
 ---
 
+## SEO & Analytics
+
+- **Structured data**: `src/lib/seo.ts` builds Organization (root layout), Service + Offer and BreadcrumbList (the three service layouts); `<JsonLd />` renders them server-side. Keep the Offer prices equal to the page prices.
+- **Metadata**: every section layout sets `title`, `description` and `alternates.canonical`; titles state the outcome and the price ("Websites for your business — live in 5 days, from $1,500"). The root template appends "— Ekinoxis Labs".
+- **Analytics**: Vercel Web Analytics (`@vercel/analytics`, `<Analytics />` in the root layout; enable Web Analytics on the Vercel project). Funnel events: `book_call_open` {topic}, `book_call_service` {topic}, `book_call_qualified` {topic}, `lead_sent` {topic, slot}.
+- **Known gap**: Spanish copy is toggled client-side on the same URLs, so Google only indexes the English version. Proper `/es` routes with hreflang are the next SEO step.
+
 ## Team & Contact
 
 - **Primary CTA**: the booking popup (`useBookCall()(topic, preset?)` → `ContactForm`), which qualifies the lead first (options in `src/lib/leadForms.ts`, answers stored in `leads.details`) and then books the slot. There is no public "message us on Telegram" link; Telegram (`https://t.me/ekinoxis`) stays only as a footer social and the course-success community link.

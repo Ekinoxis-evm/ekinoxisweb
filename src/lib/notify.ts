@@ -8,7 +8,7 @@
  */
 
 import { CALL_MINUTES, formatCot } from './booking';
-import { DETAIL_TITLE, detailLabel, type DetailKey, type LeadDetails } from './leadForms';
+import { DETAIL_TITLE, detailLabel, type DetailKey, type DetailValue, type LeadDetails } from './leadForms';
 
 export interface LeadNotification {
   id: string;
@@ -32,7 +32,7 @@ function detailLines(details: LeadDetails | undefined): string[] {
   if (!details) return [];
   return (Object.keys(details) as DetailKey[])
     .filter((k) => details[k] !== undefined && DETAIL_TITLE[k])
-    .map((k) => `${DETAIL_TITLE[k].en}: ${detailLabel(k, details[k] as string | number, 'en')}`);
+    .map((k) => `${DETAIL_TITLE[k].en}: ${detailLabel(k, details[k] as DetailValue, 'en')}`);
 }
 
 const FROM = 'Ekinoxis Labs <hola@ekinoxis.xyz>';

@@ -2,23 +2,27 @@
 
 import { useEffect, useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Minus, Plus } from 'lucide-react';
+import { track } from '@vercel/analytics';
+import { ArrowLeft, ArrowRight, Check, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
 import VoiceInput from '@/components/VoiceInput';
 import type { LeadTopic } from '@/lib/supabase/types';
 import { bookingDays, type BookingDay } from '@/lib/booking';
 import {
-  APP_PLANS, APP_STAGES, AUDIENCES, BUDGET_BANDS, CONSULTATION_FORMATS, CONSULTATION_TYPES, COURSE_WHO, HAS_SITE, WEB_PLANS,
-  BLOCK_HOURS, BLOCK_PRICE_USD, FREE_CALL_MINUTES, MIN_HOURS, MAX_HOURS, SLOT_REQUIRED, clampHours, estimateUsd,
+  APP_PLANS, APP_STAGES, APP_USERS, AUDIENCES, BUDGET_BANDS, CONSULTATION_FORMATS, CONSULTATION_TYPES, COURSE_WHO,
+  HAS_SITE, SERVICES, TEAM_SIZES, TIMING, WEB_NEEDS, WEB_PLANS,
+  BLOCK_HOURS, BLOCK_PRICE_USD, FREE_CALL_MINUTES, MIN_HOURS, MAX_HOURS, MULTI_KEYS, SLOT_REQUIRED, clampHours, estimateUsd,
   type DetailKey, type LeadPreset, type Option,
 } from '@/lib/leadForms';
 
 /**
- * The booking form, in two steps.
+ * The booking form, the same one everywhere on the site.
  *
- * 1. Qualify: two or three choices that depend on the service (which plan,
- *    what stage, how many hours) and a box for what they want to talk about,
+ * 0. Service (only when the button did not say which): advice, website,
+ *    software, a talk, a course or something else.
+ * 1. Qualify: the questions that service needs — which plan, what stage,
+ *    how many sessions, when — and a box for what they want to talk about,
  *    typed or dictated.
  * 2. The call: a day and a time in the visitor's own zone, then name, email
  *    and WhatsApp. Talks, courses and general messages may skip the slot.
@@ -28,11 +32,16 @@ import {
 
 const COPY = {
   en: {
+    stepService: 'Service',
     step1: 'About you',
     step2: 'The call',
     of: 'of',
     continue: 'Continue',
     back: 'Back',
+    serviceQ: 'What do you need?',
+    pickOne: 'Pick one option to continue.',
+    pickSome: 'Pick at least one to continue.',
+    several: 'pick all that apply',
     // consultation
     typeQ: 'What do you want to talk about?',
     formatQ: 'Which format?',
@@ -46,15 +55,21 @@ const COPY = {
     // web
     planQ: 'Which package fits?',
     siteQ: 'Do you have a website today?',
+    needsQ: 'What must the site do for you?',
     // app
     tierQ: 'Which plan are you thinking of?',
     stageQ: 'Where is the project today?',
+    usersQ: 'Who will use it?',
     budgetQ: 'What budget are you working with?',
     // talk / course
     audienceQ: 'Who is the audience?',
     orgQ: 'Organization or event',
     orgPh: 'Universidad del Valle, ETH Bogotá…',
     whoQ: 'Who is the course for?',
+    // shared
+    timingQ: 'When do you want to start?',
+    timingTalkQ: 'When is the event?',
+    teamQ: 'How big is your team?',
     // message
     messageQ: 'Tell us in your own words',
     messageOptional: 'optional',
@@ -66,7 +81,6 @@ const COPY = {
       course: 'Your goal with the course, and when you want to start.',
       general: 'What is on your mind.',
     } as Record<LeadTopic, string>,
-    pickOne: 'Pick one option to continue.',
     // step 2
     first: 'First name',
     last: 'Last name',
@@ -86,11 +100,16 @@ const COPY = {
     errorGeneric: 'Something went wrong. Try again, or write to hola@ekinoxis.xyz.',
   },
   es: {
+    stepService: 'Servicio',
     step1: 'Sobre ti',
     step2: 'La llamada',
     of: 'de',
     continue: 'Continuar',
     back: 'Atrás',
+    serviceQ: '¿Qué necesitas?',
+    pickOne: 'Elige una opción para continuar.',
+    pickSome: 'Elige al menos una para continuar.',
+    several: 'marca todas las que apliquen',
     typeQ: '¿De qué quieres hablar?',
     formatQ: '¿En qué formato?',
     hoursQ: '¿Cuánto tiempo estimas?',
@@ -102,13 +121,18 @@ const COPY = {
     estimate: 'Estimado',
     planQ: '¿Qué paquete te sirve?',
     siteQ: '¿Tienes sitio web hoy?',
+    needsQ: '¿Qué debe hacer el sitio por ti?',
     tierQ: '¿En qué plan estás pensando?',
     stageQ: '¿Dónde está el proyecto hoy?',
+    usersQ: '¿Quién lo va a usar?',
     budgetQ: '¿Con qué presupuesto cuentas?',
     audienceQ: '¿Quién es la audiencia?',
     orgQ: 'Organización o evento',
     orgPh: 'Universidad del Valle, ETH Bogotá…',
     whoQ: '¿Para quién es el curso?',
+    timingQ: '¿Cuándo quieres empezar?',
+    timingTalkQ: '¿Cuándo es el evento?',
+    teamQ: '¿Qué tan grande es tu equipo?',
     messageQ: 'Cuéntanos con tus palabras',
     messageOptional: 'opcional',
     messagePh: {
@@ -119,7 +143,6 @@ const COPY = {
       course: 'Tu meta con el curso y cuándo quieres empezar.',
       general: 'Lo que tengas en mente.',
     } as Record<LeadTopic, string>,
-    pickOne: 'Elige una opción para continuar.',
     first: 'Nombre',
     last: 'Apellido',
     email: 'Correo',
@@ -165,32 +188,44 @@ const label = 'font-mono text-[12px] text-outline uppercase tracking-widest mb-2
 /** The first question of each topic — the one that must be answered. */
 const REQUIRED: Partial<Record<LeadTopic, DetailKey>> = { consultation: 'type', web: 'plan', app: 'plan', talk: 'audience', course: 'who' };
 
-type Answers = Partial<Record<DetailKey, string>>;
+type Answers = Partial<Record<DetailKey, string | string[]>>;
+
+/** Defaults a topic starts with, plus whatever the button pre-answered. */
+function initialAnswers(topic: LeadTopic | null, preset?: LeadPreset): Answers {
+  const base: Answers = topic === 'consultation' ? { format: 'hourly' } : {};
+  for (const [k, v] of Object.entries(preset ?? {}) as [DetailKey, string][]) {
+    if (v) base[k] = MULTI_KEYS.includes(k) ? [v] : v;
+  }
+  return base;
+}
+
+type Step = 0 | 1 | 2;
 
 interface Props {
-  topic: LeadTopic;
+  /** The service, when the button already knows it. Omit to ask first. */
+  topic?: LeadTopic | null;
   preset?: LeadPreset;
   className?: string;
   /** Focus the first field on mount — for the popup, not for inline forms. */
   autoFocus?: boolean;
 }
 
-export default function ContactForm({ topic, preset, className = '', autoFocus = false }: Props) {
+export default function ContactForm({ topic: initialTopic = null, preset, className = '', autoFocus = false }: Props) {
   const { language } = useLanguage();
   const t = COPY[language];
   const en = language === 'en';
-  const id = (f: string) => `${f}-${topic}`;
-  const slotRequired = SLOT_REQUIRED[topic];
+  const asksService = !initialTopic;
 
-  const [step, setStep] = useState<1 | 2>(1);
-  const [answers, setAnswers] = useState<Answers>(() => ({
-    ...(topic === 'consultation' ? { format: 'hourly' } : {}),
-    ...preset,
-  }));
+  const [topic, setTopic] = useState<LeadTopic | null>(initialTopic);
+  const [step, setStep] = useState<Step>(asksService ? 0 : 1);
+  const [answers, setAnswers] = useState<Answers>(() => initialAnswers(initialTopic, preset));
   const [hours, setHours] = useState(BLOCK_HOURS);
   const [message, setMessage] = useState('');
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
+
+  const id = (f: string) => `${f}-${topic ?? 'any'}`;
+  const slotRequired = topic ? SLOT_REQUIRED[topic] : false;
 
   // Slots are computed in the browser (same rules as the server) and the taken
   // ones fetched, so a slot someone else booked never shows as free.
@@ -219,28 +254,51 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
   const day = days.find((d) => d.key === (dayKey ?? days[0]?.key));
   const locale = language === 'es' ? 'es-CO' : 'en-US';
 
-  const set = (key: DetailKey, value: string) => {
-    setAnswers((a) => ({ ...a, [key]: value }));
+  const clearError = () => {
     if (state === 'error') {
       setState('idle');
       setError(null);
     }
   };
 
+  const set = (key: DetailKey, value: string) => {
+    setAnswers((a) => {
+      if (!MULTI_KEYS.includes(key)) return { ...a, [key]: value };
+      const cur = Array.isArray(a[key]) ? (a[key] as string[]) : [];
+      return { ...a, [key]: cur.includes(value) ? cur.filter((v) => v !== value) : [...cur, value] };
+    });
+    clearError();
+  };
+  const isOn = (key: DetailKey, value: string) => {
+    const v = answers[key];
+    return Array.isArray(v) ? v.includes(value) : v === value;
+  };
+
+  const chooseService = (next: LeadTopic) => {
+    setTopic(next);
+    setAnswers(initialAnswers(next, preset));
+    clearError();
+    setStep(1);
+    track('book_call_service', { topic: next });
+  };
+
   function next() {
+    if (!topic) return;
     const req = REQUIRED[topic];
-    if (req && !answers[req]) {
-      setError(t.pickOne);
+    const v = req ? answers[req] : 'ok';
+    if (req && (!v || (Array.isArray(v) && v.length === 0))) {
+      setError(MULTI_KEYS.includes(req) ? t.pickSome : t.pickOne);
       setState('error');
       return;
     }
-    setError(null);
-    setState('idle');
+    clearError();
     setStep(2);
+    track('book_call_qualified', { topic });
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (step === 0 || !topic) return;
     if (step === 1) return next();
     if (state === 'sending') return;
 
@@ -288,6 +346,7 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
         return;
       }
       setState('sent');
+      track('lead_sent', { topic, slot: slot ? 'yes' : 'no' });
     } catch {
       setError(t.errorGeneric);
       setState('error');
@@ -309,32 +368,47 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
 
   /* ── pieces ─────────────────────────────────────────────────────────── */
 
-  const choices = (key: DetailKey, question: string, options: Option[], cols: 1 | 2 = 2) => (
-    <fieldset>
-      <legend className={label}>{question}</legend>
-      <div className={`grid grid-cols-1 ${cols === 2 ? 'sm:grid-cols-2' : ''} gap-2`}>
-        {options.map((o) => {
-          const active = answers[key] === o.value;
-          return (
-            <button
-              key={o.value}
-              type="button"
-              onClick={() => set(key, o.value)}
-              aria-pressed={active}
-              className={`min-h-[44px] border px-4 py-3 text-left transition-colors ${
-                active ? 'border-primary bg-primary/10' : 'border-outline-variant/30 hover:border-primary/60'
-              }`}
-            >
-              <span className={`block font-label text-[13px] font-semibold uppercase tracking-wide leading-snug ${active ? 'text-primary' : 'text-on-surface'}`}>
-                {o[language]}
-              </span>
-              {o.hint && <span className="block mt-1 font-mono text-[12px] text-outline tracking-wider">{o.hint[language]}</span>}
-            </button>
-          );
-        })}
-      </div>
-    </fieldset>
+  const chip = (active: boolean, onClick: () => void, title: string, hint?: string, multi = false, key?: string) => (
+    <button
+      key={key}
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`flex min-h-[44px] items-start gap-3 border px-4 py-3 text-left transition-colors ${
+        active ? 'border-primary bg-primary/10' : 'border-outline-variant/30 hover:border-primary/60'
+      }`}
+    >
+      {multi && (
+        <span
+          aria-hidden
+          className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center border ${active ? 'border-primary bg-primary text-surface-container-lowest' : 'border-outline-variant'}`}
+        >
+          {active && <Check size={12} strokeWidth={3} />}
+        </span>
+      )}
+      <span className="min-w-0">
+        <span className={`block font-label text-[13px] font-semibold uppercase tracking-wide leading-snug ${active ? 'text-primary' : 'text-on-surface'}`}>
+          {title}
+        </span>
+        {hint && <span className="block mt-1 font-mono text-[12px] text-outline tracking-wider">{hint}</span>}
+      </span>
+    </button>
   );
+
+  const choices = (key: DetailKey, question: string, options: Option[], cols: 1 | 2 = 2) => {
+    const multi = MULTI_KEYS.includes(key);
+    return (
+      <fieldset>
+        <legend className={label}>
+          {question}
+          {multi && <span className="normal-case text-outline"> ({t.several})</span>}
+        </legend>
+        <div className={`grid grid-cols-1 ${cols === 2 ? 'sm:grid-cols-2' : ''} gap-2`}>
+          {options.map((o) => chip(isOn(key, o.value), () => set(key, o.value), o[language], o.hint?.[language], multi, o.value))}
+        </div>
+      </fieldset>
+    );
+  };
 
   const hoursStepper = (
     <div>
@@ -375,26 +449,41 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
     </div>
   );
 
-  const stepOne = (
+  const stepService = (
+    <fieldset>
+      <legend className={label}>{t.serviceQ}</legend>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {SERVICES.map((s) => chip(topic === s.value, () => chooseService(s.value), s[language], s.hint?.[language], false, s.value))}
+      </div>
+    </fieldset>
+  );
+
+  const stepOne = topic && (
     <div className="space-y-6">
       {topic === 'consultation' && (
         <>
           {choices('type', t.typeQ, CONSULTATION_TYPES)}
           {choices('format', t.formatQ, CONSULTATION_FORMATS)}
           {answers.format === 'hourly' && hoursStepper}
+          {choices('team_size', t.teamQ, TEAM_SIZES)}
+          {choices('timing', t.timingQ, TIMING)}
         </>
       )}
       {topic === 'web' && (
         <>
           {choices('plan', t.planQ, WEB_PLANS)}
           {choices('has_site', t.siteQ, HAS_SITE)}
+          {choices('needs', t.needsQ, WEB_NEEDS)}
+          {choices('timing', t.timingQ, TIMING)}
         </>
       )}
       {topic === 'app' && (
         <>
           {choices('plan', t.tierQ, APP_PLANS)}
           {choices('stage', t.stageQ, APP_STAGES, 1)}
+          {choices('users', t.usersQ, APP_USERS)}
           {choices('budget_band', t.budgetQ, BUDGET_BANDS)}
+          {choices('timing', t.timingQ, TIMING)}
         </>
       )}
       {topic === 'talk' && (
@@ -406,16 +495,24 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
               id={id('organization')}
               type="text"
               maxLength={160}
-              value={answers.organization ?? ''}
+              value={(answers.organization as string | undefined) ?? ''}
               onChange={(e) => set('organization', e.target.value)}
               placeholder={t.orgPh}
               className={field}
               autoComplete="organization"
             />
           </div>
+          {choices('timing', t.timingTalkQ, TIMING)}
         </>
       )}
-      {topic === 'course' && choices('who', t.whoQ, COURSE_WHO)}
+      {topic === 'course' && (
+        <>
+          {choices('who', t.whoQ, COURSE_WHO)}
+          {answers.who === 'team' && choices('team_size', t.teamQ, TEAM_SIZES)}
+          {choices('timing', t.timingQ, TIMING)}
+        </>
+      )}
+      {topic === 'general' && choices('timing', t.timingQ, TIMING)}
 
       <div>
         <label className={label} htmlFor={id('message')}>
@@ -476,8 +573,7 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
                 disabled={isTaken}
                 onClick={() => {
                   setSlot(active && !slotRequired ? null : s);
-                  if (state === 'error') setState('idle');
-                  setError(null);
+                  clearError();
                 }}
                 aria-pressed={active}
                 className={`min-h-[44px] py-2.5 border font-mono text-[13px] transition-colors ${
@@ -545,6 +641,14 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
     </div>
   );
 
+  // The step marker: the service step only exists when the button did not name one.
+  const steps: { n: Step; name: string }[] = [
+    ...(asksService ? [{ n: 0 as Step, name: t.stepService }] : []),
+    { n: 1 as Step, name: t.step1 },
+    { n: 2 as Step, name: t.step2 },
+  ];
+  const stepIndex = steps.findIndex((s) => s.n === step);
+
   return (
     <form onSubmit={onSubmit} className={`space-y-6 ${className}`}>
       {/* Honeypot: off-screen, not display:none — some bots skip hidden fields. */}
@@ -554,24 +658,24 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
       </div>
 
       {/* Step marker: one light on the current step */}
-      <ol className="flex items-center gap-3 font-mono text-[12px] uppercase tracking-widest" aria-label={`${step} ${t.of} 2`}>
-        {[t.step1, t.step2].map((name, i) => {
-          const n = (i + 1) as 1 | 2;
-          const current = n === step;
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-widest" aria-label={`${stepIndex + 1} ${t.of} ${steps.length}`}>
+        {steps.map((s, i) => {
+          const current = s.n === step;
+          const done = s.n < step;
           return (
-            <li key={name} className="flex items-center gap-3">
-              {i > 0 && <span aria-hidden className={`h-px w-6 ${step === 2 ? 'bg-primary' : 'bg-outline-variant'}`} />}
+            <li key={s.n} className="flex items-center gap-3">
+              {i > 0 && <span aria-hidden className={`h-px w-5 ${done || current ? 'bg-primary' : 'bg-outline-variant'}`} />}
               <button
                 type="button"
-                onClick={() => n < step && setStep(n)}
-                disabled={n >= step}
+                onClick={() => done && setStep(s.n)}
+                disabled={!done}
                 aria-current={current ? 'step' : undefined}
-                className={`flex items-center gap-2 py-1 ${current ? 'text-primary' : n < step ? 'text-on-surface-variant hover:text-primary' : 'text-outline'} disabled:cursor-default`}
+                className={`flex items-center gap-2 py-1 ${current ? 'text-primary' : done ? 'text-on-surface-variant hover:text-primary' : 'text-outline'} disabled:cursor-default`}
               >
-                <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] ${current ? 'border-primary bg-primary text-surface-container-lowest' : n < step ? 'border-primary text-primary' : 'border-outline-variant'}`}>
-                  {n}
+                <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] ${current ? 'border-primary bg-primary text-surface-container-lowest' : done ? 'border-primary text-primary' : 'border-outline-variant'}`}>
+                  {i + 1}
                 </span>
-                {name}
+                {s.name}
               </button>
             </li>
           );
@@ -581,12 +685,12 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: step === 2 ? 16 : -16 }}
+          initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: step === 2 ? -16 : 16 }}
+          exit={{ opacity: 0, x: -16 }}
           transition={{ duration: 0.25 }}
         >
-          {step === 1 ? stepOne : stepTwo}
+          {step === 0 ? stepService : step === 1 ? stepOne : stepTwo}
         </motion.div>
       </AnimatePresence>
 
@@ -604,26 +708,28 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
-        {step === 1 ? (
-          <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto justify-center">
-            {t.continue} <ArrowRight size={18} />
-          </Button>
-        ) : (
-          <>
-            <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'} className="w-full sm:w-auto justify-center">
-              {state === 'sending' ? t.sending : t.send[topic]}
+      {step > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
+          {step === 1 ? (
+            <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto justify-center">
+              {t.continue} <ArrowRight size={18} />
             </Button>
+          ) : (
+            <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'} className="w-full sm:w-auto justify-center">
+              {state === 'sending' ? t.sending : t.send[topic as LeadTopic]}
+            </Button>
+          )}
+          {(step === 2 || asksService) && (
             <button
               type="button"
-              onClick={() => setStep(1)}
+              onClick={() => setStep((step - 1) as Step)}
               className="inline-flex min-h-[44px] items-center justify-center gap-2 font-mono text-[12px] uppercase tracking-widest text-outline hover:text-primary transition-colors"
             >
               <ArrowLeft size={14} /> {t.back}
             </button>
-          </>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </form>
   );
 }

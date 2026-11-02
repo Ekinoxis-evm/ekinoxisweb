@@ -6,6 +6,9 @@ import Footer from '@/components/Footer';
 import MobileCTA from '@/components/MobileCTA';
 import SmoothScroll from '@/components/SmoothScroll';
 import { BookCallProvider } from '@/components/BookCall';
+import JsonLd from '@/components/JsonLd';
+import { organizationJsonLd } from '@/lib/seo';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -39,11 +42,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ekinoxis.xyz'),
   title: {
-    default: 'Ekinoxis Labs — Innovation Without Frontiers',
+    default: 'Ekinoxis Labs — AI & Crypto Innovation Lab · Colombia & USA',
     template: '%s — Ekinoxis Labs',
   },
-  description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
-  keywords: ['Blockchain', 'Cryptography', 'Artificial Intelligence', 'Innovation', 'Colombia', 'WEB3'],
+  description:
+    'AI, blockchain and crypto software for your business, from Cali, Colombia and Casper, Wyoming. Consultation from $100, websites live in 5 days from $1,500, custom apps from $12,000. Book a free 30-minute call.',
+  keywords: ['AI consulting Colombia', 'blockchain development', 'stablecoin payments', 'web development Cali', 'custom software', 'innovation lab', 'Ekinoxis'],
+  alternates: { canonical: '/' },
   // The brand favicon set — the mark, rendered at each size a browser asks for.
   icons: {
     icon: [
@@ -56,16 +61,19 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Ekinoxis Labs — Innovation Without Frontiers',
-    description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
+    description: 'The first AI and crypto innovation lab of the Colombian Pacific. We unlock the power of frontier technologies for your business. Colombia & USA.',
     url: 'https://www.ekinoxis.xyz',
     siteName: 'Ekinoxis Labs',
     type: 'website',
+    locale: 'en_US',
+    alternateLocale: ['es_CO'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ekinoxis Labs — Innovation Without Frontiers',
-    description: 'Innovation Without Frontiers. Unlocking the power of frontier technologies — AI, blockchain and cryptography, from Colombia to the USA.',
+    description: 'The first AI and crypto innovation lab of the Colombian Pacific. We unlock the power of frontier technologies for your business. Colombia & USA.',
   },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
 };
 
 export default function RootLayout({
@@ -79,6 +87,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable}`}
     >
       <body>
+        <JsonLd data={organizationJsonLd()} />
         {/* CRT Scanline overlay — fixed, covers all pages */}
         <div className="fixed inset-0 z-[100] scanline-overlay opacity-20 pointer-events-none" />
         <LanguageProvider>
@@ -92,6 +101,7 @@ export default function RootLayout({
           <SmoothScroll />
           </BookCallProvider>
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );

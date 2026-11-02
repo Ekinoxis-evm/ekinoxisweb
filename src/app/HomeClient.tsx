@@ -81,6 +81,13 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
   const featured = FEATURED.map((name) => products.find((p) => p.name === name))
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
   const hackathonCount = hackathons.length;
+  const productCount = products.filter((p) => p.project_type === 'product').length;
+  // Proof under the hero button, counted from the database like the numbers below.
+  const proof = [
+    { n: productCount, label: en ? 'products built' : 'productos construidos' },
+    { n: clients.length, label: en ? 'client businesses' : 'negocios cliente' },
+    { n: schools.length, label: en ? 'universities & governments' : 'universidades y gobiernos' },
+  ].filter((p) => p.n > 0);
 
   // One tile per portfolio division, so the total is split the same way /portfolio is.
   const numbers: { value: string; label: string; href?: string }[] = [
@@ -123,19 +130,27 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
             )}
           </p>
 
-          <div
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
-          >
+          {/* One action in the hero: the call. The work and the services follow below. */}
+          <div className="pt-2">
             <Button variant="primary" size="lg" className="w-full sm:w-auto justify-center" onClick={() => bookCall()}>
-                {en ? 'Book a free call' : 'Agenda una llamada gratis'}
-                <ArrowRight size={18} />
-              </Button>
-            <Link href="/portfolio">
-              <Button variant="ghost" size="lg" className="w-full sm:w-auto justify-center">
-                {en ? 'See our work' : 'Mira nuestro trabajo'}
-              </Button>
-            </Link>
+              {en ? 'Book a free call' : 'Agenda una llamada gratis'}
+              <ArrowRight size={18} />
+            </Button>
+            <p className="mt-3 font-mono text-[12px] uppercase tracking-widest text-outline">
+              {en ? '30 minutes · free · in English or Spanish' : '30 minutos · gratis · en español o inglés'}
+            </p>
           </div>
+
+          {proof.length > 0 && (
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 pt-2" aria-label={en ? 'Proof' : 'Pruebas'}>
+              {proof.map((p) => (
+                <li key={p.label} className="flex items-baseline gap-2">
+                  <span className="font-headline text-xl font-bold tracking-tighter text-on-surface">{p.n}</span>
+                  <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{p.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
       </div>

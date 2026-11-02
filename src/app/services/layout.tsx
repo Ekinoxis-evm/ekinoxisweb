@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: { default: 'Services', template: '%s — Ekinoxis Labs' },
-  description: 'Consultation, websites and custom software with AI and blockchain built in — from Ekinoxis Labs in Cali, Colombia.',
+  description: 'Three ways to work with Ekinoxis Labs: AI and crypto consultation from $100, websites live in 5 days from $1,500, custom software from $12,000. Colombia and the USA, in English or Spanish. Start with a free 30-minute call.',
   alternates: { canonical: '/services' },
 };
 

@@ -22,12 +22,33 @@ export const FREE_CALL_MINUTES = 30;
 export type Lang = 'en' | 'es';
 export type Option = { value: string; en: string; es: string; hint?: { en: string; es: string } };
 
+export const DETAIL_KEYS = [
+  'type', 'format', 'hours', 'estimate_usd',
+  'plan', 'has_site', 'needs',
+  'stage', 'users', 'budget_band',
+  'audience', 'organization', 'who',
+  'timing', 'team_size',
+] as const;
+export type DetailKey = (typeof DETAIL_KEYS)[number];
+export type DetailValue = string | number | string[];
+export type LeadDetails = Partial<Record<DetailKey, DetailValue>>;
+
 /** A pre-answered question, e.g. the pricing card the visitor clicked. */
 export type LeadPreset = Partial<Record<DetailKey, string>>;
 
-export const DETAIL_KEYS = ['type', 'format', 'hours', 'estimate_usd', 'plan', 'has_site', 'stage', 'budget_band', 'audience', 'organization', 'who'] as const;
-export type DetailKey = (typeof DETAIL_KEYS)[number];
-export type LeadDetails = Partial<Record<DetailKey, string | number>>;
+/** Questions where more than one answer is allowed; stored as arrays. */
+export const MULTI_KEYS: DetailKey[] = ['type', 'needs'];
+
+/* ── The master form: which service? ────────────────────────────────────── */
+
+export const SERVICES: (Option & { value: LeadTopic })[] = [
+  { value: 'consultation', en: 'Advice on AI, crypto or automation', es: 'Asesoría en IA, cripto o automatización', hint: { en: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS}-hour session`, es: `$${BLOCK_PRICE_USD} · sesión de ${BLOCK_HOURS} horas` } },
+  { value: 'web', en: 'A website for my business', es: 'Un sitio web para mi negocio', hint: { en: 'From $1,500 · live in 5 days', es: 'Desde $1,500 · en vivo en 5 días' } },
+  { value: 'app', en: 'Software or an app built for me', es: 'Software o una app hecha para mí', hint: { en: 'From $12,000', es: 'Desde $12,000' } },
+  { value: 'talk', en: 'Invite us to speak', es: 'Invitarlos a hablar', hint: { en: 'Talks, panels, demos', es: 'Charlas, paneles, demos' } },
+  { value: 'course', en: 'A course for me or my team', es: 'Un curso para mí o mi equipo' },
+  { value: 'general', en: 'Something else', es: 'Otra cosa' },
+];
 
 /* ── Consultation ───────────────────────────────────────────────────────── */
 
@@ -61,6 +82,14 @@ export const HAS_SITE: Option[] = [
   { value: 'improve', en: 'Yes, it needs improving', es: 'Sí, hay que mejorarlo' },
 ];
 
+export const WEB_NEEDS: Option[] = [
+  { value: 'bookings', en: 'Take bookings', es: 'Recibir reservas' },
+  { value: 'payments', en: 'Sell and get paid online', es: 'Vender y cobrar en línea' },
+  { value: 'leads', en: 'Get WhatsApp leads', es: 'Recibir leads por WhatsApp' },
+  { value: 'showcase', en: 'Show my work and services', es: 'Mostrar mi trabajo y servicios' },
+  { value: 'assistant', en: 'An AI assistant that answers', es: 'Un asistente de IA que responda' },
+];
+
 /* ── Software & apps ────────────────────────────────────────────────────── */
 
 export const APP_PLANS: Option[] = [
@@ -74,6 +103,12 @@ export const APP_STAGES: Option[] = [
   { value: 'idea', en: 'An idea on paper', es: 'Una idea en papel' },
   { value: 'manual', en: 'A running business, manual processes', es: 'Un negocio andando, procesos manuales' },
   { value: 'existing', en: 'Software that exists, to replace or extend', es: 'Software que existe, para reemplazar o ampliar' },
+];
+
+export const APP_USERS: Option[] = [
+  { value: 'team', en: 'My team', es: 'Mi equipo' },
+  { value: 'customers', en: 'My customers', es: 'Mis clientes' },
+  { value: 'both', en: 'Both', es: 'Ambos' },
 ];
 
 export const BUDGET_BANDS: Option[] = [
@@ -97,26 +132,46 @@ export const COURSE_WHO: Option[] = [
   { value: 'team', en: 'My team (private cohort)', es: 'Mi equipo (cohorte privada)' },
 ];
 
+/* ── Asked across services ──────────────────────────────────────────────── */
+
+export const TIMING: Option[] = [
+  { value: 'now', en: 'As soon as possible', es: 'Lo antes posible' },
+  { value: 'month', en: 'Within a month', es: 'Dentro de un mes' },
+  { value: 'quarter', en: 'In the next 3 months', es: 'En los próximos 3 meses' },
+  { value: 'exploring', en: 'Just exploring', es: 'Solo explorando' },
+];
+
+export const TEAM_SIZES: Option[] = [
+  { value: 'solo', en: 'Just me', es: 'Solo yo' },
+  { value: 'small', en: '2 – 10 people', es: '2 – 10 personas' },
+  { value: 'medium', en: '11 – 50 people', es: '11 – 50 personas' },
+  { value: 'large', en: 'More than 50', es: 'Más de 50' },
+];
+
 /** Every option list, by the detail key it answers. */
 export const OPTIONS: Partial<Record<DetailKey, Option[]>> = {
   type: CONSULTATION_TYPES,
   format: CONSULTATION_FORMATS,
   plan: [...WEB_PLANS, ...APP_PLANS],
   has_site: HAS_SITE,
+  needs: WEB_NEEDS,
   stage: APP_STAGES,
+  users: APP_USERS,
   budget_band: BUDGET_BANDS,
   audience: AUDIENCES,
   who: COURSE_WHO,
+  timing: TIMING,
+  team_size: TEAM_SIZES,
 };
 
-/** Which option lists a topic may answer — the server accepts nothing else. */
+/** Which questions a topic may answer — the server accepts nothing else. */
 export const TOPIC_KEYS: Record<LeadTopic, DetailKey[]> = {
-  consultation: ['type', 'format', 'hours', 'estimate_usd'],
-  web: ['plan', 'has_site'],
-  app: ['plan', 'stage', 'budget_band'],
-  talk: ['audience', 'organization'],
-  course: ['who'],
-  general: [],
+  consultation: ['type', 'format', 'hours', 'estimate_usd', 'team_size', 'timing'],
+  web: ['plan', 'has_site', 'needs', 'timing'],
+  app: ['plan', 'stage', 'users', 'budget_band', 'timing'],
+  talk: ['audience', 'organization', 'timing'],
+  course: ['who', 'team_size', 'timing'],
+  general: ['timing'],
 };
 
 /** Topics where the visitor must pick a slot; the rest may just send the message. */
@@ -135,7 +190,8 @@ export const clampHours = (h: number) =>
 export const estimateUsd = (hours: number) => (clampHours(hours) / BLOCK_HOURS) * BLOCK_PRICE_USD;
 
 /** Human label for a stored detail — "AI on my own servers" instead of SELF_AGT. */
-export function detailLabel(key: DetailKey, value: string | number, lang: Lang = 'en'): string {
+export function detailLabel(key: DetailKey, value: DetailValue, lang: Lang = 'en'): string {
+  if (Array.isArray(value)) return value.map((v) => detailLabel(key, v, lang)).join(', ');
   const opt = OPTIONS[key]?.find((o) => o.value === String(value));
   if (opt) return opt[lang];
   if (key === 'hours') return `${value} h`;
@@ -144,15 +200,19 @@ export function detailLabel(key: DetailKey, value: string | number, lang: Lang =
 }
 
 export const DETAIL_TITLE: Record<DetailKey, { en: string; es: string }> = {
-  type: { en: 'Topic', es: 'Tema' },
+  type: { en: 'Topics', es: 'Temas' },
   format: { en: 'Format', es: 'Formato' },
   hours: { en: 'Hours', es: 'Horas' },
   estimate_usd: { en: 'Estimate', es: 'Estimado' },
   plan: { en: 'Plan', es: 'Plan' },
   has_site: { en: 'Website today', es: 'Sitio actual' },
+  needs: { en: 'Site must', es: 'El sitio debe' },
   stage: { en: 'Stage', es: 'Etapa' },
+  users: { en: 'Users', es: 'Usuarios' },
   budget_band: { en: 'Budget', es: 'Presupuesto' },
   audience: { en: 'Audience', es: 'Audiencia' },
   organization: { en: 'Organization', es: 'Organización' },
   who: { en: 'For', es: 'Para' },
+  timing: { en: 'When', es: 'Cuándo' },
+  team_size: { en: 'Team size', es: 'Tamaño del equipo' },
 };
