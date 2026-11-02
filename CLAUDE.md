@@ -12,7 +12,7 @@
 - **Education** — university partnerships, free workshops, certifications
 - **Community** — hacker houses, hackathon participation
 - **Products** — 8+ internally built blockchain/AI products (IP generation)
-- **Services** — paid consulting ($100/hour sessions → $3,000/mo advisor), fast web deployment ($900–$3,500) and custom app building ($8k MVP → $12k/mo dedicated team)
+- **Services** — paid consulting ($100 for a 2-hour session → $3,000/mo advisor), fast web deployment ($900–$3,500) and custom app building ($8k MVP → $12k/mo dedicated team)
 - **Courses** — cohort-based, project-first courses (`/courses`, registry in `src/lib/courses.ts`)
 - **Research** — frontier tech with institutional partners
 

@@ -10,7 +10,7 @@ import type { LeadTopic } from '@/lib/supabase/types';
 import { bookingDays, type BookingDay } from '@/lib/booking';
 import {
   APP_PLANS, APP_STAGES, AUDIENCES, BUDGET_BANDS, CONSULTATION_FORMATS, CONSULTATION_TYPES, COURSE_WHO, HAS_SITE, WEB_PLANS,
-  HOURLY_RATE_USD, MIN_HOURS, MAX_HOURS, SLOT_REQUIRED, clampHours, estimateUsd,
+  BLOCK_HOURS, BLOCK_PRICE_USD, FREE_CALL_MINUTES, MIN_HOURS, MAX_HOURS, SLOT_REQUIRED, clampHours, estimateUsd,
   type DetailKey, type LeadPreset, type Option,
 } from '@/lib/leadForms';
 
@@ -36,12 +36,12 @@ const COPY = {
     // consultation
     typeQ: 'What do you want to talk about?',
     formatQ: 'Which format?',
-    hoursQ: 'How many hours do you estimate?',
-    hoursHint: `$${HOURLY_RATE_USD} per hour · we confirm the scope on the call`,
+    hoursQ: 'How much time do you estimate?',
+    hoursHint: `$${BLOCK_PRICE_USD} per ${BLOCK_HOURS}-hour session · the first ${FREE_CALL_MINUTES} minutes (the call) are free`,
     hour: 'hour',
     hours: 'hours',
-    fewer: 'One hour less',
-    more: 'One hour more',
+    fewer: 'One session less',
+    more: 'One session more',
     estimate: 'Estimate',
     // web
     planQ: 'Which package fits?',
@@ -93,12 +93,12 @@ const COPY = {
     back: 'Atrás',
     typeQ: '¿De qué quieres hablar?',
     formatQ: '¿En qué formato?',
-    hoursQ: '¿Cuántas horas estimas?',
-    hoursHint: `$${HOURLY_RATE_USD} por hora · confirmamos el alcance en la llamada`,
+    hoursQ: '¿Cuánto tiempo estimas?',
+    hoursHint: `$${BLOCK_PRICE_USD} por sesión de ${BLOCK_HOURS} horas · los primeros ${FREE_CALL_MINUTES} minutos (la llamada) son gratis`,
     hour: 'hora',
     hours: 'horas',
-    fewer: 'Una hora menos',
-    more: 'Una hora más',
+    fewer: 'Una sesión menos',
+    more: 'Una sesión más',
     estimate: 'Estimado',
     planQ: '¿Qué paquete te sirve?',
     siteQ: '¿Tienes sitio web hoy?',
@@ -187,7 +187,7 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
     ...(topic === 'consultation' ? { format: 'hourly' } : {}),
     ...preset,
   }));
-  const [hours, setHours] = useState(3);
+  const [hours, setHours] = useState(BLOCK_HOURS);
   const [message, setMessage] = useState('');
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -343,7 +343,7 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
         <div className="flex items-stretch border border-outline-variant/30">
           <button
             type="button"
-            onClick={() => setHours((h) => clampHours(h - 1))}
+            onClick={() => setHours((h) => clampHours(h - BLOCK_HOURS))}
             disabled={hours <= MIN_HOURS}
             aria-label={t.fewer}
             className="flex h-12 w-12 items-center justify-center text-primary hover:bg-primary/10 disabled:text-outline disabled:hover:bg-transparent transition-colors"
@@ -356,7 +356,7 @@ export default function ContactForm({ topic, preset, className = '', autoFocus =
           </div>
           <button
             type="button"
-            onClick={() => setHours((h) => clampHours(h + 1))}
+            onClick={() => setHours((h) => clampHours(h + BLOCK_HOURS))}
             disabled={hours >= MAX_HOURS}
             aria-label={t.more}
             className="flex h-12 w-12 items-center justify-center text-primary hover:bg-primary/10 disabled:text-outline disabled:hover:bg-transparent transition-colors"

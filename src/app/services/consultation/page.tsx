@@ -97,7 +97,7 @@ const consultationContent = {
       steps: [
         { chip: 'Free', num: '01', title: 'Attend a talk', desc: 'Catch us at an event or invite us to yours.' },
         { chip: 'Free · 30 min', num: '02', title: 'Free call', desc: '30 minutes. We find the problem worth solving first.' },
-        { chip: 'From $100 / hour', num: '03', title: 'Private session', desc: 'Pick one below. Your team, your data, one topic.' },
+        { chip: '$100 · 2 hours', num: '03', title: 'Personalized session', desc: 'Two hours on your problem. Your team, your data, one topic.' },
         { chip: 'Your plan', num: '04', title: 'Plan and build', desc: 'You keep the plan. Build it yourself, or with us.' },
       ],
     },
@@ -107,11 +107,11 @@ const consultationContent = {
       subtitle: 'Every session includes a recording, a written summary, and 7 days of follow-up questions',
       plans: [
         {
-          name: 'Session or Roadmap',
-          price: '$100 / hour',
-          time: 'From 1 hour', people: 'Up to 5 people', format: 'Sessions of 1 to 3 hours · you set the pace',
+          name: 'Personalized Session',
+          price: '$100',
+          time: '2 hours · first 30 min free', people: 'Up to 5 people', format: 'Add 2-hour sessions as you need · up to 12 hours',
           badge: 'Start here',
-          features: ['One question answered — one hour', 'Or a full written roadmap — up to 12 hours', 'Estimate your hours when you book', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
+          features: ['The free call is your first 30 minutes', 'One question answered in two hours', 'Or a full written roadmap, session by session', 'Estimate your time when you book', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
           cta: 'Book a Session',
         },
         {
@@ -212,7 +212,7 @@ const consultationContent = {
       steps: [
         { chip: 'Gratis', num: '01', title: 'Asiste a una charla', desc: 'Búscanos en un evento o invítanos al tuyo.' },
         { chip: 'Gratis · 30 min', num: '02', title: 'Llamada gratis', desc: '30 minutos. Encontramos el problema que vale la pena resolver primero.' },
-        { chip: 'Desde $100 / hora', num: '03', title: 'Sesión privada', desc: 'Elige una abajo. Tu equipo, tus datos, un tema.' },
+        { chip: '$100 · 2 horas', num: '03', title: 'Sesión personalizada', desc: 'Dos horas en tu problema. Tu equipo, tus datos, un tema.' },
         { chip: 'Tu plan', num: '04', title: 'Plan y construcción', desc: 'El plan es tuyo. Constrúyelo tú, o con nosotros.' },
       ],
     },
@@ -222,11 +222,11 @@ const consultationContent = {
       subtitle: 'Toda sesión incluye grabación, resumen escrito y 7 días de preguntas de seguimiento',
       plans: [
         {
-          name: 'Sesión o Plan',
-          price: '$100 / hora',
-          time: 'Desde 1 hora', people: 'Hasta 5 personas', format: 'Sesiones de 1 a 3 horas · tú defines el ritmo',
+          name: 'Sesión Personalizada',
+          price: '$100',
+          time: '2 horas · primeros 30 min gratis', people: 'Hasta 5 personas', format: 'Suma sesiones de 2 horas según necesites · hasta 12 horas',
           badge: 'Empieza aquí',
-          features: ['Una pregunta resuelta — una hora', 'O un plan escrito completo — hasta 12 horas', 'Estima tus horas al agendar', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
+          features: ['La llamada gratis son tus primeros 30 minutos', 'Una pregunta resuelta en dos horas', 'O un plan escrito completo, sesión a sesión', 'Estima tu tiempo al agendar', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
         },
         {

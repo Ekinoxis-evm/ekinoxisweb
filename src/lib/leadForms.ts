@@ -9,10 +9,15 @@
 
 import type { LeadTopic } from './supabase/types';
 
-/** The hourly consultation rate, the same number /services/consultation prints. */
-export const HOURLY_RATE_USD = 100;
-export const MIN_HOURS = 1;
+/**
+ * Consultation is sold in blocks: $100 for a two-hour personalized session,
+ * after the free 30-minute call. The same numbers /services/consultation prints.
+ */
+export const BLOCK_HOURS = 2;
+export const BLOCK_PRICE_USD = 100;
+export const MIN_HOURS = BLOCK_HOURS;
 export const MAX_HOURS = 12;
+export const FREE_CALL_MINUTES = 30;
 
 export type Lang = 'en' | 'es';
 export type Option = { value: string; en: string; es: string; hint?: { en: string; es: string } };
@@ -36,7 +41,7 @@ export const CONSULTATION_TYPES: Option[] = [
 ];
 
 export const CONSULTATION_FORMATS: Option[] = [
-  { value: 'hourly', en: 'Private session', es: 'Sesión privada', hint: { en: `$${HOURLY_RATE_USD} / hour`, es: `$${HOURLY_RATE_USD} / hora` } },
+  { value: 'hourly', en: 'Personalized session', es: 'Sesión personalizada', hint: { en: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS} hours`, es: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS} horas` } },
   { value: 'workshop', en: 'Team workshop', es: 'Taller de equipo', hint: { en: 'Half day $3,800', es: 'Medio día $3,800' } },
   { value: 'advisor', en: 'Monthly advisor', es: 'Asesor mensual', hint: { en: '$3,000 / month', es: '$3,000 / mes' } },
 ];
@@ -124,8 +129,10 @@ export const SLOT_REQUIRED: Record<LeadTopic, boolean> = {
   general: false,
 };
 
-export const clampHours = (h: number) => Math.min(MAX_HOURS, Math.max(MIN_HOURS, Math.round(h)));
-export const estimateUsd = (hours: number) => clampHours(hours) * HOURLY_RATE_USD;
+/** Whole blocks only: 2, 4, 6 … 12 hours. */
+export const clampHours = (h: number) =>
+  Math.min(MAX_HOURS, Math.max(MIN_HOURS, Math.round(h / BLOCK_HOURS) * BLOCK_HOURS));
+export const estimateUsd = (hours: number) => (clampHours(hours) / BLOCK_HOURS) * BLOCK_PRICE_USD;
 
 /** Human label for a stored detail — "AI on my own servers" instead of SELF_AGT. */
 export function detailLabel(key: DetailKey, value: string | number, lang: Lang = 'en'): string {

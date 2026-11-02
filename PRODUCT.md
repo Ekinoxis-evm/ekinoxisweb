@@ -45,9 +45,10 @@ always **Colombia & USA**, never just Florida.
 ## Operating Context
 
 - Three paid services, each with its own page and price ladder:
-  - **Consultation**: 5 topics; Session or Roadmap ($100 per hour, from 1 to 12 hours,
-    the visitor estimates the hours in the booking form), Team Workshop, Monthly
-    Advisor ($3,000, 16 h/month).
+  - **Consultation**: 5 topics; Personalized Session ($100 for 2 hours, the free
+    30-minute call being the first step; more 2-hour sessions up to 12 hours, the visitor
+    estimates the time in the booking form), Team Workshop, Monthly Advisor ($3,000,
+    16 h/month).
   - **Websites**: Online Business $1,500 / Professional $3,000 / Complete $6,000, live in
     5 days, fixed price, pay half to start.
   - **App building**: diagnostic → design and demo → rounds with the client until it
