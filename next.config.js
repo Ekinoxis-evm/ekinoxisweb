@@ -37,6 +37,12 @@ const nextConfig = {
       { source: '/culture', destination: '/about#culture', permanent: true },
       // /hackers is now the team band on /about.
       { source: '/hackers', destination: '/about#team', permanent: true },
+      // The same legacy addresses under the Spanish prefix.
+      { source: '/es/products', destination: '/es/portfolio', permanent: true },
+      { source: '/es/certifications', destination: '/es/education#certifications', permanent: true },
+      { source: '/es/research', destination: '/es/education#research', permanent: true },
+      { source: '/es/culture', destination: '/es/about#culture', permanent: true },
+      { source: '/es/hackers', destination: '/es/about#team', permanent: true },
     ]
   },
 }

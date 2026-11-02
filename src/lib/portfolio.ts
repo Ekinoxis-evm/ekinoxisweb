@@ -2,7 +2,7 @@ import type { ProjectType } from '@/lib/supabase/types'
 
 /**
  * The four divisions of the portfolio. Slugs stay in English for both
- * languages — the site switches language client-side on a single URL set.
+ * languages — Spanish pages live at the same path under /es.
  *
  * Order here is the order they appear on /portfolio and in the nav.
  */

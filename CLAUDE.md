@@ -160,10 +160,16 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 
 ## Project Structure
 
+**Languages are URLs.** English lives at the bare path (`/about`), Spanish under `/es` (`/es/about`). Every public page sits under `src/app/(site)/[lang]/`; `src/middleware.ts` rewrites bare paths to the internal `/en` tree (and 308s any public `/en/...` back), so `params.lang` reaches every layout and page. The admin has its own root layout under `src/app/(admin)/admin/`. The paths below are relative to `src/app/(site)/[lang]/` unless noted.
+
 ```
 /src/
+├── middleware.ts                # /about → /en/about rewrite, /es passthrough, cookie + Accept-Language redirect to /es
 ├── app/
-│   ├── layout.tsx               # Root layout: fonts, scanline overlay, Navigation + Footer + LanguageProvider
+│   ├── (site)/[lang]/layout.tsx # Root layout: <html lang>, fonts, scanline overlay, Navigation + Footer + LanguageProvider initial={lang}
+│   ├── (site)/[lang]/not-found.tsx    # Bilingual 404 (rendered client-side; see SEO section)
+│   ├── (site)/[lang]/[...rest]/page.tsx # Catch-all → notFound()
+│   ├── (admin)/layout.tsx       # Admin root layout (html/body only, noindex)
 │   ├── globals.css              # Global styles, Tailwind directives, animation keyframes, legacy utilities
 │   ├── page.tsx                 # Home / Hero (2-col grid, sphere animation, 4-stat panel)
 │   ├── about/                   # About us: story, equinox meaning, what we do, culture (#culture), moving team band with profile popup (#team) — /culture and /hackers redirect here
@@ -211,7 +217,8 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │           └── hackathons/       # POST (create) + [id]/ PUT/DELETE
 │
 ├── components/
-│   ├── Navigation.tsx            # Fixed header, dropdowns, language toggle, mobile slide menu
+│   ├── LocalizedLink.tsx         # next/link that prefixes internal hrefs with /es in Spanish — use it for every internal link
+│   ├── Navigation.tsx            # Fixed header, dropdowns, language toggle (a real link to the other language's URL), mobile slide menu
 │   ├── Footer.tsx                # 2-col: brand left, social links right
 │   └── ui/
 │       ├── AnimatedBackground.tsx  # Variants: ambient | grid | gradient | terminal
@@ -224,6 +231,9 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   └── LanguageContext.tsx       # EN/ES via useLanguage()
 │
 └── lib/
+    ├── i18n.ts                   # Lang type, localizePath / splitPath / switchLangPath / hreflang / langOf(params)
+    ├── fonts.ts                  # next/font loaders shared by both root layouts
+    ├── seo.ts                    # siteMetadata / pageMetadata (title, description, canonical, hreflang per lang) + JSON-LD
     ├── content.ts                # Bilingual UI text (nav, page titles, static descriptions, CTAs)
     ├── courses.ts                # Course registry (static, bilingual) — move to Supabase once there are several
     ├── animations.ts             # Shared Framer Motion variants (hidden/visible keys)
@@ -544,15 +554,18 @@ Consultation formats live in `src/app/services/consultation/page.tsx`; web packa
 2. Add path to `content.ts` → `technologies.categories.<key>.logos[]`
 
 ### Add a new page (static — no DB data)
-1. Create `/src/app/<route>/page.tsx` — add `'use client'` directive
+1. Create `/src/app/(site)/[lang]/<route>/page.tsx` — add `'use client'` directive
 2. Import `useLanguage`, `content`, `AnimatedBackground`, `ScanBadge`, `staggerContainer`, `fadeInUp`
-3. Add route to `Navigation.tsx` — find the right `menuItems` dropdown
-4. Add nav label to `content.ts` → `en.nav` and `es.nav`
+3. Add a `layout.tsx` beside it with `generateMetadata({ params }) → pageMetadata(langOf(params), '/<route>', { title: {en, es}, description: {en, es} })` — this sets the canonical and hreflang pair
+4. Internal links use `import Link from '@/components/LocalizedLink'` with bare hrefs (`/about`), never `/es/...`
+5. Add route to `Navigation.tsx` — find the right `menuItems` dropdown
+6. Add nav label to `content.ts` → `en.nav` and `es.nav`
+7. Add the bare path to `src/app/sitemap.ts` (it emits both languages)
 
 ### Add a new page (dynamic — DB data)
 1. Add a query function to `src/lib/supabase/queries.ts`
-2. Create `/src/app/<route>/page.tsx` — async Server Component that calls the query + `export const revalidate = 60`
-3. Create `/src/app/<route>/PageClient.tsx` — `'use client'` component that receives data as props
+2. Create `/src/app/(site)/[lang]/<route>/page.tsx` — async Server Component that calls the query + `export const revalidate = 60` + `generateMetadata` via `pageMetadata`
+3. Create `/src/app/(site)/[lang]/<route>/PageClient.tsx` — `'use client'` component that receives data as props
 4. If mutations needed: add admin form + API route (see existing products/hackers/hackathons as reference)
 5. Add route to `Navigation.tsx` and nav labels to `content.ts`
 
@@ -589,7 +602,8 @@ npm run lint                    # ESLint
 7. **`font-mono text-[12px] tracking-widest uppercase`** — all metadata and labels; 11px is the floor (badges only). Never go below: 9–10px was unreadable on the scanline ground
 8. **Bilingual** — static text goes in `content.ts` (both `en` and `es`); DB data uses `_en`/`_es` column suffix
 9. **Supabase image URLs** — always add `unoptimized={src.startsWith('http')}` to `<Image>` for Supabase Storage URLs
-10. **`revalidatePath` not `revalidateTag`** — use `revalidatePath('/route')` in admin API routes to bust ISR cache
+10. **`revalidatePath` not `revalidateTag`** — use `revalidatePath('/route')` in admin API routes to bust ISR cache (the Spanish page is `/es/route`; revalidate both)
+11. **Language = URL** — `useLanguage().language` is the URL's language; `setLanguage` navigates to the other URL. Internal links go through `LocalizedLink` with bare hrefs; metadata goes through `pageMetadata` so every page carries canonical + hreflang
 
 ---
 
@@ -612,7 +626,8 @@ npm run lint                    # ESLint
 - **Structured data**: `src/lib/seo.ts` builds Organization (root layout), Service + Offer and BreadcrumbList (the three service layouts); `<JsonLd />` renders them server-side. Keep the Offer prices equal to the page prices.
 - **Metadata**: every section layout sets `title`, `description` and `alternates.canonical`; titles state the outcome and the price ("Websites for your business — live in 5 days, from $1,500"). The root template appends "— Ekinoxis Labs".
 - **Analytics**: PostHog (`posthog-js`). `src/components/PostHogProvider.tsx` starts it and records App Router pageviews; `src/lib/analytics.ts` is the only place components call (`track`, `replayUrl`, `identifyLead`). Env: `NEXT_PUBLIC_POSTHOG_KEY` + `NEXT_PUBLIC_POSTHOG_HOST`; no key = no-op. The SDK talks to `/ingest`, which `next.config.js` rewrites to PostHog so ad blockers do not drop events. Session replay masks all inputs; each lead carries its replay link in `details.replay` (Telegram + admin). Funnel events: `book_call_open` {topic}, `book_call_service` {topic}, `book_call_qualified` {topic}, `lead_sent` {topic, slot, lead_id}, `book_call_close` {topic}. `/admin` is never tracked.
-- **Known gap**: Spanish copy is toggled client-side on the same URLs, so Google only indexes the English version. Proper `/es` routes with hreflang are the next SEO step.
+- **Languages**: Spanish has its own URLs under `/es` with `hreflang` (en, es, x-default) on every page and in the sitemap; `x-default` is English. First visits from a Spanish-first browser, and anyone with the `ekx-lang=es` cookie, are redirected from bare paths to `/es` (crawlers send neither, so Googlebot indexes English and follows hreflang). `/en/...` is internal only and 308s to the bare path.
+- **404 caveat**: with the root layout under `[lang]`, Next 14 cannot server-render `not-found.tsx` (it builds the 404 tree from the app root); the response is a correct 404 status with an empty shell, and the bilingual 404 renders on the client. Acceptable, known, do not chase it.
 
 ## Team & Contact
 

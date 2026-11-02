@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/supabase/admin-auth'
-import { revalidatePath } from 'next/cache'
+import { revalidatePublicPath } from '@/lib/revalidate'
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { error, db } = await requireAdmin()
@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     .single()
 
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
-  revalidatePath('/hacker-house')
+  revalidatePublicPath('/hacker-house')
   return NextResponse.json(data)
 }
 
@@ -26,6 +26,6 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
   const { error: dbError } = await db!.from('hackathons').delete().eq('id', params.id)
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
 
-  revalidatePath('/hacker-house')
+  revalidatePublicPath('/hacker-house')
   return NextResponse.json({ success: true })
 }

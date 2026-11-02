@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import Link from '@/components/LocalizedLink';
+import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { rememberLanguage, useLanguage } from '@/contexts/LanguageContext';
+import { splitPath, switchLangPath } from '@/lib/i18n';
 import { useBookCall } from '@/components/BookCall';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
@@ -13,9 +15,12 @@ import { BrandLockup } from '@/components/ui/BrandLogo';
 type NavItem = { href: string; label: string; exact?: boolean };
 
 export default function Navigation() {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const bookCall = useBookCall();
   const pathname = usePathname();
+  // Active-state checks compare the bare path: /es/about is "about" too.
+  const { path } = splitPath(pathname);
+  const otherLang = language === 'en' ? 'es' : 'en';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -82,7 +87,7 @@ export default function Navigation() {
   };
 
   const isActive = (href: string, exact = false) =>
-    exact ? pathname === href : pathname === href || (href !== '/' && pathname.startsWith(href));
+    exact ? path === href : path === href || (href !== '/' && path.startsWith(href));
   const isMenuActive = (key: string) => {
     const m = menuItems[key as keyof typeof menuItems];
     return 'items' in m && m.items?.some((i) => isActive(i.href, (i as NavItem).exact));
@@ -188,12 +193,17 @@ export default function Navigation() {
             >
               {language === 'en' ? 'Book a free call' : 'Agenda una llamada'}
             </button>
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
+            {/* A real link to this page in the other language, so crawlers find both versions */}
+            <NextLink
+              href={switchLangPath(pathname, otherLang)}
+              hrefLang={otherLang}
+              lang={otherLang}
+              onClick={() => rememberLanguage(otherLang)}
+              aria-label={language === 'en' ? 'Ver en español' : 'View in English'}
               className="font-mono text-[13px] text-primary hover:bg-primary/5 min-h-[44px] px-3 flex items-center transition-all"
             >
               {language === 'en' ? 'EN/ES' : 'ES/EN'}
-            </button>
+            </NextLink>
 
             {/* Mobile hamburger */}
             <button

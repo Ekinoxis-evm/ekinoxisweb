@@ -1,52 +1,51 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from 'react';
-import { Language } from '@/lib/content';
+import { createContext, useCallback, useContext, useEffect, type ReactNode } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import type { Language } from '@/lib/content';
+import { LANG_COOKIE, switchLangPath } from '@/lib/i18n';
 
 interface LanguageContextType {
   language: Language;
+  /** Go to the same page in the other language and remember the choice. */
   setLanguage: (lang: Language) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'ekx-lang';
+/** Remember the choice for a year; the middleware honours it on the next bare-address visit. */
+export function rememberLanguage(lang: Language) {
+  try {
+    document.cookie = `${LANG_COOKIE}=${lang}; path=/; max-age=31536000; samesite=lax`;
+  } catch {
+    // cookies blocked — the URL still carries the language
+  }
+}
 
 /**
- * The server always renders English, so the first paint matches the HTML. Right after
- * mount we switch to the visitor's saved choice — or, on a first visit, to Spanish when
- * the browser asks for it — and remember every manual switch from then on.
+ * The language is the URL's: `/es/...` is Spanish, everything else English. The
+ * server renders the right copy on the first paint, so there is no flash and
+ * every page exists at its own address for search engines.
  */
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('en');
+export function LanguageProvider({ initial, children }: { initial: Language; children: ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    let initial: Language | null = null;
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved === 'en' || saved === 'es') initial = saved;
-    } catch {
-      // storage blocked (private mode) — fall through to the browser language
-    }
-    if (!initial && navigator.language?.toLowerCase().startsWith('es')) initial = 'es';
-    if (initial && initial !== 'en') setLanguageState(initial);
-  }, []);
+    document.documentElement.lang = initial;
+  }, [initial]);
 
-  useEffect(() => {
-    document.documentElement.lang = language;
-  }, [language]);
-
-  const setLanguage = useCallback((lang: Language) => {
-    setLanguageState(lang);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // not persisted; the choice still holds for this visit
-    }
-  }, []);
+  const setLanguage = useCallback(
+    (lang: Language) => {
+      if (lang === initial) return;
+      rememberLanguage(lang);
+      router.push(switchLangPath(pathname, lang) + window.location.search + window.location.hash);
+    },
+    [initial, pathname, router],
+  );
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider value={{ language: initial, setLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/LocalizedLink';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 

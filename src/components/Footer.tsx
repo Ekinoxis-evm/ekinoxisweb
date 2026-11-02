@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';

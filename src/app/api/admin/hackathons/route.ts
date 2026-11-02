@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/supabase/admin-auth'
-import { revalidatePath } from 'next/cache'
+import { revalidatePublicPath } from '@/lib/revalidate'
 
 export async function GET() {
   const { error, db } = await requireAdmin()
@@ -23,6 +23,6 @@ export async function POST(request: NextRequest) {
   const { data, error: dbError } = await db!.from('hackathons').insert(body).select().single()
 
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
-  revalidatePath('/hacker-house')
+  revalidatePublicPath('/hacker-house')
   return NextResponse.json(data, { status: 201 })
 }
