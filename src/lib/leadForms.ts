@@ -28,6 +28,7 @@ export const DETAIL_KEYS = [
   'stage', 'users', 'budget_band',
   'audience', 'organization', 'who',
   'timing', 'team_size',
+  'replay',
 ] as const;
 export type DetailKey = (typeof DETAIL_KEYS)[number];
 export type DetailValue = string | number | string[];
@@ -166,12 +167,12 @@ export const OPTIONS: Partial<Record<DetailKey, Option[]>> = {
 
 /** Which questions a topic may answer — the server accepts nothing else. */
 export const TOPIC_KEYS: Record<LeadTopic, DetailKey[]> = {
-  consultation: ['type', 'format', 'hours', 'estimate_usd', 'team_size', 'timing'],
-  web: ['plan', 'has_site', 'needs', 'timing'],
-  app: ['plan', 'stage', 'users', 'budget_band', 'timing'],
-  talk: ['audience', 'organization', 'timing'],
-  course: ['who', 'team_size', 'timing'],
-  general: ['timing'],
+  consultation: ['type', 'format', 'hours', 'estimate_usd', 'team_size', 'timing', 'replay'],
+  web: ['plan', 'has_site', 'needs', 'timing', 'replay'],
+  app: ['plan', 'stage', 'users', 'budget_band', 'timing', 'replay'],
+  talk: ['audience', 'organization', 'timing', 'replay'],
+  course: ['who', 'team_size', 'timing', 'replay'],
+  general: ['timing', 'replay'],
 };
 
 /** Topics where the visitor must pick a slot; the rest may just send the message. */
@@ -215,4 +216,5 @@ export const DETAIL_TITLE: Record<DetailKey, { en: string; es: string }> = {
   who: { en: 'For', es: 'Para' },
   timing: { en: 'When', es: 'Cuándo' },
   team_size: { en: 'Team size', es: 'Tamaño del equipo' },
+  replay: { en: 'Session replay', es: 'Grabación de sesión' },
 };

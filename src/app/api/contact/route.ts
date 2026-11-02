@@ -74,6 +74,9 @@ function cleanDetails(raw: unknown, topic: Topic): LeadDetails {
       if (t) out.organization = t;
     }
   }
+  // The visitor's PostHog session replay, sent by the form; only a PostHog URL is kept.
+  const replay = clean(input.replay_url, 400);
+  if (replay && /^https:\/\/(us|eu)\.posthog\.com\//.test(replay)) out.replay = replay;
   if (out.hours !== undefined) out.estimate_usd = estimateUsd(Number(out.hours));
   // Hours only make sense for the hourly format
   if (topic === 'consultation' && out.format && out.format !== 'hourly') {
@@ -139,7 +142,7 @@ export async function POST(request: NextRequest) {
   }
 
   const language = body.language === 'es' ? 'es' : 'en';
-  const details = cleanDetails(body.details, topic);
+  const details = cleanDetails({ ...(body.details as object | null ?? {}), replay_url: body.replay_url }, topic);
   const row = {
     topic,
     name,
@@ -203,5 +206,5 @@ export async function POST(request: NextRequest) {
     await db.from('leads').update({ notified_at: new Date().toISOString() }).eq('id', data.id);
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, id: data.id });
 }

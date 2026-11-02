@@ -611,7 +611,7 @@ npm run lint                    # ESLint
 
 - **Structured data**: `src/lib/seo.ts` builds Organization (root layout), Service + Offer and BreadcrumbList (the three service layouts); `<JsonLd />` renders them server-side. Keep the Offer prices equal to the page prices.
 - **Metadata**: every section layout sets `title`, `description` and `alternates.canonical`; titles state the outcome and the price ("Websites for your business — live in 5 days, from $1,500"). The root template appends "— Ekinoxis Labs".
-- **Analytics**: Vercel Web Analytics (`@vercel/analytics`, `<Analytics />` in the root layout; enable Web Analytics on the Vercel project). Funnel events: `book_call_open` {topic}, `book_call_service` {topic}, `book_call_qualified` {topic}, `lead_sent` {topic, slot}.
+- **Analytics**: PostHog (`posthog-js`). `src/components/PostHogProvider.tsx` starts it and records App Router pageviews; `src/lib/analytics.ts` is the only place components call (`track`, `replayUrl`, `identifyLead`). Env: `NEXT_PUBLIC_POSTHOG_KEY` + `NEXT_PUBLIC_POSTHOG_HOST`; no key = no-op. The SDK talks to `/ingest`, which `next.config.js` rewrites to PostHog so ad blockers do not drop events. Session replay masks all inputs; each lead carries its replay link in `details.replay` (Telegram + admin). Funnel events: `book_call_open` {topic}, `book_call_service` {topic}, `book_call_qualified` {topic}, `lead_sent` {topic, slot, lead_id}, `book_call_close` {topic}. `/admin` is never tracked.
 - **Known gap**: Spanish copy is toggled client-side on the same URLs, so Google only indexes the English version. Proper `/es` routes with hreflang are the next SEO step.
 
 ## Team & Contact

@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { track } from '@vercel/analytics';
+import { track } from '@/lib/analytics';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { EASE_SETTLE } from '@/lib/animations';
 import type { LeadTopic } from '@/lib/supabase/types';
@@ -45,7 +45,12 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
     setOpen({ topic, preset });
     track('book_call_open', { topic: topic ?? 'any' });
   }, []);
-  const close = useCallback(() => setOpen(null), []);
+  const close = useCallback(() => {
+    setOpen((cur) => {
+      if (cur) track('book_call_close', { topic: cur.topic ?? 'any' });
+      return null;
+    });
+  }, []);
 
   // Freeze the page behind the popup — Lenis (when running) and native scroll.
   useEffect(() => {

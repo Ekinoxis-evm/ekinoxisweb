@@ -31,7 +31,7 @@ export interface LeadNotification {
 function detailLines(details: LeadDetails | undefined): string[] {
   if (!details) return [];
   return (Object.keys(details) as DetailKey[])
-    .filter((k) => details[k] !== undefined && DETAIL_TITLE[k])
+    .filter((k) => k !== 'replay' && details[k] !== undefined && DETAIL_TITLE[k])
     .map((k) => `${DETAIL_TITLE[k].en}: ${detailLabel(k, details[k] as DetailValue, 'en')}`);
 }
 
@@ -70,6 +70,7 @@ export async function notifyTelegram(lead: LeadNotification): Promise<boolean> {
     lead.whatsapp ? `📱 ${esc(lead.whatsapp)}` : null,
     lead.budget ? `💵 ${esc(lead.budget)}` : null,
     ...detailLines(lead.details).map((l) => `• ${esc(l)}`),
+    lead.details?.replay ? `🎥 <a href="${esc(String(lead.details.replay))}">Watch the session replay</a>` : null,
     '',
     esc(lead.message),
     '',

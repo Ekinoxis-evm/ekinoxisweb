@@ -8,7 +8,8 @@ import SmoothScroll from '@/components/SmoothScroll';
 import { BookCallProvider } from '@/components/BookCall';
 import JsonLd from '@/components/JsonLd';
 import { organizationJsonLd } from '@/lib/seo';
-import { Analytics } from '@vercel/analytics/next';
+import { Suspense } from 'react';
+import PostHogProvider from '@/components/PostHogProvider';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -91,6 +92,10 @@ export default function RootLayout({
         {/* CRT Scanline overlay — fixed, covers all pages */}
         <div className="fixed inset-0 z-[100] scanline-overlay opacity-20 pointer-events-none" />
         <LanguageProvider>
+          {/* Suspense: useSearchParams inside the provider must not bail the whole tree out of static rendering */}
+          <Suspense fallback={null}>
+            <PostHogProvider>{null}</PostHogProvider>
+          </Suspense>
           <BookCallProvider>
           <Navigation />
           <main className="pt-16">
@@ -101,7 +106,6 @@ export default function RootLayout({
           <SmoothScroll />
           </BookCallProvider>
         </LanguageProvider>
-        <Analytics />
       </body>
     </html>
   );

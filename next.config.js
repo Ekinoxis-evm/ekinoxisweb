@@ -11,6 +11,15 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   reactStrictMode: true,
+  // PostHog is served from our own origin under /ingest so ad blockers, which
+  // block *.posthog.com, do not erase the funnel. The SDK is told api_host=/ingest.
+  skipTrailingSlashRedirect: true,
+  async rewrites() {
+    return [
+      { source: '/ingest/static/:path*', destination: 'https://us-assets.i.posthog.com/static/:path*' },
+      { source: '/ingest/:path*', destination: 'https://us.i.posthog.com/:path*' },
+    ]
+  },
   async redirects() {
     return [
       // /products was the single page holding products, client work and

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { track } from '@vercel/analytics';
+import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { ArrowLeft, ArrowRight, Check, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
@@ -331,6 +331,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
           meeting_at: slot,
           message: message.trim(),
           details,
+          replay_url: replayUrl(),
           website: form.get('website'), // honeypot — people never see this
         }),
       });
@@ -345,8 +346,10 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         }
         return;
       }
+      const { id } = (await res.json().catch(() => ({}))) as { id?: string };
       setState('sent');
-      track('lead_sent', { topic, slot: slot ? 'yes' : 'no' });
+      track('lead_sent', { topic, slot: slot ? 'yes' : 'no', lead_id: id });
+      if (id) identifyLead(id, { topic, language });
     } catch {
       setError(t.errorGeneric);
       setState('error');

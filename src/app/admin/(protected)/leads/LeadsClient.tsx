@@ -147,7 +147,15 @@ export default function LeadsClient({ leads, unread, unnotified }: Props) {
                         {detailsOf(l).map(([title, value]) => (
                           <div key={title} className="border border-primary/20 bg-primary/5 px-3 py-2">
                             <dt className="font-mono text-[11px] text-outline uppercase tracking-widest">{title}</dt>
-                            <dd className="font-label text-[13px] font-semibold text-on-surface uppercase tracking-wide">{value}</dd>
+                            <dd className="font-label text-[13px] font-semibold text-on-surface uppercase tracking-wide">
+                              {value.startsWith('https://') ? (
+                                <a href={value} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                  Open ↗
+                                </a>
+                              ) : (
+                                value
+                              )}
+                            </dd>
                           </div>
                         ))}
                       </dl>
