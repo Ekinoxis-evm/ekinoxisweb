@@ -20,6 +20,9 @@ export const config = {
 
 const YEAR = 60 * 60 * 24 * 365;
 
+/** Paths that exist only in Spanish: the bare address redirects to /es. */
+const SPANISH_ONLY = ['/recursos'];
+
 /** True when the browser's first-choice language is Spanish. */
 function prefersSpanish(acceptLanguage: string | null): boolean {
   const first = (acceptLanguage ?? '').split(',')[0]?.trim().toLowerCase() ?? '';
@@ -36,6 +39,12 @@ export function middleware(req: NextRequest) {
   }
 
   if (pathname === '/es' || pathname.startsWith('/es/')) return NextResponse.next();
+
+  // Spanish-only sections (free resources from the Instagram reto) have no English page.
+  if (SPANISH_ONLY.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
+    url.pathname = `/es${pathname}`;
+    return NextResponse.redirect(url, 308);
+  }
 
   const saved = req.cookies.get(LANG_COOKIE)?.value;
   const wantsSpanish = saved === 'es' || (!saved && prefersSpanish(req.headers.get('accept-language')));
