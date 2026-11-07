@@ -2,13 +2,16 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight, Check, Copy } from 'lucide-react';
+import { ArrowUpRight, Check, Copy, Globe } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
+import { ClaudeMark, FigmaMark, GitHubMark } from '@/components/ui/BrandMarks';
 import { useBookCall } from '@/components/BookCall';
 import { track } from '@/lib/analytics';
 import { EASE_SETTLE } from '@/lib/animations';
-import { SKILLS_DISENO as R } from '@/lib/recursos';
+import { SKILLS_DISENO as R, type Tool } from '@/lib/recursos';
+
+const MARKS = { github: GitHubMark, figma: FigmaMark, web: Globe } as const;
 
 /**
  * «Skills de diseño», the free guide behind the Día 4 Instagram carousel.
@@ -63,6 +66,10 @@ function PromptCard() {
   const copied = state === 'copied';
   return (
     <section aria-labelledby="prompt-heading" className="bg-surface-container-low p-6 md:p-10">
+      <p className="mb-4 flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant">
+        <ClaudeMark size={20} />
+        {p.for}
+      </p>
       <h2 id="prompt-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">
         {p.heading}
       </h2>
@@ -122,34 +129,39 @@ function Tools() {
         <p className="font-mono text-[12px] uppercase tracking-widest text-outline">{R.toolsNote}</p>
       </div>
       <ul className="flex flex-col gap-px bg-primary/10">
-        {R.tools.map((t) => (
-          <li
-            key={t.id}
-            className="grid grid-cols-1 gap-4 bg-surface-container-low p-5 transition-colors duration-500 hover:bg-surface-container md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-10 md:p-8"
-          >
-            <div>
-              <div className="flex flex-wrap items-baseline gap-x-3">
-                <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface">{t.name}</h3>
-                <span className="font-mono text-[12px] tracking-wider text-outline [font-variant-numeric:tabular-nums]">{t.metric}</span>
+        {R.tools.map((t) => {
+          const logo = (t.source as Tool['source']).logo;
+          const Mark = MARKS[logo ?? 'web'];
+          return (
+            <li
+              key={t.id}
+              className="grid grid-cols-1 gap-4 bg-surface-container-low p-5 transition-colors duration-500 hover:bg-surface-container md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-10 md:p-8"
+            >
+              <div>
+                <div className="flex flex-wrap items-baseline gap-x-3">
+                  <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface">{t.name}</h3>
+                  <span className="font-mono text-[12px] tracking-wider text-outline [font-variant-numeric:tabular-nums]">{t.metric}</span>
+                </div>
+                <p className="mt-2 font-body text-base leading-relaxed text-on-surface-variant">{t.does}</p>
+                <a
+                  href={t.source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('resource_source_click', { resource: R.slug, tool: t.id, url: t.source.url })}
+                  className="mt-1 inline-flex min-h-[44px] items-center gap-2 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-300 hover:decoration-primary"
+                >
+                  <Mark size={18} aria-hidden />
+                  {t.author} · {t.source.label}
+                  <ArrowUpRight size={14} aria-hidden />
+                </a>
               </div>
-              <p className="mt-2 font-body text-base leading-relaxed text-on-surface-variant">{t.does}</p>
-              <a
-                href={t.source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => track('resource_source_click', { resource: R.slug, tool: t.id, url: t.source.url })}
-                className="mt-1 inline-flex min-h-[44px] items-center gap-1 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-300 hover:decoration-primary"
-              >
-                {t.author} · {t.source.label}
-                <ArrowUpRight size={14} aria-hidden />
-              </a>
-            </div>
-            <div className="md:self-center">
-              <p className="mb-2 font-mono text-[12px] uppercase tracking-widest text-outline">{R.tryLabel}</p>
-              <ExampleLine tool={t.id} text={t.example} />
-            </div>
-          </li>
-        ))}
+              <div className="md:self-center">
+                <p className="mb-2 font-mono text-[12px] uppercase tracking-widest text-outline">{R.tryLabel}</p>
+                <ExampleLine tool={t.id} text={t.example} />
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
@@ -217,20 +229,9 @@ function Close() {
       <h2 id="close-heading" className="font-headline text-3xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-5xl">
         {c.heading}
       </h2>
-      <div className="flex shrink-0 flex-col items-start gap-3">
-        <Button size="lg" onClick={() => bookCall('web')} className="w-full justify-center sm:w-auto">
-          {c.cta}
-        </Button>
-        <a
-          href={c.instagram.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => track('resource_source_click', { resource: R.slug, tool: 'instagram', url: c.instagram.url })}
-          className="inline-flex min-h-[44px] items-center font-body text-[15px] text-on-surface-variant underline decoration-outline underline-offset-4 transition-colors duration-300 hover:text-primary hover:decoration-primary"
-        >
-          {c.dm} · {c.instagram.label}
-        </a>
-      </div>
+      <Button size="lg" onClick={() => bookCall('web')} className="w-full shrink-0 justify-center sm:w-auto">
+        {c.cta}
+      </Button>
     </section>
   );
 }

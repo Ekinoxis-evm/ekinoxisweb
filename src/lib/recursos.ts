@@ -13,7 +13,8 @@ export type Tool = {
   /** One line: what it does for you. */
   does: string;
   author: string;
-  source: { label: string; url: string };
+  /** The source's mark, drawn beside its link; 'web' is a plain globe. */
+  source: { label: string; url: string; logo?: 'github' | 'figma' | 'web' };
   /** The one metric shown, dated by `checkedOn`. */
   metric: string;
   /** One thing to type into Claude Code after installing. */
@@ -31,6 +32,7 @@ export const SKILLS_DISENO = {
   lead: 'Sin reglas de diseño, la IA usa sus opciones por defecto. Estas cinco herramientas se las dan.',
 
   prompt: {
+    for: 'Para Claude Code',
     heading: 'Instálalas todas con un prompt',
     steps: ['Abre Claude Code en tu proyecto.', 'Copia el prompt.', 'Pégalo y aprueba cada comando.'],
     copy: 'Copiar prompt',
@@ -61,7 +63,7 @@ export const SKILLS_DISENO = {
       name: 'Impeccable',
       does: 'Critica y pule el diseño; marca lo que se ve «hecho con IA».',
       author: 'Paul Bakaus',
-      source: { label: 'GitHub', url: 'https://github.com/pbakaus/impeccable' },
+      source: { label: 'GitHub', url: 'https://github.com/pbakaus/impeccable', logo: 'github' },
       metric: '105.300 ★',
       example: '/impeccable critique la página de inicio',
     },
@@ -70,7 +72,7 @@ export const SKILLS_DISENO = {
       name: 'Skills de Emil Kowalski',
       does: 'Animaciones bien hechas: qué animar y cómo.',
       author: 'Emil Kowalski',
-      source: { label: 'GitHub', url: 'https://github.com/emilkowalski/skills' },
+      source: { label: 'GitHub', url: 'https://github.com/emilkowalski/skills', logo: 'github' },
       metric: '54.309 ★',
       example: 'Anima la entrada del menú',
     },
@@ -79,7 +81,7 @@ export const SKILLS_DISENO = {
       name: 'Taste Skill',
       does: 'Dirección de arte: composición, tipografía y paleta.',
       author: 'Leonxlnx',
-      source: { label: 'GitHub', url: 'https://github.com/Leonxlnx/taste-skill' },
+      source: { label: 'GitHub', url: 'https://github.com/Leonxlnx/taste-skill', logo: 'github' },
       metric: '111.508 ★',
       example: 'Haz la página: qué es el negocio, para quién y una acción principal',
     },
@@ -88,7 +90,7 @@ export const SKILLS_DISENO = {
       name: 'getdesign.md',
       does: 'DESIGN.md sacados de webs reales, para darle un estilo a la IA.',
       author: 'VoltAgent',
-      source: { label: 'getdesign.md', url: 'https://getdesign.md' },
+      source: { label: 'getdesign.md', url: 'https://getdesign.md', logo: 'web' },
       metric: '125.994 ★',
       example: 'Construye la página siguiendo DESIGN.md',
     },
@@ -96,8 +98,8 @@ export const SKILLS_DISENO = {
       id: 'figma',
       name: 'Figma MCP',
       does: 'Conecta Claude con tus diseños de Figma.',
-      author: 'Figma (oficial)',
-      source: { label: 'developers.figma.com', url: 'https://developers.figma.com/docs/figma-mcp-server/' },
+      author: 'Figma',
+      source: { label: 'Docs oficiales', url: 'https://developers.figma.com/docs/figma-mcp-server/', logo: 'figma' },
       metric: 'Oficial',
       example: 'Implementa este frame en código siguiendo DESIGN.md',
     },
@@ -111,7 +113,5 @@ export const SKILLS_DISENO = {
   close: {
     heading: '¿Prefieres que la hagamos nosotros?',
     cta: 'Agendar llamada gratis',
-    dm: '¿Dudas? DM en Instagram',
-    instagram: { label: '@ekinoxis.labs', url: 'https://www.instagram.com/ekinoxis.labs/' },
   },
 } as const;
