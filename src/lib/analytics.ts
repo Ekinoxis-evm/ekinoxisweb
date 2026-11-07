@@ -12,6 +12,11 @@
  *   lead_sent            the form was submitted      { topic, slot, lead_id }
  *   book_call_close      the popup was closed        { topic }
  *
+ * Free resources (/es/recursos/*):
+ *   resource_prompt_copy   the main prompt was copied     { resource }
+ *   resource_snippet_copy  an example prompt was copied   { resource, tool }
+ *   resource_source_click  a source / Instagram link      { resource, tool, url }
+ *
  * Names and property keys are stable; dashboards in PostHog depend on them.
  */
 

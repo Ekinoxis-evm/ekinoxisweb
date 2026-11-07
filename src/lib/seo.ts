@@ -36,7 +36,7 @@ const OG_DESCRIPTION: Bi = {
   es: 'El primer laboratorio de innovación en IA y cripto del Pacífico colombiano. Desbloqueamos el poder de las tecnologías de frontera para tu negocio. Colombia y USA.',
 };
 /** The link preview, drawn by src/app/opengraph-image.tsx. Named here because a file under a route group is not picked up automatically. */
-const OG_IMAGE = {
+export const OG_IMAGE = {
   url: '/opengraph-image',
   width: 1200,
   height: 630,

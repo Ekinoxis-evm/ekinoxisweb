@@ -4,6 +4,7 @@ import { DIVISIONS, caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
 import { getProducts } from '@/lib/supabase/queries';
 import { LANGS, localizePath } from '@/lib/i18n';
 import { SITE_URL } from '@/lib/seo';
+import { SKILLS_DISENO } from '@/lib/recursos';
 
 export const revalidate = 3600;
 
@@ -36,7 +37,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/data-deletion',
   ];
   const now = new Date();
-  return routes.flatMap((path) => {
+  // Spanish-only resources: one address each, no English pair.
+  const spanishOnly = [SKILLS_DISENO.path].map((path) => ({
+    url: `${SITE_URL}${localizePath(path, 'es')}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+  return [...spanishOnly, ...routes.flatMap((path) => {
     const languages = { en: `${SITE_URL}${path}`, es: `${SITE_URL}${localizePath(path, 'es')}` };
     return LANGS.map((lang) => ({
       url: `${SITE_URL}${localizePath(path, lang)}`,
@@ -45,5 +53,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: path === '/' ? 1 : path.startsWith('/services') ? 0.9 : 0.7,
       alternates: { languages },
     }));
-  });
+  })];
 }
