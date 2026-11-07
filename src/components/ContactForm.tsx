@@ -6,6 +6,7 @@ import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { ArrowLeft, ArrowRight, Check, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
+import Link from '@/components/LocalizedLink';
 import VoiceInput from '@/components/VoiceInput';
 import type { LeadTopic } from '@/lib/supabase/types';
 import { bookingDays, type BookingDay } from '@/lib/booking';
@@ -38,6 +39,7 @@ const COPY = {
     of: 'of',
     continue: 'Continue',
     back: 'Back',
+    consent: ['By sending this you accept our ', 'Privacy Policy', ' and ', 'Terms of Service', '. We use your details only to call you back.'],
     serviceQ: 'What do you need?',
     pickOne: 'Pick one option to continue.',
     pickSome: 'Pick at least one to continue.',
@@ -109,6 +111,7 @@ const COPY = {
     of: 'de',
     continue: 'Continuar',
     back: 'Atrás',
+    consent: ['Al enviar aceptas nuestra ', 'Política de privacidad', ' y los ', 'Términos del servicio', '. Usamos tus datos solo para devolverte la llamada.'],
     serviceQ: '¿Qué necesitas?',
     pickOne: 'Elige una opción para continuar.',
     pickSome: 'Elige al menos una para continuar.',
@@ -768,6 +771,16 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
             </button>
           )}
         </div>
+      )}
+
+      {step === 2 && (
+        <p className="font-body text-[13px] leading-relaxed text-outline">
+          {t.consent[0]}
+          <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors">{t.consent[1]}</Link>
+          {t.consent[2]}
+          <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors">{t.consent[3]}</Link>
+          {t.consent[4]}
+        </p>
       )}
     </form>
   );

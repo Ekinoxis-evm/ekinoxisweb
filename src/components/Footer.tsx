@@ -5,6 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';
 import { useBookCall } from '@/components/BookCall';
+import { LEGAL_SLUGS, legal } from '@/lib/legal';
 
 export default function Footer() {
   const { language } = useLanguage();
@@ -54,6 +55,8 @@ export default function Footer() {
       ],
     },
   ];
+
+  const legalLinks = LEGAL_SLUGS.map((slug) => ({ href: `/${slug}`, label: legal[language][slug].label }));
 
   const linkClass =
     'inline-flex py-1 font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-200';
@@ -117,9 +120,20 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between pt-8 border-t border-primary/5">
-          <p className="font-mono text-[12px] uppercase tracking-widest text-outline">
-            © {currentYear} Ekinoxis Labs · Cali — Casper
-          </p>
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
+            <p className="font-mono text-[12px] uppercase tracking-widest text-outline">
+              © {currentYear} Ekinoxis Labs · Cali — Casper
+            </p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {legalLinks.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="py-1 inline-flex font-mono text-[12px] uppercase tracking-widest text-outline hover:text-primary transition-colors duration-200">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {socials.map(({ label, href }) => (
               <li key={label}>

@@ -31,6 +31,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/about',
     '/tech-stack',
     '/brand',
+    '/privacy',
+    '/terms',
+    '/data-deletion',
   ];
   const now = new Date();
   return routes.flatMap((path) => {

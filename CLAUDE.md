@@ -190,6 +190,7 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   │   ├── page.tsx             # Server Component — fetches getHackathons(), revalidate=60
 │   │   └── HackerHouseClient.tsx  # Client Component — hackathon cards with status + dates
 │   ├── tech-stack/              # Terminal OS visualization (static content.ts)
+│   ├── privacy/ terms/ data-deletion/  # Legal pages — text in src/lib/legal.ts, rendered by components/LegalDocument.tsx, linked from the footer and the booking form
 │   ├── services/
 │   │   ├── page.tsx             # 3 track cards (CONSULTANCY / DEVELOPMENT / ENGINEERING)
 │   │   ├── consultation/        # 5 topic cards + talks panel, 4-step funnel, 4 session formats (Focus / Roadmap Sprint / Workshop / Retainer)
