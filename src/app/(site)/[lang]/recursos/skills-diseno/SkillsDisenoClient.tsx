@@ -66,11 +66,8 @@ function PromptCard() {
   const copied = state === 'copied';
   return (
     <section aria-labelledby="prompt-heading" className="bg-surface-container-low p-6 md:p-10">
-      <p className="mb-4 flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant">
-        <ClaudeMark size={20} />
-        {p.for}
-      </p>
-      <h2 id="prompt-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">
+      <h2 id="prompt-heading" className="flex items-center gap-3 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">
+        <ClaudeMark size={28} className="shrink-0" />
         {p.heading}
       </h2>
       <ol className="mt-6 flex flex-col gap-3">

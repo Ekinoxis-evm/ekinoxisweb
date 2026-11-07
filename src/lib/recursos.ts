@@ -32,7 +32,6 @@ export const SKILLS_DISENO = {
   lead: 'Sin reglas de diseño, la IA usa sus opciones por defecto. Estas cinco herramientas se las dan.',
 
   prompt: {
-    for: 'Para Claude Code',
     heading: 'Instálalas todas con un prompt',
     steps: ['Abre Claude Code en tu proyecto.', 'Copia el prompt.', 'Pégalo y aprueba cada comando.'],
     copy: 'Copiar prompt',
