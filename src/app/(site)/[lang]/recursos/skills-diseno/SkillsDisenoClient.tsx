@@ -169,15 +169,19 @@ function OrderLine() {
   const reduce = useReducedMotion();
   const steps = R.order.steps;
   const last = steps.length - 1;
+  /**
+   * The hidden state is always the same, because useReducedMotion() is null on the server, so the
+   * prerendered HTML is hidden either way. Reduced motion then shows the shown state at once, while
+   * motion reveals it on scroll. Dropping the animation props under reduced motion left it hidden forever.
+   */
+  const reveal = (hidden: Record<string, number>, shown: Record<string, number>, transition: object) => ({
+    initial: hidden,
+    ...(reduce
+      ? { animate: shown, transition: { duration: 0 } }
+      : { whileInView: shown, viewport: { once: true, amount: 0.5 }, transition }),
+  });
   const draw = (axis: 'x' | 'y') =>
-    reduce
-      ? {}
-      : {
-          initial: axis === 'x' ? { scaleX: 0 } : { scaleY: 0 },
-          whileInView: axis === 'x' ? { scaleX: 1 } : { scaleY: 1 },
-          viewport: { once: true, amount: 0.5 },
-          transition: { duration: 1.4, ease: EASE_SETTLE },
-        };
+    reveal(axis === 'x' ? { scaleX: 0 } : { scaleY: 0 }, axis === 'x' ? { scaleX: 1 } : { scaleY: 1 }, { duration: 1.4, ease: EASE_SETTLE });
 
   return (
     <section aria-labelledby="order-heading" className="mt-20 md:mt-32">
@@ -193,10 +197,7 @@ function OrderLine() {
             return (
               <motion.li
                 key={s}
-                initial={reduce ? false : { opacity: 0, y: 8 }}
-                whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.8, delay: reduce ? 0 : 0.15 + i * 0.12, ease: EASE_SETTLE }}
+                {...reveal({ opacity: 0, y: 8 }, { opacity: 1, y: 0 }, { duration: 0.8, delay: 0.15 + i * 0.12, ease: EASE_SETTLE })}
                 className="grid grid-cols-[13px_minmax(0,1fr)] items-start gap-5 lg:block"
               >
                 <span
