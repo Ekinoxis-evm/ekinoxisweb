@@ -189,10 +189,10 @@ const COUNTRIES = [
 ];
 
 const field =
-  'w-full bg-surface-container-high border border-outline-variant/30 focus:border-primary/60 ' +
-  'outline-none text-on-surface font-body text-base px-4 py-3 transition-colors placeholder:text-outline';
+  'w-full bg-surface-container-high border border-outline-variant hover:border-outline focus:border-primary ' +
+  'outline-none focus-visible:ring-1 focus-visible:ring-primary text-on-surface font-body text-base px-4 py-3 transition-colors placeholder:text-outline';
 
-const label = 'font-mono text-[12px] text-outline uppercase tracking-widest mb-2 block';
+const label = 'font-mono text-[12px] text-on-surface-variant uppercase tracking-widest mb-2 block';
 
 /** The first question of each topic — the one that must be answered. */
 const REQUIRED: Partial<Record<LeadTopic, DetailKey>> = { consultation: 'type', web: 'plan', app: 'plan', talk: 'audience', course: 'who' };
@@ -375,21 +375,21 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
           <span aria-hidden className="absolute left-[16%] right-[16%] top-3 h-px bg-gradient-to-r from-primary/70 via-primary/40 to-tertiary-dim/70" />
           {items.map((item, i) => {
             const goal = i === items.length - 1;
-            const lit = done || i === 0;
+            const lit = done;
             return (
               <li key={item} className="relative flex flex-col items-center text-center gap-2">
                 <span
                   className={`flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[11px] ${
                     goal
-                      ? `border-tertiary-dim ${done ? 'bg-tertiary-dim text-surface-container-lowest shadow-[0_0_20px_rgba(190,238,0,0.25)]' : 'bg-surface-container-low text-tertiary-dim'}`
+                      ? `${done ? 'border-tertiary-dim' : 'border-outline-variant'} ${done ? 'bg-tertiary-dim text-surface-container-lowest shadow-[0_0_20px_rgba(190,238,0,0.25)]' : 'bg-surface-container-low text-on-surface-variant'}`
                       : lit
                         ? 'border-primary bg-primary text-surface-container-lowest'
-                        : 'border-primary/50 bg-surface-container-low text-primary'
+                        : 'border-outline-variant bg-surface-container-low text-on-surface-variant'
                   }`}
                 >
                   {i + 1}
                 </span>
-                <span className={`font-mono text-[12px] uppercase tracking-wide leading-snug ${goal ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{item}</span>
+                <span className={`font-mono text-[12px] uppercase tracking-wide leading-snug ${goal && done ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{item}</span>
               </li>
             );
           })}
@@ -423,7 +423,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
       onClick={onClick}
       aria-pressed={active}
       className={`flex min-h-[44px] items-start gap-3 border px-4 py-3 text-left transition-colors ${
-        active ? 'border-primary bg-primary/10' : 'border-outline-variant/30 hover:border-primary/60'
+        active ? 'border-primary bg-primary/10' : 'border-outline-variant hover:border-primary/60'
       }`}
     >
       {multi && (
@@ -462,7 +462,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
     <div>
       <p className={label}>{t.hoursQ}</p>
       <div className="flex flex-col sm:flex-row sm:items-stretch gap-2">
-        <div className="flex items-stretch border border-outline-variant/30">
+        <div className="flex items-stretch border border-outline-variant">
           <button
             type="button"
             onClick={() => setHours((h) => clampHours(h - BLOCK_HOURS))}
@@ -594,7 +594,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
                   setSlot(null);
                 }}
                 className={`flex-shrink-0 w-16 py-2.5 border text-center transition-colors ${
-                  active ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant/30 text-on-surface-variant hover:border-primary/50'
+                  active ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant text-on-surface-variant hover:border-primary/50'
                 }`}
               >
                 <span className="block font-mono text-[11px] uppercase tracking-widest">
@@ -631,7 +631,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
                     ? 'border-outline-variant/20 text-outline/40 line-through cursor-not-allowed'
                     : active
                       ? 'border-primary bg-primary text-surface-container-lowest'
-                      : 'border-outline-variant/30 text-on-surface hover:border-primary/60'
+                      : 'border-outline-variant text-on-surface hover:border-primary/60'
                 }`}
               >
                 {new Date(s).toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })}
