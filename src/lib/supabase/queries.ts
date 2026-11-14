@@ -6,9 +6,6 @@ import type {
   ProductWithRelations,
   EducationPartner,
   CertificationPartner,
-  CultureValue,
-  TechCategory,
-  Service,
 } from './types'
 
 // ============================================
@@ -54,7 +51,7 @@ export async function getProducts(): Promise<ProductWithRelations[]> {
   }))
 }
 
-export async function getProductById(id: string): Promise<ProductWithRelations | null> {
+async function getProductById(id: string): Promise<ProductWithRelations | null> {
   const supabase = await createClient()
 
   const { data: product, error } = await supabase
@@ -99,13 +96,6 @@ export async function getHackers(): Promise<Hacker[]> {
   return data ?? []
 }
 
-export async function getHackerById(id: string): Promise<Hacker | null> {
-  const supabase = await createClient()
-  const { data, error } = await supabase.from('hackers').select('*').eq('id', id).single()
-  if (error) return null
-  return data
-}
-
 // ============================================
 // HACKATHONS
 // ============================================
@@ -133,13 +123,6 @@ export async function getHackathons(): Promise<HackathonWithStatus[]> {
 
     return { ...h, hackathonStatus }
   })
-}
-
-export async function getHackathonById(id: string): Promise<Hackathon | null> {
-  const supabase = await createClient()
-  const { data, error } = await supabase.from('hackathons').select('*').eq('id', id).single()
-  if (error) return null
-  return data
 }
 
 // ============================================
@@ -173,70 +156,4 @@ export async function getCertificationPartners(): Promise<CertificationPartner[]
     .order('display_order', { ascending: true })
   if (error) return []
   return data ?? []
-}
-
-// ============================================
-// CULTURE VALUES
-// ============================================
-export async function getCultureValues(): Promise<CultureValue[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('culture_values')
-    .select('*')
-    .order('display_order', { ascending: true })
-  if (error) return []
-  return data ?? []
-}
-
-// ============================================
-// TECH CATEGORIES
-// ============================================
-export async function getTechCategories(): Promise<TechCategory[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('tech_categories')
-    .select('*')
-    .order('display_order', { ascending: true })
-  if (error) return []
-  return data ?? []
-}
-
-// ============================================
-// SERVICES
-// ============================================
-export async function getServices(): Promise<Service[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .order('display_order', { ascending: true })
-  if (error) return []
-  return data ?? []
-}
-
-export async function getServiceBySlug(slug: string): Promise<Service | null> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-  if (error) return null
-  return data
-}
-
-// ============================================
-// SITE CONTENT
-// ============================================
-export async function getSiteContent(keys: string[]): Promise<Record<string, { en: string; es: string }>> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('site_content')
-    .select('*')
-    .in('key', keys)
-  if (error || !data) return {}
-
-  return Object.fromEntries(
-    data.map((row) => [row.key, { en: row.value_en, es: row.value_es }])
-  )
 }

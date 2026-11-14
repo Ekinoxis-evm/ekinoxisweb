@@ -224,7 +224,6 @@ The `ImageUpload` admin component uploads to Supabase Storage. Buckets:
 │   └── ui/
 │       ├── AnimatedBackground.tsx  # Variants: ambient | grid | gradient | terminal
 │       ├── Button.tsx              # Variants: primary | ghost | secondary | tertiary | outline
-│       ├── Card.tsx                # Terminal viewport style, optional uid prop
 │       ├── ScanBadge.tsx           # Monospaced metadata tag; variants: primary | secondary | tertiary | muted | outline | error
 │       └── SocialLinks.tsx         # Social icon links using /public/socials/ images; props: github, linkedin, x, telegram, discord, website, size
 │

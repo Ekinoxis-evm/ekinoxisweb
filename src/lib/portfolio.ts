@@ -57,7 +57,7 @@ export function getDivision(slug: string): Division | undefined {
 }
 
 /** The division a product row is shown in. */
-export function divisionForType(type: string | null | undefined): Division | undefined {
+function divisionForType(type: string | null | undefined): Division | undefined {
   return DIVISIONS.find((d) => d.types.includes((type ?? 'product') as ProjectType))
 }
 

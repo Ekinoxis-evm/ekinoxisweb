@@ -45,3 +45,6 @@ public/brand/contact-cards/
 # local tool output
 .playwright-mcp/
 .impeccable/critique/
+
+# local tool output
+.impeccable/review/
