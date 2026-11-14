@@ -1,13 +1,13 @@
 ---
 name: ekinoxis-portfolio
-description: The complete map of the Ekinoxis Labs ecosystem — every product, client project and experiment with its GitHub repos, live URLs, Vercel projects and Supabase projects. Use when working on any Ekinoxis project, syncing the website registry, checking which repo/deploy/database belongs to what, or onboarding to the org. Triggers - "what projects do we have", "which repo is X", "sync the portfolio", any product/client name below.
+description: The complete map of the Ekinoxis Labs ecosystem — every product and client project with its GitHub repos, live URLs, Vercel projects and Supabase projects. Use when working on any Ekinoxis project, syncing the website registry, checking which repo/deploy/database belongs to what, or onboarding to the org. Triggers - "what projects do we have", "which repo is X", "sync the portfolio", any product/client name below.
 ---
 
 # Ekinoxis Labs — Project Portfolio
 
 **Who we are**: Ekinoxis Labs, the first Innovation Laboratory of the Colombian Pacific (Cali, Colombia + Casper, WY). "Innovation Without Frontiers." Blockchain, AI and cryptography products; education; community; paid services; research.
 
-**Source of truth for the website**: the `products` table in Supabase project `xaxwqvyieqchydckdtov` (ekinoxisweb), classified by `project_type` (`product` | `client` | `experiment`), rendered at ekinoxis.xyz/products. Umbrella cards list sub-projects in `sub_links` (jsonb `[{label, url, repo}]`). Manage via `/admin/products`.
+**Source of truth for the website**: the `products` table in Supabase project `xaxwqvyieqchydckdtov` (ekinoxisweb), classified by `project_type` (`product` | `client`; experiments and proofs of concept were folded into `product` on 2026-11-14), rendered at ekinoxis.xyz/portfolio (Products grouped by phase, then Clients). Umbrella cards list sub-projects in `sub_links` (jsonb `[{label, url, repo}]`). Manage via `/admin/products`.
 
 **Accounts**: GitHub org `Ekinoxis-evm` · Vercel team `ekinoxis-team` · Supabase org "Ekinoxis labs" (`wljzgopssoncokhftmnh`).
 
@@ -44,13 +44,18 @@ description: The complete map of the Ekinoxis Labs ecosystem — every product, 
 | Nido App | (links closed) | — | Tokenized governance community channeling public tech budgets to accelerate Valle del Cauca's tech industry; supports Cámara de Comercio de Cali, Alcaldía, Gobernación del Valle, Comfandi |
 | DogCare AI | — | `dogcareai` | Consumer AI agent experiment |
 
-## SPLIT RULE (settled 2026-10-27) — supersedes the tables above where they disagree
+## PHASES (settled 2026-11-14 — supersedes the split rule that was here)
 
-- **Experiments** (`experiment`) = built at a hackathon, linked via `hackathon_id`. ORBIT (orbit.ekinoxis.xyz, `orbit`, 30X Hackathon 2026) · KREDITOS (www.kreditos.xyz, `thelender`, ETHGlobal New York 2026) · P2PAI (www.p2pai.xyz, `wmb81321/p2pai`, ETHGlobal HackMoney 2026 — built 1–14 May, not ETHOnline) · ZBricks · AUKTRAFI · Conservationix.
-- **Proofs of concept** (`poc`) = built for a client or for us. The Guild · DogChain · CARP2P/TCARS · Shopper Center · Cuadra · Ekinoxis Ads (moved 2026-10-27; none came from a hackathon).
-- **DOGI** (dogi.ekinoxis.xyz, `Ekinoxis-evm/dogi`) replaced the DogChain / DogCare AI card on 2026-10-27; DogChain is legacy and not shown.
-- Kreditos and P2PAI are both their own experiment cards and modules inside the CONVEXO `sub_links`.
-- The home page counts one tile per division (from `DIVISIONS`) plus hackathons and builders.
+One axis only: the phase, earned by traction. DB `status` → label: `IDEA` Idea · `MVP` Alpha · `BETA` Beta · `LAUNCHED` Live (`phaseForStatus()` in `src/lib/portfolio.ts`).
+- **Idea** — a problem worth solving, nothing working. Conservationix, CARP2P/TCARS.
+- **Alpha** — works; only our team and invitees use it. Most products today (CONVEXO, ORBIT, Kreditos, P2PAI, ZBricks, AUKTRAFI, DOGI, Shopper Center, Cuadra, Apalancados).
+- **Beta** — real users outside the team, measured. The Guild, Ekinoxis Ads (clients: LIVE! Activewear, 1UP Esports).
+- **Live** — real users and real income, tracked monthly. ETHCALI app (clients: MGM Autobroker, Talentum Corp).
+- Grades still to be verified against user and income numbers in the cleanup session; nothing moves up without a number.
+- A hackathon is a "Built at X" tag (`hackathon_id`), not a type.
+- DOGI (dogi.ekinoxis.xyz, `Ekinoxis-evm/dogi`) replaced DogChain / DogCare AI; DogChain is legacy and not shown.
+- Kreditos and P2PAI are also modules inside the CONVEXO `sub_links`.
+- Private repos are never linked (1UP's `gamintower-fe`, `gaming-tower` were cleared).
 
 ## People
 

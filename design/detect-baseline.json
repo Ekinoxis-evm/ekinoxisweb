@@ -1,0 +1,8 @@
+{
+  "tool": "impeccable@4.7.0",
+  "total": 6,
+  "findings": {
+    "design-system-font src/lib/notify.ts": 3,
+    "overused-font src/lib/notify.ts": 3
+  }
+}

@@ -33,7 +33,7 @@ export default function PAGE_NAMEPage() {
             className="mb-20"
           >
             {/* Breadcrumb metadata readout */}
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[10px] text-primary/60 tracking-widest uppercase mb-6">
+            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
               <span className="border border-primary/30 px-2 py-1">EKX_ROOT</span>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">PAGE_SLUG</span>
@@ -91,7 +91,7 @@ export default function PAGE_NAMEPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="mt-8 flex items-center justify-between font-mono text-[10px] text-outline tracking-widest uppercase"
+            className="mt-8 flex items-center justify-between font-mono text-[12px] text-outline tracking-widest uppercase"
           >
             <span>COUNT: {t.items?.length}</span>
             <span>STATUS: ACTIVE</span>
@@ -123,7 +123,7 @@ export default function PAGE_NAMEPage() {
 4. **Surface shifts** for hover — `hover:bg-surface-container` not `hover:scale-105`
 5. **`gap-px bg-primary/10`** — canonical grid-border pattern for card layouts
 6. **Ambient glow** not drop shadow — `shadow-[0_0_20px_rgba(143,245,255,0.2)]` if glow is needed
-7. **`font-mono text-[10px] tracking-widest uppercase`** — all metadata, UIDs, system labels
+7. **`font-mono text-[12px] tracking-widest uppercase`** — all metadata, UIDs, system labels
 8. **Bilingual** — every visible string needs both `en` and `es` in `content.ts`
 
 ---
