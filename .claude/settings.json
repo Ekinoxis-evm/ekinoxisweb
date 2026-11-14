@@ -109,11 +109,5 @@
         ]
       }
     ]
-  },
-  "enabledMcpjsonServers": [
-    "supabase",
-    "context7",
-    "vercel",
-    "figma"
-  ]
+  }
 }

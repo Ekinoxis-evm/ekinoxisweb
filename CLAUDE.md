@@ -22,7 +22,7 @@ Next.js 14 (App Router) · TypeScript · Tailwind 3 · Framer Motion 11 · Supab
 
 - **Mode:** brand (Impeccable: Persuade); the admin is operational (Operate).
 - **Authority:** `DESIGN.md` (tokens, type, components, Do's and Don'ts) · `PRODUCT.md` · `.claude/rules/design.md` (universal standards, definition of done).
-- **Figma:** [Ekinoxis Website](https://www.figma.com/design/WMzKe2ekqYRblFUYsyreMl) · key `WMzKe2ekqYRblFUYsyreMl` (team Ekinoxis Labs, drafts). Empty until the `DESIGN.md` tokens are pushed in as variables. The older branding file is separate and not linked here.
+- **Figma:** set up from the Ekinoxis root (shared branding and MCP config); not configured per project.
 - **Theme lives in:** `tailwind.config.js` + `src/app/globals.css`, the only place tokens become code.
 - **Gate:** `node design/detect-gate.mjs` fails on new detector findings (baseline `design/detect-baseline.json`); log in `design/log.md`.
 - **Loop:** `/design-loop <screen> [figma-url]`. Corrected twice for the same thing → one line in `DESIGN.md` → Do's and Don'ts.
@@ -50,7 +50,7 @@ Next.js 14 (App Router) · TypeScript · Tailwind 3 · Framer Motion 11 · Supab
 | Hooks | `guard-env` · `secret-scan` · `post-edit-typecheck` · `on-stop-summary` | Secrets never read or staged; type errors shown on edit |
 | Skills (project) | `ekinoxis-portfolio` · `supabase` · `supabase-postgres-best-practices` | Project map; DB work |
 | Skills (global, design) | `impeccable` · `design-taste-frontend` · `emil-design-eng` · `animate` · `animation-performance` · `improve-animations` · `break-ui` | Critique/audit/polish; motion. One taste engine: Impeccable |
-| MCP (`.mcp.json`) | supabase (scoped to this project) · context7 · vercel · figma | Verify library APIs with context7 before writing against them |
+| MCP (`.mcp.json`) | supabase (scoped to this project) | Everything else (context7, vercel, figma, …) is managed from the Ekinoxis root; verify library APIs with context7 |
 
 Model routing: Opus for design direction, architecture, migrations, anything touching production data; Sonnet for specified code and copy changes; Haiku or Explore for read-only lookups. Briefs name the exact files.
 
