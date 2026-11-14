@@ -1,22 +1,20 @@
 import type { ProjectType } from '@/lib/supabase/types'
 
 /**
- * The four divisions of the portfolio. Slugs stay in English for both
+ * The two divisions of the portfolio. Slugs stay in English for both
  * languages — Spanish pages live at the same path under /es.
  *
  * Order here is the order they appear on /portfolio and in the nav.
+ * The old experiments / proofs-of-concept divisions are gone: they were legacy
+ * labels for products at an early phase, and phase now says that.
  */
 export interface Division {
-  /** URL segment under /portfolio */
+  /** URL segment of its case studies: /portfolio/<slug>/<project> */
   slug: string
-  /** matches products.project_type */
-  type: ProjectType
-  /** terminal breadcrumb + UID prefix */
-  uid: string
+  /** products.project_type values shown here. experiment / poc are legacy and read as products. */
+  types: ProjectType[]
   /** how cards render: spec sheet, or client logo wall */
   layout: 'project' | 'client'
-  /** grid gap tint, keeps each division visually distinct */
-  accent: string
   en: { title: string; short: string; description: string }
   es: { title: string; short: string; description: string }
 }
@@ -24,78 +22,32 @@ export interface Division {
 export const DIVISIONS: Division[] = [
   {
     slug: 'products',
-    type: 'product',
-    uid: 'PRD',
+    types: ['product', 'experiment', 'poc'],
     layout: 'project',
-    accent: 'bg-primary/10',
     en: {
       title: 'PRODUCTS',
       short: 'Products',
-      description:
-        'Ours. We own them, we pay for them, and real people use them.',
+      description: 'Ours. We build them, fund them and take each one from idea to live.',
     },
     es: {
       title: 'PRODUCTOS',
       short: 'Productos',
-      description:
-        'Nuestros. Los financiamos nosotros, y los usa gente real.',
-    },
-  },
-  {
-    slug: 'experiments',
-    type: 'experiment',
-    uid: 'EXP',
-    layout: 'project',
-    accent: 'bg-tertiary-dim/10',
-    en: {
-      title: 'EXPERIMENTS',
-      short: 'Experiments',
-      description:
-        'Built at hackathons, against the clock. Public, so you can see what we ship under pressure. Some become products.',
-    },
-    es: {
-      title: 'EXPERIMENTOS',
-      short: 'Experimentos',
-      description:
-        'Construidos en hackathons, contra el reloj. Públicos, para que veas qué entregamos bajo presión. Algunos se vuelven productos.',
-    },
-  },
-  {
-    slug: 'proofs-of-concept',
-    type: 'poc',
-    uid: 'POC',
-    layout: 'project',
-    accent: 'bg-secondary/10',
-    en: {
-      title: 'PROOFS OF CONCEPT',
-      short: 'Proofs of Concept',
-      description:
-        'Built to answer one question before anyone spends real money: will this idea work? Some for a client, some for us.',
-    },
-    es: {
-      title: 'PRUEBAS DE CONCEPTO',
-      short: 'Pruebas de Concepto',
-      description:
-        'Construidas para responder una pregunta antes de invertir en serio: ¿funciona esta idea? Algunas para un cliente, otras para nosotros.',
+      description: 'Nuestros. Los construimos, los financiamos y llevamos cada uno de idea a en vivo.',
     },
   },
   {
     slug: 'clients',
-    type: 'client',
-    uid: 'CLI',
+    types: ['client'],
     layout: 'client',
-    accent: 'bg-on-surface/10',
     en: {
       title: 'CLIENTS',
       short: 'Clients',
-      description:
-        'Companies that hired us to build the software they run on.',
+      description: 'Companies that hired us to build the software they run on.',
     },
     es: {
       title: 'CLIENTES',
       short: 'Clientes',
-      description:
-        'Empresas que nos contrataron para construir el software con el que operan.',
+      description: 'Empresas que nos contrataron para construir el software con el que operan.',
     },
   },
 ]
@@ -106,7 +58,7 @@ export function getDivision(slug: string): Division | undefined {
 
 /** The division a product row is shown in. */
 export function divisionForType(type: string | null | undefined): Division | undefined {
-  return DIVISIONS.find((d) => d.type === (type ?? 'product'))
+  return DIVISIONS.find((d) => d.types.includes((type ?? 'product') as ProjectType))
 }
 
 /**
@@ -120,4 +72,62 @@ export function hasCaseStudy(p: { slug?: string | null; case_study_en?: string |
 export function caseStudyHref(p: { slug?: string | null; project_type?: string | null }): string | null {
   const division = divisionForType(p.project_type)
   return p.slug && division ? `/portfolio/${division.slug}/${p.slug}` : null
+}
+
+/**
+ * Build phases, in the order a product travels. Each one is graded by traction,
+ * not by effort: a product moves up only when real users, then real income, say so.
+ *
+ * The database stores IDEA / MVP / BETA / LAUNCHED (the `product_status` enum);
+ * these are the display names, so renaming a phase never needs a migration.
+ */
+export type PhaseKey = 'idea' | 'alpha' | 'beta' | 'live'
+
+export interface Phase {
+  key: PhaseKey
+  /** products.status values that land in this phase */
+  statuses: string[]
+  variant: 'muted' | 'primary' | 'secondary' | 'tertiary'
+  en: { label: string; hint: string }
+  es: { label: string; hint: string }
+}
+
+export const PHASES: Phase[] = [
+  {
+    key: 'idea',
+    statuses: ['IDEA'],
+    variant: 'muted',
+    en: { label: 'Idea', hint: 'A problem worth solving. Nothing working yet.' },
+    es: { label: 'Idea', hint: 'Un problema que vale la pena resolver. Aún nada funcional.' },
+  },
+  {
+    key: 'alpha',
+    statuses: ['MVP', 'POC'],
+    variant: 'primary',
+    en: { label: 'Alpha', hint: 'It works. Only our team and a few invited people use it.' },
+    es: { label: 'Alpha', hint: 'Funciona. Solo lo usan nuestro equipo y algunos invitados.' },
+  },
+  {
+    key: 'beta',
+    statuses: ['BETA'],
+    variant: 'secondary',
+    en: { label: 'Beta', hint: 'Real users outside the team. We measure how they use it.' },
+    es: { label: 'Beta', hint: 'Usuarios reales fuera del equipo. Medimos cómo lo usan.' },
+  },
+  {
+    key: 'live',
+    statuses: ['LAUNCHED'],
+    variant: 'tertiary',
+    en: { label: 'Live', hint: 'Real users and real income, tracked every month.' },
+    es: { label: 'En vivo', hint: 'Usuarios e ingresos reales, medidos cada mes.' },
+  },
+]
+
+export function phaseForStatus(status: string | null | undefined): Phase {
+  return PHASES.find((p) => p.statuses.includes(status ?? '')) ?? PHASES[1]
+}
+
+/** Where a division lives now that /portfolio is one page: an anchor, never its own route. */
+export function divisionHref(d: Division): string {
+  return d.layout === 'client' ? '/portfolio#clients' : '/portfolio#products'
 }

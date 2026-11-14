@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { courses } from '@/lib/courses';
-import { DIVISIONS, caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
+import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
 import { getProducts } from '@/lib/supabase/queries';
 import { LANGS, localizePath } from '@/lib/i18n';
 import { SITE_URL } from '@/lib/seo';
@@ -23,7 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/services/web-development',
     '/services/app-building',
     '/portfolio',
-    ...DIVISIONS.map((d) => `/portfolio/${d.slug}`),
     ...studies,
     '/courses',
     ...courses.map((c) => `/courses/${c.slug}`),

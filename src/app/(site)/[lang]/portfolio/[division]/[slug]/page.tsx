@@ -1,3 +1,4 @@
+import type { ProjectType } from '@/lib/supabase/types'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProductBySlug } from '@/lib/supabase/queries'
@@ -16,7 +17,7 @@ async function load(divisionSlug: string, slug: string) {
   if (!division) return null
   const product = await getProductBySlug(slug)
   // The division in the URL must match the row, so one page has one address.
-  if (!product || (product.project_type ?? 'product') !== division.type || !hasCaseStudy(product)) return null
+  if (!product || !division.types.includes((product.project_type ?? 'product') as ProjectType) || !hasCaseStudy(product)) return null
   return { division, product }
 }
 

@@ -139,7 +139,7 @@ export default function HackerHouseClient({ hackathons, products }: Props) {
                               {built.map((p) => (
                                 <Link
                                   key={p.id}
-                                  href={`/portfolio/${p.project_type === 'poc' ? 'proofs-of-concept' : p.project_type === 'experiment' ? 'experiments' : 'products'}`}
+                                  href="/portfolio#products"
                                   className="inline-flex items-center gap-3 border border-primary/20 bg-black/40 pr-4 hover:border-primary transition-colors"
                                 >
                                   {p.image_url ? (

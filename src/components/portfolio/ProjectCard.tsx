@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { content } from '@/lib/content';
-import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
+import { caseStudyHref, hasCaseStudy, phaseForStatus } from '@/lib/portfolio';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import { fadeInUp } from '@/lib/animations';
@@ -69,9 +69,11 @@ interface Props {
   language: 'en' | 'es'
   modulesLabel: string
   uid?: string
+  /** One-page overview: short copy, module count, no builder row. Full detail lives in the case study. */
+  compact?: boolean
 }
 
-export default function ProjectCard({ product, language, modulesLabel }: Props) {
+export default function ProjectCard({ product, language, modulesLabel, compact = false }: Props) {
   const desc = language === 'en' ? product.description_en : product.description_es;
   const subLinks = getSubLinks(product);
   // image_url is the cover (a screenshot of the product); logo_url is the mark on top of it.
@@ -85,7 +87,7 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
       className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 overflow-hidden flex flex-col"
     >
       <div className="absolute top-4 right-4 z-10 flex flex-col items-end gap-1">
-        <ScanBadge variant={STATUS_VARIANT[product.status] ?? 'muted'}>{product.status}</ScanBadge>
+        <ScanBadge variant={phaseForStatus(product.status).variant}>{phaseForStatus(product.status)[language].label}</ScanBadge>
       </div>
 
       {cover ? (
@@ -128,19 +130,27 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
         <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-3">
           {product.name}
         </h3>
-        <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-5">
+        <p className={`font-body text-sm text-on-surface-variant leading-relaxed mb-5 ${compact ? 'line-clamp-3' : ''}`}>
           {desc}
         </p>
 
         {product.categories?.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {product.categories.map((cat) => (
+            {(compact ? product.categories.slice(0, 3) : product.categories).map((cat) => (
               <ScanBadge key={cat} variant="secondary">{cat}</ScanBadge>
             ))}
           </div>
         )}
 
-        <SubLinksBlock links={subLinks} label={modulesLabel} />
+        {compact ? (
+          subLinks.length > 0 && (
+            <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">
+              {subLinks.length} {modulesLabel}
+            </p>
+          )
+        ) : (
+          <SubLinksBlock links={subLinks} label={modulesLabel} />
+        )}
 
         {product.hackathon && (
           <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4">
@@ -148,7 +158,7 @@ export default function ProjectCard({ product, language, modulesLabel }: Props) 
           </p>
         )}
 
-        {product.hackers && product.hackers.length > 0 && (
+        {!compact && product.hackers && product.hackers.length > 0 && (
           <div className="mb-4">
             <p className="font-mono text-[11px] text-outline uppercase tracking-widest mb-2">{language === 'en' ? 'Built by' : 'Hecho por'}</p>
             <div className="flex flex-wrap items-center gap-2">

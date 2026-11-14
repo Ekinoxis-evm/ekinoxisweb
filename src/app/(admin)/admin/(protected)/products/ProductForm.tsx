@@ -24,10 +24,10 @@ interface ProductFormProps {
 }
 
 const STATUS_OPTIONS = [
-  { value: 'POC', label: 'POC' },
-  { value: 'MVP', label: 'MVP' },
-  { value: 'BETA', label: 'BETA' },
-  { value: 'LAUNCHED', label: 'LAUNCHED' },
+  { value: 'IDEA', label: 'Idea: a problem, nothing working yet' },
+  { value: 'MVP', label: 'Alpha: works, only our team and invited people use it' },
+  { value: 'BETA', label: 'Beta: real users outside the team' },
+  { value: 'LAUNCHED', label: 'Live: real users and income tracked' },
 ]
 
 const TYPE_OPTIONS = [

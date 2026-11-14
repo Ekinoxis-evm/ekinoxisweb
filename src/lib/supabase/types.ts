@@ -532,7 +532,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      product_status: "MVP" | "BETA" | "LAUNCHED"
+      product_status: "IDEA" | "MVP" | "BETA" | "LAUNCHED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -642,7 +642,7 @@ export type Enums<
 export const Constants = {
   public: {
     Enums: {
-      product_status: ["MVP", "BETA", "LAUNCHED"],
+      product_status: ["IDEA", "MVP", "BETA", "LAUNCHED"],
     },
   },
 } as const

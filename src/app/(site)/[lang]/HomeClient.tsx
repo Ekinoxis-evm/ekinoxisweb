@@ -16,7 +16,8 @@ import { ToolsBand } from '@/components/LogoBands';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import type { CertificationPartner, EducationPartner, HackathonWithStatus, ProductWithRelations } from '@/lib/supabase/types';
 import { useBookCall } from '@/components/BookCall';
-import { DIVISIONS } from '@/lib/portfolio';
+import { DIVISIONS, divisionHref } from '@/lib/portfolio';
+import type { ProjectType } from '@/lib/supabase/types';
 
 /** The work shown first on the home page, in this order, when it has a cover image. */
 const FEATURED = ['CONVEXO', 'ETHCALI app'];
@@ -82,12 +83,12 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
     .filter((p): p is ProductWithRelations => Boolean(p && p.image_url));
   const hackathonCount = hackathons.length;
 
-  // One tile per portfolio division, so the total is split the same way /portfolio is.
+  // One tile per portfolio division (Products, Clients), the same split /portfolio uses.
   const numbers: { value: string; label: string; href?: string }[] = [
     ...DIVISIONS.map((d) => ({
-      value: String(products.filter((p) => p.project_type === d.type).length),
+      value: String(products.filter((p) => d.types.includes(p.project_type as ProjectType)).length),
       label: d[language].short,
-      href: `/portfolio/${d.slug}`,
+      href: divisionHref(d),
     })),
     { value: String(hackathonCount), label: en ? 'Hackathons' : 'Hackathons' },
     { value: String(hackerCount), label: en ? 'Builders in the lab' : 'Builders en el lab' },
@@ -180,7 +181,7 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
         eyebrow={en ? 'Clients' : 'Clientes'}
         title={en ? 'Businesses that run on our work.' : 'Negocios que funcionan con nuestro trabajo.'}
         phoneLine={en ? 'Businesses that run on our work.' : 'Negocios que usan nuestro trabajo.'}
-        link={{ href: '/portfolio/clients', label: en ? 'See client work' : 'Ver trabajo para clientes' }}
+        link={{ href: '/portfolio#clients', label: en ? 'See client work' : 'Ver trabajo para clientes' }}
         logos={uniqueLogos(clients)}
         plate="dark"
       />

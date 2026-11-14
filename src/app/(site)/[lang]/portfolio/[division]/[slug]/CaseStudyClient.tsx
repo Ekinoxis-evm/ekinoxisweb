@@ -9,7 +9,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import CaseStudyBody from '@/components/portfolio/CaseStudyBody';
-import { STATUS_VARIANT } from '@/components/portfolio/ProjectCard';
+import { phaseForStatus, divisionHref } from '@/lib/portfolio';
 import { useBookCall } from '@/components/BookCall';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import type { Division } from '@/lib/portfolio';
@@ -79,7 +79,7 @@ export default function CaseStudyClient({ division, product }: Props) {
               PORTFOLIO
             </Link>
             <span className="text-outline" aria-hidden="true">/</span>
-            <Link href={`/portfolio/${division.slug}`} className="border border-primary/30 px-2 py-2 hover:bg-primary/10 transition-colors duration-200">
+            <Link href={divisionHref(division)} className="border border-primary/30 px-2 py-2 hover:bg-primary/10 transition-colors duration-200">
               {divisionCopy.short}
             </Link>
             <span className="text-outline" aria-hidden="true">/</span>
@@ -91,7 +91,7 @@ export default function CaseStudyClient({ division, product }: Props) {
             <div>
               <div className="flex flex-wrap items-start gap-2 mb-6">
                 <ScanBadge variant="primary">{t.badge}</ScanBadge>
-                <ScanBadge variant={STATUS_VARIANT[product.status] ?? 'muted'}>{product.status}</ScanBadge>
+                <ScanBadge variant={phaseForStatus(product.status).variant}>{phaseForStatus(product.status)[language].label}</ScanBadge>
               </div>
               <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface break-words">
                 {product.name}
@@ -255,7 +255,7 @@ export default function CaseStudyClient({ division, product }: Props) {
                 {t.nextCta}
               </Button>
               <Link
-                href={`/portfolio/${division.slug}`}
+                href={divisionHref(division)}
                 className="inline-flex min-h-[44px] items-center justify-center px-6 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant border border-outline-variant hover:text-primary hover:border-primary transition-colors duration-200"
               >
                 {t.back} {divisionCopy.short}

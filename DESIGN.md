@@ -337,6 +337,9 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 - **Do** keep tap targets ≥44px and the main CTA full width on phones.
 
 ### Don't:
+- **Don't** repeat a message across a page or between pages. One idea gets one place;
+  if a description, hint or counter says what the title or another block already says,
+  delete it. Every line of text must add value the reader does not already have.
 - **Don't** use `rounded-sm` through `rounded-3xl`; corners are 0px, pills only for dots
   and nodes.
 - **Don't** use dark drop shadows; use surface steps or a cyan glow.
@@ -346,4 +349,6 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 - **Don't** start above-the-fold content at `opacity: 0` in JavaScript; it delays the
   first paint until hydration.
 - **Don't** let a badge stretch full width in a stacked flex column (`items-start`).
+- **Don't** lead a page with a headline count ("20 projects") that dwarfs the numbers that
+  matter; show stage and traction, not volume.
 - **Don't** use `cyber-blue` / `cyber-purple` aliases in new code.

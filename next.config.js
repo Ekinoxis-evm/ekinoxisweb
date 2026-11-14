@@ -43,6 +43,15 @@ const nextConfig = {
       { source: '/es/research', destination: '/es/education#research', permanent: true },
       { source: '/es/culture', destination: '/es/about#culture', permanent: true },
       { source: '/es/hackers', destination: '/es/about#team', permanent: true },
+      // The four portfolio divisions folded into one page; keep old links alive.
+      { source: '/portfolio/products', destination: '/portfolio#products', permanent: true },
+      { source: '/portfolio/experiments', destination: '/portfolio#experiments', permanent: true },
+      { source: '/portfolio/proofs-of-concept', destination: '/portfolio#proofs-of-concept', permanent: true },
+      { source: '/portfolio/clients', destination: '/portfolio#clients', permanent: true },
+      { source: '/es/portfolio/products', destination: '/es/portfolio#products', permanent: true },
+      { source: '/es/portfolio/experiments', destination: '/es/portfolio#experiments', permanent: true },
+      { source: '/es/portfolio/proofs-of-concept', destination: '/es/portfolio#proofs-of-concept', permanent: true },
+      { source: '/es/portfolio/clients', destination: '/es/portfolio#clients', permanent: true },
     ]
   },
 }

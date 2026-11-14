@@ -3,7 +3,8 @@ import Link from 'next/link'
 import ScanBadge from '@/components/ui/ScanBadge'
 
 const statusVariant = {
-  MVP: 'muted',
+  IDEA: 'muted',
+  MVP: 'primary',
   BETA: 'secondary',
   LAUNCHED: 'tertiary',
 } as const
@@ -49,7 +50,7 @@ export default async function AdminProductsPage() {
               <div className="font-label text-sm text-on-surface uppercase tracking-tight">{p.name}</div>
               <div className="font-mono text-[11px] text-outline mt-0.5">#{String(idx + 1).padStart(2, '0')}</div>
             </div>
-            <ScanBadge variant={statusVariant[p.status]}>{p.status}</ScanBadge>
+            <ScanBadge variant={statusVariant[p.status]}>{({ IDEA: 'Idea', MVP: 'Alpha', BETA: 'Beta', LAUNCHED: 'Live' } as const)[p.status]}</ScanBadge>
             <div className="flex flex-wrap gap-1">
               {p.categories.slice(0, 2).map((c: string) => (
                 <ScanBadge key={c} variant="outline">{c}</ScanBadge>

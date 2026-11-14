@@ -77,10 +77,8 @@ export default function Navigation() {
       href: '/portfolio',
       items: [
         { href: '/portfolio', label: language === 'en' ? 'All work' : 'Todo', exact: true },
-        { href: '/portfolio/products', label: language === 'en' ? 'Products' : 'Productos' },
-        { href: '/portfolio/experiments', label: language === 'en' ? 'Experiments' : 'Experimentos' },
-        { href: '/portfolio/proofs-of-concept', label: language === 'en' ? 'Proofs of Concept' : 'Pruebas de Concepto' },
-        { href: '/portfolio/clients', label: language === 'en' ? 'Clients' : 'Clientes' },
+        { href: '/portfolio#products', label: language === 'en' ? 'Products' : 'Productos' },
+        { href: '/portfolio#clients', label: language === 'en' ? 'Clients' : 'Clientes' },
       ],
     },
     'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
