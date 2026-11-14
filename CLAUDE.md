@@ -22,7 +22,7 @@ Next.js 14 (App Router) · TypeScript · Tailwind 3 · Framer Motion 11 · Supab
 
 - **Mode:** brand (Impeccable: Persuade); the admin is operational (Operate).
 - **Authority:** `DESIGN.md` (tokens, type, components, Do's and Don'ts) · `PRODUCT.md` · `.claude/rules/design.md` (universal standards, definition of done).
-- **Figma:** not linked yet. Add the file URL and key here when the library exists.
+- **Figma:** [Ekinoxis Website](https://www.figma.com/design/WMzKe2ekqYRblFUYsyreMl) · key `WMzKe2ekqYRblFUYsyreMl` (team Ekinoxis Labs, drafts). Empty until the `DESIGN.md` tokens are pushed in as variables. The older branding file is separate and not linked here.
 - **Theme lives in:** `tailwind.config.js` + `src/app/globals.css`, the only place tokens become code.
 - **Gate:** `node design/detect-gate.mjs` fails on new detector findings (baseline `design/detect-baseline.json`); log in `design/log.md`.
 - **Loop:** `/design-loop <screen> [figma-url]`. Corrected twice for the same thing → one line in `DESIGN.md` → Do's and Don'ts.
