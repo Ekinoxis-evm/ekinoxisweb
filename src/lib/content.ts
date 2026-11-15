@@ -139,6 +139,8 @@ export const content = {
       otherDivisions: "Other divisions",
       modulesLabel: "MODULES",
       empty: "Nothing here yet",
+      openApp: "Open the app",
+      visitSite: "Visit the site",
       caseStudy: {
         badge: "Case study",
         read: "Read the case study",
@@ -765,6 +767,8 @@ export const content = {
       otherDivisions: "Otras divisiones",
       modulesLabel: "MÓDULOS",
       empty: "Nada aquí todavía",
+      openApp: "Abrir la app",
+      visitSite: "Visitar el sitio",
       caseStudy: {
         badge: "Caso de estudio",
         read: "Leer el caso de estudio",

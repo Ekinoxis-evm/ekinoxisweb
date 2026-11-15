@@ -6,6 +6,7 @@ import Link from '@/components/LocalizedLink';
 import { content } from '@/lib/content';
 import { caseStudyHref, hasCaseStudy, phaseForStatus } from '@/lib/portfolio';
 import ScanBadge from '@/components/ui/ScanBadge';
+import PhaseTag, { PHASE_RULE } from '@/components/portfolio/PhaseTag';
 import Button from '@/components/ui/Button';
 import { fadeInUp } from '@/lib/animations';
 import type { ProductWithRelations, SubLink } from '@/lib/supabase/types';
@@ -80,14 +81,21 @@ export default function ProjectCard({ product, language, modulesLabel, compact =
   const cover = product.image_url || null;
   const logo = product.logo_url || null;
   const study = hasCaseStudy(product) ? caseStudyHref(product) : null;
+  const phase = phaseForStatus(product.status);
+  const tt = content[language].portfolio;
+  // One primary action per card: the product itself, app first.
+  const primaryHref = product.app_url || product.website_url || null;
+  const primaryLabel = product.app_url ? tt.openApp : tt.visitSite;
+  const secondaryHref = product.app_url && product.website_url ? product.website_url : null;
 
   return (
     <motion.div
       variants={fadeInUp}
       className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 overflow-hidden flex flex-col"
     >
-      <div className="absolute top-4 right-4 z-10 flex flex-col items-end gap-1">
-        <ScanBadge variant={phaseForStatus(product.status).variant}>{phaseForStatus(product.status)[language].label}</ScanBadge>
+      <span aria-hidden className={`absolute inset-x-0 top-0 z-10 h-[2px] ${PHASE_RULE[phase.variant]}`} />
+      <div className="absolute top-4 right-4 z-10">
+        <PhaseTag status={product.status} language={language} />
       </div>
 
       {cover ? (
@@ -177,23 +185,28 @@ export default function ProjectCard({ product, language, modulesLabel, compact =
         )}
 
         <div className="mt-auto border-t border-outline-variant/20 pt-4 flex flex-col gap-2">
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            {primaryHref && (
+              <a href={primaryHref} target="_blank" rel="noopener noreferrer">
+                <Button variant={phase.key === 'live' ? 'tertiary' : 'ghost'} size="sm">{primaryLabel} ↗</Button>
+              </a>
+            )}
             {study && (
               <Link
                 href={study}
-                className="inline-flex items-center py-2 px-4 text-xs bg-primary/10 border border-primary/40 text-primary font-headline font-bold uppercase tracking-widest hover:bg-primary hover:text-surface-container-lowest transition-colors duration-200"
+                className="inline-flex min-h-[44px] items-center font-mono text-[12px] uppercase tracking-widest text-primary underline-offset-4 hover:underline"
               >
-                {content[language].portfolio.caseStudy.read}
+                {tt.caseStudy.read}
               </Link>
             )}
-            {product.app_url && (
-              <a href={product.app_url} target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" size="sm">App</Button>
-              </a>
-            )}
-            {product.website_url && (
-              <a href={product.website_url} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">{language === 'en' ? 'Website' : 'Sitio'}</Button>
+            {secondaryHref && (
+              <a
+                href={secondaryHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center font-mono text-[12px] uppercase tracking-widest text-on-surface-variant underline-offset-4 hover:text-on-surface hover:underline"
+              >
+                {language === 'en' ? 'Website' : 'Sitio'}
               </a>
             )}
           </div>

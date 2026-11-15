@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { content } from '@/lib/content';
-import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
-import ScanBadge from '@/components/ui/ScanBadge';
+import { caseStudyHref, hasCaseStudy, phaseForStatus } from '@/lib/portfolio';
+import PhaseTag, { PHASE_RULE } from '@/components/portfolio/PhaseTag';
 import { fadeInUp } from '@/lib/animations';
 import type { ProductWithRelations } from '@/lib/supabase/types';
 
@@ -25,12 +25,17 @@ export default function ClientCard({ client, language }: Props) {
   const desc = language === 'en' ? client.description_en : client.description_es;
   const logo = client.logo_url || client.image_url || null;
   const study = hasCaseStudy(client) ? caseStudyHref(client) : null;
+  const phase = phaseForStatus(client.status);
 
   return (
     <motion.div
       variants={fadeInUp}
       className="relative bg-surface-container-low group hover:bg-surface-container transition-colors duration-500 flex flex-col"
     >
+      <span aria-hidden className={`absolute inset-x-0 top-0 z-10 h-[2px] ${PHASE_RULE[phase.variant]}`} />
+      <div className="absolute top-4 right-4 z-10">
+        <PhaseTag status={client.status} language={language} />
+      </div>
 
       {/*
         Every client mark is a transparent PNG cropped tight to the logo and
@@ -64,7 +69,7 @@ export default function ClientCard({ client, language }: Props) {
         <h3 className="font-headline text-xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-3">
           {client.name}
         </h3>
-        <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
+        <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6 line-clamp-4">
           {desc}
         </p>
 
