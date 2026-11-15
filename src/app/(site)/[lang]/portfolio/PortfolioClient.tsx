@@ -147,31 +147,24 @@ export default function PortfolioClient({ products }: Props) {
                 </p>
 
                 {groups.map(({ phase: ph, items }) => (
-                  <div key={ph.key} className="mb-20 last:mb-12">
-                    {/* Phase header: the label is the heading, the ladder shows how far along it is */}
-                    <div className="relative mb-8 grid grid-cols-1 gap-6 pt-8 md:grid-cols-[1fr_auto] md:items-end">
-                      <span aria-hidden className={`absolute inset-x-0 top-0 h-[2px] ${PHASE_RULE[ph.variant]}`} />
-                      <div>
-                        <div className="mb-3 flex items-center gap-4">
-                          <div aria-hidden className="flex gap-1">
-                            {[1, 2, 3, 4].map((n) => (
-                              <span key={n} className={`h-1.5 w-8 ${n <= PHASE_STEP[ph.key] ? PHASE_FILL[ph.key] : 'bg-outline-variant/40'}`} />
-                            ))}
-                          </div>
-                          <span className="font-mono text-[12px] uppercase tracking-widest text-outline">
-                            {PHASE_STEP[ph.key]}/4
-                          </span>
+                  <div key={ph.key} className="mb-14 last:mb-10">
+                    {/* Phase header: one quiet row. Ladder, label, count; the meaning sits on the right */}
+                    <div className="relative mb-6 flex flex-col gap-2 pt-5 md:flex-row md:items-center md:justify-between md:gap-8">
+                      <span aria-hidden className={`absolute inset-x-0 top-0 h-px ${PHASE_RULE[ph.variant]}`} />
+                      <div className="flex items-center gap-4">
+                        <div aria-hidden className="flex gap-0.5">
+                          {[1, 2, 3, 4].map((n) => (
+                            <span key={n} className={`h-1 w-5 ${n <= PHASE_STEP[ph.key] ? PHASE_FILL[ph.key] : 'bg-outline-variant/40'}`} />
+                          ))}
                         </div>
-                        <h2 className={`font-headline text-5xl sm:text-6xl md:text-7xl font-bold uppercase tracking-tighter leading-[0.9] ${PHASE_TEXT[ph.key]}`}>
+                        <h2 className={`font-mono text-base font-bold uppercase tracking-[0.3em] ${PHASE_TEXT[ph.key]}`}>
                           {ph[language].label}
                         </h2>
-                      </div>
-                      <div className="md:max-w-sm md:text-right">
-                        <p className="font-body text-base text-on-surface leading-relaxed">{ph[language].hint}</p>
-                        <p className="mt-2 font-mono text-[12px] uppercase tracking-widest text-outline">
+                        <span className="font-mono text-[12px] uppercase tracking-widest text-outline">
                           {String(items.length).padStart(2, '0')}
-                        </p>
+                        </span>
                       </div>
+                      <p className="font-body text-sm text-on-surface-variant md:text-right">{ph[language].hint}</p>
                     </div>
 
                     <div
