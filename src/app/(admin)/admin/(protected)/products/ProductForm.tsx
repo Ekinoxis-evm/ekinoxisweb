@@ -61,6 +61,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
   const [selectedHackers, setSelectedHackers] = useState<string[]>(
     product?.hackers?.map((h) => h.id) ?? []
   );
+  const [usersCount, setUsersCount] = useState(product?.users_count != null ? String(product.users_count) : '');
+  const [income, setIncome] = useState(product?.monthly_income_usd != null ? String(product.monthly_income_usd) : '');
   const [displayOrder, setDisplayOrder] = useState(product?.display_order ?? 0);
   const [projectType, setProjectType] = useState(product?.project_type ?? 'product');
   const [logoUrl, setLogoUrl] = useState(product?.logo_url ?? '');
@@ -113,6 +115,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
         repo_contracts: repoContracts || null,
         hackathon_id: hackathonId || null, hackathon_link: hackathonLink || null,
         technologies, categories, display_order: displayOrder,
+        users_count: usersCount === '' ? null : Number(usersCount),
+        monthly_income_usd: income === '' ? null : Number(income),
         project_type: projectType,
         logo_url: logoUrl || null,
         instagram: instagram || null,
@@ -198,6 +202,8 @@ export default function ProductForm({ product, hackathons, allHackers }: Product
           <ImageUpload label="Product Image *" value={imageUrl} onChange={setImageUrl} folder="products" hint="Upload new or keep existing /products/ path" />
           <ImageUpload label="Client Logo" value={logoUrl} onChange={setLogoUrl} folder="products" hint="CLIENT rows only — transparent mark shown on the logo wall" />
           <AdminSelect label="Status" value={status} onChange={(e) => setStatus(e.target.value as typeof status)} options={STATUS_OPTIONS} required />
+          <AdminInput label="Users (real, outside the team)" type="number" min={0} value={usersCount} onChange={(e) => setUsersCount(e.target.value)} />
+          <AdminInput label="Monthly income (USD)" type="number" min={0} value={income} onChange={(e) => setIncome(e.target.value)} />
           <AdminInput label="Display Order" type="number" value={displayOrder} onChange={(e) => setDisplayOrder(Number(e.target.value))} />
           <AdminSelect label="Project Type" value={projectType} onChange={(e) => setProjectType(e.target.value)} options={TYPE_OPTIONS} required />
         </div>

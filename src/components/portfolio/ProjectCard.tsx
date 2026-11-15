@@ -142,6 +142,23 @@ export default function ProjectCard({ product, language, modulesLabel, compact =
           {desc}
         </p>
 
+        {(product.users_count != null || product.monthly_income_usd != null) && (
+          <dl className="mb-5 flex gap-8 border-y border-outline-variant/20 py-3">
+            {product.users_count != null && (
+              <div>
+                <dt className="font-mono text-[12px] uppercase tracking-widest text-outline">{tt.usersLabel}</dt>
+                <dd className="font-headline text-2xl font-bold tracking-tighter text-on-surface">{product.users_count.toLocaleString('en-US')}</dd>
+              </div>
+            )}
+            {product.monthly_income_usd != null && (
+              <div>
+                <dt className="font-mono text-[12px] uppercase tracking-widest text-outline">{tt.incomeLabel}</dt>
+                <dd className="font-headline text-2xl font-bold tracking-tighter text-tertiary-dim">${product.monthly_income_usd.toLocaleString('en-US')}</dd>
+              </div>
+            )}
+          </dl>
+        )}
+
         {product.categories?.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {(compact ? product.categories.slice(0, 3) : product.categories).map((cat) => (

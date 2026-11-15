@@ -333,6 +333,8 @@ export type Database = {
       products: {
         Row: {
           app_url: string | null
+          users_count: number | null
+          monthly_income_usd: number | null
           case_study_en: string | null
           case_study_es: string | null
           categories: string[]
@@ -362,6 +364,8 @@ export type Database = {
         }
         Insert: {
           app_url?: string | null
+          users_count?: number | null
+          monthly_income_usd?: number | null
           case_study_en?: string | null
           case_study_es?: string | null
           categories?: string[]
@@ -391,6 +395,8 @@ export type Database = {
         }
         Update: {
           app_url?: string | null
+          users_count?: number | null
+          monthly_income_usd?: number | null
           case_study_en?: string | null
           case_study_es?: string | null
           categories?: string[]

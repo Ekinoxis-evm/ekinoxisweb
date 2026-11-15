@@ -7,7 +7,7 @@ description: The complete map of the Ekinoxis Labs ecosystem — every product a
 
 **Who we are**: Ekinoxis Labs, the first Innovation Laboratory of the Colombian Pacific (Cali, Colombia + Casper, WY). "Innovation Without Frontiers." Blockchain, AI and cryptography products; education; community; paid services; research.
 
-**Source of truth for the website**: the `products` table in Supabase project `xaxwqvyieqchydckdtov` (ekinoxisweb), classified by `project_type` (`product` | `client`; experiments and proofs of concept were folded into `product` on 2026-11-14), rendered at ekinoxis.xyz/portfolio (Products grouped by phase, then Clients). Umbrella cards list sub-projects in `sub_links` (jsonb `[{label, url, repo}]`). Manage via `/admin/products`.
+**Source of truth for the website**: the `products` table in Supabase project `xaxwqvyieqchydckdtov` (ekinoxisweb), classified by `project_type` (`product` | `client`; experiments and proofs of concept were folded into `product` on 2026-11-14), rendered at ekinoxis.xyz/portfolio (Products and Clients tabs, each grouped by phase). Umbrella cards list sub-projects in `sub_links` (jsonb `[{label, url, repo}]`). Manage via `/admin/products`.
 
 **Accounts**: GitHub org `Ekinoxis-evm` · Vercel team `ekinoxis-team` · Supabase org "Ekinoxis labs" (`wljzgopssoncokhftmnh`).
 

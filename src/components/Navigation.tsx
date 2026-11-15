@@ -75,11 +75,6 @@ export default function Navigation() {
     portfolio: {
       label: t.portfolio,
       href: '/portfolio',
-      items: [
-        { href: '/portfolio', label: language === 'en' ? 'All work' : 'Todo', exact: true },
-        { href: '/portfolio#products', label: language === 'en' ? 'Products' : 'Productos' },
-        { href: '/portfolio#clients', label: language === 'en' ? 'Clients' : 'Clientes' },
-      ],
     },
     'hacker-house': { label: t.hackerHouse, href: '/hacker-house' },
   };
@@ -159,20 +154,12 @@ export default function Navigation() {
               linkActive={linkActive}
               linkInactive={linkInactive}
             />
-            <DropdownMenu
-              label={menuItems['portfolio'].label}
-              href={menuItems['portfolio'].href}
-              items={menuItems['portfolio'].items}
-              menuKey="portfolio"
-              expanded={expandedMenu}
-              setExpanded={setExpandedMenu}
-              isActive={isMenuActive('portfolio')}
-              isItemActive={isActive}
-              variants={dropdownVariants}
-              linkBase={linkBase}
-              linkActive={linkActive}
-              linkInactive={linkInactive}
-            />
+            <Link
+              href="/portfolio"
+              className={`${linkBase} ${isActive('/portfolio') ? linkActive : linkInactive}`}
+            >
+              {menuItems['portfolio'].label}
+            </Link>
             <Link
               href="/hacker-house"
               className={`${linkBase} ${isActive('/hacker-house') ? linkActive : linkInactive}`}

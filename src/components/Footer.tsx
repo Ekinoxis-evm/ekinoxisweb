@@ -37,7 +37,7 @@ export default function Footer() {
     {
       title: t.nav.portfolio,
       links: [
-        { href: '/portfolio#products', label: en ? 'Products' : 'Productos' },
+        { href: '/portfolio', label: en ? 'Products' : 'Productos' },
         { href: '/portfolio#clients', label: en ? 'Clients' : 'Clientes' },
       ],
     },

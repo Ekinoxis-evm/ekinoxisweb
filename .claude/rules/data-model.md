@@ -18,5 +18,7 @@
 ## Other tables
 `hackers`, `hackathons`, `product_hackers` (join), `education_partners`, `certification_partners`, `leads` (booking form + qualification answers in `details`).
 
+- **Traction:** `users_count` (real users outside the team) and `monthly_income_usd`; null = not measured. Shown on Live cards only when set. Never fill a guess.
+
 ## Reading order of the portfolio
-live → beta → alpha → idea, then `display_order`.
+/portfolio has two tabs (Products, Clients); each is grouped live → beta → alpha → idea, then `display_order`.
