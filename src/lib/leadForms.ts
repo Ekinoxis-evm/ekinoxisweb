@@ -45,7 +45,7 @@ export const MULTI_KEYS: DetailKey[] = ['type', 'needs'];
 export const SERVICES: (Option & { value: LeadTopic })[] = [
   { value: 'consultation', en: 'Advice on AI, crypto or automation', es: 'Asesoría en IA, cripto o automatización', hint: { en: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS}-hour session`, es: `$${BLOCK_PRICE_USD} · sesión de ${BLOCK_HOURS} horas` } },
   { value: 'web', en: 'A website for my business', es: 'Un sitio web para mi negocio', hint: { en: 'From $1,500 · live in 5 days', es: 'Desde $1,500 · en vivo en 5 días' } },
-  { value: 'app', en: 'Software or an app built for me', es: 'Software o una app hecha para mí', hint: { en: 'From $12,000', es: 'Desde $12,000' } },
+  { value: 'app', en: 'Software or an app built for me', es: 'Software o una app hecha para mí', hint: { en: 'Scoped together on the call', es: 'Lo definimos juntos en la llamada' } },
   { value: 'talk', en: 'Invite us to speak', es: 'Invitarlos a hablar', hint: { en: 'Talks, panels, demos', es: 'Charlas, paneles, demos' } },
   { value: 'course', en: 'A course for me or my team', es: 'Un curso para mí o mi equipo' },
   { value: 'general', en: 'Something else', es: 'Otra cosa' },

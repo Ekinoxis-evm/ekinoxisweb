@@ -34,8 +34,11 @@ import {
 const COPY = {
   en: {
     stepService: 'Service',
-    step1: 'About you',
-    step2: 'The call',
+    stepQ: 'Details',
+    stepMessage: 'In your words',
+    stepWhen: 'Time',
+    stepWho: 'Contact',
+    allRequired: 'All fields are required.',
     of: 'of',
     continue: 'Continue',
     back: 'Back',
@@ -106,8 +109,11 @@ const COPY = {
   },
   es: {
     stepService: 'Servicio',
-    step1: 'Sobre ti',
-    step2: 'La llamada',
+    stepQ: 'Detalles',
+    stepMessage: 'Con tus palabras',
+    stepWhen: 'Hora',
+    stepWho: 'Contacto',
+    allRequired: 'Todos los campos son obligatorios.',
     of: 'de',
     continue: 'Continuar',
     back: 'Atrás',
@@ -194,6 +200,9 @@ const field =
 
 const label = 'font-mono text-[12px] text-on-surface-variant uppercase tracking-widest mb-2 block';
 
+/** The question a screen asks: big enough to read first. */
+const question = 'font-headline text-xl font-semibold tracking-tight text-on-surface mb-4 block';
+
 /** The first question of each topic — the one that must be answered. */
 const REQUIRED: Partial<Record<LeadTopic, DetailKey>> = { consultation: 'type', web: 'plan', app: 'plan', talk: 'audience', course: 'who' };
 
@@ -208,7 +217,22 @@ function initialAnswers(topic: LeadTopic | null, preset?: LeadPreset): Answers {
   return base;
 }
 
-type Step = 0 | 1 | 2;
+/** Which details each screen of a topic asks. One question (or a tight pair) per screen. */
+const SCREENS: Record<LeadTopic, DetailKey[][]> = {
+  consultation: [['type'], ['format', 'hours'], ['team_size', 'timing']],
+  web: [['plan'], ['has_site', 'needs'], ['timing']],
+  app: [['stage', 'users'], ['plan'], ['budget_band', 'timing']],
+  talk: [['audience', 'organization'], ['timing']],
+  course: [['who', 'team_size'], ['timing']],
+  general: [['timing']],
+};
+
+type Screen =
+  | { kind: 'service' }
+  | { kind: 'q'; keys: DetailKey[] }
+  | { kind: 'message' }
+  | { kind: 'when' }
+  | { kind: 'who' };
 
 interface Props {
   /** The service, when the button already knows it. Omit to ask first. */
@@ -226,7 +250,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
   const asksService = !initialTopic;
 
   const [topic, setTopic] = useState<LeadTopic | null>(initialTopic);
-  const [step, setStep] = useState<Step>(asksService ? 0 : 1);
+  const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>(() => initialAnswers(initialTopic, preset));
   const [hours, setHours] = useState(BLOCK_HOURS);
   const [message, setMessage] = useState('');
@@ -235,6 +259,13 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
   const id = (f: string) => `${f}-${topic ?? 'any'}`;
   const slotRequired = topic ? SLOT_REQUIRED[topic] : false;
+
+  const screens: Screen[] = [
+    ...(asksService ? [{ kind: 'service' } as Screen] : []),
+    ...(topic ? SCREENS[topic].map((keys) => ({ kind: 'q', keys }) as Screen) : []),
+    ...(topic ? ([{ kind: 'message' }, { kind: 'when' }, { kind: 'who' }] as Screen[]) : []),
+  ];
+  const screen = screens[idx] ?? screens[0];
 
   // Slots are computed in the browser (same rules as the server) and the taken
   // ones fetched, so a slot someone else booked never shows as free.
@@ -287,28 +318,42 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
     setTopic(next);
     setAnswers(initialAnswers(next, preset));
     clearError();
-    setStep(1);
+    setIdx(1);
     track('book_call_service', { topic: next });
   };
 
   function next() {
     if (!topic) return;
-    const req = REQUIRED[topic];
-    const v = req ? answers[req] : 'ok';
-    if (req && (!v || (Array.isArray(v) && v.length === 0))) {
-      setError(MULTI_KEYS.includes(req) ? t.pickSome : t.pickOne);
+    if (screen.kind === 'q') {
+      const req = REQUIRED[topic];
+      const v = req && screen.keys.includes(req) ? answers[req] : 'ok';
+      if (!v || (Array.isArray(v) && v.length === 0)) {
+        setError(req && MULTI_KEYS.includes(req) ? t.pickSome : t.pickOne);
+        setState('error');
+        return;
+      }
+    }
+    if (screen.kind === 'when' && slotRequired && !slot) {
+      setError(t.pickSlot);
       setState('error');
       return;
     }
     clearError();
-    setStep(2);
-    track('book_call_qualified', { topic });
+    if (screen.kind === 'message') track('book_call_qualified', { topic });
+    setIdx((i) => i + 1);
   }
+
+  /** A screen with one single-choice question moves on by itself once it is answered. */
+  const pick = (key: DetailKey, value: string) => {
+    set(key, value);
+    const only = screen.kind === 'q' && screen.keys.length === 1 && screen.keys[0] === key;
+    if (only && !MULTI_KEYS.includes(key)) window.setTimeout(() => setIdx((i) => i + 1), 220);
+  };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (step === 0 || !topic) return;
-    if (step === 1) return next();
+    if (!topic || screen.kind === 'service') return;
+    if (screen.kind !== 'who') return next();
     if (state === 'sending') return;
 
     if (slotRequired && !slot) {
@@ -438,21 +483,21 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         <span className={`block font-label text-[13px] font-semibold uppercase tracking-wide leading-snug ${active ? 'text-primary' : 'text-on-surface'}`}>
           {title}
         </span>
-        {hint && <span className="block mt-1 font-mono text-[12px] text-outline tracking-wider">{hint}</span>}
+        {hint && <span className="block mt-1 font-mono text-[12px] text-on-surface-variant tracking-wider">{hint}</span>}
       </span>
     </button>
   );
 
-  const choices = (key: DetailKey, question: string, options: Option[], cols: 1 | 2 = 2) => {
+  const choices = (key: DetailKey, text: string, options: Option[], cols: 1 | 2 = 2) => {
     const multi = MULTI_KEYS.includes(key);
     return (
       <fieldset>
-        <legend className={label}>
-          {question}
-          {multi && <span className="normal-case text-outline"> ({t.several})</span>}
+        <legend className={question}>
+          {text}
+          {multi && <span className="normal-case text-on-surface-variant"> ({t.several})</span>}
         </legend>
         <div className={`grid grid-cols-1 ${cols === 2 ? 'sm:grid-cols-2' : ''} gap-2`}>
-          {options.map((o) => chip(isOn(key, o.value), () => set(key, o.value), o[language], o.hint?.[language], multi, o.value))}
+          {options.map((o) => chip(isOn(key, o.value), () => pick(key, o.value), o[language], o.hint?.[language], multi, o.value))}
         </div>
       </fieldset>
     );
@@ -460,7 +505,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
   const hoursStepper = (
     <div>
-      <p className={label}>{t.hoursQ}</p>
+      <p className={question}>{t.hoursQ}</p>
       <div className="flex flex-col sm:flex-row sm:items-stretch gap-2">
         <div className="flex items-stretch border border-outline-variant">
           <button
@@ -474,7 +519,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
           </button>
           <div className="flex min-w-[6.5rem] flex-1 items-center justify-center gap-2 bg-surface-container-high px-4" aria-live="polite">
             <span className="font-headline text-2xl font-bold tracking-tighter text-on-surface">{hours}{hours >= MAX_HOURS ? '+' : ''}</span>
-            <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{hours === 1 ? t.hour : t.hours}</span>
+            <span className="font-mono text-[12px] uppercase tracking-widest text-on-surface-variant">{hours === 1 ? t.hour : t.hours}</span>
           </div>
           <button
             type="button"
@@ -487,58 +532,46 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
           </button>
         </div>
         <div className="flex flex-1 items-center justify-between gap-4 border border-primary/30 bg-primary/5 px-4 py-2">
-          <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{t.estimate}</span>
+          <span className="font-mono text-[12px] uppercase tracking-widest text-on-surface-variant">{t.estimate}</span>
           <span className="font-headline text-2xl font-bold tracking-tighter text-primary">
             {hours >= MAX_HOURS ? `${en ? 'from' : 'desde'} ` : '≈ '}${estimateUsd(hours).toLocaleString('en-US')}
           </span>
         </div>
       </div>
-      <p className="mt-2 font-mono text-[12px] text-outline tracking-wider">{t.hoursHint}</p>
+      <p className="mt-2 font-mono text-[12px] text-on-surface-variant tracking-wider">{t.hoursHint}</p>
     </div>
   );
 
   const stepService = (
     <fieldset>
-      <legend className={label}>{t.serviceQ}</legend>
+      <legend className={question}>{t.serviceQ}</legend>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {SERVICES.map((s) => chip(topic === s.value, () => chooseService(s.value), s[language], s.hint?.[language], false, s.value))}
       </div>
     </fieldset>
   );
 
-  const stepOne = topic && (
-    <div className="space-y-6">
-      {topic === 'consultation' && (
-        <>
-          {choices('type', t.typeQ, CONSULTATION_TYPES)}
-          {choices('format', t.formatQ, CONSULTATION_FORMATS)}
-          {answers.format === 'hourly' && hoursStepper}
-          {choices('team_size', t.teamQ, TEAM_SIZES)}
-          {choices('timing', t.timingQ, TIMING)}
-        </>
-      )}
-      {topic === 'web' && (
-        <>
-          {choices('plan', t.planQ, WEB_PLANS)}
-          {choices('has_site', t.siteQ, HAS_SITE)}
-          {choices('needs', t.needsQ, WEB_NEEDS)}
-          {choices('timing', t.timingQ, TIMING)}
-        </>
-      )}
-      {topic === 'app' && (
-        <>
-          {choices('plan', t.tierQ, APP_PLANS)}
-          {choices('stage', t.stageQ, APP_STAGES, 1)}
-          {choices('users', t.usersQ, APP_USERS)}
-          {choices('budget_band', t.budgetQ, BUDGET_BANDS)}
-          {choices('timing', t.timingQ, TIMING)}
-        </>
-      )}
-      {topic === 'talk' && (
-        <>
-          {choices('audience', t.audienceQ, AUDIENCES)}
+  /** One detail question, by key. Null when it does not apply (e.g. team size for a solo learner). */
+  const detail = (key: DetailKey) => {
+    if (!topic) return null;
+    switch (key) {
+      case 'type': return choices('type', t.typeQ, CONSULTATION_TYPES);
+      case 'format': return choices('format', t.formatQ, CONSULTATION_FORMATS);
+      case 'hours': return answers.format === 'hourly' ? hoursStepper : null;
+      case 'team_size': return topic === 'course' && answers.who !== 'team' ? null : choices('team_size', t.teamQ, TEAM_SIZES);
+      case 'timing': return choices('timing', topic === 'talk' ? t.timingTalkQ : t.timingQ, TIMING);
+      case 'plan': return choices('plan', topic === 'web' ? t.planQ : t.tierQ, topic === 'web' ? WEB_PLANS : APP_PLANS);
+      case 'has_site': return choices('has_site', t.siteQ, HAS_SITE);
+      case 'needs': return choices('needs', t.needsQ, WEB_NEEDS);
+      case 'stage': return choices('stage', t.stageQ, APP_STAGES, 1);
+      case 'users': return choices('users', t.usersQ, APP_USERS);
+      case 'budget_band': return choices('budget_band', t.budgetQ, BUDGET_BANDS);
+      case 'audience': return choices('audience', t.audienceQ, AUDIENCES);
+      case 'who': return choices('who', t.whoQ, COURSE_WHO);
+      case 'organization':
+        return (
           <div>
-            <label className={label} htmlFor={id('organization')}>{t.orgQ}</label>
+            <label className={question} htmlFor={id('organization')}>{t.orgQ}</label>
             <input
               id={id('organization')}
               type="text"
@@ -550,36 +583,33 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
               autoComplete="organization"
             />
           </div>
-          {choices('timing', t.timingTalkQ, TIMING)}
-        </>
-      )}
-      {topic === 'course' && (
-        <>
-          {choices('who', t.whoQ, COURSE_WHO)}
-          {answers.who === 'team' && choices('team_size', t.teamQ, TEAM_SIZES)}
-          {choices('timing', t.timingQ, TIMING)}
-        </>
-      )}
-      {topic === 'general' && choices('timing', t.timingQ, TIMING)}
+        );
+      default: return null;
+    }
+  };
 
-      <div>
-        <label className={label} htmlFor={id('message')}>
-          {t.messageQ} <span className="normal-case text-outline">({t.messageOptional})</span>
-        </label>
-        <VoiceInput id={id('message')} value={message} onChange={setMessage} language={language} placeholder={t.messagePh[topic]} rows={4} />
-      </div>
+  const stepQuestions = (keys: DetailKey[]) => (
+    <div className="space-y-8">{keys.map((k) => <div key={k}>{detail(k)}</div>)}</div>
+  );
+
+  const stepMessage = topic && (
+    <div>
+      <label className={question} htmlFor={id('message')}>
+        {t.messageQ} <span className="font-body text-base font-normal text-on-surface-variant">({t.messageOptional})</span>
+      </label>
+      <VoiceInput id={id('message')} value={message} onChange={setMessage} language={language} placeholder={t.messagePh[topic]} rows={5} />
     </div>
   );
 
-  const stepTwo = (
-    <div className="space-y-5">
+  const stepWhen = (
+    <div className="space-y-6">
       {process(false)}
 
       {/* the call: a day, then a time in the visitor's own zone */}
       <div>
         <p className={label}>
           {t.day}
-          {!slotRequired && <span className="normal-case text-outline"> ({t.optional})</span>}
+          {!slotRequired && <span className="normal-case text-on-surface-variant"> ({t.optional})</span>}
         </p>
         <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {days.map((d) => {
@@ -610,7 +640,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
       <div>
         <p className={label}>
-          {t.time} <span className="normal-case text-outline">({t.yourTime}{tzName ? ` · ${tzName}` : ''})</span>
+          {t.time} <span className="normal-case text-on-surface-variant">({t.yourTime}{tzName ? ` · ${tzName}` : ''})</span>
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {day?.slots.map((s) => {
@@ -641,7 +671,12 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         </div>
       </div>
 
-      {/* who to call */}
+    </div>
+  );
+
+  const stepWho = (
+    <div className="space-y-5">
+      <p className="font-body text-sm text-on-surface-variant">{t.allRequired}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className={label} htmlFor={id('first')}>{t.first}</label>
@@ -691,34 +726,31 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
     </div>
   );
 
-  // The step marker: the service step only exists when the button did not name one.
-  const steps: { n: Step; name: string }[] = [
-    ...(asksService ? [{ n: 0 as Step, name: t.stepService }] : []),
-    { n: 1 as Step, name: t.step1 },
-    { n: 2 as Step, name: t.step2 },
-  ];
-  const stepIndex = steps.findIndex((s) => s.n === step);
+  const nameOf = (sc: Screen) =>
+    ({ service: t.stepService, q: t.stepQ, message: t.stepMessage, when: t.stepWhen, who: t.stepWho })[sc.kind];
+  const idxSafe = Math.min(idx, screens.length - 1);
+  const isLast = screen.kind === 'who';
 
   return (
-    <form onSubmit={onSubmit} className={`space-y-6 ${className}`}>
+    <form onSubmit={onSubmit} className={`space-y-8 ${className}`}>
       {/* Honeypot: off-screen, not display:none — some bots skip hidden fields. */}
       <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
         <label htmlFor={id('website')}>Website</label>
         <input id={id('website')} name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* Progress: one segment per step, the current one lit; the same bar on a phone and a laptop */}
-      <div aria-label={`${stepIndex + 1} ${t.of} ${steps.length}`}>
+      {/* Progress: one segment per screen, so the length of the form is never a surprise */}
+      <div aria-label={`${idxSafe + 1} ${t.of} ${screens.length}`}>
         <div className="mb-2 flex items-baseline justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
-          <span className="text-primary">{steps[stepIndex]?.name}</span>
-          <span className="text-outline">{stepIndex + 1} / {steps.length}</span>
+          <span className="text-primary">{nameOf(screen)}</span>
+          <span className="text-on-surface-variant">{idxSafe + 1} / {screens.length}</span>
         </div>
-        <ol className="grid gap-1" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
-          {steps.map((s, i) => (
+        <ol className="grid gap-1" style={{ gridTemplateColumns: `repeat(${screens.length}, minmax(0, 1fr))` }}>
+          {screens.map((sc, i) => (
             <li
-              key={s.n}
-              aria-current={s.n === step ? 'step' : undefined}
-              className={`h-1 transition-colors duration-500 ${i <= stepIndex ? 'bg-primary' : 'bg-outline-variant/40'}`}
+              key={i}
+              aria-current={i === idxSafe ? 'step' : undefined}
+              className={`h-1 transition-colors duration-500 ${i <= idxSafe ? 'bg-primary' : 'bg-outline-variant/40'}`}
             />
           ))}
         </ol>
@@ -726,13 +758,17 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
-          key={step}
+          key={idxSafe}
           initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -16 }}
           transition={{ duration: 0.25 }}
         >
-          {step === 0 ? stepService : step === 1 ? stepOne : stepTwo}
+          {screen.kind === 'service' && stepService}
+          {screen.kind === 'q' && stepQuestions(screen.keys)}
+          {screen.kind === 'message' && stepMessage}
+          {screen.kind === 'when' && stepWhen}
+          {screen.kind === 'who' && stepWho}
         </motion.div>
       </AnimatePresence>
 
@@ -750,22 +786,22 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         )}
       </AnimatePresence>
 
-      {step > 0 && (
+      {screen.kind !== 'service' && (
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
-          {step === 1 ? (
-            <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto justify-center">
-              {t.continue} <ArrowRight size={18} />
-            </Button>
-          ) : (
+          {isLast ? (
             <Button type="submit" variant="primary" size="lg" disabled={state === 'sending'} className="w-full sm:w-auto justify-center">
               {state === 'sending' ? t.sending : t.send[topic as LeadTopic]}
             </Button>
+          ) : (
+            <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto justify-center">
+              {t.continue} <ArrowRight size={18} />
+            </Button>
           )}
-          {(step === 2 || asksService) && (
+          {idx > 0 && (
             <button
               type="button"
-              onClick={() => setStep((step - 1) as Step)}
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 font-mono text-[12px] uppercase tracking-widest text-outline hover:text-primary transition-colors"
+              onClick={() => { clearError(); setIdx((i) => i - 1); }}
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 font-mono text-[12px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors"
             >
               <ArrowLeft size={14} /> {t.back}
             </button>
@@ -773,12 +809,12 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         </div>
       )}
 
-      {step === 2 && (
-        <p className="font-body text-[13px] leading-relaxed text-outline">
+      {isLast && (
+        <p className="font-body text-[13px] leading-relaxed text-on-surface-variant">
           {t.consent[0]}
-          <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors">{t.consent[1]}</Link>
+          <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-on-surface underline underline-offset-4 hover:text-primary transition-colors">{t.consent[1]}</Link>
           {t.consent[2]}
-          <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors">{t.consent[3]}</Link>
+          <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-on-surface underline underline-offset-4 hover:text-primary transition-colors">{t.consent[3]}</Link>
           {t.consent[4]}
         </p>
       )}
