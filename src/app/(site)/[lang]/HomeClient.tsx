@@ -28,10 +28,10 @@ const SERVICES = [
     icon: MessagesSquare,
     title: { en: 'Consultation', es: 'Consultoría' },
     desc: {
-      en: 'A free 30-minute call, then two hours on your problem. You leave with a written plan.',
-      es: 'Una llamada gratis de 30 minutos, luego dos horas en tu problema. Sales con un plan escrito.',
+      en: 'A free 30-minute call, then a working session on your problem. You leave with a written plan.',
+      es: 'Una llamada gratis de 30 minutos, luego una sesión de trabajo en tu problema. Sales con un plan escrito.',
     },
-    from: { en: '$100 · 2 hours', es: '$100 · 2 horas' },
+    from: { en: 'From $100', es: 'Desde $100' },
   },
   {
     href: '/services/web-development',
