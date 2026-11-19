@@ -8,6 +8,7 @@
  */
 
 import { CALL_MINUTES, formatCot } from './booking';
+import { ACCIONES } from './recursos';
 import { BLOCK_HOURS, BLOCK_PRICE_USD, DETAIL_TITLE, SERVICES, detailLabel, type DetailKey, type DetailValue, type LeadDetails } from './leadForms';
 
 export interface LeadNotification {
@@ -209,6 +210,22 @@ const icsAttachment = (lead: LeadNotification) => ({
 });
 
 /**
+ * A free resource is self-serve: the email hands back the link that opens the
+ * modules on any device, and promises no personal reply.
+ */
+function accionesEmail(lead: LeadNotification): { subject: string; html: string } {
+  const e = ACCIONES.email;
+  const first = esc(lead.name.split(' ')[0] ?? lead.name);
+  const url = `${SITE}/es${ACCIONES.path}?${ACCIONES.unlockParam}=1#modulos`;
+  const inner = `<h1 style="margin:0 0 16px;font-size:26px;line-height:30px;color:#e8f2fb;">${e.hello(first)}</h1>
+<p style="margin:0 0 24px;font-size:15px;line-height:24px;color:#a2acb5;">${e.body}</p>
+<p style="margin:0 0 24px;">${button(url, e.button)}</p>
+${lead.details?.notify_full === 'yes' ? `<p style="margin:0 0 24px;font-size:15px;line-height:24px;color:#a2acb5;">${e.notify}</p>` : ''}
+<p style="margin:0;font-size:13px;line-height:20px;color:#8a949c;">${ACCIONES.disclaimer} ${e.sign}</p>`;
+  return { subject: e.subject, html: shell(inner, 'es') };
+}
+
+/**
  * Confirmation to the person who booked: the time, a calendar invite they can
  * accept, and an Add-to-Google-Calendar button. Silent no-op until
  * RESEND_API_KEY is set.
@@ -265,6 +282,7 @@ function stepsHtml(steps: [string, string][], lastIsGoal = true): string {
  * Add-to-Google-Calendar button. Silent no-op until RESEND_API_KEY is set.
  */
 export function buildConfirmationEmail(lead: LeadNotification): { subject: string; html: string } {
+  if (lead.details?.resource === ACCIONES.slug) return accionesEmail(lead);
   const es = lead.language === 'es';
   const first = esc(lead.name.split(' ')[0] ?? lead.name);
   const phone = lead.whatsapp ? `<span style="color:#e8f2fb;">${esc(lead.whatsapp)}</span>` : '';

@@ -5,9 +5,11 @@ import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
+import { splitPath } from '@/lib/i18n';
+import { ACCIONES } from '@/lib/recursos';
 
-/** Pages that already are the contact step, or are not for buyers. */
-const HIDDEN_ON = ['/admin'];
+/** Pages that already are the contact step, are not for buyers, or bring their own bar. */
+const HIDDEN_ON = ['/admin', ACCIONES.path];
 
 /**
  * Phones only: once the hero's own button has scrolled away, the next step stays
@@ -27,7 +29,8 @@ export default function MobileCTA() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  if (HIDDEN_ON.some((p) => pathname?.startsWith(p))) return null;
+  const path = pathname ? splitPath(pathname).path : '';
+  if (HIDDEN_ON.some((p) => path.startsWith(p))) return null;
 
   return (
     <>

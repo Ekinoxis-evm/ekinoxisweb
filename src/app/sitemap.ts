@@ -4,7 +4,7 @@ import { caseStudyHref, hasCaseStudy } from '@/lib/portfolio';
 import { getProducts } from '@/lib/supabase/queries';
 import { LANGS, localizePath } from '@/lib/i18n';
 import { SITE_URL } from '@/lib/seo';
-import { SKILLS_DISENO } from '@/lib/recursos';
+import { ACCIONES, SKILLS_DISENO } from '@/lib/recursos';
 
 export const revalidate = 3600;
 
@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   const now = new Date();
   // Spanish-only resources: one address each, no English pair.
-  const spanishOnly = [SKILLS_DISENO.path].map((path) => ({
+  const spanishOnly = [SKILLS_DISENO.path, ACCIONES.path].map((path) => ({
     url: `${SITE_URL}${localizePath(path, 'es')}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
