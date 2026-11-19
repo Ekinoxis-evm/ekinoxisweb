@@ -15,7 +15,8 @@ import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 /**
  * «Acciones tech tokenizadas»: the page behind the OKX reel (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md).
  * One action, «Reservar con US$5». Card payment is not live yet, so the button takes the
- * visitor to the interest form; when Stripe is configured it becomes the checkout.
+ * One action: «Reservar mi cupo · US$15» opens the Stripe Payment Link (same tab).
+ * Without a link it falls back to the interest form below.
  */
 
 export type BandItem = { name: string; href?: string; logo: Logo | null };
@@ -40,8 +41,8 @@ interface Props {
 
 const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
-const { presale } = R.price;
-const CTA = presale ? R.reserve.presale(presale.amount) : R.price.checkout ? R.reserve.paid : R.reserve.interest;
+const PAY = R.price.paymentLink;
+const CTA = PAY ? R.reserve.paid(R.price.amount) : R.reserve.interest;
 const num = (n: number) => n.toLocaleString('es-CO');
 /** «US$1,4 mil millones», «US$875,2 millones». */
 const usd = (n: number) =>
@@ -474,8 +475,6 @@ function ReserveButton({ position, onReserve, className = '' }: { position: stri
 
 function Course({ onReserve }: { onReserve: (p: string) => void }) {
   const c = R.course;
-  const { total, opens, refund, reserve } = R.price;
-  const details = [total !== null ? c.rest(total - reserve) : null, opens, refund].filter((x): x is string => Boolean(x));
   return (
     <section aria-labelledby="course-heading">
       <Heading id="course-heading">{c.heading}</Heading>
@@ -495,9 +494,8 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
       <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
           <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
-            {presale ? R.presaleLine(presale.until, presale.after) : R.price.checkout ? c.today.paid : c.today.interest}
+            {PAY ? R.priceLine(R.price.amount, R.price.until) : c.soon}
           </p>
-          {details.length > 0 && <p className="mt-1 font-body text-base text-on-surface-variant">{details.join(' · ')}</p>}
         </div>
         <ReserveButton position="precio" onReserve={onReserve} />
       </div>
@@ -608,7 +606,7 @@ function ReserveForm() {
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
         {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
         <span data-cta className="block">
-          <Button type="submit" size="lg" disabled={status === 'sending'} className="w-full justify-center">
+          <Button type="submit" size="lg" variant={PAY ? 'ghost' : 'primary'} disabled={status === 'sending'} className="w-full justify-center">
             {status === 'sending' ? f.sending : f.submit}
           </Button>
         </span>
@@ -658,13 +656,19 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
 
   const reserve = useCallback((position: string) => {
     track('reserve_click', { position });
+    if (PAY) {
+      // Attribution on the Stripe session: campaign (or «landing») + which button; Stripe accepts [A-Za-z0-9_-].
+      const campaign = new URLSearchParams(window.location.search).get('utm_campaign') ?? 'landing';
+      const ref = `${campaign}-${position}`.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 200);
+      window.location.assign(`${PAY}?client_reference_id=${encodeURIComponent(ref)}`);
+      return;
+    }
     const el = formRef.current;
     if (!el) return;
     el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     el.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
   }, []);
 
-  const { total } = R.price;
 
   return (
     <AnimatedBackground variant="ambient">
@@ -688,7 +692,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
             </ul>
             <ReserveButton position="hero" onReserve={reserve} className="mt-6 md:mt-10" />
             <p className="mt-4 font-body text-[15px] text-on-surface-variant">
-              {total !== null && `${R.restLine(total)} `}
+              {R.session.line(R.session.date, R.session.time)}{' '}
               {R.disclaimer}
             </p>
           </header>

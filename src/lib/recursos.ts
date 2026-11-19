@@ -132,18 +132,22 @@ export const ACCIONES = {
     'Curso en vivo: compra acciones tokenizadas de las grandes tecnológicas del mundo con tu moneda bancaria, por el método custodio o con custodia propia. Esto no es asesoría de inversión.',
   disclaimer: 'Esto no es asesoría de inversión.',
 
+  /** Confirmed by William: one payment of US$15, bookable until 30 Nov. */
   price: {
-    /** Flip to true once Stripe is configured in Vercel: the button becomes the checkout. */
-    checkout: false,
+    amount: 15,
+    until: '30 de noviembre',
     /**
-     * Single presale payment instead of reserve + balance. William is leaning to
-     * { amount: 15, after: 20, until: '30 nov' }; stays null until he confirms.
+     * Stripe Payment Link (live, product prod_Vexh0me4TtKkC4). Stripe hosts the
+     * confirmation page. Set to null and the button falls back to the interest form.
      */
-    presale: null as { amount: number; after: number; until: string } | null,
-    reserve: 5,
-    total: null as number | null,
-    opens: null as string | null,
-    refund: null as string | null,
+    paymentLink: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00' as string | null,
+  },
+
+  /** Live session. `time` stays null until William sets it; null hides it. */
+  session: {
+    date: 'viernes 5 de diciembre',
+    time: null as string | null,
+    line: (date: string, time: string | null) => `En vivo el ${date}${time ? ` · ${time} (hora Colombia)` : ''}.`,
   },
 
   hero: {
@@ -155,11 +159,9 @@ export const ACCIONES = {
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
 
-  /** Never promise a payment that does not exist: the label follows `price.checkout` and `price.presale`. */
-  reserve: { paid: 'Reservar con US$5', interest: 'Reservar mi cupo', presale: (amount: number) => `Reservar mi cupo · US$${amount}` },
-  presaleLine: (until: string, after: number) => `Precio de preventa hasta el ${until} · después US$${after}`,
-  /** Line under the hero button, only once the total price is set. */
-  restLine: (total: number) => `Curso completo: US$${total} · pagas el resto al abrir.`,
+  /** The button names the price only when it opens a real payment. */
+  reserve: { interest: 'Reservar mi cupo', paid: (amount: number) => `Reservar mi cupo · US$${amount}` },
+  priceLine: (amount: number, until: string) => `US$${amount} · pago único · reserva hasta el ${until}`,
 
   clip: {
     caption: 'Así se compra: SpaceX con 1 USDT en OKX.',
@@ -257,7 +259,7 @@ export const ACCIONES = {
 
   course: {
     heading: 'Una sesión, tres bloques',
-    format: '1 sesión en vivo de 3 horas, en 3 bloques con preguntas al final de cada uno. Te quedas con la grabación y con un asistente de IA que te guía paso a paso.',
+    format: '1 sesión en vivo de 3 horas, en 3 bloques con preguntas al final de cada uno. Te quedas con la grabación y con un asistente de IA (Claude o ChatGPT) que te guía paso a paso.',
     modules: [
       {
         n: 'Bloque 1',
@@ -266,10 +268,10 @@ export const ACCIONES = {
         pre: 'Antes de la sesión: crea tu cuenta y completa la verificación (KYC). Te guiamos con el asistente.',
       },
       { n: 'Bloque 2', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
-      { n: 'Bloque 3', title: 'Pasa a custodia propia', desc: 'Llevas USDT y ETH (gas) a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.' },
+      { n: 'Bloque 3', title: 'Pasa a custodia propia', desc: 'Llevas USDT y el gas a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red: Ethereum, Arbitrum, Base, Robinhood Chain o Solana.' },
     ],
-    today: { paid: 'US$5 hoy para reservar', interest: 'El pago abre en unos días. Reserva tu cupo y te escribimos primero.' },
-    rest: (rest: number) => `US$${rest} al abrir`,
+    /** Under the price only if the payment link is removed. */
+    soon: 'El pago abre en unos días. Reserva tu cupo y te escribimos primero.',
   },
 
   risks: {
@@ -286,10 +288,10 @@ export const ACCIONES = {
   /** What Ekinoxis never does, shown beside the form. */
   custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
 
-  /** Interest form, used while card payment is not live. */
+  /** The soft path for visitors not ready to pay. */
   form: {
-    heading: 'Reserva tu cupo',
-    lead: 'Déjanos tus datos y te avisamos antes que a nadie.',
+    heading: '¿Todavía no?',
+    lead: 'Déjanos tus datos y te avisamos.',
     name: 'Nombre',
     nameError: 'Escribe tu nombre.',
     phone: 'WhatsApp',
@@ -297,14 +299,14 @@ export const ACCIONES = {
     phoneError: 'Escribe tu número, sin el indicativo.',
     email: 'Correo',
     emailError: 'Revisa el correo.',
-    submit: 'Quiero mi cupo',
+    submit: 'Avísame',
     sending: 'Enviando…',
     networkError: 'No se pudo enviar. Intenta de nuevo.',
     /** leads.message is required; the lead records what was asked for. */
-    message: 'Quiero reservar mi cupo del curso de acciones tokenizadas',
+    message: 'Todavía no: quiero que me avisen del curso de acciones tokenizadas',
     doneBadge: 'Listo',
     doneHeading: 'Estás en la lista.',
-    doneBody: 'Te escribimos apenas abra la reserva, antes que a nadie.',
+    doneBody: 'Te escribimos antes de la sesión del viernes 5 de diciembre.',
   },
 
   teacher: {
@@ -313,11 +315,20 @@ export const ACCIONES = {
     link: 'Conoce el lab',
   },
 
+  /** After-payment page; the Payment Link redirects here. It cannot verify the payment, so it claims nothing Stripe has not. */
+  thanks: {
+    path: '/recursos/acciones-tokenizadas/gracias',
+    metaTitle: 'Gracias por tu reserva',
+    title: 'Gracias. Tu cupo está en camino.',
+    body: 'Stripe te envía el recibo a tu correo. Antes de la sesión te escribimos con el enlace y con la guía para crear tu cuenta y completar la verificación (KYC).',
+    back: 'Volver al curso',
+  },
+
   /** The lead's confirmation email (src/lib/notify.ts). No promise of a personal reply. */
   email: {
     subject: 'Estás en la lista del curso de acciones tokenizadas',
     hello: (name: string) => `Hola ${name}:`,
-    body: 'Guardamos tu lugar. Te escribimos apenas abra la reserva, antes que a nadie.',
+    body: 'Guardamos tus datos. Te escribimos antes de la sesión en vivo del viernes 5 de diciembre.',
     button: 'Ver el curso',
     sign: '— Ekinoxis Labs',
   },

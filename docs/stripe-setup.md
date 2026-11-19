@@ -1,7 +1,10 @@
 # Stripe wiring — what is done, what is yours
 
-Audited 2026-09-18. The live account is **Ekinoxis Labs**
-`acct_1R9zz5IGWVzmFM6G` (statement descriptor reads `EKINOXIS SERIES 57`).
+The live account is **Ekinoxis Labs** `acct_1UW0IEFr9j0xyULS` (OTOCO BASE WY LLC – Series 57,
+statement descriptor `EKINOXIS SERIES 57`, created Oct 2026, payouts verified), confirmed by William
+on 2026-11-19. The 2026-09-18 audit below was done on the older record `acct_1R9zz5IGWVzmFM6G`;
+whether that account is still in use is William's call. The tokenized-stocks course sells through a
+Payment Link on the new account (`docs/courses/acciones-tokenizadas.md`).
 
 Course checkout has **never been able to run in production** — not because of a
 wrong price, but because no Stripe environment variables exist in Vercel at all.
