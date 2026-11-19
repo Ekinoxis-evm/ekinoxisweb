@@ -29,6 +29,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Anthropic"
  },
+ "app": {
+  "license": "trademark of AppLovin",
+  "note": "currentColor recoloured to First Light",
+  "source": "https://www.applovin.com/ (header logo)"
+ },
  "arm": {
   "hex": "0091BD",
   "license": "CC0-1.0 (icon); trademark of its owner",
@@ -56,6 +61,10 @@
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Salesforce"
+ },
+ "crwd": {
+  "license": "Public domain (trademark)",
+  "source": "https://commons.wikimedia.org/wiki/File:CrowdStrike_logo.svg"
  },
  "crwv": {
   "license": "Public domain (trademarked)",
@@ -128,6 +137,11 @@
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Meta"
+ },
+ "mrvl": {
+  "license": "Public domain (trademark)",
+  "note": "recoloured to First Light",
+  "source": "https://commons.wikimedia.org/wiki/File:Marvell_Logo.svg"
  },
  "msft": {
   "license": "Public domain (trademarked)",
@@ -214,9 +228,34 @@
   "source": "simple-icons 13.21.0",
   "title": "SpaceX"
  },
+ "tool-base": {
+  "license": "Base brand kit",
+  "source": "https://github.com/base-org/brand-kit (logo/TheSquare/Digital/Base_square_blue.svg)"
+ },
+ "tool-ledger": {
+  "license": "trademark of its owner",
+  "note": "recoloured to First Light",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+ },
+ "tool-metamask": {
+  "license": "trademark of its owner",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+ },
+ "tool-phantom": {
+  "license": "trademark of its owner",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+ },
  "tool-rabby": {
-  "license": "trademark, company website",
-  "source": "https://rabby.io"
+  "license": "trademark of its owner",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+ },
+ "tool-safe": {
+  "license": "trademark of its owner",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+ },
+ "tool-trustwallet": {
+  "license": "trademark of its owner",
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
  },
  "tsla": {
   "hex": "CC0000",

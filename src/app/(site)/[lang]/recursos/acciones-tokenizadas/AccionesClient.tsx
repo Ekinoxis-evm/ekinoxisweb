@@ -34,8 +34,8 @@ interface Props {
   names: Record<string, string>;
   asOf: string;
   metrics: Metrics;
-  tools: BandItem[];
-  issuerBand: BandItem[];
+  custodialBand: BandItem[];
+  selfCustodyBand: BandItem[];
 }
 
 const FORM_ID = 'reservar';
@@ -51,6 +51,8 @@ const usd = (n: number) =>
 /** «4,89 millones». */
 const count = (n: number) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('es-CO', { maximumFractionDigits: 2 })} millones` : num(n));
 const label = 'font-mono text-[12px] uppercase tracking-widest text-outline';
+/** Sources and footnotes: readable body text, not a mono label. */
+const note = 'font-body text-[13px] leading-relaxed text-on-surface-variant';
 
 /* ── Atoms ────────────────────────────────────────────────────────────────── */
 
@@ -79,10 +81,9 @@ function Disclaimer({ className = '' }: { className?: string }) {
   return <p className={`font-body text-[15px] text-on-surface-variant ${className}`}>{R.disclaimer}</p>;
 }
 
-function Heading({ kicker, children, id }: { kicker?: string; children: string; id: string }) {
+function Heading({ children, id }: { children: string; id: string }) {
   return (
     <div className="mb-8">
-      {kicker && <p className={`${label} mb-3`}>{kicker}</p>}
       <h2 id={id} className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-5xl">
         {children}
       </h2>
@@ -101,7 +102,7 @@ function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
   ];
   return (
     <section aria-labelledby="metrics-heading">
-      <h2 id="metrics-heading" className={`${label} mb-4`}>{R.metrics.heading}</h2>
+      <h2 id="metrics-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.metrics.heading}</h2>
       <dl className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-4">
         {items.map(([n, l]) => (
           <div key={l} className="flex flex-col-reverse gap-2 bg-surface-container-low p-5 md:p-6">
@@ -110,7 +111,7 @@ function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
           </div>
         ))}
       </dl>
-      <p className={`${label} mt-3 normal-case tracking-wider`}>
+      <p className={`${note} mt-3`}>
         Datos al {asOf} · {R.metrics.sources}
       </p>
     </section>
@@ -126,7 +127,7 @@ function SectorBlock({ s }: { s: Sector }) {
   ];
   return (
     <section aria-labelledby="sector-heading" className="mt-10">
-      <h2 id="sector-heading" className={`${label} mb-4`}>{t.heading}</h2>
+      <h2 id="sector-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{t.heading}</h2>
       <dl className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
         {items.map(([n, l]) => (
           <div key={l} className="flex flex-col-reverse gap-1 bg-surface-container-low p-5 md:p-6">
@@ -135,7 +136,7 @@ function SectorBlock({ s }: { s: Sector }) {
           </div>
         ))}
       </dl>
-      <p className={`${label} mt-3 normal-case tracking-wider`}>{s.source}</p>
+      <p className={`${note} mt-3`}>{s.source}</p>
     </section>
   );
 }
@@ -146,7 +147,7 @@ function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: 
   const max = Math.max(...issuers.map((i) => i.stocks));
   return (
     <section aria-labelledby="issuers-heading" className="mt-10">
-      <h2 id="issuers-heading" className={`${label} mb-4`}>{b.heading}</h2>
+      <h2 id="issuers-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{b.heading}</h2>
       <ul className="flex flex-col gap-px bg-primary/10">
         {issuers.map((i) => {
           const floor = (b.partial as readonly string[]).includes(i.id);
@@ -171,7 +172,7 @@ function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: 
           );
         })}
       </ul>
-      <p className={`${label} mt-3 normal-case tracking-wider`}>{b.note(asOf)}</p>
+      <p className={`${note} mt-3`}>{b.note(asOf)}</p>
     </section>
   );
 }
@@ -185,13 +186,14 @@ function Routes() {
   const nodeText = 'font-mono text-[12px] uppercase tracking-wider';
   return (
     <section aria-labelledby="routes-heading">
-      <Heading id="routes-heading" kicker={r.kicker}>{r.heading}</Heading>
+      <Heading id="routes-heading">{r.heading}</Heading>
       <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{r.lead}</p>
 
       {/* Phones: the line runs down, splits into two lanes and meets again at the goal. */}
       <div aria-hidden className="mb-10 flex flex-col items-center md:hidden">
         <span className={dot} />
         <span className={`${nodeText} mt-2 text-on-surface`}>{r.start}</span>
+        <span className={`${nodeText} text-outline`}>{r.startNote}</span>
         <span className="mt-2 h-6 w-px bg-primary" />
         <span className={dot} />
         <span className={`${nodeText} mt-2 text-on-surface`}>{r.account}</span>
@@ -214,7 +216,9 @@ function Routes() {
       </div>
 
       <div aria-hidden className="mb-10 hidden items-center gap-3 md:flex">
-        <span className={node}>{r.start}</span>
+        <span className={node}>
+          {r.start} <span className="text-outline">· {r.startNote}</span>
+        </span>
         <span className="h-px flex-1 bg-primary" />
         <span className={node}>{r.account}</span>
         <span className="h-px flex-1 bg-primary" />
@@ -333,7 +337,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
 
   return (
     <section aria-labelledby="tech-heading">
-      <Heading id="tech-heading" kicker={t.kicker}>{t.heading}</Heading>
+      <Heading id="tech-heading">{t.heading}</Heading>
       <p className="-mt-4 mb-6 font-body text-lg text-on-surface-variant">{t.lead}</p>
       <div
         ref={field}
@@ -341,7 +345,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
         onPointerLeave={rest}
         className="relative h-[700px] overflow-hidden border border-primary/10 bg-surface-container-lowest md:h-[520px]"
       >
-        <ul aria-label={t.kicker}>
+        <ul aria-label={t.heading}>
           {tiles.map((tile, i) => {
             const [jx, jy, jd] = seeds(tile.slug);
             const layer = jd < 0.34 ? 0 : jd < 0.67 ? 1 : 2;
@@ -409,7 +413,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
               </ul>
             </div>
           </div>
-          <p className={`${label} mt-5 normal-case tracking-wider`}>
+          <p className={`${note} mt-5`}>
             {t.sources(asOf)} ·{' '}
             <a href={`#${SOURCES_ID}`} className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
               {t.sourcesLink}
@@ -417,7 +421,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
           </p>
         </div>
       )}
-      <p className={`${label} mt-3 normal-case tracking-wider`}>{t.note(asOf)}</p>
+      <p className={`${note} mt-3`}>{t.note(asOf)}</p>
     </section>
   );
 }
@@ -452,7 +456,7 @@ function Clip() {
       />
       <figcaption className="text-center">
         <span className="block font-body text-[15px] text-on-surface">{c.caption}</span>
-        <span className={`${label} normal-case tracking-wider`}>{c.source}</span>
+        <span className={note}>{c.source}</span>
       </figcaption>
     </figure>
   );
@@ -474,7 +478,7 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
   const details = [total !== null ? c.rest(total - reserve) : null, opens, refund].filter((x): x is string => Boolean(x));
   return (
     <section aria-labelledby="course-heading">
-      <Heading id="course-heading" kicker={c.kicker}>{c.heading}</Heading>
+      <Heading id="course-heading">{c.heading}</Heading>
       <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{c.format}</p>
       <ol className="flex flex-col gap-px bg-primary/10">
         {c.modules.map((m) => (
@@ -619,7 +623,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, metrics, tools, issuerBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, metrics, custodialBand, selfCustodyBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
@@ -673,8 +677,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
               {R.hero.title}
               <em className="text-primary">{R.hero.titleEm}</em>
             </h1>
-            <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-on-surface-variant">{R.hero.lead}</p>
-            <p className="mt-4 max-w-2xl font-headline text-xl font-bold leading-snug text-on-surface">{R.hero.control}</p>
+            <p className="mt-6 max-w-2xl font-headline text-xl font-bold leading-snug text-on-surface md:text-2xl">{R.hero.control}</p>
             <ul className="mt-6 grid w-full max-w-xl grid-cols-8 gap-px bg-primary/10 md:mt-8" aria-label={wall.map((t) => t.name).join(', ')}>
               {wall.map((t) => (
                 <li key={t.slug}>
@@ -697,8 +700,8 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
       </div>
 
       {/* Full-bleed bands: what you will use, and who issues the tokens. Only official logos. */}
-      <LogoMarquee eyebrow={R.bands.tools} title={R.bands.toolsTitle} logos={marquee(tools)} plate="dark" shape="square" speed={3} />
-      <LogoMarquee eyebrow={R.bands.issuers} title={R.bands.issuersTitle} logos={marquee(issuerBand)} plate="dark" shape="square" speed={3} reverse />
+      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" speed={3} />
+      <LogoMarquee eyebrow={R.bands.selfCustody.eyebrow} title={R.bands.selfCustody.title} logos={marquee(selfCustodyBand)} plate="dark" shape="square" speed={3} reverse />
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
@@ -714,13 +717,13 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
           <Course onReserve={reserve} />
 
           <section aria-labelledby="risks-heading">
-            <Heading id="risks-heading" kicker={R.risks.kicker}>{R.risks.heading}</Heading>
+            <Heading id="risks-heading">{R.risks.heading}</Heading>
             <ul className="flex flex-col gap-px bg-primary/10">
               {R.risks.items.map((r) => (
                 <li key={r.title} className="bg-surface-container-low p-5 md:p-6">
                   <p className="font-headline text-lg font-bold text-on-surface">{r.title}</p>
                   <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{r.body}</p>
-                  {'source' in r && <p className={`${label} mt-2 normal-case tracking-wider`}>{r.source}</p>}
+                  {'source' in r && <p className={`${note} mt-2`}>{r.source}</p>}
                 </li>
               ))}
             </ul>
@@ -732,7 +735,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
           </section>
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
-            <h2 id="sources-heading" className={label}>{R.sourcesList.heading}</h2>
+            <h2 id="sources-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.sourcesList.heading}</h2>
             <ul className="mt-3 flex flex-col">
               {sources.map((s) => (
                 <li key={s.id} className="font-body text-[15px] text-on-surface-variant">
@@ -749,7 +752,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
           </section>
 
           <section aria-labelledby="teacher-heading">
-            <h2 id="teacher-heading" className={label}>{R.teacher.heading}</h2>
+            <h2 id="teacher-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.teacher.heading}</h2>
             <p className="mt-3 font-body text-lg leading-relaxed text-on-surface">{R.teacher.body}</p>
             <LocalizedLink
               href="/about"

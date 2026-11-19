@@ -32,11 +32,11 @@ export default function Page({ params }: { params: { lang: string } }) {
       names={names}
       asOf={dateEs(m.as_of)}
       metrics={{ tech: m.tech_companies, issuers: m.issuers, venues: m.venues, max: m.issuers_per_company_max, maxName }}
-      tools={[
-        ...ACCIONES.bands.toolIds.map((id) => band(`venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url)),
-        band('tool-rabby', ACCIONES.bands.rabby.name, ACCIONES.bands.rabby.url),
+      custodialBand={ACCIONES.bands.custodial.venueIds.map((id) => band(`venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url))}
+      selfCustodyBand={[
+        ...ACCIONES.bands.selfCustody.wallets.map((w) => band(`tool-${w.id}`, w.name, w.url)),
+        band(`venue-${ACCIONES.bands.selfCustody.dexId}`, catalog.venues.uniswap?.name ?? 'Uniswap', 'https://app.uniswap.org'),
       ]}
-      issuerBand={ACCIONES.bands.issuerIds.map((id) => band(`issuer-${id}`, catalog.issuers[id]?.name ?? id, catalog.issuers[id]?.site))}
     />
   );
 }

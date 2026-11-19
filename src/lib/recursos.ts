@@ -127,9 +127,9 @@ export const SKILLS_DISENO = {
 export const ACCIONES = {
   slug: 'acciones-tokenizadas',
   path: '/recursos/acciones-tokenizadas',
-  metaTitle: 'Acciones tech tokenizadas: el curso para comprarlas desde un exchange o tu propia wallet',
+  metaTitle: 'Acciones tech tokenizadas: compra Apple, NVIDIA o SpaceX desde un exchange o tu propia wallet',
   metaDescription:
-    'Apple, NVIDIA, Microsoft, SpaceX y 36 tecnológicas más como tokens: quién las emite, dónde se consiguen y cómo comprarlas. Reserva tu cupo con US$5. Esto no es asesoría de inversión.',
+    'Curso en vivo: compra acciones tokenizadas de las grandes tecnológicas del mundo con tu moneda bancaria, por el método custodio o con custodia propia. Esto no es asesoría de inversión.',
   disclaimer: 'Esto no es asesoría de inversión.',
 
   price: {
@@ -147,11 +147,10 @@ export const ACCIONES = {
   },
 
   hero: {
-    badge: 'Curso nuevo',
-    title: 'Compra acciones de las grandes tecnológicas, ',
+    badge: 'Curso en vivo',
+    title: 'Compra acciones de las grandes tecnológicas del mundo, ',
     titleEm: 'tokenizadas',
-    lead: 'Abres tu cuenta, compras ahí y, si quieres, te lo llevas a tu propia wallet. Con lo que tengas.',
-    control: 'Siempre a tu nombre: en tu propia cuenta o en tu propia wallet, bajo tu control.',
+    control: 'Siempre a tu nombre, en tu propia cuenta o en tu propia wallet. Tú decides siempre.',
     /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
@@ -162,95 +161,76 @@ export const ACCIONES = {
   /** Line under the hero button, only once the total price is set. */
   restLine: (total: number) => `Curso completo: US$${total} · pagas el resto al abrir.`,
 
-  metrics: {
-    heading: 'El mapa, en números',
-    tech: 'tecnológicas',
-    issuers: 'emisores',
-    venues: 'plataformas',
-    max: (name: string) => `emisores para una sola empresa (${name})`,
-    sources: 'xStocks, Ondo, Dinari, Robinhood, Base, OKX, Kraken, Bybit, Uniswap',
-  },
-
-  bands: {
-    tools: 'Lo que vas a usar',
-    toolsTitle: 'Un exchange para empezar, tu wallet para quedarte',
-    issuers: 'Quién emite los tokens',
-    issuersTitle: 'Cada token tiene un emisor detrás',
-    toolIds: ['okx', 'kraken', 'bybit', 'uniswap'],
-    rabby: { name: 'Rabby', url: 'https://rabby.io' },
-    issuerIds: ['xstocks', 'ondo', 'dinari', 'robinhood', 'coinbase', 'backpack', 'bstocks', 'st0x'],
-  },
-
   clip: {
     caption: 'Así se compra: SpaceX con 1 USDT en OKX.',
-    source: 'Grabación propia · 19 nov 2026',
+    source: 'Grabación propia, 19 nov 2026',
     src: '/recursos/acciones/clip-okx-spacex.mp4',
     poster: '/recursos/acciones/clip-okx-spacex.jpg',
   },
 
+  /** Two full-bleed bands, one per method. Logos only from public/recursos/acciones/logos. */
+  bands: {
+    custodial: {
+      eyebrow: 'Método custodio',
+      title: 'Exchanges para empezar',
+      venueIds: ['okx', 'kraken', 'bybit'],
+    },
+    selfCustody: {
+      eyebrow: 'Método custodia propia',
+      title: 'Wallets para tener tus activos',
+      wallets: [
+        { id: 'base', name: 'Base app', url: 'https://base.app' },
+        { id: 'metamask', name: 'MetaMask', url: 'https://metamask.io' },
+        { id: 'rabby', name: 'Rabby', url: 'https://rabby.io' },
+        { id: 'phantom', name: 'Phantom', url: 'https://phantom.com' },
+        { id: 'trustwallet', name: 'Trust Wallet', url: 'https://trustwallet.com' },
+        { id: 'ledger', name: 'Ledger', url: 'https://www.ledger.com' },
+        { id: 'safe', name: 'Safe', url: 'https://safe.global' },
+      ],
+      /** Where you buy once the wallet holds USDT and ETH. */
+      dexId: 'uniswap',
+    },
+  },
+
   routes: {
-    kicker: 'La meta',
-    heading: 'Dos caminos, el mismo token',
-    lead: 'Lo que cambia es quién lo guarda: el exchange o tú.',
-    start: 'Tus pesos',
-    account: 'Tu cuenta · KYC',
+    heading: 'Dos métodos, el mismo token',
+    lead: 'Cambia quién lo guarda: el exchange o tú.',
+    start: 'Tu moneda bancaria',
+    startNote: 'COP, USD, MXN…',
+    account: 'Tu cuenta verificada',
     goal: 'Tienes el token',
-    a: 'A · Desde un exchange',
-    b: 'B · Con tu propia wallet',
-    aShort: 'A · Compras ahí',
-    bShort: 'B · A tu wallet',
+    a: 'A · Método custodio',
+    b: 'B · Método custodia propia',
+    aShort: 'A · Custodio',
+    bShort: 'B · Custodia propia',
     rows: [
-      { label: 'Empiezas en', a: 'Tu cuenta verificada del exchange. En OKX cargas pesos por PSE.', b: 'La misma cuenta: compras USDT y ETH y los envías a tu wallet.' },
+      { label: 'Empiezas en', a: 'Tu cuenta verificada en el exchange, con tu moneda bancaria.', b: 'La misma cuenta: compras USDT y ETH y los envías a tu wallet.' },
       { label: 'Quién guarda el token', a: 'El exchange, en tu cuenta.', b: 'Tú, en tu wallet, con tus 12 palabras.' },
-      { label: 'Eliges emisor y red', a: 'No: el exchange decide (xStocks).', b: 'Sí.' },
-      { label: 'Cuánto cuesta', a: 'En mis compras: Convert ≈ +2,1 %, orden a mercado 0,1 % (OKX, 19 nov 2026).', b: 'Comisión del pool + gas (pagado en ETH). Lo ves antes de confirmar.' },
-      { label: 'Riesgo principal', a: 'Las reglas del exchange por país.', b: 'Perder tus 12 palabras.' },
+      { label: 'Eliges emisor y red', a: 'No: el exchange decide (hoy, xStocks).', b: 'Sí, en Uniswap.' },
+      { label: 'Cuánto cuesta', a: 'En mis compras en OKX: Convert ≈ +2,1 %; orden a mercado 0,1 %.', b: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
+      { label: 'Riesgo principal', a: 'Las reglas del exchange en tu país.', b: 'Perder tus 12 palabras.' },
     ],
   },
 
   tech: {
-    kicker: 'Las 40',
-    heading: 'Toca una empresa',
-    lead: 'Dónde está y quién la emite.',
-    note: (date: string) => `Datos al ${date} · sin precios`,
-    routeA: 'A · En exchanges',
-    routeB: (n: number) => `B · ${n} ${n === 1 ? 'emisor' : 'emisores'} con token propio`,
+    heading: 'Las 40 tecnológicas',
+    lead: 'Toca una para ver dónde comprarla y quién la emite.',
+    note: (date: string) => `Datos al ${date}. Sin precios.`,
+    routeA: 'Método custodio · exchanges',
+    routeB: (n: number) => `Custodia propia · ${n} ${n === 1 ? 'emisor' : 'emisores'}`,
     none: 'Ninguno en esta lista',
-    sources: (date: string) => `Fuentes: OKX, Kraken y Bybit (APIs públicas) · emisores · Uniswap · ${date}`,
+    sources: (date: string) => `Fuentes: APIs públicas de OKX, Kraken y Bybit, listas de los emisores y Uniswap, ${date}.`,
     sourcesLink: 'Ver todas las fuentes',
   },
 
-  sourcesList: {
-    heading: 'Fuentes de los datos',
+  metrics: {
+    heading: 'En números',
+    tech: 'tecnológicas',
+    issuers: 'emisores',
+    venues: 'plataformas',
+    max: (name: string) => `emisores para una sola empresa (${name})`,
+    sources: 'xStocks, Ondo, Dinari, Robinhood, Base, OKX, Kraken, Bybit y Uniswap',
   },
-
-  course: {
-    kicker: 'El curso',
-    heading: 'Tres sesiones, de tus pesos a tu primer token',
-    format: '3 sesiones en vivo de 1 hora (45 min + preguntas). Te quedas con las grabaciones y con un asistente de IA que te guía paso a paso.',
-    modules: [
-      { n: '01', title: 'Tu cuenta: de pesos a USDT', desc: 'Creas y verificas tu cuenta en el exchange y compras tus primeros USDT con pesos (PSE).' },
-      { n: '02', title: 'Compra tus acciones tokenizadas', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
-      { n: '03', title: 'Sin custodio: tu wallet y Uniswap', desc: 'Pasas USDT y ETH (gas) a tu propia wallet, retiras lo que compraste en el exchange y compras en Uniswap, eligiendo emisor y red.' },
-    ],
-    today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
-    rest: (rest: number) => `US$${rest} al abrir`,
-  },
-
-  risks: {
-    kicker: 'Antes de comprar',
-    heading: 'Lo que nadie te dice en el video',
-    items: [
-      { title: 'Es un token, no la acción', body: 'Sigue el precio, pero no da voto y los dividendos se reinvierten, no se pagan en efectivo.', source: 'OKX help · sep 2026' },
-      { title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending · 19 nov 2026' },
-      { title: 'No es para todos', body: 'xStocks no está disponible para residentes de EE. UU., Canadá, Reino Unido ni Australia.', source: 'Kraken · ene 2026' },
-      { title: 'Colombia: no verificado', body: 'No hemos verificado el estatus legal ni tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
-      { title: 'Puedes perder lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
-    ],
-  },
-
-  /** What Ekinoxis never does, shown beside the form. */
-  custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
 
   /** The whole tokenized-stocks market, one dashboard, one date. */
   sector: {
@@ -266,15 +246,45 @@ export const ACCIONES = {
     atLeast: 'al menos',
     value: (amount: string, source: string) => `Valor tokenizado: ${amount} · ${source}`,
     noValue: 'Valor tokenizado: sin dato público',
-    note: (date: string) => `Conteo de nuestro catálogo al ${date} (todas las empresas, no solo las 40).`,
+    note: (date: string) => `Conteo de nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],
   },
 
+  sourcesList: {
+    heading: 'Fuentes de los datos',
+  },
+
+  course: {
+    heading: 'Tres sesiones, de tu banco a tu primer token',
+    format: '3 sesiones en vivo de 1 hora (45 min + preguntas). Te quedas con las grabaciones y con un asistente de IA que te guía paso a paso.',
+    modules: [
+      { n: '01', title: 'Tu cuenta: de tu moneda bancaria a USDT', desc: 'Creas y verificas tu cuenta en el exchange y compras tus primeros USDT.' },
+      { n: '02', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
+      { n: '03', title: 'Pasa a custodia propia', desc: 'Llevas USDT y ETH (gas) a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.' },
+    ],
+    today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
+    rest: (rest: number) => `US$${rest} al abrir`,
+  },
+
+  risks: {
+    heading: 'Antes de comprar',
+    items: [
+      { title: 'Es un token, no la acción', body: 'Sigue el precio, pero no da voto y los dividendos se reinvierten, no se pagan en efectivo.', source: 'OKX help, sep 2026' },
+      { title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending, 19 nov 2026' },
+      { title: 'No es para todos', body: 'xStocks no está disponible para residentes de EE. UU., Canadá, Reino Unido ni Australia.', source: 'Kraken, ene 2026' },
+      { title: 'Colombia: no verificado', body: 'No hemos verificado el estatus legal ni tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
+      { title: 'Puedes perder lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
+    ],
+  },
+
+  /** What Ekinoxis never does, shown beside the form. */
+  custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
+
   /** Interest form, used while card payment is not live. */
   form: {
     heading: 'Reserva tu cupo',
-    lead: 'El pago con tarjeta abre en unos días. Deja tu correo y te escribimos primero.',
+    lead: 'El pago con tarjeta abre en unos días. Déjanos tus datos y te escribimos primero.',
     name: 'Nombre',
     nameError: 'Escribe tu nombre.',
     phone: 'WhatsApp',
@@ -289,7 +299,7 @@ export const ACCIONES = {
     message: 'Quiero reservar mi cupo del curso de acciones tokenizadas',
     doneBadge: 'Listo',
     doneHeading: 'Estás en la lista.',
-    doneBody: 'Te escribimos apenas abra la reserva con US$5.',
+    doneBody: 'Te escribimos apenas abra la reserva, antes que a nadie.',
   },
 
   teacher: {
@@ -302,7 +312,7 @@ export const ACCIONES = {
   email: {
     subject: 'Estás en la lista del curso de acciones tokenizadas',
     hello: (name: string) => `Hola ${name}:`,
-    body: 'Guardamos tu lugar. Te escribimos apenas abra la reserva con US$5, antes que a nadie.',
+    body: 'Guardamos tu lugar. Te escribimos apenas abra la reserva, antes que a nadie.',
     button: 'Ver el curso',
     sign: '— Ekinoxis Labs',
   },
