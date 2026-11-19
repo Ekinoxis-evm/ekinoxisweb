@@ -11,7 +11,8 @@ export type MarqueeLogo = { name: string; src: string; plate?: 'dark' | 'light';
 interface Props {
   eyebrow: string;
   title: string;
-  link: { href: string; label: string };
+  /** «See all» link; bands that stand alone omit it. */
+  link?: { href: string; label: string };
   logos: MarqueeLogo[];
   /**
    * Client and tool marks are transparent PNGs drawn for a dark ground; school
@@ -101,9 +102,11 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
         <div className="md:hidden max-w-screen-2xl mx-auto px-6 pt-6 pb-4 flex items-center justify-between gap-3">
           {/* A sentence, not a label: looser tracking so it stays on one line at 375px */}
           <p className="font-mono text-[12px] text-primary uppercase tracking-wide">{phoneLine}</p>
-          <Link href={link.href} aria-label={link.label} className="flex h-11 w-11 -mr-3 flex-shrink-0 items-center justify-center text-primary hover:text-on-surface transition-colors">
-            <ArrowRight size={16} />
-          </Link>
+          {link && (
+            <Link href={link.href} aria-label={link.label} className="flex h-11 w-11 -mr-3 flex-shrink-0 items-center justify-center text-primary hover:text-on-surface transition-colors">
+              <ArrowRight size={16} />
+            </Link>
+          )}
         </div>
       )}
       <div className={`${phoneLine ? 'hidden md:flex' : 'flex'} max-w-screen-2xl mx-auto px-6 pt-10 pb-6 flex-col md:flex-row md:items-end md:justify-between gap-4`}>
@@ -111,9 +114,11 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
           <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{eyebrow}</p>
           <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface">{title}</h2>
         </div>
-        <Link href={link.href} className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-widest text-primary hover:text-on-surface transition-colors">
-          {link.label} <ArrowRight size={14} />
-        </Link>
+        {link && (
+          <Link href={link.href} className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-widest text-primary hover:text-on-surface transition-colors">
+            {link.label} <ArrowRight size={14} />
+          </Link>
+        )}
       </div>
 
       <div

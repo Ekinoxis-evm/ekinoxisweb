@@ -146,6 +146,7 @@ export const ACCIONES = {
     title: 'Compra acciones de las grandes tecnológicas, ',
     titleEm: 'tokenizadas',
     lead: 'Abres tu cuenta, compras ahí y, si quieres, te lo llevas a tu propia wallet. Con lo que tengas.',
+    control: 'Siempre a tu nombre: en tu propia cuenta o en tu propia wallet, bajo tu control.',
     /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
@@ -166,10 +167,12 @@ export const ACCIONES = {
 
   bands: {
     tools: 'Lo que vas a usar',
+    toolsTitle: 'Un exchange para empezar, tu wallet para quedarte',
     issuers: 'Quién emite los tokens',
+    issuersTitle: 'Cada token tiene un emisor detrás',
     toolIds: ['okx', 'kraken', 'bybit', 'uniswap'],
     rabby: { name: 'Rabby', url: 'https://rabby.io' },
-    issuerIds: ['xstocks', 'ondo', 'dinari', 'robinhood', 'coinbase', 'bstocks', 'st0x'],
+    issuerIds: ['xstocks', 'ondo', 'dinari', 'robinhood', 'coinbase', 'backpack', 'bstocks', 'st0x'],
   },
 
   clip: {
@@ -182,7 +185,7 @@ export const ACCIONES = {
   routes: {
     kicker: 'La meta',
     heading: 'Dos caminos, el mismo token',
-    lead: 'En los dos, el token queda a tu nombre. Lo que cambia es quién lo guarda.',
+    lead: 'Lo que cambia es quién lo guarda: el exchange o tú.',
     start: 'Tus pesos',
     account: 'Tu cuenta · KYC',
     goal: 'Tienes el token',
@@ -202,7 +205,7 @@ export const ACCIONES = {
   tech: {
     kicker: 'Las 40',
     heading: 'Toca una empresa',
-    lead: 'Dónde está y quién la emite. Ordenadas por número de emisores.',
+    lead: 'Dónde está y quién la emite.',
     note: (date: string) => `Datos al ${date} · sin precios`,
     routeA: 'A · En exchanges',
     routeB: (n: number) => `B · ${n} ${n === 1 ? 'emisor' : 'emisores'} con token propio`,
@@ -219,9 +222,9 @@ export const ACCIONES = {
     kicker: 'El curso',
     heading: 'Tres sesiones, de tus pesos a tu primer token',
     modules: [
-      { n: '01', title: 'Abres tus cuentas', desc: 'Onboarding: creas y verificas (KYC) tu cuenta en el exchange y aprendes a cargarla con pesos.' },
-      { n: '02', title: 'Compras en tu cuenta', desc: 'De pesos a USDT y de USDT a tus primeras acciones tokenizadas: Convert vs orden a mercado.' },
-      { n: '03', title: 'Te lo llevas sin custodio', desc: 'Envías USDT y ETH a tu propia wallet y compras en Uniswap: eliges emisor y red, y solo tú lo mueves.' },
+      { n: '01', title: 'Tu cuenta: de pesos a USDT', desc: 'Creas y verificas tu cuenta en el exchange y compras tus primeros USDT con pesos (PSE).' },
+      { n: '02', title: 'Compra tus acciones tokenizadas', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
+      { n: '03', title: 'Sin custodio: tu wallet y Uniswap', desc: 'Pasas USDT y ETH (para el gas) a tu propia wallet y compras en Uniswap, eligiendo emisor y red.' },
     ],
     today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
     rest: (rest: number) => `US$${rest} al abrir`,

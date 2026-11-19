@@ -35,6 +35,10 @@
   "source": "simple-icons 13.21.0",
   "title": "Arm"
  },
+ "asml": {
+  "license": "Public domain (trademarked)",
+  "source": "https://commons.wikimedia.org/wiki/File:ASML_Holding_N.V._logo.svg"
+ },
  "avgo": {
   "hex": "E31837",
   "license": "CC0-1.0 (icon); trademark of its owner",
@@ -52,6 +56,11 @@
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Salesforce"
+ },
+ "crwv": {
+  "license": "Public domain (trademarked)",
+  "note": "dark parts recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:CoreWeave_logo.svg"
  },
  "csco": {
   "hex": "1BA0D7",
@@ -77,17 +86,58 @@
   "source": "simple-icons 13.21.0",
   "title": "Robinhood"
  },
+ "ibm": {
+  "license": "Public domain (trademarked)",
+  "source": "https://commons.wikimedia.org/wiki/File:IBM_logo.svg"
+ },
  "intc": {
   "hex": "0071C5",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Intel"
  },
+ "issuer-backpack": {
+  "license": "trademark, company brand kit",
+  "note": "dark parts recoloured to First Light for the dark page",
+  "source": "https://backpack.exchange/brand"
+ },
+ "issuer-coinbase": {
+  "license": "Public domain (trademarked)",
+  "source": "https://commons.wikimedia.org/wiki/File:Coinbase.svg"
+ },
+ "issuer-dinari": {
+  "license": "trademark, company website",
+  "source": "https://dinari.com"
+ },
+ "issuer-ondo": {
+  "license": "trademark of Ondo Finance",
+  "note": "currentColor recoloured to First Light for the dark page",
+  "source": "https://ondo.finance/ (header logo)"
+ },
+ "issuer-robinhood": {
+  "license": "Public domain (trademarked)",
+  "note": "single-colour mark recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:Robinhood_logo.svg"
+ },
+ "issuer-xstocks": {
+  "license": "trademark of Backed Assets (xStocks)",
+  "source": "https://xstocks.fi/favicon.svg"
+ },
  "meta": {
   "hex": "0467DF",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Meta"
+ },
+ "msft": {
+  "license": "Public domain (trademarked)",
+  "note": "dark parts recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:Microsoft_logo_(2012).svg"
+ },
+ "mu": {
+  "license": "Public domain (trademarked)",
+  "note": "single-colour mark recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:Micron_Technology_logo_2024.svg"
  },
  "net": {
   "hex": "F38020",
@@ -100,6 +150,11 @@
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Netflix"
+ },
+ "now": {
+  "license": "Public domain (trademarked)",
+  "note": "dark parts recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:ServiceNow_logo.svg"
  },
  "nvda": {
   "hex": "76B900",
@@ -143,6 +198,10 @@
   "source": "simple-icons 13.21.0",
   "title": "Shopify"
  },
+ "smci": {
+  "license": "Public domain (trademarked)",
+  "source": "https://commons.wikimedia.org/wiki/File:Super_Micro_Computer_Logo.svg"
+ },
  "snow": {
   "hex": "29B5E8",
   "license": "CC0-1.0 (icon); trademark of its owner",
@@ -155,16 +214,42 @@
   "source": "simple-icons 13.21.0",
   "title": "SpaceX"
  },
+ "tool-rabby": {
+  "license": "trademark, company website",
+  "source": "https://rabby.io"
+ },
  "tsla": {
   "hex": "CC0000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Tesla"
  },
+ "tsm": {
+  "license": "Public domain (trademarked)",
+  "source": "https://commons.wikimedia.org/wiki/File:TSMC_wordmark.svg"
+ },
  "uber": {
   "hex": "000000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Uber"
+ },
+ "venue-bybit": {
+  "license": "Public domain (trademarked)",
+  "note": "dark parts recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:Bybit_Logo.svg"
+ },
+ "venue-kraken": {
+  "license": "trademark, company brand guidelines",
+  "source": "https://brand.kraken.com"
+ },
+ "venue-okx": {
+  "license": "Public domain (trademarked)",
+  "note": "single-colour mark recoloured to First Light for the dark page",
+  "source": "https://commons.wikimedia.org/wiki/File:OKX_logo.svg"
+ },
+ "venue-uniswap": {
+  "license": "GPLv3",
+  "source": "https://commons.wikimedia.org/wiki/File:Uniswap_Logo.svg"
  }
 }

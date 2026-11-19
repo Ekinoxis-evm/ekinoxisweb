@@ -1,16 +1,10 @@
 import { redirect } from 'next/navigation';
 import { langOf } from '@/lib/i18n';
 import { ACCIONES } from '@/lib/recursos';
-import { catalog, dateEs, logoFor, sourceList, techTiles, type Logo } from '@/lib/acciones/catalog';
+import { catalog, dateEs, logoFor, sourceList, techTiles } from '@/lib/acciones/catalog';
 import AccionesClient, { type BandItem } from './AccionesClient';
 
-/** Logos the site already carries for its tech-stack page, used until an official file lands in logos/. */
-const EXISTING: Record<string, Logo> = {
-  'venue-uniswap': { src: '/tecnologies/Crypto/Protocols/uniswap-uni-logo.png', mono: false },
-  'issuer-coinbase': { src: '/tecnologies/paymentintegrations/Coinbase/Coinbase.png', mono: false },
-};
-
-const band = (key: string, name: string, href?: string): BandItem => ({ name, href, logo: logoFor(key) ?? EXISTING[key] ?? null });
+const band = (key: string, name: string, href?: string): BandItem => ({ name, href, logo: logoFor(key) });
 
 /** The course exists only in Spanish; the bare (English) address sends visitors to it. */
 export default function Page({ params }: { params: { lang: string } }) {

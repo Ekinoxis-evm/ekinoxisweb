@@ -6,6 +6,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import LocalizedLink from '@/components/LocalizedLink';
+import LogoMarquee from '@/components/LogoMarquee';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { COUNTRIES } from '@/lib/countries';
 import { ACCIONES as R } from '@/lib/recursos';
@@ -100,36 +101,6 @@ function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
         Datos al {asOf} · {R.metrics.sources}
       </p>
     </section>
-  );
-}
-
-function Band({ title, items }: { title: string; items: BandItem[] }) {
-  return (
-    <div>
-      <h3 className={`${label} mb-4`}>{title}</h3>
-      <ul className="flex flex-wrap gap-px bg-primary/10">
-        {items.map((it) => {
-          const inner = (
-            <>
-              <LogoTile logo={it.logo} text={it.name.slice(0, 3).toUpperCase()} className="w-12" />
-              <span className="font-headline text-base font-bold text-on-surface">{it.name}</span>
-            </>
-          );
-          const cls = 'flex min-h-[64px] items-center gap-3 bg-surface-container-low px-4 py-2';
-          return (
-            <li key={it.name} className="flex-1 basis-40">
-              {it.href ? (
-                <a href={it.href} target="_blank" rel="noopener noreferrer" className={`${cls} transition-colors duration-150 hover:bg-surface-container focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}>
-                  {inner}
-                </a>
-              ) : (
-                <span className={cls}>{inner}</span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
   );
 }
 
@@ -234,12 +205,22 @@ function Routes() {
   );
 }
 
-/** Columns of the tile grid; the panel opens under the row of the tapped tile. */
-function useCols() {
-  const [cols, setCols] = useState(4);
+/** Deterministic 0..1 values from a slug, so positions match on server and client. */
+function seeds(slug: string): [number, number, number] {
+  let h = 2166136261;
+  for (const ch of slug) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+  const r = (k: number) => ((Math.imul(h ^ k, 2654435761) >>> 0) % 1000) / 1000;
+  return [r(1), r(2), r(3)];
+}
+
+/** Three depth layers: far logos are smaller and drift less. Sizes leave room for the 20px float between rows. */
+const LAYER = ['h-11 w-11 md:h-12 md:w-12', 'h-12 w-12 md:h-14 md:w-14', 'h-[3.25rem] w-[3.25rem] md:h-16 md:w-16'] as const;
+
+function useUniverseCols() {
+  const [cols, setCols] = useState(5);
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
-    const on = () => setCols(mq.matches ? 8 : 4);
+    const on = () => setCols(mq.matches ? 8 : 5);
     on();
     mq.addEventListener('change', on);
     return () => mq.removeEventListener('change', on);
@@ -247,15 +228,33 @@ function useCols() {
   return cols;
 }
 
-function TechGrid({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<string, string>; asOf: string }) {
+/**
+ * The 40 companies as a floating field: each logo sits on a jittered grid cell at one of three
+ * depths, bobs on its own clock and leans away from the cursor by its depth. Transform only;
+ * reduced motion keeps it still. Tapping a logo opens its panel under the field.
+ */
+function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<string, string>; asOf: string }) {
   const t = R.tech;
-  const cols = useCols();
+  const cols = useUniverseCols();
+  const rows = Math.ceil(tiles.length / cols);
+  const field = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState<string | null>(null);
-  const openIdx = tiles.findIndex((x) => x.slug === open);
-  const rowEnd = openIdx < 0 ? -1 : Math.min(tiles.length - 1, Math.floor(openIdx / cols) * cols + cols - 1);
-  const sel = openIdx >= 0 ? tiles[openIdx] : null;
+  const sel = tiles.find((x) => x.slug === open) ?? null;
 
-  const toggle = (slug: string) => {
+  const lean = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = field.current;
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    el.style.setProperty('--mx', String(((e.clientX - box.left) / box.width) * 2 - 1));
+    el.style.setProperty('--my', String(((e.clientY - box.top) / box.height) * 2 - 1));
+  };
+  const rest = () => {
+    field.current?.style.setProperty('--mx', '0');
+    field.current?.style.setProperty('--my', '0');
+  };
+
+  const pick = (slug: string) => {
     if (open !== slug) track('tech_tile_open', { slug });
     setOpen((cur) => (cur === slug ? null : slug));
   };
@@ -264,54 +263,79 @@ function TechGrid({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
     <section aria-labelledby="tech-heading">
       <Heading id="tech-heading" kicker={t.kicker}>{t.heading}</Heading>
       <p className="-mt-4 mb-6 font-body text-lg text-on-surface-variant">{t.lead}</p>
-      <ul className="grid grid-cols-4 gap-px bg-primary/10 md:grid-cols-8">
-        {tiles.map((tile, i) => (
-          <Fragment key={tile.slug}>
-            <li>
-              <button
-                type="button"
-                onClick={() => toggle(tile.slug)}
-                aria-expanded={open === tile.slug}
-                aria-controls="tech-panel"
-                aria-label={tile.name}
-                className={`flex w-full flex-col items-center gap-2 p-3 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
-                  open === tile.slug ? 'bg-surface-container-high' : 'bg-surface-container-low hover:bg-surface-container'
-                }`}
+      <div
+        ref={field}
+        onPointerMove={lean}
+        onPointerLeave={rest}
+        className="relative h-[700px] overflow-hidden border border-primary/10 bg-surface-container-lowest md:h-[520px]"
+      >
+        <ul aria-label={t.kicker}>
+          {tiles.map((tile, i) => {
+            const [jx, jy, jd] = seeds(tile.slug);
+            const layer = jd < 0.34 ? 0 : jd < 0.67 ? 1 : 2;
+            // Sideways jitter only where cells are wide; the float supplies the vertical life.
+            // A margin keeps the lean from pushing a logo off the field.
+            const spread = cols === 8 ? 0.3 : 0.1;
+            const x = 0.07 + 0.86 * (((i % cols) + 0.5 + (jx - 0.5) * spread) / cols);
+            const y = 0.08 + 0.84 * ((Math.floor(i / cols) + 0.5) / rows);
+            const active = open === tile.slug;
+            return (
+              <li
+                key={tile.slug}
+                className="absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${x * 100}%`, top: `${y * 100}%`, zIndex: layer + 1 }}
               >
-                <LogoTile logo={tile.logo} text={tile.ticker} className="w-full" />
-                {tile.logo && <span className={`font-mono text-[12px] ${open === tile.slug ? 'text-primary' : 'text-on-surface-variant'}`}>{tile.ticker}</span>}
-              </button>
-            </li>
-            {i === rowEnd && sel && (
-              <li id="tech-panel" className="col-span-4 border-l-2 border-outline-variant bg-surface-container p-5 md:col-span-8 md:p-6">
-                <p className="font-headline text-2xl font-bold tracking-tight text-on-surface">{sel.name}</p>
-                <div className="mt-4 grid gap-5 md:grid-cols-2">
-                  <div>
-                    <p className={label}>{t.routeA}</p>
-                    <p className="mt-2 font-body text-base text-on-surface">
-                      {sel.venues.length ? sel.venues.map((v) => names[v] ?? v).join(' · ') : t.none}
-                    </p>
-                  </div>
-                  <div>
-                    <p className={label}>{t.routeB(sel.issuers.length)}</p>
-                    <ul className="mt-2 flex flex-wrap gap-2">
-                      {sel.issuers.map((id) => (
-                        <li key={id} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">{names[id] ?? id}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                <p className={`${label} mt-5 normal-case tracking-wider`}>
-                  {t.sources(asOf)} ·{' '}
-                  <a href={`#${SOURCES_ID}`} className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
-                    {t.sourcesLink}
-                  </a>
-                </p>
+                <span
+                  className="block transition-transform duration-300 ease-out motion-reduce:transition-none"
+                  style={{ transform: `translate(calc(var(--mx, 0) * ${-(layer + 1) * 10}px), calc(var(--my, 0) * ${-(layer + 1) * 10}px))` }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => pick(tile.slug)}
+                    aria-expanded={active}
+                    aria-controls="tech-panel"
+                    aria-label={tile.name}
+                    className={`block animate-float motion-reduce:animate-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? 'outline outline-2 outline-offset-2 outline-primary' : ''}`}
+                    style={{ animationDelay: `${-jx * 6}s`, animationDuration: `${5 + jy * 4}s` }}
+                  >
+                    <LogoTile logo={tile.logo} text={tile.ticker} className={`${LAYER[layer]} border border-primary/10 transition-colors duration-150 hover:border-primary/50`} />
+                  </button>
+                </span>
               </li>
-            )}
-          </Fragment>
-        ))}
-      </ul>
+            );
+          })}
+        </ul>
+      </div>
+
+      {sel && (
+        <div id="tech-panel" role="region" aria-label={sel.name} className="border-l-2 border-outline-variant bg-surface-container p-5 md:p-6">
+          <p className="font-headline text-2xl font-bold tracking-tight text-on-surface">
+            {sel.name} <span className="font-mono text-[12px] font-normal text-outline">{sel.ticker}</span>
+          </p>
+          <div className="mt-4 grid gap-5 md:grid-cols-2">
+            <div>
+              <p className={label}>{t.routeA}</p>
+              <p className="mt-2 font-body text-base text-on-surface">
+                {sel.venues.length ? sel.venues.map((v) => names[v] ?? v).join(' · ') : t.none}
+              </p>
+            </div>
+            <div>
+              <p className={label}>{t.routeB(sel.issuers.length)}</p>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {sel.issuers.map((id) => (
+                  <li key={id} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">{names[id] ?? id}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <p className={`${label} mt-5 normal-case tracking-wider`}>
+            {t.sources(asOf)} ·{' '}
+            <a href={`#${SOURCES_ID}`} className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+              {t.sourcesLink}
+            </a>
+          </p>
+        </div>
+      )}
       <p className={`${label} mt-3 normal-case tracking-wider`}>{t.note(asOf)}</p>
     </section>
   );
@@ -501,6 +525,10 @@ function ReserveForm() {
   );
 }
 
+/** Bands show official logos only; an entry without a file stays out until one lands. */
+const marquee = (items: BandItem[]) =>
+  items.flatMap((it) => (it.logo ? [{ name: it.name, src: it.logo.src, href: it.href }] : []));
+
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
 export default function AccionesClient({ tiles, sources, names, asOf, metrics, tools, issuerBand }: Props) {
@@ -548,7 +576,7 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
 
   return (
     <AnimatedBackground variant="ambient">
-      <div className="min-h-screen px-4 py-12 sm:px-6 md:py-24">
+      <div className="px-4 pb-20 pt-12 sm:px-6 md:pb-32 md:pt-24">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
           {/* 1 · Hero */}
           <header ref={heroRef} className="rise flex flex-col items-start">
@@ -558,6 +586,7 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
               <em className="text-primary">{R.hero.titleEm}</em>
             </h1>
             <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-on-surface-variant">{R.hero.lead}</p>
+            <p className="mt-4 max-w-2xl font-headline text-xl font-bold leading-snug text-on-surface">{R.hero.control}</p>
             <ul className="mt-8 grid w-full max-w-xl grid-cols-4 gap-px bg-primary/10 sm:grid-cols-8" aria-label={wall.map((t) => t.name).join(', ')}>
               {wall.map((t) => (
                 <li key={t.slug}>
@@ -573,16 +602,22 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
           </header>
 
           <Clip />
+        </div>
+      </div>
 
-          <MetricsBlock m={metrics} asOf={asOf} />
+      {/* Full-bleed bands: what you will use, and who issues the tokens. Only official logos. */}
+      <LogoMarquee eyebrow={R.bands.tools} title={R.bands.toolsTitle} logos={marquee(tools)} plate="dark" shape="square" speed={3} />
+      <LogoMarquee eyebrow={R.bands.issuers} title={R.bands.issuersTitle} logos={marquee(issuerBand)} plate="dark" shape="square" speed={3} reverse />
 
-          <section aria-label={`${R.bands.tools} · ${R.bands.issuers}`} className="flex flex-col gap-10">
-            <Band title={R.bands.tools} items={tools} />
-            <Band title={R.bands.issuers} items={issuerBand} />
-          </section>
-
+      <div className="px-4 py-20 sm:px-6 md:py-32">
+        <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
           <Routes />
-          <TechGrid tiles={tiles} names={names} asOf={asOf} />
+          <div>
+            <Universe tiles={tiles} names={names} asOf={asOf} />
+            <div className="mt-10">
+              <MetricsBlock m={metrics} asOf={asOf} />
+            </div>
+          </div>
           <Course onReserve={reserve} />
 
           <section aria-labelledby="risks-heading">
