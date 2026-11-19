@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
+import { COUNTRIES } from '@/lib/countries';
 import { ArrowLeft, ArrowRight, Check, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
@@ -176,23 +177,6 @@ const COPY = {
     processMessage: ['Envíalo', 'Respondemos en un día hábil', 'Acordamos el siguiente paso'],
   },
 };
-
-/** Our two markets first, then the rest of the Americas and Spain. */
-const COUNTRIES = [
-  { code: '+57', flag: '🇨🇴', name: 'Colombia' },
-  { code: '+1', flag: '🇺🇸', name: 'USA / Canada' },
-  { code: '+52', flag: '🇲🇽', name: 'México' },
-  { code: '+507', flag: '🇵🇦', name: 'Panamá' },
-  { code: '+593', flag: '🇪🇨', name: 'Ecuador' },
-  { code: '+51', flag: '🇵🇪', name: 'Perú' },
-  { code: '+56', flag: '🇨🇱', name: 'Chile' },
-  { code: '+54', flag: '🇦🇷', name: 'Argentina' },
-  { code: '+58', flag: '🇻🇪', name: 'Venezuela' },
-  { code: '+55', flag: '🇧🇷', name: 'Brasil' },
-  { code: '+506', flag: '🇨🇷', name: 'Costa Rica' },
-  { code: '+34', flag: '🇪🇸', name: 'España' },
-  { code: '+44', flag: '🇬🇧', name: 'UK' },
-];
 
 const field =
   'w-full bg-surface-container-high border border-outline-variant hover:border-outline focus:border-primary ' +

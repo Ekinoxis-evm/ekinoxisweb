@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import LocalizedLink from '@/components/LocalizedLink';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
+import { COUNTRIES } from '@/lib/countries';
 import { ACCIONES as R } from '@/lib/recursos';
 import type { Logo, TechTile } from '@/lib/acciones/catalog';
 
@@ -142,11 +143,15 @@ function Routes() {
   return (
     <section aria-labelledby="routes-heading">
       <Heading id="routes-heading" kicker={r.kicker}>{r.heading}</Heading>
+      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{r.lead}</p>
 
       {/* Phones: the line runs down, splits into two lanes and meets again at the goal. */}
       <div aria-hidden className="mb-10 flex flex-col items-center md:hidden">
         <span className={dot} />
         <span className={`${nodeText} mt-2 text-on-surface`}>{r.start}</span>
+        <span className="mt-2 h-6 w-px bg-primary" />
+        <span className={dot} />
+        <span className={`${nodeText} mt-2 text-on-surface`}>{r.account}</span>
         <span className="mt-2 h-6 w-px bg-primary" />
         <span className="h-px w-1/2 bg-primary" />
         <div className="grid w-full grid-cols-2">
@@ -167,6 +172,8 @@ function Routes() {
 
       <div aria-hidden className="mb-10 hidden items-center gap-3 md:flex">
         <span className={node}>{r.start}</span>
+        <span className="h-px flex-1 bg-primary" />
+        <span className={node}>{r.account}</span>
         <span className="h-px flex-1 bg-primary" />
         <span className="flex flex-col gap-2">
           <span className={node}>{r.aShort}</span>
@@ -310,25 +317,39 @@ function TechGrid({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
   );
 }
 
-function Proof({ logos }: { logos: Record<string, Logo | null> }) {
-  const p = R.proof;
+/** The real purchase, muted and looping; under reduced motion it waits for a tap. */
+function Clip() {
+  const c = R.clip;
+  const ref = useRef<HTMLVideoElement>(null);
+  const [reduce, setReduce] = useState(false);
+  // React does not render `muted` as an attribute, which blocks autoplay; set it and start by hand.
+  useEffect(() => {
+    const v = ref.current;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setReduce(still);
+    if (!v || still) return;
+    v.muted = true;
+    v.play().catch(() => setReduce(true));
+  }, []);
   return (
-    <section aria-labelledby="proof-heading">
-      <Heading id="proof-heading" kicker={p.kicker}>{p.heading}</Heading>
-      <ul className="flex flex-col gap-px bg-primary/10">
-        {p.rows.map((r) => (
-          <li key={r.name} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-surface-container-low p-4 md:p-5">
-            <LogoTile logo={logos[r.slug] ?? null} text={r.name.slice(0, 4).toUpperCase()} className="w-11" />
-            <div>
-              <p className="font-headline text-lg font-bold text-on-surface">{r.name}</p>
-              <p className="font-body text-[15px] text-on-surface-variant">{r.route}</p>
-            </div>
-            <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{r.cost}</p>
-          </li>
-        ))}
-      </ul>
-      <p className={`${label} mt-3 normal-case tracking-wider`}>{p.note}</p>
-    </section>
+    <figure className="flex flex-col items-center gap-3">
+      <video
+        ref={ref}
+        src={c.src}
+        poster={c.poster}
+        muted
+        playsInline
+        loop
+        controls={reduce}
+        preload="metadata"
+        aria-label={c.caption}
+        className="w-full max-w-[280px] border border-outline-variant bg-surface-container-lowest"
+      />
+      <figcaption className="text-center">
+        <span className="block font-body text-[15px] text-on-surface">{c.caption}</span>
+        <span className={`${label} normal-case tracking-wider`}>{c.source}</span>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -349,9 +370,12 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
       <Heading id="course-heading" kicker={c.kicker}>{c.heading}</Heading>
       <ol className="flex flex-col gap-px bg-primary/10">
         {c.modules.map((m) => (
-          <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5">
+          <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5 md:p-6">
             <span aria-hidden className="font-mono text-[12px] text-primary">{m.n}</span>
-            <span className="font-body text-lg text-on-surface">{m.title}</span>
+            <div>
+              <p className="font-headline text-xl font-bold text-on-surface">{m.title}</p>
+              <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{m.desc}</p>
+            </div>
           </li>
         ))}
       </ol>
@@ -374,7 +398,7 @@ function ReserveForm() {
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
   const [status, setStatus] = useState<Status>('idle');
-  const [errors, setErrors] = useState<{ name?: boolean; email?: boolean }>({});
+  const [errors, setErrors] = useState<{ name?: boolean; phone?: boolean; email?: boolean }>({});
   const field =
     'w-full bg-surface-container-high border border-outline-variant hover:border-outline focus:border-primary outline-none ' +
     'focus-visible:ring-1 focus-visible:ring-primary text-on-surface font-body text-base px-4 py-3 min-h-[48px] transition-colors';
@@ -386,10 +410,16 @@ function ReserveForm() {
     const data = new FormData(form);
     const name = String(data.get('name') ?? '').trim();
     const email = String(data.get('email') ?? '').trim();
-    const bad = { name: !name, email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) };
+    const phone = String(data.get('phone') ?? '').trim();
+    const bad = {
+      name: !name,
+      phone: !/^[0-9 ()-]{6,20}$/.test(phone),
+      email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    };
     setErrors(bad);
-    if (bad.name || bad.email) {
-      form.querySelector<HTMLInputElement>(bad.name ? 'input[name=name]' : 'input[name=email]')?.focus();
+    const first = (['name', 'phone', 'email'] as const).find((k) => bad[k]);
+    if (first) {
+      form.querySelector<HTMLInputElement>(`input[name=${first}]`)?.focus();
       return;
     }
     setStatus('sending');
@@ -401,7 +431,7 @@ function ReserveForm() {
           topic: 'course',
           name,
           email,
-          whatsapp: String(data.get('whatsapp') ?? ''),
+          whatsapp: `${String(data.get('country') ?? '')} ${phone}`,
           message: f.message,
           language: 'es',
           details: { resource: R.slug },
@@ -437,17 +467,27 @@ function ReserveForm() {
       <form onSubmit={submit} noValidate className="mt-8 flex flex-col gap-6">
         <div>
           <label htmlFor={id('name')} className={fieldLabel}>{f.name}</label>
-          <input id={id('name')} name="name" type="text" required maxLength={120} autoComplete="name" aria-invalid={errors.name || undefined} aria-describedby={errors.name ? id('name-err') : undefined} className={field} />
+          <input id={id('name')} name="name" type="text" required maxLength={60} autoComplete="given-name" aria-invalid={errors.name || undefined} aria-describedby={errors.name ? id('name-err') : undefined} className={field} />
           {errors.name && <p id={id('name-err')} className="mt-2 font-body text-[15px] text-error">{f.nameError}</p>}
+        </div>
+        <div>
+          <label htmlFor={id('phone')} className={fieldLabel}>{f.phone}</label>
+          <div className="flex">
+            <select name="country" aria-label={f.country} defaultValue="+57" className={`${field.replace('w-full ', '')} w-[6.75rem] shrink-0 border-r-0 px-3`}>
+              {COUNTRIES.map((c) => (
+                <option key={c.code + c.name} value={c.code}>
+                  {c.flag} {c.code}
+                </option>
+              ))}
+            </select>
+            <input id={id('phone')} name="phone" type="tel" required inputMode="tel" maxLength={20} autoComplete="tel-national" placeholder="300 123 4567" aria-invalid={errors.phone || undefined} aria-describedby={errors.phone ? id('phone-err') : undefined} className={`${field} min-w-0 flex-1`} />
+          </div>
+          {errors.phone && <p id={id('phone-err')} className="mt-2 font-body text-[15px] text-error">{f.phoneError}</p>}
         </div>
         <div>
           <label htmlFor={id('email')} className={fieldLabel}>{f.email}</label>
           <input id={id('email')} name="email" type="email" required maxLength={254} autoComplete="email" inputMode="email" aria-invalid={errors.email || undefined} aria-describedby={errors.email ? id('email-err') : undefined} className={field} />
           {errors.email && <p id={id('email-err')} className="mt-2 font-body text-[15px] text-error">{f.emailError}</p>}
-        </div>
-        <div>
-          <label htmlFor={id('wa')} className={fieldLabel}>{f.whatsapp}</label>
-          <input id={id('wa')} name="whatsapp" type="tel" maxLength={40} autoComplete="tel" inputMode="tel" className={field} />
         </div>
         {/* Honeypot: hidden from people, filled by bots; the API answers 200 and saves nothing. */}
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
@@ -467,7 +507,6 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
-  const logos = Object.fromEntries(tiles.map((t) => [t.slug, t.logo]));
   const wall = R.hero.wall
     .map((s) => tiles.find((t) => t.slug === s))
     .filter((t): t is TechTile => t?.logo != null)
@@ -533,6 +572,8 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
             </p>
           </header>
 
+          <Clip />
+
           <MetricsBlock m={metrics} asOf={asOf} />
 
           <section aria-label={`${R.bands.tools} · ${R.bands.issuers}`} className="flex flex-col gap-10">
@@ -542,7 +583,6 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
 
           <Routes />
           <TechGrid tiles={tiles} names={names} asOf={asOf} />
-          <Proof logos={logos} />
           <Course onReserve={reserve} />
 
           <section aria-labelledby="risks-heading">
