@@ -1,81 +1,15 @@
 {
- "a5g": {
-  "hex": "7F2B7B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "AIB"
- },
- "aal": {
-  "hex": "0078D2",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "American Airlines"
- },
  "aapl": {
   "hex": "000000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Apple"
  },
- "abbv": {
-  "hex": "071D49",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Abbvie"
- },
- "abnb": {
-  "hex": "FF5A5F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Airbnb"
- },
- "abt": {
-  "hex": "008FC7",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Abbott"
- },
- "acn": {
-  "hex": "A100FF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Accenture"
- },
  "adbe": {
   "hex": "FF0000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Adobe"
- },
- "ads": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Adidas"
- },
- "adsk": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Autodesk"
- },
- "adyen": {
-  "hex": "0ABF53",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Adyen"
- },
- "air-fr": {
-  "hex": "00205B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Airbus"
- },
- "akam": {
-  "hex": "0096D6",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Akamai"
  },
  "amd": {
   "hex": "ED1C24",
@@ -107,78 +41,6 @@
   "source": "simple-icons 13.21.0",
   "title": "Broadcom"
  },
- "axp": {
-  "hex": "2E77BC",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "American Express"
- },
- "azo": {
-  "hex": "D52B1E",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "AutoZone"
- },
- "ba": {
-  "hex": "1D439C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Boeing"
- },
- "bac": {
-  "hex": "012169",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Bank of America"
- },
- "barc": {
-  "hex": "00AEEF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Barclays"
- },
- "bb": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Blackberry"
- },
- "bidu": {
-  "hex": "2932E1",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Baidu"
- },
- "bili": {
-  "hex": "00A1D6",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Bilibili"
- },
- "bnr-de": {
-  "hex": "1A0033",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Brenntag"
- },
- "cabk": {
-  "hex": "007EAE",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "CaixaBank"
- },
- "cat": {
-  "hex": "FFCD11",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Caterpillar"
- },
- "cbk-de": {
-  "hex": "FFCC33",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Commerzbank"
- },
  "coin": {
   "hex": "0052FF",
   "license": "CC0-1.0 (icon); trademark of its owner",
@@ -197,137 +59,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Cisco"
  },
- "dash": {
-  "hex": "FF3008",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "DoorDash"
- },
- "dbk": {
-  "hex": "0018A8",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Deutsche Bank"
- },
- "dbx": {
-  "hex": "0061FF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Dropbox"
- },
- "ddog": {
-  "hex": "632CA6",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Datadog"
- },
  "dell": {
   "hex": "007DB8",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Dell"
- },
- "dhl": {
-  "hex": "FFCC00",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Deutsche Post"
- },
- "docn": {
-  "hex": "0080FF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "DigitalOcean"
- },
- "dt": {
-  "hex": "1496FF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Dynatrace"
- },
- "duol": {
-  "hex": "58CC02",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Duolingo"
- },
- "ebay": {
-  "hex": "E53238",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "eBay"
- },
- "emg": {
-  "hex": "E40045",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "MAN"
- },
- "estc": {
-  "hex": "005571",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Elastic"
- },
- "etsy": {
-  "hex": "F16521",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Etsy"
- },
- "expe": {
-  "hex": "191E3B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Expedia"
- },
- "fdx": {
-  "hex": "4D148C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "FedEx"
- },
- "fig": {
-  "hex": "F24E1E",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Figma"
- },
- "fox": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "FOX"
- },
- "foxa": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "FOX"
- },
- "ftnt": {
-  "hex": "EE3124",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Fortinet"
- },
- "gddy": {
-  "hex": "1BDBDB",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "GoDaddy"
- },
- "ge": {
-  "hex": "0870D8",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "General Electric"
- },
- "gm": {
-  "hex": "0170CE",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "General Motors"
  },
  "googl": {
   "hex": "4285F4",
@@ -335,65 +71,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Google"
  },
- "grab": {
-  "hex": "00B14F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Grab"
- },
- "grmn": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Garmin"
- },
- "grpn": {
-  "hex": "53A318",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Groupon"
- },
- "gs": {
-  "hex": "7399C6",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Goldman Sachs"
- },
- "gsk": {
-  "hex": "F36633",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "GSK"
- },
- "gtlb": {
-  "hex": "FC6D26",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "GitLab"
- },
- "hive": {
-  "hex": "E31337",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Hive"
- },
  "hood": {
   "hex": "CCFF00",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Robinhood"
- },
- "hsba": {
-  "hex": "DB0011",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "HSBC"
- },
- "hubs": {
-  "hex": "FF7A59",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "HubSpot"
  },
  "intc": {
   "hex": "0071C5",
@@ -401,101 +83,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Intel"
  },
- "intu": {
-  "hex": "236CFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Intuit"
- },
- "kex": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Kirby"
- },
- "ko": {
-  "hex": "D00013",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Coca Cola"
- },
- "lcid": {
-  "hex": "282C33",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Lucid"
- },
- "luv": {
-  "hex": "304CB2",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Southwest Airlines"
- },
- "m": {
-  "hex": "E21A2C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Macy's"
- },
- "ma": {
-  "hex": "EB001B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "MasterCard"
- },
- "mcd": {
-  "hex": "FBC817",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "McDonald's"
- },
- "mdb": {
-  "hex": "47A248",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "MongoDB"
- },
- "meit": {
-  "hex": "FFD100",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Meituan"
- },
  "meta": {
   "hex": "0467DF",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Meta"
- },
- "mnst": {
-  "hex": "6D4C9F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Monster"
- },
- "mrk": {
-  "hex": "007A73",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Merck"
- },
- "mstr": {
-  "hex": "D9232E",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "MicroStrategy"
- },
- "mtrcp": {
-  "hex": "AC2E45",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "MTR"
- },
- "near": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "NEAR"
  },
  "net": {
   "hex": "F38020",
@@ -509,65 +101,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Netflix"
  },
- "ng-gb": {
-  "hex": "00148C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "National Grid"
- },
- "nke": {
-  "hex": "111111",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Nike"
- },
- "nok": {
-  "hex": "005AFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Nokia"
- },
- "nokia": {
-  "hex": "005AFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Nokia"
- },
- "ntap": {
-  "hex": "0067C5",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "NetApp"
- },
- "ntnx": {
-  "hex": "024DA1",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Nutanix"
- },
  "nvda": {
   "hex": "76B900",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "NVIDIA"
- },
- "nyt": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "New York Times"
- },
- "opra": {
-  "hex": "FF1B2D",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Opera"
- },
- "ora-fr": {
-  "hex": "FF7900",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Orange"
  },
  "orcl": {
   "hex": "F80000",
@@ -575,35 +113,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Oracle"
  },
- "osk": {
-  "hex": "E6830F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Oshkosh"
- },
  "panw": {
   "hex": "F04E23",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Palo Alto Networks"
- },
- "path": {
-  "hex": "FA4616",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "UiPath"
- },
- "payx": {
-  "hex": "004B8D",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Paychex"
- },
- "pins": {
-  "hex": "BD081C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Pinterest"
  },
  "pltr": {
   "hex": "101113",
@@ -611,35 +125,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Palantir"
  },
- "pson": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Pearson"
- },
- "pypl": {
-  "hex": "003087",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "PayPal"
- },
  "qcom": {
   "hex": "3253DC",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Qualcomm"
- },
- "race": {
-  "hex": "D40000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Ferrari"
- },
- "rblx": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Roblox"
  },
  "rddt": {
   "hex": "FF4500",
@@ -647,59 +137,11 @@
   "source": "simple-icons 13.21.0",
   "title": "Reddit"
  },
- "rok": {
-  "hex": "CD163F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Rockwell Automation"
- },
- "rr-gb": {
-  "hex": "281432",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Rolls-Royce"
- },
- "sap": {
-  "hex": "0FAAFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "SAP"
- },
- "sbux": {
-  "hex": "006241",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Starbucks"
- },
- "sge-gb": {
-  "hex": "00D639",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Sage"
- },
- "shel": {
-  "hex": "FFD500",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Shell"
- },
  "shop": {
   "hex": "7AB55C",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Shopify"
- },
- "sie": {
-  "hex": "009999",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Siemens"
- },
- "sndk": {
-  "hex": "ED1C24",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "SanDisk"
  },
  "snow": {
   "hex": "29B5E8",
@@ -713,202 +155,16 @@
   "source": "simple-icons 13.21.0",
   "title": "SpaceX"
  },
- "spot": {
-  "hex": "1ED760",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Spotify"
- },
- "stmmi": {
-  "hex": "03234B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "STMicroelectronics"
- },
- "stx": {
-  "hex": "6EBE49",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Seagate"
- },
- "su-fr": {
-  "hex": "3DCD58",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Schneider Electric"
- },
- "syk": {
-  "hex": "E74C3C",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Stryker"
- },
- "t": {
-  "hex": "009FDB",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "AT&T"
- },
- "task": {
-  "hex": "29BEB0",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Task"
- },
- "tcom": {
-  "hex": "287DFA",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Trip.com"
- },
- "team": {
-  "hex": "0052CC",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Atlassian"
- },
- "tgt": {
-  "hex": "CC0000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Target"
- },
- "tm": {
-  "hex": "EB0A1E",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Toyota"
- },
- "tonx": {
-  "hex": "0098EA",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "TON"
- },
- "trmb": {
-  "hex": "0063A3",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Trimble"
- },
- "tsco-gb": {
-  "hex": "00539F",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Tesco"
- },
  "tsla": {
   "hex": "CC0000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Tesla"
  },
- "twlo": {
-  "hex": "F22F46",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Twilio"
- },
- "ual": {
-  "hex": "002244",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "United Airlines"
- },
  "uber": {
   "hex": "000000",
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Uber"
- },
- "ui": {
-  "hex": "0559C9",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Ubiquiti"
- },
- "ulvr": {
-  "hex": "1F36C7",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Unilever"
- },
- "v": {
-  "hex": "1A1F71",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Visa"
- },
- "vod": {
-  "hex": "E60000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Vodafone"
- },
- "vow3": {
-  "hex": "151F5D",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Volkswagen"
- },
- "vz": {
-  "hex": "CD040B",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Verizon"
- },
- "wdc": {
-  "hex": "995DFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Western Digital"
- },
- "wfc": {
-  "hex": "D71E28",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Wells Fargo"
- },
- "wmt": {
-  "hex": "0071CE",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Walmart"
- },
- "wu": {
-  "hex": "FFDD00",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Western Union"
- },
- "xiao": {
-  "hex": "FF6900",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Xiaomi"
- },
- "xiaomi": {
-  "hex": "FF6900",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Xiaomi"
- },
- "z": {
-  "hex": "006AFF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Zillow"
- },
- "zal-de": {
-  "hex": "FF6900",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Zalando"
- },
- "zbra": {
-  "hex": "000000",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Zebra Technologies"
  }
 }
