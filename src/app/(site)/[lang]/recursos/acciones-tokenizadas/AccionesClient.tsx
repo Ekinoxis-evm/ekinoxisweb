@@ -20,6 +20,8 @@ import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
 export type BandItem = { name: string; href?: string; logo: Logo | null };
 
+type Sector = { value: number; transfers: number; holders: number; source: string };
+
 type Metrics = { tech: number; issuers: number; venues: number; max: number; maxName: string };
 
 type SourceItem = { id: string; label: string; url: string | null };
@@ -28,6 +30,7 @@ interface Props {
   tiles: TechTile[];
   sources: SourceItem[];
   issuers: IssuerStat[];
+  sector: Sector;
   names: Record<string, string>;
   asOf: string;
   metrics: Metrics;
@@ -40,6 +43,13 @@ const SOURCES_ID = 'fuentes';
 const { presale } = R.price;
 const CTA = presale ? R.reserve.presale(presale.amount) : R.price.checkout ? R.reserve.paid : R.reserve.interest;
 const num = (n: number) => n.toLocaleString('es-CO');
+/** «US$1,4 mil millones», «US$875,2 millones». */
+const usd = (n: number) =>
+  n >= 1e9
+    ? `US$${(n / 1e9).toLocaleString('es-CO', { maximumSignificantDigits: 3 })} mil millones`
+    : `US$${(n / 1e6).toLocaleString('es-CO', { maximumFractionDigits: 1 })} millones`;
+/** «4,89 millones». */
+const count = (n: number) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('es-CO', { maximumFractionDigits: 2 })} millones` : num(n));
 const label = 'font-mono text-[12px] uppercase tracking-widest text-outline';
 
 /* ── Atoms ────────────────────────────────────────────────────────────────── */
@@ -107,8 +117,31 @@ function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
   );
 }
 
+function SectorBlock({ s }: { s: Sector }) {
+  const t = R.sector;
+  const items: [string, string][] = [
+    [usd(s.value), t.value],
+    [usd(s.transfers), t.transfers],
+    [count(s.holders), t.holders],
+  ];
+  return (
+    <section aria-labelledby="sector-heading" className="mt-10">
+      <h2 id="sector-heading" className={`${label} mb-4`}>{t.heading}</h2>
+      <dl className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
+        {items.map(([n, l]) => (
+          <div key={l} className="flex flex-col-reverse gap-1 bg-surface-container-low p-5 md:p-6">
+            <dt className="font-body text-[15px] leading-snug text-on-surface-variant">{l}</dt>
+            <dd className="font-headline text-3xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums] md:text-4xl">{n}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className={`${label} mt-3 normal-case tracking-wider`}>{s.source}</p>
+    </section>
+  );
+}
+
 /** Each issuer: logo, how many companies it tokenizes (bar to scale) and, when published, its volume. */
-function IssuersBlock({ issuers, asOf }: { issuers: IssuerStat[]; asOf: string }) {
+function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: string; source: string }) {
   const b = R.issuersBlock;
   const max = Math.max(...issuers.map((i) => i.stocks));
   return (
@@ -125,15 +158,14 @@ function IssuersBlock({ issuers, asOf }: { issuers: IssuerStat[]; asOf: string }
                 <span aria-hidden className="block h-2 bg-surface-container-highest">
                   <span className="block h-full origin-left bg-primary" style={{ transform: `scaleX(${i.stocks / max})` }} />
                 </span>
+                <p className="mt-2 font-body text-[13px] text-on-surface-variant">
+                  {i.value !== null ? b.value(usd(i.value), source) : b.noValue}
+                </p>
               </div>
               <div className="text-right">
                 {floor && <p className="font-body text-[12px] text-on-surface-variant">{b.atLeast}</p>}
                 <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{b.stocks(num(i.stocks))}</p>
-                {i.volume && (
-                  <p className="font-body text-[15px] text-on-surface-variant">
-                    US${num(i.volume.usd)} · {i.volume.period}
-                  </p>
-                )}
+
               </div>
             </li>
           );
@@ -587,7 +619,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, names, asOf, metrics, tools, issuerBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, metrics, tools, issuerBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
@@ -675,7 +707,8 @@ export default function AccionesClient({ tiles, sources, issuers, names, asOf, m
             <Universe tiles={tiles} names={names} asOf={asOf} />
             <div className="mt-10">
               <MetricsBlock m={metrics} asOf={asOf} />
-              <IssuersBlock issuers={issuers} asOf={asOf} />
+              <SectorBlock s={sector} />
+              <IssuersBlock issuers={issuers} asOf={asOf} source={sector.source} />
             </div>
           </div>
           <Course onReserve={reserve} />

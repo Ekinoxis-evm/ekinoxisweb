@@ -12,7 +12,7 @@ import logoManifest from '../../../public/recursos/acciones/logos/manifest.json'
  * typed here. Server only (it reads the filesystem); pages pass `techTiles()` to the client.
  */
 
-type Level = 'oficial' | 'pantalla' | 'pendiente';
+type Level = 'oficial' | 'pantalla' | 'dashboard' | 'pendiente';
 
 interface Source {
   name: string;
@@ -21,20 +21,20 @@ interface Source {
   level: Level;
 }
 
-interface Volume {
-  usd: number;
-  period: string;
-  source: string;
-  read_on: string;
-  level: Level;
-}
-
 interface Issuer {
   name: string;
   site?: string;
   eligibility_es?: string;
-  /** Published trading volume; absent when the issuer does not publish one. */
-  volume?: Volume | null;
+  /** Distributed tokenized value from one dashboard (RWA.xyz), same metric for all; null when not listed. */
+  value?: { usd: number | null };
+}
+
+interface Sector {
+  monthly_transfer_volume_usd: number;
+  distributed_value_usd: number;
+  holders: number;
+  source: string;
+  read_on: string;
 }
 
 export interface IssuerStat {
@@ -43,7 +43,8 @@ export interface IssuerStat {
   logo: Logo | null;
   /** Companies in the catalog with a token from this issuer. */
   stocks: number;
-  volume: Volume | null;
+  /** Distributed tokenized value in USD (RWA.xyz), or null when there is no public figure. */
+  value: number | null;
 }
 
 interface Venue {
@@ -80,6 +81,7 @@ interface RawCatalog {
   venues: Record<string, Venue>;
   tech: string[];
   metrics: Metrics;
+  sector: Sector;
   companies: RawCompany[];
 }
 
@@ -180,7 +182,7 @@ export function issuerStats(): IssuerStat[] {
   }
   return Object.entries(data.issuers)
     .filter(([id]) => counts.has(id))
-    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, volume: i.volume ?? null }))
+    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, value: i.value?.usd ?? null }))
     .sort((a, b) => b.stocks - a.stocks);
 }
 
@@ -192,6 +194,7 @@ export function sourceList(): { id: string; label: string; url: string | null }[
 export const catalog = {
   version: data.version,
   metrics: data.metrics,
+  sector: { ...data.sector, label: sourceLabel(data.sector.source) },
   issuers: data.issuers,
   venues: data.venues,
 };

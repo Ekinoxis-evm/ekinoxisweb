@@ -1,5 +1,5 @@
 {
- "version": "2026-11-19.3",
+ "version": "2026-11-19.4",
  "generated_on": "2026-11-19",
  "note": "Sin precios por decisión de William. Emisor y red por token; dónde conseguirlo por ruta (A exchange, B wallet propia).",
  "sources": {
@@ -60,6 +60,12 @@
    "url": "https://api.bybit.com/v5/market/instruments-info?category=spot",
    "read_on": "2026-11-19",
    "level": "oficial"
+  },
+  "rwa": {
+   "name": "RWA.xyz · Tokenized Stocks (tabla de plataformas)",
+   "url": "https://app.rwa.xyz/stocks",
+   "read_on": "2026-11-19",
+   "level": "dashboard"
   }
  },
  "issuers": {
@@ -71,7 +77,12 @@
     "text": "US persons CAN be served, but only via Dinari Securities LLC broker-dealer accounts through integration partners that pass KYB: fully disclosed identity, dedicated wallets (no omnibus), tokens non-transferable and barred from DeFi, wrapped dShares not available to US customers (US guide last updated 2026-06-22). Wallets require KYC/KYB. Unsupported: Canada (licensing pending) plus OFAC/FATF countries (Afghanistan, Belarus, Bosnia and Herzegovina, CAR, Croatia, Cuba, DRC, Ethiopia, Guinea-Bissau, Iran, Iraq, Kosovo, Lebanon, Libya, North Macedonia, Mali, Montenegro, Myanmar, Nicaragua, North Korea, Russia, Serbia, Slovenia, Somalia, South Sudan, Sudan, Syria, Ukraine, Venezuela, Yemen, Zimbabwe).",
     "source": "https://docs.dinari.com/docs/us.md"
    },
-   "eligibility_es": "Personas de EE. UU.: solo a través de la corredora Dinari Securities y socios aprobados."
+   "eligibility_es": "Personas de EE. UU.: solo a través de la corredora Dinari Securities y socios aprobados.",
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null
   },
   "robinhood": {
    "name": "Robinhood",
@@ -81,7 +92,26 @@
     "text": "Offers/sales restricted in the US, Canada, UK and Switzerland among others; US persons excluded. Launched June 30 2025 for eligible EU customers (30 European countries per press coverage); 'eligibility and restrictions vary by region'. Direct subscription only by KYB-onboarded Authorised Participants (at issuance only BBVI); end users trade onchain. Full jurisdiction list on docs.robinhood.com/rhj (Restricted Jurisdictions page, not retrieved).",
     "source": "https://docs.robinhood.com/chain/stock-tokens/"
    },
-   "eligibility_es": "Para clientes elegibles de la Unión Europea. Excluye EE. UU., Canadá, Reino Unido y Suiza, entre otros."
+   "eligibility_es": "Para clientes elegibles de la Unión Europea. Excluye EE. UU., Canadá, Reino Unido y Suiza, entre otros.",
+   "value": {
+    "usd": 140800000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 199,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 15000000000,
+    "metric": "cumulative trading volume of stock tokens",
+    "period": "since launch (2025-07-01) to ~2025-10-12 (100 days; one source gives 2026 dates, unresolved)",
+    "source": "https://www.financemagnates.com/fintech/robinhood-puts-stock-token-trading-at-15-billion-as-its-blockchain-turns-100-days/",
+    "source_date": "2026-10-13",
+    "level": "prensa",
+    "quote": "Robinhood's stock tokens have generated $15 billion in cumulative trading volume.",
+    "display": false
+   }
   },
   "ondo": {
    "name": "Ondo",
@@ -91,7 +121,26 @@
     "text": "Non-US only. Prohibited: United States (and US persons per Reg S Rule 902, buy orders placed from US), Canada, Afghanistan, Belarus, Crimea/DNR/LNR/Kherson/Zaporizhzhia/Sevastopol, Cuba, North Korea, Iran, Libya, Myanmar, Russia, Somalia, South Sudan, Sudan, Syria, Venezuela. Restricted (qualified/professional investors only): Brazil, EEA (professional/qualified per docs; Binance post says retail also permitted under FMA-approved prospectus), Hong Kong, Malaysia, Singapore, Switzerland (institutions only), UK. KYC/AML onboarding required to mint/redeem; Ondo Stocks app not available to US clients. Separate product: Ondo launched third-party tokenized US securities (IVV, MU) via Oasis Pro TA on Ethereum on 2026-07-02, within US regulatory framework (criteria not stated).",
     "source": "https://docs.ondo.finance/ondo-stocks/eligibility.md"
    },
-   "eligibility_es": "Solo fuera de EE. UU. Prohibido en EE. UU., Canadá y países sancionados; en algunos países, solo para inversionistas calificados."
+   "eligibility_es": "Solo fuera de EE. UU. Prohibido en EE. UU., Canadá y países sancionados; en algunos países, solo para inversionistas calificados.",
+   "value": {
+    "usd": 875200000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 437,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 2000000000,
+    "metric": "trading volume (tokenized US stocks/ETFs)",
+    "period": "2025",
+    "source": "https://blockonomi.com/ondo-finance-leads-rwa-tokenization-revolution-with-2-billion-trading-volume-in-2025/",
+    "source_date": "2026-01-01",
+    "level": "prensa",
+    "quote": "Trading volume reached $2 billion",
+    "display": false
+   }
   },
   "coinbase": {
    "name": "Coinbase",
@@ -101,7 +150,26 @@
     "text": "Eligible jurisdictions outside the US only, Regulation S; not for US persons; mint/redeem limited to KYC-onboarded Authorised Participants.",
     "source": "https://www.base.org/stocks"
    },
-   "eligibility_es": "Solo fuera de EE. UU.; no para personas de EE. UU."
+   "eligibility_es": "Solo fuera de EE. UU.; no para personas de EE. UU.",
+   "value": {
+    "usd": 48500000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 363,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 5000000000,
+    "metric": "cumulative DEX volume of tokenized stocks on Base (Token Terminal data, not Coinbase-only)",
+    "period": "since launch (2026-08-24 per press) to unknown date",
+    "source": "https://cryptobriefing.com/base-tokenized-stocks-5-billion-dex-volume/",
+    "source_date": null,
+    "level": "prensa",
+    "quote": "Base crosses $5 billion in DEX volume for tokenized stocks",
+    "display": false
+   }
   },
   "bstocks": {
    "name": "Bstocks",
@@ -111,7 +179,26 @@
     "text": "Offered under an approved prospectus in ADGM only to eligible users in permitted jurisdictions, secondary market; not available in the US or to US persons.",
     "source": "https://www.binance.com/en/learn/bstocks"
    },
-   "eligibility_es": "Ofrecido en ADGM (Abu Dabi) a usuarios elegibles; no en EE. UU."
+   "eligibility_es": "Ofrecido en ADGM (Abu Dabi) a usuarios elegibles; no en EE. UU.",
+   "value": {
+    "usd": 1400000000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 112,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 40000000000,
+    "metric": "cumulative trading volume (Binance announcement)",
+    "period": "since launch (2026-06-11) to unknown date",
+    "source": "https://cryptobriefing.com/binance-bstocks-surpasses-1-billion-aum/",
+    "source_date": null,
+    "level": "prensa",
+    "quote": "more than $40 billion in cumulative trading volume",
+    "display": false
+   }
   },
   "reality": {
    "name": "Reality",
@@ -121,7 +208,26 @@
     "text": "not found",
     "source": null
    },
-   "eligibility_es": "No encontramos un sitio oficial del emisor."
+   "eligibility_es": "No encontramos un sitio oficial del emisor.",
+   "value": {
+    "usd": 151300000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 3238,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 1160000000,
+    "metric": "rToken spot trading volume on Bitget only",
+    "period": "2026-06-02 to 2026-07-19",
+    "source": "https://www.cryptowisser.com/news/bitgets-tokenized-stocks-surpass-1-16b-usd-in-trading-volume/",
+    "source_date": null,
+    "level": "prensa",
+    "quote": "rToken spot markets generated $1.16 billion in cumulative trading volume",
+    "display": false
+   }
   },
   "anchored": {
    "name": "Anchored",
@@ -131,7 +237,12 @@
     "text": "Not found on official pages; press materials describe it as global access (non-US) with economic exposure, not equity ownership.",
     "source": "https://alpaca.markets/blog/anchored-finance-launches-us-tokenized-stocks-to-expand-global-investor-access/"
    },
-   "eligibility_es": "Sin información oficial de elegibilidad."
+   "eligibility_es": "Sin información oficial de elegibilidad.",
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null
   },
   "st0x": {
    "name": "ST0x",
@@ -141,7 +252,12 @@
     "text": "Not offered to US persons or sanctioned persons; public offer under a Base Prospectus in eleven European countries; mint/redeem needs Eligible Broker account. Unsecured debt of issuer.",
     "source": "https://st0x.io"
    },
-   "eligibility_es": "No para personas de EE. UU.; oferta pública en 11 países europeos."
+   "eligibility_es": "No para personas de EE. UU.; oferta pública en 11 países europeos.",
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null
   },
   "xstocks": {
    "name": "xStocks",
@@ -151,26 +267,70 @@
     "text": "Not available in the United States or to U.S. persons; not registered under the US Securities Act; not available in the UK or any jurisdiction where offer would be unlawful; Kraken also states not available in Canada or Australia. Geo restrictions apply. EEA Kraken clients must pass an appropriateness questionnaire, fiat only via kraken.com. OKX Unified Tokenized Stocks excludes US and EU users (per press coverage; OKX help page says availability depends on region).",
     "source": "https://xstocks.fi/products ; https://support.kraken.com/articles/xstocks-availability"
    },
-   "eligibility_es": "No disponible en EE. UU. ni para personas de EE. UU., ni en el Reino Unido."
+   "eligibility_es": "No disponible en EE. UU. ni para personas de EE. UU., ni en el Reino Unido.",
+   "value": {
+    "usd": 674800000,
+    "metric": "valor total tokenizado (distribuido)",
+    "rwa_count": 1499,
+    "source": "https://app.rwa.xyz/stocks",
+    "read_on": "2026-11-19",
+    "level": "dashboard"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 25000000000,
+    "metric": "cumulative total transaction volume (CEX+DEX, incl. mint/redeem)",
+    "period": "since launch (2025-06-30) to 2026-02-19",
+    "source": "https://cointelegraph.com/news/kraken-xstocks-25b-tokenized-equities-volume",
+    "source_date": "2026-02-19",
+    "level": "prensa",
+    "quote": "surpassed $25 billion in total transaction volume",
+    "display": false
+   }
   },
   "backpack": {
    "name": "Backpack",
    "legal": null,
    "site": null,
    "eligibility": null,
-   "eligibility_es": "Sin información oficial revisada."
+   "eligibility_es": "Sin información oficial revisada.",
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null,
+   "volume_prensa": {
+    "usd": 5300000000,
+    "metric": "cumulative onchain volume (Solana)",
+    "period": "since launch (2026-06-12) to ~Oct 2026",
+    "source": "https://www.onebullex.com/news/articles/backpack-securities-hits-5-3b-tokenized-stock-volume-with-430-000-holders-on-solana",
+    "source_date": null,
+    "level": "prensa",
+    "quote": "Backpack Securities Hits $5.3B Tokenized Stock Volume",
+    "display": false
+   }
   },
   "aktionariat": {
    "name": "Aktionariat",
    "legal": null,
    "site": null,
-   "eligibility": null
+   "eligibility": null,
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null
   },
   "unknown": {
    "name": "Unknown",
    "legal": null,
    "site": null,
-   "eligibility": null
+   "eligibility": null,
+   "value": {
+    "usd": null,
+    "note": "no aparece en el top 10 de rwa.xyz (19 nov 2026)"
+   },
+   "volume": null
   }
  },
  "venues": {
@@ -350,6 +510,14 @@
    "kraken": 1237,
    "bybit": 11
   }
+ },
+ "sector": {
+  "monthly_transfer_volume_usd": 90830000000,
+  "distributed_value_usd": 3610000000,
+  "holders": 4890000,
+  "source": "rwa",
+  "read_on": "2026-11-19",
+  "level": "dashboard"
  },
  "companies": [
   {

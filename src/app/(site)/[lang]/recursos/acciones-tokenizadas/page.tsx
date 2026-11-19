@@ -23,6 +23,12 @@ export default function Page({ params }: { params: { lang: string } }) {
       tiles={tiles}
       sources={sourceList()}
       issuers={issuerStats()}
+      sector={{
+        value: catalog.sector.distributed_value_usd,
+        transfers: catalog.sector.monthly_transfer_volume_usd,
+        holders: catalog.sector.holders,
+        source: `RWA.xyz · ${dateEs(catalog.sector.read_on)}`,
+      }}
       names={names}
       asOf={dateEs(m.as_of)}
       metrics={{ tech: m.tech_companies, issuers: m.issuers, venues: m.venues, max: m.issuers_per_company_max, maxName }}

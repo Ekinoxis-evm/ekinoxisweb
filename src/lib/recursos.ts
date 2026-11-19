@@ -252,11 +252,20 @@ export const ACCIONES = {
   /** What Ekinoxis never does, shown beside the form. */
   custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
 
+  /** The whole tokenized-stocks market, one dashboard, one date. */
+  sector: {
+    heading: 'El mercado de acciones tokenizadas',
+    value: 'en valor tokenizado',
+    transfers: 'transferidos en los últimos 30 días',
+    holders: 'holders',
+  },
+
   issuersBlock: {
     heading: 'Acciones tokenizadas por emisor',
     stocks: (n: string) => `${n} acciones`,
     atLeast: 'al menos',
-    noVolume: 'no publica su volumen',
+    value: (amount: string, source: string) => `Valor tokenizado: ${amount} · ${source}`,
+    noValue: 'Valor tokenizado: sin dato público',
     note: (date: string) => `Conteo de nuestro catálogo al ${date} (todas las empresas, no solo las 40).`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],
