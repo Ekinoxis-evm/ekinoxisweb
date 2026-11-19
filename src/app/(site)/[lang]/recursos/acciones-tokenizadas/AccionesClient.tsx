@@ -156,7 +156,7 @@ function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: 
               <p className="font-headline text-lg font-bold text-on-surface">{i.name}</p>
               <div className="order-last col-span-3 md:order-none md:col-span-1">
                 <span aria-hidden className="block h-2 bg-surface-container-highest">
-                  <span className="block h-full origin-left bg-primary" style={{ transform: `scaleX(${i.stocks / max})` }} />
+                  <span className="block h-full origin-left bg-on-surface-variant" style={{ transform: `scaleX(${i.stocks / max})` }} />
                 </span>
                 <p className="mt-2 font-body text-[13px] text-on-surface-variant">
                   {i.value !== null ? b.value(usd(i.value), source) : b.noValue}
