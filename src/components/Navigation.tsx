@@ -6,10 +6,14 @@ import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { rememberLanguage, useLanguage } from '@/contexts/LanguageContext';
 import { splitPath, switchLangPath } from '@/lib/i18n';
+import { ACCIONES } from '@/lib/recursos';
 import { useBookCall } from '@/components/BookCall';
 import { content } from '@/lib/content';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { BrandLockup } from '@/components/ui/BrandLogo';
+
+/** Routes whose page carries its own call to action. */
+const OWN_ACTION = [ACCIONES.path];
 
 /** A leaf link in the nav. `exact` stops a parent route from matching its children. */
 type NavItem = { href: string; label: string; exact?: boolean };
@@ -170,14 +174,17 @@ export default function Navigation() {
 
           {/* Right controls */}
           <div className="flex items-center space-x-4">
-            {/* The same next step as the hero, always in reach on a laptop (phones have the bottom bar) */}
-            <button
-              type="button"
-              onClick={() => bookCall()}
-              className="hidden lg:inline-flex items-center border border-primary/40 px-4 min-h-[44px] font-label text-[12px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
-            >
-              {language === 'en' ? 'Book a free call' : 'Agenda una llamada'}
-            </button>
+            {/* The same next step as the hero, always in reach on a laptop (phones have the bottom bar).
+                Pages with their own single action (the course reservation) leave it out. */}
+            {!OWN_ACTION.some((p) => path.startsWith(p)) && (
+              <button
+                type="button"
+                onClick={() => bookCall()}
+                className="hidden lg:inline-flex items-center border border-primary/40 px-4 min-h-[44px] font-label text-[12px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
+              >
+                {language === 'en' ? 'Book a free call' : 'Agenda una llamada'}
+              </button>
+            )}
             {/* A real link to this page in the other language, so crawlers find both versions */}
             <NextLink
               href={switchLangPath(pathname, otherLang)}

@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import raw from '@/data/acciones/catalogo.json';
 import logoManifest from '../../../public/recursos/acciones/logos/manifest.json';
@@ -71,6 +71,8 @@ export interface Logo {
   src: string;
   /** Near-black brand colour: painted in the page's text colour instead (DESIGN.md: never a white tile). */
   mono: boolean;
+  /** A wordmark, not a symbol: it gets the tile's width instead of a square box. */
+  wide: boolean;
 }
 
 /** One of the 40 tiles, with what its panel shows. */
@@ -87,6 +89,17 @@ export interface TechTile {
 
 const LOGO_DIR = '/recursos/acciones/logos';
 
+/** simple-icons draw every mark in a 24×24 box, so their wordmarks can't be told by shape. */
+const WORDMARKS = new Set(['intc', 'arm', 'dell', 'csco', 'amd', 'uber', 'coin']);
+
+/** Wider than tall by 1.8× or more (from the SVG viewBox) reads as a wordmark. */
+function isWide(name: string, file: string): boolean {
+  if (WORDMARKS.has(name)) return true;
+  if (!file.endsWith('.svg')) return false;
+  const box = readFileSync(file, 'utf8').match(/viewBox="[\d.\s-]*?([\d.]+)\s+([\d.]+)"/);
+  return box ? Number(box[1]) / Number(box[2]) >= 1.8 : false;
+}
+
 /** Relative luminance of a hex colour (WCAG). */
 function luminance(hex: string): number {
   const [r, g, b] = [0, 2, 4].map((i) => {
@@ -100,9 +113,10 @@ function luminance(hex: string): number {
 export function logoFor(name: string): Logo | null {
   for (const ext of ['svg', 'png']) {
     const src = `${LOGO_DIR}/${name}.${ext}`;
-    if (!existsSync(join(process.cwd(), 'public', src))) continue;
+    const file = join(process.cwd(), 'public', src);
+    if (!existsSync(file)) continue;
     const hex = manifest[name]?.hex;
-    return { src, mono: hex ? luminance(hex) < 0.2 : false };
+    return { src, mono: hex ? luminance(hex) < 0.2 : false, wide: isWide(name, file) };
   }
   return null;
 }

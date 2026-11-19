@@ -41,7 +41,7 @@ const label = 'font-mono text-[12px] uppercase tracking-widest text-outline';
 
 /* ── Atoms ────────────────────────────────────────────────────────────────── */
 
-/** Square Raised Tide tile, logo at 60 %. Near-black marks are painted in the text colour; no logo → ticker monogram. */
+/** Square Raised Tide tile, logo at 60 % (wordmarks 80 % wide). Near-black marks are painted in the text colour; no logo → ticker monogram. */
 function LogoTile({ logo, text, className = '' }: { logo: Logo | null; text: string; className?: string }) {
   let mark: React.ReactNode;
   if (!logo) {
@@ -51,13 +51,13 @@ function LogoTile({ logo, text, className = '' }: { logo: Logo | null; text: str
     mark = (
       <span
         aria-hidden
-        className="h-3/5 w-3/5 bg-on-surface"
+        className={`h-3/5 bg-on-surface ${logo.wide ? 'w-4/5' : 'w-3/5'}`}
         style={{ maskImage: url, WebkitMaskImage: url, maskSize: 'contain', WebkitMaskSize: 'contain', maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskPosition: 'center' }}
       />
     );
   } else {
     // eslint-disable-next-line @next/next/no-img-element -- static local SVG/PNG marks, no optimisation needed
-    mark = <img src={logo.src} alt="" className="h-3/5 w-3/5 object-contain" loading="lazy" />;
+    mark = <img src={logo.src} alt="" className={`h-3/5 object-contain ${logo.wide ? 'w-4/5' : 'w-3/5'}`} loading="lazy" />;
   }
   return <span className={`flex aspect-square items-center justify-center bg-surface-container-high ${className}`}>{mark}</span>;
 }
@@ -282,7 +282,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
             return (
               <li
                 key={tile.slug}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
+                className="absolute -translate-x-1/2 -translate-y-1/2 hover:!z-20 focus-within:!z-20"
                 style={{ left: `${x * 100}%`, top: `${y * 100}%`, zIndex: layer + 1 }}
               >
                 <span
@@ -295,10 +295,19 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
                     aria-expanded={active}
                     aria-controls="tech-panel"
                     aria-label={tile.name}
-                    className={`block animate-float motion-reduce:animate-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? 'outline outline-2 outline-offset-2 outline-primary' : ''}`}
+                    className={`group relative block animate-float motion-reduce:animate-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? 'outline outline-2 outline-offset-2 outline-primary' : ''}`}
                     style={{ animationDelay: `${-jx * 6}s`, animationDuration: `${5 + jy * 4}s` }}
                   >
-                    <LogoTile logo={tile.logo} text={tile.ticker} className={`${LAYER[layer]} border border-primary/10 transition-colors duration-150 hover:border-primary/50`} />
+                    <LogoTile logo={tile.logo} text={tile.ticker} className={`${LAYER[layer]} border border-primary/10 transition-colors duration-150 group-hover:border-primary/50`} />
+                    {/* Ticker on hover, focus or selection; monogram tiles already show it. */}
+                    {tile.logo && (
+                      <span
+                        aria-hidden
+                        className={`pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 bg-surface-container-lowest px-1 font-mono text-[12px] text-outline transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 ${active ? 'opacity-100' : 'opacity-0'}`}
+                      >
+                        {tile.ticker}
+                      </span>
+                    )}
                   </button>
                 </span>
               </li>
@@ -379,9 +388,11 @@ function Clip() {
 
 function ReserveButton({ position, onReserve, className = '' }: { position: string; onReserve: (p: string) => void; className?: string }) {
   return (
-    <Button size="lg" onClick={() => onReserve(position)} className={`w-full justify-center sm:w-auto ${className}`}>
-      {CTA}
-    </Button>
+    <span data-cta className={`block w-full sm:w-auto ${className}`}>
+      <Button size="lg" onClick={() => onReserve(position)} className="w-full justify-center sm:w-auto">
+        {CTA}
+      </Button>
+    </span>
   );
 }
 
@@ -516,9 +527,11 @@ function ReserveForm() {
         {/* Honeypot: hidden from people, filled by bots; the API answers 200 and saves nothing. */}
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
         {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
-        <Button type="submit" size="lg" disabled={status === 'sending'} className="w-full justify-center">
-          {status === 'sending' ? f.sending : f.submit}
-        </Button>
+        <span data-cta className="block">
+          <Button type="submit" size="lg" disabled={status === 'sending'} className="w-full justify-center">
+            {status === 'sending' ? f.sending : f.submit}
+          </Button>
+        </span>
         <Disclaimer />
       </form>
     </div>
@@ -534,7 +547,6 @@ const marquee = (items: BandItem[]) =>
 export default function AccionesClient({ tiles, sources, names, asOf, metrics, tools, issuerBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
     .map((s) => tiles.find((t) => t.slug === s))
     .filter((t): t is TechTile => t?.logo != null)
@@ -549,9 +561,9 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
     });
   }, []);
 
-  // One light per screen: the bar shows only while neither the hero button nor the form is visible.
+  // One light per screen: the bar shows only while no other «Reservar» button and no form submit is visible.
   useEffect(() => {
-    const targets = [heroRef.current, formRef.current].filter((el): el is HTMLElement => el !== null);
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-cta]'));
     const visible = new Set<Element>();
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
@@ -578,8 +590,9 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
     <AnimatedBackground variant="ambient">
       <div className="px-4 pb-20 pt-12 sm:px-6 md:pb-32 md:pt-24">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
-          {/* 1 · Hero */}
-          <header ref={heroRef} className="rise flex flex-col items-start">
+          {/* 1 · Hero: copy left, the real purchase right from lg; stacked on phones */}
+          <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-12">
+          <header className="rise flex flex-col items-start lg:col-span-7">
             <ScanBadge>{R.hero.badge}</ScanBadge>
             <h1 className="mt-6 font-headline text-5xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-7xl">
               {R.hero.title}
@@ -587,21 +600,24 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
             </h1>
             <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-on-surface-variant">{R.hero.lead}</p>
             <p className="mt-4 max-w-2xl font-headline text-xl font-bold leading-snug text-on-surface">{R.hero.control}</p>
-            <ul className="mt-8 grid w-full max-w-xl grid-cols-4 gap-px bg-primary/10 sm:grid-cols-8" aria-label={wall.map((t) => t.name).join(', ')}>
+            <ul className="mt-6 grid w-full max-w-xl grid-cols-8 gap-px bg-primary/10 md:mt-8" aria-label={wall.map((t) => t.name).join(', ')}>
               {wall.map((t) => (
                 <li key={t.slug}>
                   <LogoTile logo={t.logo} text={t.ticker} className="w-full" />
                 </li>
               ))}
             </ul>
-            <ReserveButton position="hero" onReserve={reserve} className="mt-10" />
+            <ReserveButton position="hero" onReserve={reserve} className="mt-6 md:mt-10" />
             <p className="mt-4 font-body text-[15px] text-on-surface-variant">
               {total !== null && `${R.restLine(total)} `}
               {R.disclaimer}
             </p>
           </header>
 
-          <Clip />
+          <div className="lg:col-span-5">
+            <Clip />
+          </div>
+          </div>
         </div>
       </div>
 
