@@ -210,17 +210,16 @@ const icsAttachment = (lead: LeadNotification) => ({
 });
 
 /**
- * A free resource is self-serve: the email hands back the link that opens the
- * modules on any device, and promises no personal reply.
+ * A course waitlist lead: confirms the place and links back to the page.
+ * Promises no personal reply.
  */
 function accionesEmail(lead: LeadNotification): { subject: string; html: string } {
   const e = ACCIONES.email;
   const first = esc(lead.name.split(' ')[0] ?? lead.name);
-  const url = `${SITE}/es${ACCIONES.path}?${ACCIONES.unlockParam}=1#modulos`;
+  const url = `${SITE}/es${ACCIONES.path}`;
   const inner = `<h1 style="margin:0 0 16px;font-size:26px;line-height:30px;color:#e8f2fb;">${e.hello(first)}</h1>
 <p style="margin:0 0 24px;font-size:15px;line-height:24px;color:#a2acb5;">${e.body}</p>
 <p style="margin:0 0 24px;">${button(url, e.button)}</p>
-${lead.details?.notify_full === 'yes' ? `<p style="margin:0 0 24px;font-size:15px;line-height:24px;color:#a2acb5;">${e.notify}</p>` : ''}
 <p style="margin:0;font-size:13px;line-height:20px;color:#8a949c;">${ACCIONES.disclaimer} ${e.sign}</p>`;
   return { subject: e.subject, html: shell(inner, 'es') };
 }

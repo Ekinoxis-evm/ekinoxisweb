@@ -115,146 +115,149 @@ export const SKILLS_DISENO = {
   },
 } as const;
 
-/* ── Acciones de EE. UU. tokenizadas ───────────────────────────────────────── */
-
-export type Company = 'spacex' | 'apple' | 'anthropic' | 'nvidia';
-
-export type ModuleStep = { title: string; body: string; source?: string };
-
-export type FreeModule = {
-  n: string;
-  title: string;
-  summary: string;
-  source: string;
-  steps: ModuleStep[];
-  exercise?: string;
-};
+/* ── Acciones tech tokenizadas (reserva) ──────────────────────────────────── */
 
 /**
- * Figures come from marketing/referencias/acciones-okx/datos-fuentes.md (William's own OKX
- * recordings and order history, 19 nov 2026) and the issuer catalog read from the Uniswap app the
- * same day (products/digital products/catalogo-uniswap-acciones.md). Every figure carries its source
- * beside it. Draft copy, pending William's review: docs/courses/acciones-tokenizadas-contenido.md.
+ * v3 (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md): one action, «Reservar con US$5».
+ * Numbers on the page come from the catalog's computed `metrics` (src/lib/acciones/catalog.ts);
+ * the only figures typed here are William's own three OKX buys (marketing/referencias/acciones-okx/datos-fuentes.md, 19 nov 2026).
+ * `price.total`, `opens` and `refund` stay null until William sets them; null hides the line.
+ * Until Stripe env vars exist in Vercel, «Reservar» opens the interest form (no payment).
  */
 export const ACCIONES = {
   slug: 'acciones-tokenizadas',
   path: '/recursos/acciones-tokenizadas',
-  /** localStorage key and URL flag (?abierto=1) that open modules 1–2 in this browser. */
-  unlockKey: 'acciones_unlocked',
-  unlockParam: 'abierto',
-  metaTitle: 'Acciones de EE. UU. tokenizadas: cómo comprarlas y cuánto cuestan de verdad',
+  metaTitle: 'Acciones tech tokenizadas: el curso para comprarlas desde un exchange o tu propia wallet',
   metaDescription:
-    'Dos módulos gratis: qué compras cuando compras una acción tokenizada y las dos rutas en OKX, con el costo real de tres compras. Esto no es asesoría de inversión.',
+    'Apple, NVIDIA, Microsoft, SpaceX y 36 tecnológicas más como tokens: quién las emite, dónde se consiguen y cómo comprarlas. Reserva tu cupo con US$5. Esto no es asesoría de inversión.',
   disclaimer: 'Esto no es asesoría de inversión.',
 
-  hero: {
-    badge: 'Recurso gratis',
-    title: 'Compra acciones de EE. UU. ',
-    titleEm: 'con lo que tengas',
-    lead: 'Te muestro las dos rutas que usé en OKX para comprar SpaceX y Anthropic, cuánto me costó cada una de verdad, y qué es exactamente lo que compraste.',
-    logos: ['spacex', 'apple', 'anthropic'] as Company[],
-    cta: 'Quiero los dos primeros módulos gratis',
+  price: {
+    /** Flip to true once Stripe is configured in Vercel: the button becomes the US$5 checkout. */
+    checkout: false,
+    reserve: 5,
+    total: null as number | null,
+    opens: null as string | null,
+    refund: null as string | null,
   },
 
-  free: {
-    badge: 'Gratis · módulos 1 y 2',
-    heading: 'Lo que aprendes gratis',
-    locked: 'Se abre con tu correo',
-    modules: [
-      {
-        n: '01',
-        title: 'Qué compras de verdad',
-        summary: 'Un token que sigue el precio, no la acción: sin voto y con dividendos reinvertidos, no en efectivo.',
-        source: 'Fuente: OKX help · sep 2026',
-        steps: [
-          { title: 'La idea en una frase.', body: 'Un token en una blockchain que sigue el precio de una acción de EE. UU.' },
-          { title: 'Lo que no recibes.', body: 'No es propiedad legal de la acción y no da voto; los dividendos se reinvierten, no se pagan en efectivo.', source: 'OKX help · aviso en pantalla' },
-          { title: 'Quién está detrás.', body: 'OKX distribuye y negocia; el emisor es xStocks (Backed Assets). Si lo retiras, sale el token del emisor (AAPLx en vez de xAAPL).', source: 'OKX help · sep 2026' },
-          { title: 'Respaldo.', body: 'xStocks dice que cada token está respaldado 1:1 por la acción. Es la afirmación del emisor.', source: 'Kraken xStocks · consultado 19 nov 2026' },
-          { title: 'Cuándo se negocia.', body: '24/7 en OKX; fuera del horario de EE. UU. el precio es el último cierre más una estimación y los spreads se amplían. Compra con la bolsa abierta.', source: 'OKX help · sep 2026' },
-          { title: 'Quién no puede.', body: 'Residentes de EE. UU., Canadá, Reino Unido y Australia.', source: 'Kraken · ene 2026' },
-        ],
-        exercise: 'Abre la ficha de una acción en OKX y encuentra el aviso de «no es propiedad legal».',
-      },
-      {
-        n: '02',
-        title: 'Dos rutas, dos costos',
-        summary: 'La compra rápida salió ≈ 2,1 % más cara aunque decía «No fee»; la orden a mercado costó 0,1 %.',
-        source: 'Fuente: mi historial de órdenes · 19 nov 2026',
-        steps: [
-          { title: 'Antes.', body: 'Cuenta en OKX con la identidad verificada y USDT en la cuenta.' },
-          { title: 'Ruta 1 · Convert.', body: 'Trade → Quick → Stock → empresa → Buy → Instant. Dice «No fee».' },
-          { title: 'Dónde está el costo.', body: 'Apple: ficha 349,23 USDT, cotizado 356,70 (+2,1 %). Por eso, justo después de pagar 2,00 USDT, el portafolio mostró US$1,95.', source: 'Pantalla · 19 nov 2026' },
-          { title: 'Ruta 2 · Spot.', body: 'TradFi → empresa → orden a mercado. Anthropic: 2,35 USDT, comisión 0,1 % cobrada en el token.', source: 'Pantalla · 19 nov 2026' },
-          { title: 'Calcúlalo tú.', body: 'Historial de órdenes → precio pagado frente al precio de la ficha en ese momento. OKX no publica esta tarifa; la tuya está en «My fee tier».' },
-        ],
-        exercise: 'Compra el mínimo por las dos rutas y calcula tu propio porcentaje.',
-      },
-    ] satisfies FreeModule[],
-    start: 'Empezar el módulo 1',
+  hero: {
+    badge: 'Curso nuevo',
+    title: 'Compra acciones de las grandes tecnológicas, ',
+    titleEm: 'tokenizadas',
+    lead: 'Te enseño los dos caminos: desde un exchange o con tu propia wallet. Con lo que tengas.',
+    /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
+    wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
+  },
+
+  /** Never promise a payment that does not exist: the label follows `price.checkout`. */
+  reserve: { paid: 'Reservar con US$5', interest: 'Reservar mi cupo' },
+  /** Line under the hero button, only once the total price is set. */
+  restLine: (total: number) => `Curso completo: US$${total} · pagas el resto al abrir.`,
+
+  metrics: {
+    heading: 'El mapa, en números',
+    tech: 'tecnológicas',
+    issuers: 'emisores',
+    venues: 'plataformas',
+    max: (name: string) => `emisores para una sola empresa (${name})`,
+    sources: 'xStocks, Ondo, Dinari, Robinhood, Base, OKX, Kraken, Bybit, Uniswap',
+  },
+
+  bands: {
+    tools: 'Lo que vas a usar',
+    issuers: 'Quién emite los tokens',
+    toolIds: ['okx', 'kraken', 'bybit', 'uniswap'],
+    rabby: { name: 'Rabby', url: 'https://rabby.io' },
+    issuerIds: ['xstocks', 'ondo', 'dinari', 'robinhood', 'coinbase', 'bstocks', 'st0x'],
+  },
+
+  routes: {
+    kicker: 'La meta',
+    heading: 'Dos caminos, el mismo token',
+    start: 'Tus USDT',
+    goal: 'Tienes el token',
+    a: 'A · Desde un exchange',
+    b: 'B · Con tu propia wallet',
+    aShort: 'A · Exchange',
+    bShort: 'B · Tu wallet',
+    rows: [
+      { label: 'Quién guarda el token', a: 'El exchange.', b: 'Tú, con tus 12 palabras.' },
+      { label: 'Eliges emisor y red', a: 'No: el exchange decide (xStocks).', b: 'Sí.' },
+      { label: 'Cuánto cuesta', a: 'En mis compras: Convert ≈ +2,1 %, orden a mercado 0,1 % (OKX, 19 nov 2026).', b: 'Comisión del pool + gas. Lo ves antes de confirmar.' },
+      { label: 'Riesgo principal', a: 'Las reglas del exchange por país.', b: 'Perder tus 12 palabras.' },
+    ],
+  },
+
+  tech: {
+    kicker: 'Las 40',
+    heading: 'Toca una empresa',
+    lead: 'Dónde está y quién la emite. Ordenadas por número de emisores.',
+    note: (date: string) => `Datos al ${date} · sin precios`,
+    routeA: 'A · En exchanges',
+    routeB: (n: number) => `B · ${n} ${n === 1 ? 'emisor' : 'emisores'} con token propio`,
+    none: 'Ninguno en esta lista',
+    sources: (date: string) => `Fuentes: OKX, Kraken y Bybit (APIs públicas) · emisores · Uniswap · ${date}`,
+    sourcesLink: 'Ver todas las fuentes',
+  },
+
+  sourcesList: {
+    heading: 'Fuentes de los datos',
   },
 
   proof: {
     kicker: 'Lo que hice',
     heading: 'Tres compras reales, con su costo',
     rows: [
-      { company: 'spacex', name: 'SpaceX', route: 'Convert · pagué 1,00 USDT', cost: '+2,1 %' },
-      { company: 'apple', name: 'Apple', route: 'Convert · pagué 2,00 USDT', cost: '+2,1 %' },
-      { company: 'anthropic', name: 'Anthropic', route: 'Orden a mercado, el día que debutó · 2,35 USDT', cost: '0,1 %' },
-    ] as { company: Company; name: string; route: string; cost: string }[],
+      { slug: 'spcx', name: 'SpaceX', route: 'Convert · pagué 1,00 USDT', cost: '+2,1 %' },
+      { slug: 'aapl', name: 'Apple', route: 'Convert · pagué 2,00 USDT', cost: '+2,1 %' },
+      { slug: 'ant', name: 'Anthropic', route: 'Orden a mercado, el día que debutó · 2,35 USDT', cost: '0,1 %' },
+    ],
     note: 'Compras del 19 nov 2026 en una cuenta de OKX. Tu costo puede ser distinto: depende de tu nivel de comisión y de la hora.',
   },
 
-  paid: {
-    badge: 'Próximamente',
-    heading: 'El curso completo',
-    topics: [
+  course: {
+    kicker: 'El curso',
+    heading: 'Cinco módulos, de cero a tu primer token',
+    modules: [
+      { n: '01', title: 'Qué compras de verdad (y qué no)' },
+      { n: '02', title: 'Exchange: Convert vs orden a mercado' },
       { n: '03', title: 'Tu propia wallet y cómo cuidarla' },
-      { n: '04', title: 'Comprar en Uniswap desde esa wallet' },
-      { n: '05', title: 'Emisores y riesgos: un checklist antes de comprar' },
+      { n: '04', title: 'Comprar en Uniswap' },
+      { n: '05', title: 'Emisores y riesgos: el checklist' },
     ],
-    catalogHeading: 'En Uniswap, la misma empresa tiene varios emisores',
-    catalogLead: 'Cada token lo emite alguien distinto. En el módulo 5 aprendes a elegir.',
-    catalog: [
-      { company: 'spacex', name: 'SpaceX', issuers: ['Robinhood', 'xStocks', 'Ondo', 'Coinbase', 'Bstocks', 'Reality', 'Anchored'] },
-      { company: 'anthropic', name: 'Anthropic', issuers: ['xStocks', 'Ondo'] },
-      { company: 'nvidia', name: 'NVIDIA', issuers: ['xStocks', 'Ondo', 'Dinari', 'Coinbase', 'Bstocks', 'Reality', 'Anchored'] },
-      { company: 'apple', name: 'Apple', issuers: ['xStocks', 'Ondo', 'Coinbase', 'Bstocks', 'Reality', 'Anchored'] },
-    ] as { company: Company; name: string; issuers: string[] }[],
-    catalogSource: 'Fuente: Uniswap web app, categoría Stocks · 19 nov 2026',
-    cta: 'Avísame cuando abra',
+    today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
+    rest: (rest: number) => `US$${rest} al abrir`,
   },
 
   risks: {
     kicker: 'Antes de comprar',
     heading: 'Lo que nadie te dice en el video',
     items: [
+      { title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending · 19 nov 2026' },
       { title: 'No es para todos', body: 'xStocks no está disponible para residentes de EE. UU., Canadá, Reino Unido ni Australia.', source: 'Kraken · ene 2026' },
       { title: 'Colombia: no verificado', body: 'No hemos verificado el estatus legal ni tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
-      { title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending · 19 nov 2026' },
       { title: 'Puedes perder lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
     ],
   },
 
+  /** Interest form, used while card payment is not live. */
   form: {
-    badge: 'Gratis',
-    heading: 'Abre los módulos 1 y 2',
+    heading: 'Reserva tu cupo',
+    lead: 'El pago con tarjeta abre en unos días. Deja tu correo y te escribimos primero.',
     name: 'Nombre',
     nameError: 'Escribe tu nombre.',
     email: 'Correo',
     emailError: 'Revisa el correo.',
     whatsapp: 'WhatsApp (opcional)',
-    notify: 'Avísame también cuando abra el curso completo.',
-    submit: 'Abrir los módulos gratis',
+    submit: 'Quiero mi cupo',
     sending: 'Enviando…',
-    after: 'Se abren aquí mismo, al instante.',
     networkError: 'No se pudo enviar. Intenta de nuevo.',
     /** leads.message is required; the lead records what was asked for. */
-    message: 'Quiero la introducción al curso de acciones tokenizadas',
-    messageNotify: ' + avísame cuando abra el curso completo',
+    message: 'Quiero reservar mi cupo del curso de acciones tokenizadas',
     doneBadge: 'Listo',
-    doneHeading: 'Tus módulos 1 y 2 están abiertos.',
-    doneNotify: 'Te avisamos por correo cuando abra el curso completo.',
+    doneHeading: 'Estás en la lista.',
+    doneBody: 'Te escribimos apenas abra la reserva con US$5.',
   },
 
   teacher: {
@@ -263,15 +266,12 @@ export const ACCIONES = {
     link: 'Conoce el lab',
   },
 
-  mobileCta: 'Quiero los módulos gratis',
-
   /** The lead's confirmation email (src/lib/notify.ts). No promise of a personal reply. */
   email: {
-    subject: 'Tus módulos 1 y 2 están abiertos',
+    subject: 'Estás en la lista del curso de acciones tokenizadas',
     hello: (name: string) => `Hola ${name}:`,
-    body: 'Ya puedes leer los dos primeros módulos del curso de acciones tokenizadas.',
-    button: 'Ir a los módulos',
-    notify: 'Te escribimos cuando abra el curso completo.',
+    body: 'Guardamos tu lugar. Te escribimos apenas abra la reserva con US$5, antes que a nadie.',
+    button: 'Ver el curso',
     sign: '— Ekinoxis Labs',
   },
 } as const;

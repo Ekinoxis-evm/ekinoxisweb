@@ -1,126 +1,395 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowDown, ArrowRight, Check } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { ArrowRight } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import LocalizedLink from '@/components/LocalizedLink';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
-import { ACCIONES as R, type Company, type FreeModule } from '@/lib/recursos';
+import { ACCIONES as R } from '@/lib/recursos';
+import type { Logo, TechTile } from '@/lib/acciones/catalog';
 
 /**
- * «Acciones de EE. UU. tokenizadas», the landing behind the OKX reel. One job: leave an
- * email. The form opens modules 1–2 on this same page; the browser remembers it, and the
- * confirmation email links back with ?abierto=1 so it opens on another phone too.
- * Phase 1 only: this is convenience, not access control (phase 2 adds Privy logins).
+ * «Acciones tech tokenizadas»: the page behind the OKX reel (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md).
+ * One action, «Reservar con US$5». Card payment is not live yet, so the button takes the
+ * visitor to the interest form; when Stripe is configured it becomes the checkout.
  */
 
-const FORM_ID = 'formulario';
-const MODULES_ID = 'modulos';
+export type BandItem = { name: string; href?: string; logo: Logo | null };
 
-/** Monochrome company mark, painted in the text colour (the SVGs are single-path simple-icons). */
-function Logo({ company, size = 'md' }: { company: Company; size?: 'sm' | 'md' }) {
-  const src = `url(/recursos/acciones/${company}.svg)`;
-  return (
-    <span
-      aria-hidden
-      className={`inline-block shrink-0 bg-on-surface ${size === 'sm' ? 'h-6 w-6' : 'h-8 w-8'}`}
-      style={{ maskImage: src, WebkitMaskImage: src, maskSize: 'contain', WebkitMaskSize: 'contain', maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskPosition: 'center' }}
-    />
-  );
+type Metrics = { tech: number; issuers: number; venues: number; max: number; maxName: string };
+
+type SourceItem = { id: string; label: string; url: string | null };
+
+interface Props {
+  tiles: TechTile[];
+  sources: SourceItem[];
+  names: Record<string, string>;
+  asOf: string;
+  metrics: Metrics;
+  tools: BandItem[];
+  issuerBand: BandItem[];
 }
 
-function Source({ children }: { children: string }) {
-  return <p className="mt-2 font-mono text-[12px] uppercase tracking-wider text-outline">{children}</p>;
+const FORM_ID = 'reservar';
+const SOURCES_ID = 'fuentes';
+const CTA = R.price.checkout ? R.reserve.paid : R.reserve.interest;
+const label = 'font-mono text-[12px] uppercase tracking-widest text-outline';
+
+/* ── Atoms ────────────────────────────────────────────────────────────────── */
+
+/** Square Raised Tide tile, logo at 60 %. Near-black marks are painted in the text colour; no logo → ticker monogram. */
+function LogoTile({ logo, text, className = '' }: { logo: Logo | null; text: string; className?: string }) {
+  let mark: React.ReactNode;
+  if (!logo) {
+    mark = <span className="font-mono text-[12px] font-bold text-on-surface-variant">{text}</span>;
+  } else if (logo.mono) {
+    const url = `url(${logo.src})`;
+    mark = (
+      <span
+        aria-hidden
+        className="h-3/5 w-3/5 bg-on-surface"
+        style={{ maskImage: url, WebkitMaskImage: url, maskSize: 'contain', WebkitMaskSize: 'contain', maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskPosition: 'center' }}
+      />
+    );
+  } else {
+    // eslint-disable-next-line @next/next/no-img-element -- static local SVG/PNG marks, no optimisation needed
+    mark = <img src={logo.src} alt="" className="h-3/5 w-3/5 object-contain" loading="lazy" />;
+  }
+  return <span className={`flex aspect-square items-center justify-center bg-surface-container-high ${className}`}>{mark}</span>;
 }
 
 function Disclaimer({ className = '' }: { className?: string }) {
   return <p className={`font-body text-[15px] text-on-surface-variant ${className}`}>{R.disclaimer}</p>;
 }
 
-function SectionHead({ kicker, heading, id }: { kicker: React.ReactNode; heading: string; id: string }) {
+function Heading({ kicker, children, id }: { kicker?: string; children: string; id: string }) {
   return (
-    <div className="mb-8 flex flex-col items-start gap-4">
-      {kicker}
+    <div className="mb-8">
+      {kicker && <p className={`${label} mb-3`}>{kicker}</p>}
       <h2 id={id} className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-5xl">
-        {heading}
+        {children}
       </h2>
     </div>
   );
 }
 
-/* ── 2 · Free modules ─────────────────────────────────────────────────────── */
+/* ── Sections ─────────────────────────────────────────────────────────────── */
 
-function ModuleCard({ m, open }: { m: FreeModule; open: boolean }) {
+function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
+  const items: [number, string][] = [
+    [m.tech, R.metrics.tech],
+    [m.issuers, R.metrics.issuers],
+    [m.venues, R.metrics.venues],
+    [m.max, R.metrics.max(m.maxName)],
+  ];
   return (
-    <motion.article
-      aria-labelledby={`mod-${m.n}`}
-      onViewportEnter={open ? () => track('acciones_module_open', { module: Number(m.n) }) : undefined}
-      viewport={{ once: true, amount: 0.3 }}
-      className="bg-surface-container-low p-6 md:p-10"
-    >
-      <div className="flex items-baseline gap-4">
-        <span aria-hidden className="font-mono text-[12px] text-primary">{m.n}</span>
-        <h3 id={`mod-${m.n}`} className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">
-          {m.title}
-        </h3>
-      </div>
-      <p className="mt-3 font-body text-lg leading-relaxed text-on-surface-variant">{m.summary}</p>
-      <Source>{m.source}</Source>
-
-      {open ? (
-        <>
-          <ol className="mt-8 flex flex-col gap-px bg-primary/10">
-            {m.steps.map((s) => (
-              <li key={s.title} className="bg-surface-container-low py-4">
-                <p className="font-body text-base leading-relaxed text-on-surface-variant">
-                  <strong className="font-bold text-on-surface">{s.title}</strong> {s.body}
-                </p>
-                {s.source && <Source>{s.source}</Source>}
-              </li>
-            ))}
-          </ol>
-          {m.exercise && (
-            <p className="mt-6 border-l-2 border-primary pl-4 font-body text-base leading-relaxed text-on-surface">
-              <strong className="font-bold">Ejercicio:</strong> {m.exercise}
-            </p>
-          )}
-          <Disclaimer className="mt-6" />
-        </>
-      ) : (
-        <ScanBadge variant="muted" className="mt-6">{R.free.locked}</ScanBadge>
-      )}
-    </motion.article>
+    <section aria-labelledby="metrics-heading">
+      <h2 id="metrics-heading" className={`${label} mb-4`}>{R.metrics.heading}</h2>
+      <dl className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-4">
+        {items.map(([n, l]) => (
+          <div key={l} className="flex flex-col-reverse gap-2 bg-surface-container-low p-5 md:p-6">
+            <dt className="font-body text-[15px] leading-snug text-on-surface-variant">{l}</dt>
+            <dd className="font-headline text-5xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums] md:text-6xl">{n}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className={`${label} mt-3 normal-case tracking-wider`}>
+        Datos al {asOf} · {R.metrics.sources}
+      </p>
+    </section>
   );
 }
 
-/* ── 6 · Form ─────────────────────────────────────────────────────────────── */
+function Band({ title, items }: { title: string; items: BandItem[] }) {
+  return (
+    <div>
+      <h3 className={`${label} mb-4`}>{title}</h3>
+      <ul className="flex flex-wrap gap-px bg-primary/10">
+        {items.map((it) => {
+          const inner = (
+            <>
+              <LogoTile logo={it.logo} text={it.name.slice(0, 3).toUpperCase()} className="w-12" />
+              <span className="font-headline text-base font-bold text-on-surface">{it.name}</span>
+            </>
+          );
+          const cls = 'flex min-h-[64px] items-center gap-3 bg-surface-container-low px-4 py-2';
+          return (
+            <li key={it.name} className="flex-1 basis-40">
+              {it.href ? (
+                <a href={it.href} target="_blank" rel="noopener noreferrer" className={`${cls} transition-colors duration-150 hover:bg-surface-container focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}>
+                  {inner}
+                </a>
+              ) : (
+                <span className={cls}>{inner}</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 
-type Status = 'idle' | 'sending' | 'error';
+/** USDT → A or B → «Tienes el token» on one line that warms to lime (DESIGN.md Light Line). */
+function Routes() {
+  const r = R.routes;
+  const [tab, setTab] = useState<'a' | 'b'>('a');
+  const node = 'border border-primary bg-surface-container-lowest px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-on-surface';
+  const dot = 'h-3 w-3 shrink-0 rounded-full border border-primary bg-surface-container-lowest';
+  const nodeText = 'font-mono text-[12px] uppercase tracking-wider';
+  return (
+    <section aria-labelledby="routes-heading">
+      <Heading id="routes-heading" kicker={r.kicker}>{r.heading}</Heading>
 
-function LeadForm({ notify, setNotify, onDone }: { notify: boolean; setNotify: (v: boolean) => void; onDone: () => void }) {
+      {/* Phones: the line runs down, splits into two lanes and meets again at the goal. */}
+      <div aria-hidden className="mb-10 flex flex-col items-center md:hidden">
+        <span className={dot} />
+        <span className={`${nodeText} mt-2 text-on-surface`}>{r.start}</span>
+        <span className="mt-2 h-6 w-px bg-primary" />
+        <span className="h-px w-1/2 bg-primary" />
+        <div className="grid w-full grid-cols-2">
+          {[r.aShort, r.bShort].map((lane) => (
+            <div key={lane} className="flex flex-col items-center">
+              <span className="h-6 w-px bg-primary" />
+              <span className={dot} />
+              <span className={`${nodeText} my-2 text-on-surface`}>{lane}</span>
+              <span className="h-6 w-px bg-gradient-to-b from-primary to-tertiary-dim" />
+            </div>
+          ))}
+        </div>
+        <span className="h-px w-1/2 bg-tertiary-dim" />
+        <span className="h-6 w-px bg-tertiary-dim" />
+        <span className="h-3 w-3 rounded-full bg-tertiary-dim" />
+        <span className={`${nodeText} mt-2 text-tertiary-dim`}>{r.goal}</span>
+      </div>
+
+      <div aria-hidden className="mb-10 hidden items-center gap-3 md:flex">
+        <span className={node}>{r.start}</span>
+        <span className="h-px flex-1 bg-primary" />
+        <span className="flex flex-col gap-2">
+          <span className={node}>{r.aShort}</span>
+          <span className={node}>{r.bShort}</span>
+        </span>
+        <span className="h-px flex-1 bg-gradient-to-r from-primary to-tertiary-dim" />
+        <span className="border border-tertiary-dim px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-tertiary-dim">{r.goal}</span>
+      </div>
+
+      {/* Phones: A/B tabs */}
+      <div className="md:hidden">
+        <div role="tablist" aria-label={r.heading} className="grid grid-cols-2 gap-px bg-primary/10">
+          {(['a', 'b'] as const).map((k) => (
+            <button
+              key={k}
+              role="tab"
+              type="button"
+              aria-selected={tab === k}
+              onClick={() => setTab(k)}
+              className={`min-h-[48px] px-3 font-headline text-sm font-bold uppercase tracking-wider transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
+                tab === k ? 'bg-surface-container-high text-primary' : 'bg-surface-container-low text-on-surface-variant'
+              }`}
+            >
+              {k === 'a' ? r.aShort : r.bShort}
+            </button>
+          ))}
+        </div>
+        <dl role="tabpanel" className="flex flex-col gap-px bg-primary/10">
+          {r.rows.map((row) => (
+            <div key={row.label} className="bg-surface-container-low p-5">
+              <dt className={label}>{row.label}</dt>
+              <dd className="mt-2 font-body text-base leading-relaxed text-on-surface">{tab === 'a' ? row.a : row.b}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {/* Desktop: side by side */}
+      <table className="hidden w-full border-collapse md:table">
+        <thead>
+          <tr>
+            <th className="w-1/4" />
+            <th scope="col" className="bg-surface-container-high p-5 text-left font-headline text-lg font-bold text-on-surface">{r.a}</th>
+            <th scope="col" className="bg-surface-container-high p-5 text-left font-headline text-lg font-bold text-on-surface">{r.b}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {r.rows.map((row) => (
+            <tr key={row.label} className="border-t border-primary/10">
+              <th scope="row" className={`${label} p-5 text-left align-top font-normal`}>{row.label}</th>
+              <td className="bg-surface-container-low p-5 align-top font-body text-base leading-relaxed text-on-surface">{row.a}</td>
+              <td className="bg-surface-container-low p-5 align-top font-body text-base leading-relaxed text-on-surface">{row.b}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+/** Columns of the tile grid; the panel opens under the row of the tapped tile. */
+function useCols() {
+  const [cols, setCols] = useState(4);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const on = () => setCols(mq.matches ? 8 : 4);
+    on();
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return cols;
+}
+
+function TechGrid({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<string, string>; asOf: string }) {
+  const t = R.tech;
+  const cols = useCols();
+  const [open, setOpen] = useState<string | null>(null);
+  const openIdx = tiles.findIndex((x) => x.slug === open);
+  const rowEnd = openIdx < 0 ? -1 : Math.min(tiles.length - 1, Math.floor(openIdx / cols) * cols + cols - 1);
+  const sel = openIdx >= 0 ? tiles[openIdx] : null;
+
+  const toggle = (slug: string) => {
+    if (open !== slug) track('tech_tile_open', { slug });
+    setOpen((cur) => (cur === slug ? null : slug));
+  };
+
+  return (
+    <section aria-labelledby="tech-heading">
+      <Heading id="tech-heading" kicker={t.kicker}>{t.heading}</Heading>
+      <p className="-mt-4 mb-6 font-body text-lg text-on-surface-variant">{t.lead}</p>
+      <ul className="grid grid-cols-4 gap-px bg-primary/10 md:grid-cols-8">
+        {tiles.map((tile, i) => (
+          <Fragment key={tile.slug}>
+            <li>
+              <button
+                type="button"
+                onClick={() => toggle(tile.slug)}
+                aria-expanded={open === tile.slug}
+                aria-controls="tech-panel"
+                aria-label={tile.name}
+                className={`flex w-full flex-col items-center gap-2 p-3 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
+                  open === tile.slug ? 'bg-surface-container-high' : 'bg-surface-container-low hover:bg-surface-container'
+                }`}
+              >
+                <LogoTile logo={tile.logo} text={tile.ticker} className="w-full" />
+                {tile.logo && <span className={`font-mono text-[12px] ${open === tile.slug ? 'text-primary' : 'text-on-surface-variant'}`}>{tile.ticker}</span>}
+              </button>
+            </li>
+            {i === rowEnd && sel && (
+              <li id="tech-panel" className="col-span-4 border-l-2 border-outline-variant bg-surface-container p-5 md:col-span-8 md:p-6">
+                <p className="font-headline text-2xl font-bold tracking-tight text-on-surface">{sel.name}</p>
+                <div className="mt-4 grid gap-5 md:grid-cols-2">
+                  <div>
+                    <p className={label}>{t.routeA}</p>
+                    <p className="mt-2 font-body text-base text-on-surface">
+                      {sel.venues.length ? sel.venues.map((v) => names[v] ?? v).join(' · ') : t.none}
+                    </p>
+                  </div>
+                  <div>
+                    <p className={label}>{t.routeB(sel.issuers.length)}</p>
+                    <ul className="mt-2 flex flex-wrap gap-2">
+                      {sel.issuers.map((id) => (
+                        <li key={id} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">{names[id] ?? id}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <p className={`${label} mt-5 normal-case tracking-wider`}>
+                  {t.sources(asOf)} ·{' '}
+                  <a href={`#${SOURCES_ID}`} className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+                    {t.sourcesLink}
+                  </a>
+                </p>
+              </li>
+            )}
+          </Fragment>
+        ))}
+      </ul>
+      <p className={`${label} mt-3 normal-case tracking-wider`}>{t.note(asOf)}</p>
+    </section>
+  );
+}
+
+function Proof({ logos }: { logos: Record<string, Logo | null> }) {
+  const p = R.proof;
+  return (
+    <section aria-labelledby="proof-heading">
+      <Heading id="proof-heading" kicker={p.kicker}>{p.heading}</Heading>
+      <ul className="flex flex-col gap-px bg-primary/10">
+        {p.rows.map((r) => (
+          <li key={r.name} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-surface-container-low p-4 md:p-5">
+            <LogoTile logo={logos[r.slug] ?? null} text={r.name.slice(0, 4).toUpperCase()} className="w-11" />
+            <div>
+              <p className="font-headline text-lg font-bold text-on-surface">{r.name}</p>
+              <p className="font-body text-[15px] text-on-surface-variant">{r.route}</p>
+            </div>
+            <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{r.cost}</p>
+          </li>
+        ))}
+      </ul>
+      <p className={`${label} mt-3 normal-case tracking-wider`}>{p.note}</p>
+    </section>
+  );
+}
+
+function ReserveButton({ position, onReserve, className = '' }: { position: string; onReserve: (p: string) => void; className?: string }) {
+  return (
+    <Button size="lg" onClick={() => onReserve(position)} className={`w-full justify-center sm:w-auto ${className}`}>
+      {CTA}
+    </Button>
+  );
+}
+
+function Course({ onReserve }: { onReserve: (p: string) => void }) {
+  const c = R.course;
+  const { total, opens, refund, reserve } = R.price;
+  const details = [total !== null ? c.rest(total - reserve) : null, opens, refund].filter((x): x is string => Boolean(x));
+  return (
+    <section aria-labelledby="course-heading">
+      <Heading id="course-heading" kicker={c.kicker}>{c.heading}</Heading>
+      <ol className="flex flex-col gap-px bg-primary/10">
+        {c.modules.map((m) => (
+          <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5">
+            <span aria-hidden className="font-mono text-[12px] text-primary">{m.n}</span>
+            <span className="font-body text-lg text-on-surface">{m.title}</span>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
+        <div>
+          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{R.price.checkout ? c.today.paid : c.today.interest}</p>
+          {details.length > 0 && <p className="mt-1 font-body text-base text-on-surface-variant">{details.join(' · ')}</p>}
+        </div>
+        <ReserveButton position="precio" onReserve={onReserve} />
+      </div>
+      <Disclaimer className="mt-4" />
+    </section>
+  );
+}
+
+type Status = 'idle' | 'sending' | 'error' | 'done';
+
+function ReserveForm() {
   const f = R.form;
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<{ name?: boolean; email?: boolean }>({});
-
   const field =
     'w-full bg-surface-container-high border border-outline-variant hover:border-outline focus:border-primary outline-none ' +
     'focus-visible:ring-1 focus-visible:ring-primary text-on-surface font-body text-base px-4 py-3 min-h-[48px] transition-colors';
-  const label = 'mb-2 block font-mono text-[12px] uppercase tracking-widest text-on-surface-variant';
+  const fieldLabel = 'mb-2 block font-mono text-[12px] uppercase tracking-widest text-on-surface-variant';
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const name = String(data.get('name') ?? '').trim();
     const email = String(data.get('email') ?? '').trim();
     const bad = { name: !name, email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) };
     setErrors(bad);
     if (bad.name || bad.email) {
-      e.currentTarget.querySelector<HTMLInputElement>(bad.name ? 'input[name=name]' : 'input[name=email]')?.focus();
+      form.querySelector<HTMLInputElement>(bad.name ? 'input[name=name]' : 'input[name=email]')?.focus();
       return;
     }
     setStatus('sending');
@@ -133,9 +402,9 @@ function LeadForm({ notify, setNotify, onDone }: { notify: boolean; setNotify: (
           name,
           email,
           whatsapp: String(data.get('whatsapp') ?? ''),
-          message: f.message + (notify ? f.messageNotify : ''),
+          message: f.message,
           language: 'es',
-          details: { resource: R.slug, ...(notify ? { notify_full: 'yes' } : {}) },
+          details: { resource: R.slug },
           replay_url: replayUrl(),
           website: String(data.get('website') ?? ''),
         }),
@@ -144,99 +413,70 @@ function LeadForm({ notify, setNotify, onDone }: { notify: boolean; setNotify: (
       const json: unknown = await res.json().catch(() => null);
       const leadId = json && typeof json === 'object' && 'id' in json ? String((json as { id: unknown }).id) : '';
       if (leadId) identifyLead(leadId, { topic: 'course', language: 'es', resource: R.slug });
-      track('acciones_form_submit', { notify_paid: notify });
-      if (notify) track('acciones_notify_paid');
-      onDone();
+      track('acciones_form_submit');
+      setStatus('done');
     } catch {
       setStatus('error');
     }
   }
 
-  return (
-    <form onSubmit={submit} noValidate className="flex flex-col gap-6">
-      <div>
-        <label htmlFor={id('name')} className={label}>{f.name}</label>
-        <input id={id('name')} name="name" type="text" required maxLength={120} autoComplete="name" aria-invalid={errors.name || undefined} aria-describedby={errors.name ? id('name-err') : undefined} className={field} />
-        {errors.name && <p id={id('name-err')} className="mt-2 font-body text-[15px] text-error">{f.nameError}</p>}
+  if (status === 'done') {
+    return (
+      <div role="status" className="border border-tertiary-dim bg-surface-container-low p-6 md:p-10">
+        <ScanBadge variant="tertiary">{f.doneBadge}</ScanBadge>
+        <p className="mt-4 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{f.doneHeading}</p>
+        <p className="mt-3 font-body text-base text-on-surface-variant">{f.doneBody}</p>
       </div>
-      <div>
-        <label htmlFor={id('email')} className={label}>{f.email}</label>
-        <input id={id('email')} name="email" type="email" required maxLength={254} autoComplete="email" inputMode="email" aria-invalid={errors.email || undefined} aria-describedby={errors.email ? id('email-err') : undefined} className={field} />
-        {errors.email && <p id={id('email-err')} className="mt-2 font-body text-[15px] text-error">{f.emailError}</p>}
-      </div>
-      <div>
-        <label htmlFor={id('wa')} className={label}>{f.whatsapp}</label>
-        <input id={id('wa')} name="whatsapp" type="tel" maxLength={40} autoComplete="tel" inputMode="tel" className={field} />
-      </div>
-      {/* Honeypot: hidden from people, filled by bots; the API answers 200 and saves nothing. */}
-      <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-      <label className="flex min-h-[48px] cursor-pointer items-center gap-4 font-body text-base text-on-surface">
-        <span className="relative flex h-6 w-6 shrink-0 items-center justify-center">
-          <input
-            type="checkbox"
-            checked={notify}
-            onChange={(e) => setNotify(e.target.checked)}
-            className="peer absolute inset-0 cursor-pointer appearance-none border border-outline-variant bg-surface-container-high transition-colors duration-150 checked:border-primary hover:border-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          />
-          <Check size={16} strokeWidth={3} aria-hidden className="pointer-events-none relative text-primary opacity-0 peer-checked:opacity-100" />
-        </span>
-        {f.notify}
-      </label>
-      {status === 'error' && (
-        <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>
-      )}
-      <Button type="submit" size="lg" disabled={status === 'sending'} className="w-full justify-center">
-        {status === 'sending' ? f.sending : f.submit}
-      </Button>
-      <p className="font-body text-[15px] text-on-surface-variant">
-        {f.after} {R.disclaimer}
-      </p>
-    </form>
-  );
-}
+    );
+  }
 
-function Done({ notify }: { notify: boolean }) {
-  const f = R.form;
   return (
-    <div role="status" className="border border-tertiary-dim bg-surface-container-low p-6 md:p-10">
-      <ScanBadge variant="tertiary">{f.doneBadge}</ScanBadge>
-      <p className="mt-4 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{f.doneHeading}</p>
-      {notify && <p className="mt-3 font-body text-base text-on-surface-variant">{f.doneNotify}</p>}
-      <a
-        href={`#${MODULES_ID}`}
-        className="mt-6 inline-flex min-h-[48px] items-center gap-2 font-headline text-sm font-bold uppercase tracking-widest text-tertiary-dim underline decoration-tertiary-dim/40 underline-offset-4 transition-colors duration-150 hover:decoration-tertiary-dim focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-      >
-        {R.free.start}
-        <ArrowDown size={16} aria-hidden />
-      </a>
+    <div className="bg-surface-container-low p-6 md:p-10">
+      <h2 id="form-heading" className="font-headline text-3xl font-bold tracking-tight text-on-surface md:text-4xl">{f.heading}</h2>
+      <p className="mt-3 font-body text-base text-on-surface-variant">{f.lead}</p>
+      <form onSubmit={submit} noValidate className="mt-8 flex flex-col gap-6">
+        <div>
+          <label htmlFor={id('name')} className={fieldLabel}>{f.name}</label>
+          <input id={id('name')} name="name" type="text" required maxLength={120} autoComplete="name" aria-invalid={errors.name || undefined} aria-describedby={errors.name ? id('name-err') : undefined} className={field} />
+          {errors.name && <p id={id('name-err')} className="mt-2 font-body text-[15px] text-error">{f.nameError}</p>}
+        </div>
+        <div>
+          <label htmlFor={id('email')} className={fieldLabel}>{f.email}</label>
+          <input id={id('email')} name="email" type="email" required maxLength={254} autoComplete="email" inputMode="email" aria-invalid={errors.email || undefined} aria-describedby={errors.email ? id('email-err') : undefined} className={field} />
+          {errors.email && <p id={id('email-err')} className="mt-2 font-body text-[15px] text-error">{f.emailError}</p>}
+        </div>
+        <div>
+          <label htmlFor={id('wa')} className={fieldLabel}>{f.whatsapp}</label>
+          <input id={id('wa')} name="whatsapp" type="tel" maxLength={40} autoComplete="tel" inputMode="tel" className={field} />
+        </div>
+        {/* Honeypot: hidden from people, filled by bots; the API answers 200 and saves nothing. */}
+        <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+        {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
+        <Button type="submit" size="lg" disabled={status === 'sending'} className="w-full justify-center">
+          {status === 'sending' ? f.sending : f.submit}
+        </Button>
+        <Disclaimer />
+      </form>
     </div>
   );
 }
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient() {
-  const [open, setOpen] = useState(false);
-  const [notify, setNotify] = useState(false);
+export default function AccionesClient({ tiles, sources, names, asOf, metrics, tools, issuerBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
+  const logos = Object.fromEntries(tiles.map((t) => [t.slug, t.logo]));
+  const wall = R.hero.wall
+    .map((s) => tiles.find((t) => t.slug === s))
+    .filter((t): t is TechTile => t?.logo != null)
+    .slice(0, 8);
 
-  // Read after hydration: the server never knows this browser's state.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const fromEmail = params.get(R.unlockParam) === '1';
-    let remembered = false;
-    try {
-      remembered = localStorage.getItem(R.unlockKey) === '1';
-      if (fromEmail) localStorage.setItem(R.unlockKey, '1');
-    } catch {
-      /* storage blocked: the page still works, it just forgets */
-    }
-    if (fromEmail || remembered) setOpen(true);
     track('recurso_view', {
       resource: R.slug,
-      unlocked: fromEmail || remembered,
       utm_source: params.get('utm_source') ?? undefined,
       utm_campaign: params.get('utm_campaign') ?? undefined,
     });
@@ -255,33 +495,22 @@ export default function AccionesClient() {
     });
     targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
-  }, [open]);
+  }, []);
 
-  const toForm = useCallback(() => {
+  const reserve = useCallback((position: string) => {
+    track('reserve_click', { position });
     const el = formRef.current;
     if (!el) return;
     el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     el.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
   }, []);
 
-  const unlock = useCallback(() => {
-    setOpen(true);
-    try {
-      localStorage.setItem(R.unlockKey, '1');
-    } catch {
-      /* see above */
-    }
-  }, []);
-
-  const notifyPaid = () => {
-    setNotify(true);
-    toForm();
-  };
+  const { total } = R.price;
 
   return (
     <AnimatedBackground variant="ambient">
       <div className="min-h-screen px-4 py-12 sm:px-6 md:py-24">
-        <div className="mx-auto flex max-w-3xl flex-col gap-20 md:gap-32">
+        <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
           {/* 1 · Hero */}
           <header ref={heroRef} className="rise flex flex-col items-start">
             <ScanBadge>{R.hero.badge}</ScanBadge>
@@ -289,126 +518,69 @@ export default function AccionesClient() {
               {R.hero.title}
               <em className="text-primary">{R.hero.titleEm}</em>
             </h1>
-            <p className="mt-6 font-body text-lg leading-relaxed text-on-surface-variant">{R.hero.lead}</p>
-            <ul className="mt-8 flex items-center gap-6" aria-label="SpaceX, Apple y Anthropic">
-              {R.hero.logos.map((c) => (
-                <li key={c}>
-                  <Logo company={c} />
+            <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-on-surface-variant">{R.hero.lead}</p>
+            <ul className="mt-8 grid w-full max-w-xl grid-cols-4 gap-px bg-primary/10 sm:grid-cols-8" aria-label={wall.map((t) => t.name).join(', ')}>
+              {wall.map((t) => (
+                <li key={t.slug}>
+                  <LogoTile logo={t.logo} text={t.ticker} className="w-full" />
                 </li>
               ))}
             </ul>
-            {!open && (
-              <Button size="lg" onClick={toForm} className="mt-10 w-full justify-center sm:w-auto">
-                {R.hero.cta}
-              </Button>
-            )}
-            <Disclaimer className="mt-4" />
+            <ReserveButton position="hero" onReserve={reserve} className="mt-10" />
+            <p className="mt-4 font-body text-[15px] text-on-surface-variant">
+              {total !== null && `${R.restLine(total)} `}
+              {R.disclaimer}
+            </p>
           </header>
 
-          {/* 2 · Free modules */}
-          <section id={MODULES_ID} aria-labelledby="free-heading" className="scroll-mt-24">
-            <SectionHead id="free-heading" kicker={<ScanBadge>{R.free.badge}</ScanBadge>} heading={R.free.heading} />
-            <div className="flex flex-col gap-px bg-primary/10">
-              {R.free.modules.map((m) => (
-                <ModuleCard key={m.n} m={m} open={open} />
-              ))}
-            </div>
+          <MetricsBlock m={metrics} asOf={asOf} />
+
+          <section aria-label={`${R.bands.tools} · ${R.bands.issuers}`} className="flex flex-col gap-10">
+            <Band title={R.bands.tools} items={tools} />
+            <Band title={R.bands.issuers} items={issuerBand} />
           </section>
 
-          {/* 3 · Proof */}
-          <section aria-labelledby="proof-heading">
-            <SectionHead
-              id="proof-heading"
-              kicker={<p className="font-mono text-[12px] uppercase tracking-widest text-outline">{R.proof.kicker}</p>}
-              heading={R.proof.heading}
-            />
-            <ul className="flex flex-col gap-px bg-primary/10">
-              {R.proof.rows.map((r) => (
-                <li key={r.name} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-surface-container-low p-5 md:p-6">
-                  <Logo company={r.company} />
-                  <div>
-                    <p className="font-headline text-xl font-bold text-on-surface">{r.name}</p>
-                    <p className="font-body text-[15px] text-on-surface-variant">{r.route}</p>
-                  </div>
-                  <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{r.cost}</p>
-                </li>
-              ))}
-            </ul>
-            <Source>{R.proof.note}</Source>
-          </section>
+          <Routes />
+          <TechGrid tiles={tiles} names={names} asOf={asOf} />
+          <Proof logos={logos} />
+          <Course onReserve={reserve} />
 
-          {/* 4 · Paid course */}
-          <section aria-labelledby="paid-heading">
-            <SectionHead id="paid-heading" kicker={<ScanBadge variant="muted">{R.paid.badge}</ScanBadge>} heading={R.paid.heading} />
-            <ol className="flex flex-col gap-px bg-primary/10">
-              {R.paid.topics.map((t) => (
-                <li key={t.n} className="flex items-baseline gap-4 bg-surface-container-low p-5 md:p-6">
-                  <span aria-hidden className="font-mono text-[12px] text-outline">{t.n}</span>
-                  <span className="font-body text-lg text-on-surface">{t.title}</span>
-                </li>
-              ))}
-            </ol>
-
-            <h3 className="mt-12 font-headline text-2xl font-bold tracking-tight text-on-surface">{R.paid.catalogHeading}</h3>
-            <p className="mt-2 font-body text-base text-on-surface-variant">{R.paid.catalogLead}</p>
-            <ul className="mt-6 flex flex-col gap-px bg-primary/10">
-              {R.paid.catalog.map((c) => (
-                <li key={c.name} className="flex flex-col gap-3 bg-surface-container-low p-5 md:flex-row md:items-center md:gap-6">
-                  <div className="flex items-center gap-3 md:w-40 md:shrink-0">
-                    <Logo company={c.company} size="sm" />
-                    <span className="font-headline text-lg font-bold text-on-surface">{c.name}</span>
-                  </div>
-                  <ul className="flex flex-wrap gap-2" aria-label={`Emisores de ${c.name}`}>
-                    {c.issuers.map((i) => (
-                      <li key={i} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
-                        {i}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-            <Source>{R.paid.catalogSource}</Source>
-            {!open && (
-              <Button variant="ghost" size="lg" onClick={notifyPaid} className="mt-8 w-full justify-center sm:w-auto">
-                {R.paid.cta}
-              </Button>
-            )}
-          </section>
-
-          {/* 5 · Before buying */}
           <section aria-labelledby="risks-heading">
-            <SectionHead
-              id="risks-heading"
-              kicker={<p className="font-mono text-[12px] uppercase tracking-widest text-outline">{R.risks.kicker}</p>}
-              heading={R.risks.heading}
-            />
+            <Heading id="risks-heading" kicker={R.risks.kicker}>{R.risks.heading}</Heading>
             <ul className="flex flex-col gap-px bg-primary/10">
               {R.risks.items.map((r) => (
                 <li key={r.title} className="bg-surface-container-low p-5 md:p-6">
                   <p className="font-headline text-lg font-bold text-on-surface">{r.title}</p>
                   <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{r.body}</p>
-                  {'source' in r && r.source && <Source>{r.source}</Source>}
+                  {'source' in r && <p className={`${label} mt-2 normal-case tracking-wider`}>{r.source}</p>}
                 </li>
               ))}
             </ul>
           </section>
 
-          {/* 6 · Form */}
           <section id={FORM_ID} ref={formRef} aria-labelledby="form-heading" className="scroll-mt-24">
-            {open ? (
-              <Done notify={notify} />
-            ) : (
-              <div className="bg-surface-container-low p-6 md:p-10">
-                <SectionHead id="form-heading" kicker={<ScanBadge>{R.form.badge}</ScanBadge>} heading={R.form.heading} />
-                <LeadForm notify={notify} setNotify={setNotify} onDone={unlock} />
-              </div>
-            )}
+            <ReserveForm />
           </section>
 
-          {/* 7 · Who teaches */}
+          <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
+            <h2 id="sources-heading" className={label}>{R.sourcesList.heading}</h2>
+            <ul className="mt-3 flex flex-col">
+              {sources.map((s) => (
+                <li key={s.id} className="font-body text-[15px] text-on-surface-variant">
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center underline decoration-outline underline-offset-4 hover:text-primary">
+                      {s.label}
+                    </a>
+                  ) : (
+                    <span className="inline-flex min-h-[44px] items-center">{s.label}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+
           <section aria-labelledby="teacher-heading">
-            <h2 id="teacher-heading" className="font-mono text-[12px] uppercase tracking-widest text-outline">{R.teacher.heading}</h2>
+            <h2 id="teacher-heading" className={label}>{R.teacher.heading}</h2>
             <p className="mt-3 font-body text-lg leading-relaxed text-on-surface">{R.teacher.body}</p>
             <LocalizedLink
               href="/about"
@@ -422,26 +594,22 @@ export default function AccionesClient() {
       </div>
 
       {/* Phones: this page's own bar (the site-wide «book a call» bar is hidden here). */}
-      {!open && (
-        <>
-          <div
-            className={`fixed inset-x-0 bottom-0 z-50 border-t border-primary/20 bg-black/85 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl transition-[transform,opacity] duration-300 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none md:hidden ${
-              barShown ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'
-            }`}
-          >
-            <button
-              type="button"
-              onClick={toForm}
-              tabIndex={barShown ? 0 : -1}
-              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-primary font-headline text-sm font-bold uppercase tracking-wider text-surface-container-lowest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              {R.mobileCta}
-              <ArrowRight size={16} aria-hidden />
-            </button>
-          </div>
-          <div className="h-20 md:hidden" aria-hidden />
-        </>
-      )}
+      <div
+        className={`fixed inset-x-0 bottom-0 z-50 border-t border-primary/20 bg-black/85 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl transition-[transform,opacity] duration-300 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none md:hidden ${
+          barShown ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => reserve('barra')}
+          tabIndex={barShown ? 0 : -1}
+          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-primary font-headline text-sm font-bold uppercase tracking-wider text-surface-container-lowest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          {CTA}
+          <ArrowRight size={16} aria-hidden />
+        </button>
+      </div>
+      <div className="h-20 md:hidden" aria-hidden />
     </AnimatedBackground>
   );
 }

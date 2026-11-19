@@ -29,7 +29,7 @@ export const DETAIL_KEYS = [
   'audience', 'organization', 'who',
   'timing', 'team_size',
   'replay',
-  'resource', 'notify_full',
+  'resource',
 ] as const;
 export type DetailKey = (typeof DETAIL_KEYS)[number];
 export type DetailValue = string | number | string[];
@@ -153,11 +153,7 @@ export const TEAM_SIZES: Option[] = [
 /* ── Free resources (/recursos) that capture a course lead ──────────────── */
 
 export const RESOURCES: Option[] = [
-  { value: 'acciones-tokenizadas', en: 'Tokenized stocks · free intro', es: 'Acciones tokenizadas · intro gratis' },
-];
-
-export const NOTIFY_FULL: Option[] = [
-  { value: 'yes', en: 'Yes — tell me when the full course opens', es: 'Sí — avisar cuando abra el curso completo' },
+  { value: 'acciones-tokenizadas', en: 'Tokenized stocks · course waitlist', es: 'Acciones tokenizadas · lista del curso' },
 ];
 
 /** Every option list, by the detail key it answers. */
@@ -175,7 +171,6 @@ export const OPTIONS: Partial<Record<DetailKey, Option[]>> = {
   timing: TIMING,
   team_size: TEAM_SIZES,
   resource: RESOURCES,
-  notify_full: NOTIFY_FULL,
 };
 
 /** Which questions a topic may answer — the server accepts nothing else. */
@@ -184,7 +179,7 @@ export const TOPIC_KEYS: Record<LeadTopic, DetailKey[]> = {
   web: ['plan', 'has_site', 'needs', 'timing', 'replay'],
   app: ['plan', 'stage', 'users', 'budget_band', 'timing', 'replay'],
   talk: ['audience', 'organization', 'timing', 'replay'],
-  course: ['who', 'team_size', 'timing', 'replay', 'resource', 'notify_full'],
+  course: ['who', 'team_size', 'timing', 'replay', 'resource'],
   general: ['timing', 'replay'],
 };
 
@@ -231,5 +226,4 @@ export const DETAIL_TITLE: Record<DetailKey, { en: string; es: string }> = {
   team_size: { en: 'Team size', es: 'Tamaño del equipo' },
   replay: { en: 'Session replay', es: 'Grabación de sesión' },
   resource: { en: 'Resource', es: 'Recurso' },
-  notify_full: { en: 'Full course', es: 'Curso completo' },
 };
