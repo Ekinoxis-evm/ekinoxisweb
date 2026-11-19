@@ -483,10 +483,11 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
       <ol className="flex flex-col gap-px bg-primary/10">
         {c.modules.map((m) => (
           <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5 md:p-6">
-            <span aria-hidden className="font-mono text-[12px] text-primary">{m.n}</span>
+            <span className="shrink-0 font-mono text-[12px] uppercase tracking-wider text-primary">{m.n}</span>
             <div>
               <p className="font-headline text-xl font-bold text-on-surface">{m.title}</p>
               <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{m.desc}</p>
+              {'pre' in m && <p className="mt-3 border-l-2 border-outline-variant pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
             </div>
           </li>
         ))}

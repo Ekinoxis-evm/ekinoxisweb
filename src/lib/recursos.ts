@@ -256,12 +256,17 @@ export const ACCIONES = {
   },
 
   course: {
-    heading: 'Tres sesiones, de tu banco a tu primer token',
-    format: '3 sesiones en vivo de 1 hora (45 min + preguntas). Te quedas con las grabaciones y con un asistente de IA que te guía paso a paso.',
+    heading: 'Una sesión, tres bloques',
+    format: '1 sesión en vivo de 3 horas, en 3 bloques con preguntas al final de cada uno. Te quedas con la grabación y con un asistente de IA que te guía paso a paso.',
     modules: [
-      { n: '01', title: 'Tu cuenta: de tu moneda bancaria a USDT', desc: 'Creas y verificas tu cuenta en el exchange y compras tus primeros USDT.' },
-      { n: '02', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
-      { n: '03', title: 'Pasa a custodia propia', desc: 'Llevas USDT y ETH (gas) a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.' },
+      {
+        n: 'Bloque 1',
+        title: 'Tu cuenta: de tu moneda bancaria a USDT',
+        desc: 'Cargas tu cuenta verificada con tu moneda bancaria y compras tus primeros USDT.',
+        pre: 'Antes de la sesión: crea tu cuenta y completa la verificación (KYC). Te guiamos con el asistente.',
+      },
+      { n: 'Bloque 2', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
+      { n: 'Bloque 3', title: 'Pasa a custodia propia', desc: 'Llevas USDT y ETH (gas) a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.' },
     ],
     today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
     rest: (rest: number) => `US$${rest} al abrir`,
