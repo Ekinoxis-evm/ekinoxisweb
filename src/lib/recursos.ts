@@ -150,7 +150,7 @@ export const ACCIONES = {
     badge: 'Curso en vivo',
     title: 'Compra acciones de las grandes tecnológicas del mundo, ',
     titleEm: 'tokenizadas',
-    control: 'Siempre a tu nombre, en tu propia cuenta o en tu propia wallet. Tú decides siempre.',
+    control: 'Siempre tuyos: en tu cuenta, a tu nombre, o en tu propia wallet, bajo tu control. Tú decides siempre.',
     /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
@@ -177,7 +177,7 @@ export const ACCIONES = {
     },
     selfCustody: {
       eyebrow: 'Método custodia propia',
-      title: 'Wallets para tener tus activos',
+      title: 'Wallets y Uniswap: para tener y comprar tus activos',
       wallets: [
         { id: 'base', name: 'Base app', url: 'https://base.app' },
         { id: 'metamask', name: 'MetaMask', url: 'https://metamask.io' },
@@ -207,7 +207,7 @@ export const ACCIONES = {
       { label: 'Empiezas en', a: 'Tu cuenta verificada en el exchange, con tu moneda bancaria.', b: 'La misma cuenta: compras USDT y ETH y los envías a tu wallet.' },
       { label: 'Quién guarda el token', a: 'El exchange, en tu cuenta.', b: 'Tú, en tu wallet, con tus 12 palabras.' },
       { label: 'Eliges emisor y red', a: 'No: el exchange decide (hoy, xStocks).', b: 'Sí, en Uniswap.' },
-      { label: 'Cuánto cuesta', a: 'En mis compras en OKX: Convert ≈ +2,1 %; orden a mercado 0,1 %.', b: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
+      { label: 'Cuánto cuesta', a: 'En mis compras en OKX (19 nov 2026): Convert ≈ +2,1 %; orden a mercado 0,1 %.', b: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
       { label: 'Riesgo principal', a: 'Las reglas del exchange en tu país.', b: 'Perder tus 12 palabras.' },
     ],
   },
@@ -227,7 +227,7 @@ export const ACCIONES = {
     heading: 'En números',
     tech: 'tecnológicas',
     issuers: 'emisores',
-    venues: 'plataformas',
+    venues: 'lugares para comprar: OKX, Kraken, Bybit y Uniswap',
     max: (name: string) => `emisores para una sola empresa (${name})`,
     sources: 'xStocks, Ondo, Dinari, Robinhood, Base, OKX, Kraken, Bybit y Uniswap',
   },
@@ -237,12 +237,12 @@ export const ACCIONES = {
     heading: 'El mercado de acciones tokenizadas',
     value: 'en valor tokenizado',
     transfers: 'transferidos en los últimos 30 días',
-    holders: 'holders',
+    holders: 'de direcciones que las tienen',
   },
 
   issuersBlock: {
     heading: 'Acciones tokenizadas por emisor',
-    stocks: (n: string) => `${n} acciones`,
+    stocks: (n: string) => `${n} acciones y ETF`,
     atLeast: 'al menos',
     value: (amount: string, source: string) => `Valor tokenizado: ${amount} · ${source}`,
     noValue: 'Valor tokenizado: sin dato público',
@@ -268,7 +268,7 @@ export const ACCIONES = {
       { n: 'Bloque 2', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
       { n: 'Bloque 3', title: 'Pasa a custodia propia', desc: 'Llevas USDT y ETH (gas) a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.' },
     ],
-    today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
+    today: { paid: 'US$5 hoy para reservar', interest: 'El pago abre en unos días. Reserva tu cupo y te escribimos primero.' },
     rest: (rest: number) => `US$${rest} al abrir`,
   },
 
@@ -289,7 +289,7 @@ export const ACCIONES = {
   /** Interest form, used while card payment is not live. */
   form: {
     heading: 'Reserva tu cupo',
-    lead: 'El pago con tarjeta abre en unos días. Déjanos tus datos y te escribimos primero.',
+    lead: 'Déjanos tus datos y te avisamos antes que a nadie.',
     name: 'Nombre',
     nameError: 'Escribe tu nombre.',
     phone: 'WhatsApp',

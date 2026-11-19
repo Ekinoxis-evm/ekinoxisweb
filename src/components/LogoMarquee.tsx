@@ -29,6 +29,8 @@ interface Props {
   speed?: number;
   /** On phones, replace the header with this one line (plus the link's arrow). */
   phoneLine?: string;
+  /** A short list (seven or fewer) sits still in one row; repeating three logos reads like a loop bug. */
+  still?: boolean;
 }
 
 /** Enough tiles per half that a short list still fills a 2xl screen before it repeats. */
@@ -45,7 +47,7 @@ function fill(logos: MarqueeLogo[]) {
  * halves and slides by exactly one half, so the loop has no seam. Pauses on
  * hover; with reduced motion the repeats hide and the row wraps.
  */
-export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false, speed = 4, phoneLine }: Props) {
+export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape = 'wide', mono = false, reverse = false, speed = 4, phoneLine, still = false }: Props) {
   if (logos.length === 0) return null;
   const half = fill(logos);
 
@@ -121,25 +123,31 @@ export default function LogoMarquee({ eyebrow, title, link, logos, plate, shape 
         )}
       </div>
 
-      <div
-        className="marquee relative pb-10"
-        style={{
-          maskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
-        }}
-      >
-        <div
-          className={`animate-marquee flex w-max motion-reduce:w-auto ${reverse ? '[animation-direction:reverse]' : ''}`}
-          style={{ ['--marquee-duration' as string]: `${half.length * speed}s` }}
-        >
-          <ul className="flex gap-4 pr-4 motion-reduce:flex-wrap motion-reduce:px-6">
-            {half.map((logo, i) => tile(logo, `${logo.src}-${i}`, i >= logos.length))}
-          </ul>
-          <ul className="flex gap-4 pr-4 motion-reduce:hidden" aria-hidden="true">
-            {half.map((logo, i) => tile(logo, `dup-${logo.src}-${i}`, true))}
-          </ul>
+      {still ? (
+        <div className="max-w-screen-2xl mx-auto px-6 pb-10">
+          <ul className="flex flex-wrap gap-4">{logos.map((logo, i) => tile(logo, `${logo.src}-${i}`, false))}</ul>
         </div>
-      </div>
+      ) : (
+        <div
+          className="marquee relative pb-10"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+          }}
+        >
+          <div
+            className={`animate-marquee flex w-max motion-reduce:w-auto ${reverse ? '[animation-direction:reverse]' : ''}`}
+            style={{ ['--marquee-duration' as string]: `${half.length * speed}s` }}
+          >
+            <ul className="flex gap-4 pr-4 motion-reduce:flex-wrap motion-reduce:px-6">
+              {half.map((logo, i) => tile(logo, `${logo.src}-${i}`, i >= logos.length))}
+            </ul>
+            <ul className="flex gap-4 pr-4 motion-reduce:hidden" aria-hidden="true">
+              {half.map((logo, i) => tile(logo, `dup-${logo.src}-${i}`, true))}
+            </ul>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

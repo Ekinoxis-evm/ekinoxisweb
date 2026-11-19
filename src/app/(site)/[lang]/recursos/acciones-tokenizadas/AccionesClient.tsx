@@ -701,7 +701,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
       </div>
 
       {/* Full-bleed bands: what you will use, and who issues the tokens. Only official logos. */}
-      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" speed={3} />
+      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" still />
       <LogoMarquee eyebrow={R.bands.selfCustody.eyebrow} title={R.bands.selfCustody.title} logos={marquee(selfCustodyBand)} plate="dark" shape="square" speed={3} reverse />
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
