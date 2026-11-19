@@ -10,7 +10,7 @@ import LogoMarquee from '@/components/LogoMarquee';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { COUNTRIES } from '@/lib/countries';
 import { ACCIONES as R } from '@/lib/recursos';
-import type { Logo, TechTile } from '@/lib/acciones/catalog';
+import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
 /**
  * «Acciones tech tokenizadas»: the page behind the OKX reel (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md).
@@ -27,6 +27,7 @@ type SourceItem = { id: string; label: string; url: string | null };
 interface Props {
   tiles: TechTile[];
   sources: SourceItem[];
+  issuers: IssuerStat[];
   names: Record<string, string>;
   asOf: string;
   metrics: Metrics;
@@ -36,7 +37,9 @@ interface Props {
 
 const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
-const CTA = R.price.checkout ? R.reserve.paid : R.reserve.interest;
+const { presale } = R.price;
+const CTA = presale ? R.reserve.presale(presale.amount) : R.price.checkout ? R.reserve.paid : R.reserve.interest;
+const num = (n: number) => n.toLocaleString('es-CO');
 const label = 'font-mono text-[12px] uppercase tracking-widest text-outline';
 
 /* ── Atoms ────────────────────────────────────────────────────────────────── */
@@ -100,6 +103,43 @@ function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
       <p className={`${label} mt-3 normal-case tracking-wider`}>
         Datos al {asOf} · {R.metrics.sources}
       </p>
+    </section>
+  );
+}
+
+/** Each issuer: logo, how many companies it tokenizes (bar to scale) and, when published, its volume. */
+function IssuersBlock({ issuers, asOf }: { issuers: IssuerStat[]; asOf: string }) {
+  const b = R.issuersBlock;
+  const max = Math.max(...issuers.map((i) => i.stocks));
+  return (
+    <section aria-labelledby="issuers-heading" className="mt-10">
+      <h2 id="issuers-heading" className={`${label} mb-4`}>{b.heading}</h2>
+      <ul className="flex flex-col gap-px bg-primary/10">
+        {issuers.map((i) => {
+          const floor = (b.partial as readonly string[]).includes(i.id);
+          return (
+            <li key={i.id} className="grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 bg-surface-container-low p-4 md:grid-cols-[2.75rem_10rem_minmax(0,1fr)_12rem] md:p-5">
+              <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-11" />
+              <p className="font-headline text-lg font-bold text-on-surface">{i.name}</p>
+              <div className="order-last col-span-3 md:order-none md:col-span-1">
+                <span aria-hidden className="block h-2 bg-surface-container-highest">
+                  <span className="block h-full origin-left bg-primary" style={{ transform: `scaleX(${i.stocks / max})` }} />
+                </span>
+              </div>
+              <div className="text-right">
+                {floor && <p className="font-body text-[12px] text-on-surface-variant">{b.atLeast}</p>}
+                <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{b.stocks(num(i.stocks))}</p>
+                {i.volume && (
+                  <p className="font-body text-[15px] text-on-surface-variant">
+                    US${num(i.volume.usd)} · {i.volume.period}
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <p className={`${label} mt-3 normal-case tracking-wider`}>{b.note(asOf)}</p>
     </section>
   );
 }
@@ -403,6 +443,7 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
   return (
     <section aria-labelledby="course-heading">
       <Heading id="course-heading" kicker={c.kicker}>{c.heading}</Heading>
+      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{c.format}</p>
       <ol className="flex flex-col gap-px bg-primary/10">
         {c.modules.map((m) => (
           <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5 md:p-6">
@@ -416,7 +457,9 @@ function Course({ onReserve }: { onReserve: (p: string) => void }) {
       </ol>
       <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
-          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{R.price.checkout ? c.today.paid : c.today.interest}</p>
+          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
+            {presale ? R.presaleLine(presale.until, presale.after) : R.price.checkout ? c.today.paid : c.today.interest}
+          </p>
           {details.length > 0 && <p className="mt-1 font-body text-base text-on-surface-variant">{details.join(' · ')}</p>}
         </div>
         <ReserveButton position="precio" onReserve={onReserve} />
@@ -544,7 +587,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, names, asOf, metrics, tools, issuerBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, names, asOf, metrics, tools, issuerBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
@@ -632,6 +675,7 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
             <Universe tiles={tiles} names={names} asOf={asOf} />
             <div className="mt-10">
               <MetricsBlock m={metrics} asOf={asOf} />
+              <IssuersBlock issuers={issuers} asOf={asOf} />
             </div>
           </div>
           <Course onReserve={reserve} />
@@ -650,6 +694,7 @@ export default function AccionesClient({ tiles, sources, names, asOf, metrics, t
           </section>
 
           <section id={FORM_ID} ref={formRef} aria-labelledby="form-heading" className="scroll-mt-24">
+            <p className="mb-px border-l-2 border-outline-variant bg-surface-container-low p-5 font-body text-base leading-relaxed text-on-surface md:p-6">{R.custody}</p>
             <ReserveForm />
           </section>
 

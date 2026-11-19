@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { langOf } from '@/lib/i18n';
 import { ACCIONES } from '@/lib/recursos';
-import { catalog, dateEs, logoFor, sourceList, techTiles } from '@/lib/acciones/catalog';
+import { catalog, dateEs, issuerStats, logoFor, sourceList, techTiles } from '@/lib/acciones/catalog';
 import AccionesClient, { type BandItem } from './AccionesClient';
 
 const band = (key: string, name: string, href?: string): BandItem => ({ name, href, logo: logoFor(key) });
@@ -22,6 +22,7 @@ export default function Page({ params }: { params: { lang: string } }) {
     <AccionesClient
       tiles={tiles}
       sources={sourceList()}
+      issuers={issuerStats()}
       names={names}
       asOf={dateEs(m.as_of)}
       metrics={{ tech: m.tech_companies, issuers: m.issuers, venues: m.venues, max: m.issuers_per_company_max, maxName }}

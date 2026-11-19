@@ -133,8 +133,13 @@ export const ACCIONES = {
   disclaimer: 'Esto no es asesoría de inversión.',
 
   price: {
-    /** Flip to true once Stripe is configured in Vercel: the button becomes the US$5 checkout. */
+    /** Flip to true once Stripe is configured in Vercel: the button becomes the checkout. */
     checkout: false,
+    /**
+     * Single presale payment instead of reserve + balance. William is leaning to
+     * { amount: 15, after: 20, until: '30 nov' }; stays null until he confirms.
+     */
+    presale: null as { amount: number; after: number; until: string } | null,
     reserve: 5,
     total: null as number | null,
     opens: null as string | null,
@@ -151,8 +156,9 @@ export const ACCIONES = {
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
 
-  /** Never promise a payment that does not exist: the label follows `price.checkout`. */
-  reserve: { paid: 'Reservar con US$5', interest: 'Reservar mi cupo' },
+  /** Never promise a payment that does not exist: the label follows `price.checkout` and `price.presale`. */
+  reserve: { paid: 'Reservar con US$5', interest: 'Reservar mi cupo', presale: (amount: number) => `Reservar mi cupo · US$${amount}` },
+  presaleLine: (until: string, after: number) => `Precio de preventa hasta el ${until} · después US$${after}`,
   /** Line under the hero button, only once the total price is set. */
   restLine: (total: number) => `Curso completo: US$${total} · pagas el resto al abrir.`,
 
@@ -221,10 +227,11 @@ export const ACCIONES = {
   course: {
     kicker: 'El curso',
     heading: 'Tres sesiones, de tus pesos a tu primer token',
+    format: '3 sesiones en vivo de 1 hora (45 min + preguntas). Te quedas con las grabaciones y con un asistente de IA que te guía paso a paso.',
     modules: [
       { n: '01', title: 'Tu cuenta: de pesos a USDT', desc: 'Creas y verificas tu cuenta en el exchange y compras tus primeros USDT con pesos (PSE).' },
       { n: '02', title: 'Compra tus acciones tokenizadas', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
-      { n: '03', title: 'Sin custodio: tu wallet y Uniswap', desc: 'Pasas USDT y ETH (para el gas) a tu propia wallet y compras en Uniswap, eligiendo emisor y red.' },
+      { n: '03', title: 'Sin custodio: tu wallet y Uniswap', desc: 'Pasas USDT y ETH (gas) a tu propia wallet, retiras lo que compraste en el exchange y compras en Uniswap, eligiendo emisor y red.' },
     ],
     today: { paid: 'US$5 hoy para reservar', interest: 'Reserva: US$5 cuando abra el pago' },
     rest: (rest: number) => `US$${rest} al abrir`,
@@ -240,6 +247,19 @@ export const ACCIONES = {
       { title: 'Colombia: no verificado', body: 'No hemos verificado el estatus legal ni tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
       { title: 'Puedes perder lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
     ],
+  },
+
+  /** What Ekinoxis never does, shown beside the form. */
+  custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
+
+  issuersBlock: {
+    heading: 'Acciones tokenizadas por emisor',
+    stocks: (n: string) => `${n} acciones`,
+    atLeast: 'al menos',
+    noVolume: 'no publica su volumen',
+    note: (date: string) => `Conteo de nuestro catálogo al ${date} (todas las empresas, no solo las 40).`,
+    /** Issuers whose official list is partial; their count is a floor. */
+    partial: ['ondo'],
   },
 
   /** Interest form, used while card payment is not live. */

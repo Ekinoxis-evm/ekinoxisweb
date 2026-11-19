@@ -21,10 +21,29 @@ interface Source {
   level: Level;
 }
 
+interface Volume {
+  usd: number;
+  period: string;
+  source: string;
+  read_on: string;
+  level: Level;
+}
+
 interface Issuer {
   name: string;
   site?: string;
   eligibility_es?: string;
+  /** Published trading volume; absent when the issuer does not publish one. */
+  volume?: Volume | null;
+}
+
+export interface IssuerStat {
+  id: string;
+  name: string;
+  logo: Logo | null;
+  /** Companies in the catalog with a token from this issuer. */
+  stocks: number;
+  volume: Volume | null;
 }
 
 interface Venue {
@@ -150,6 +169,19 @@ export function techTiles(): TechTile[] {
       issuers: Array.from(new Set(c.onchain.map((o) => o.issuer))),
     }))
     .sort((a, b) => b.issuers.length - a.issuers.length);
+}
+
+/** Each issuer with how many companies it tokenizes across the whole catalog, most first. */
+export function issuerStats(): IssuerStat[] {
+  const counts = new Map<string, number>();
+  for (const c of data.companies) {
+    const ids = new Set([...c.onchain.map((o) => o.issuer), ...c.exchanges.map((e) => e.issuer)]);
+    ids.forEach((id) => counts.set(id, (counts.get(id) ?? 0) + 1));
+  }
+  return Object.entries(data.issuers)
+    .filter(([id]) => counts.has(id))
+    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, volume: i.volume ?? null }))
+    .sort((a, b) => b.stocks - a.stocks);
 }
 
 /** Every source the catalog cites, for the page's sources list. */
