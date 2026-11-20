@@ -165,6 +165,14 @@ export const ACCIONES = {
 
   clip: {
     caption: 'Así se compra: SpaceX con 1 USDT en OKX.',
+    /** Steps of the 15 s clip; `at` is the second each one starts. Tapping a step jumps the video there. */
+    steps: [
+      { at: 0, text: 'Quick → Stock: eliges SpaceX (xSPCX).' },
+      { at: 1.5, text: 'Escribes el monto: 1 USDT.' },
+      { at: 5, text: 'Preview: ves cuánto token recibes.' },
+      { at: 9.5, text: 'Confirmas «Buy xSPCX». Dice «No fee»; el costo va en el precio.' },
+      { at: 13, text: '«Your order is complete»: el token ya está en tu cuenta.' },
+    ],
     source: 'Grabación propia, 19 nov 2026',
     src: '/recursos/acciones/clip-okx-spacex.mp4',
     poster: '/recursos/acciones/clip-okx-spacex.jpg',
@@ -217,10 +225,11 @@ export const ACCIONES = {
 
   tech: {
     heading: 'Las 40 tecnológicas',
-    lead: 'Toca una para ver dónde comprarla y quién la emite.',
+    lead: 'Toca una para abrir su ficha: dónde comprarla y quién la emite.',
+    close: 'Cerrar',
     note: (date: string) => `Datos al ${date}. Sin precios.`,
-    routeA: 'Método custodio · exchanges',
-    routeB: (n: number) => `Custodia propia · ${n} ${n === 1 ? 'emisor' : 'emisores'}`,
+    routeA: 'Método custodio: dónde comprarla',
+    routeB: (n: number) => `Custodia propia: ${n} ${n === 1 ? 'emisor' : 'emisores'} con token propio`,
     none: 'Ninguno en esta lista',
     sources: (date: string) => `Fuentes: APIs públicas de OKX, Kraken y Bybit, listas de los emisores y Uniswap, ${date}.`,
     sourcesLink: 'Ver todas las fuentes',
@@ -236,13 +245,16 @@ export const ACCIONES = {
 
   issuersBlock: {
     heading: 'Los emisores',
-    lead: 'Quién crea cada token y cuánto del mercado tiene. Toca uno para ver sus números.',
+    lead: 'Quién crea cada token y cuánto del mercado tiene. Toca uno para ver su ficha.',
     share: 'del valor tokenizado',
     stocksLabel: 'acciones y ETF',
+    valueLabel: 'valor tokenizado',
     atLeast: 'al menos',
     others: 'Otros emisores y plataformas',
     othersNote: 'Fuera del top de RWA.xyz, incluidas plataformas fuera de nuestro catálogo.',
-    noValueHeading: 'Sin dato público de valor',
+    open: (name: string) => `Ver detalles de ${name}`,
+    eligibility: 'Quién puede comprar',
+    site: 'Sitio oficial',
     chartLabel: 'Participación de cada emisor en el valor tokenizado de acciones',
     note: (date: string, source: string) =>
       `Valor y participación: ${source}. Conteo de acciones y ETF: nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,

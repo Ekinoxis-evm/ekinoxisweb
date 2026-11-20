@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight, Landmark } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Landmark, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -32,6 +32,8 @@ interface Props {
   tiles: TechTile[];
   sources: SourceItem[];
   issuers: IssuerStat[];
+  /** Logo per venue or issuer id, for the detail cards. */
+  idLogos: Record<string, Logo | null>;
   sector: Sector;
   names: Record<string, string>;
   asOf: string;
@@ -94,6 +96,51 @@ function Heading({ children, id }: { children: string; id: string }) {
   );
 }
 
+/**
+ * A detail card over the page: the native modal <dialog> traps focus, closes on Esc and on a
+ * click on the backdrop, and hands focus back to the button that opened it.
+ */
+function Sheet({ open, onClose, label, children }: { open: boolean; onClose: () => void; label: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    if (open && !d.open) d.showModal();
+    if (!open && d.open) d.close();
+  }, [open]);
+  return (
+    <dialog
+      ref={ref}
+      aria-label={label}
+      onClose={onClose}
+      onClick={(e) => e.target === ref.current && onClose()}
+      className="w-[min(34rem,calc(100vw-2rem))] max-h-[85vh] overflow-y-auto border border-outline-variant bg-surface-container p-0 text-on-surface backdrop:bg-black/80"
+    >
+      <div className="relative p-6 md:p-8">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={R.tech.close}
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center text-on-surface-variant transition-colors duration-150 hover:text-on-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+        >
+          <X size={20} aria-hidden />
+        </button>
+        {children}
+      </div>
+    </dialog>
+  );
+}
+
+/** A logo with its name, for lists inside the detail cards. */
+function NamedLogo({ logo, name }: { logo: Logo | null; name: string }) {
+  return (
+    <li className="flex items-center gap-3">
+      <LogoTile logo={logo} text={name.slice(0, 3).toUpperCase()} className="w-10" />
+      <span className="font-body text-base text-on-surface">{name}</span>
+    </li>
+  );
+}
+
 /* ── Sections ─────────────────────────────────────────────────────────────── */
 
 function SectorBlock({ s }: { s: Sector }) {
@@ -129,6 +176,7 @@ type Slice = { id: string; name: string; logo: Logo | null; value: number; stock
  * so colour never carries identity alone (names are always printed).
  */
 function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: string; sector: Sector }) {
+  const [card, setCard] = useState<IssuerStat | null>(null);
   const b = R.issuersBlock;
   const valued = issuers.filter((i): i is IssuerStat & { value: number } => i.value !== null).sort((x, y) => y.value - x.value);
   const known = valued.reduce((sum, i) => sum + i.value, 0);
@@ -136,8 +184,15 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
     ...valued.map((i) => ({ id: i.id, name: i.name, logo: i.logo, value: i.value, stocks: i.stocks, floor: (b.partial as readonly string[]).includes(i.id) })),
     ...(sector.value > known ? [{ id: 'otros', name: b.others, logo: null, value: sector.value - known, stocks: null, floor: false }] : []),
   ];
-  const noValue = issuers.filter((i) => i.value === null);
   const [sel, setSel] = useState(slices[0]?.id ?? '');
+  const openCard = (id: string) => {
+    setSel(id);
+    const found = issuers.find((i) => i.id === id);
+    if (found) {
+      setCard(found);
+      track('issuer_open', { issuer: id });
+    }
+  };
   const current = slices.find((x) => x.id === sel) ?? slices[0];
   const pct = (v: number) => `${((v / sector.value) * 100).toLocaleString('es-CO', { maximumFractionDigits: 1 })} %`;
 
@@ -168,7 +223,7 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
                     strokeWidth={x.id === current?.id ? 30 : 24}
                     strokeDasharray={`${dash} ${CIRC - dash}`}
                     strokeDashoffset={-offset}
-                    onClick={() => setSel(x.id)}
+                    onClick={() => openCard(x.id)}
                     onMouseEnter={() => setSel(x.id)}
                     className={`cursor-pointer transition-[stroke-width] duration-150 motion-reduce:transition-none ${
                       x.id === current?.id ? 'stroke-on-surface' : x.id === 'otros' ? 'stroke-outline-variant' : 'stroke-on-surface-variant'
@@ -197,9 +252,11 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
               <li key={x.id}>
                 <button
                   type="button"
-                  onClick={() => setSel(x.id)}
+                  onClick={() => (x.id === 'otros' ? setSel(x.id) : openCard(x.id))}
                   onMouseEnter={() => setSel(x.id)}
                   aria-pressed={on}
+                  aria-haspopup={x.id === 'otros' ? undefined : 'dialog'}
+                  aria-label={x.id === 'otros' ? undefined : b.open(x.name)}
                   className={`grid min-h-[64px] w-full grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-4 border-l-2 p-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
                     on ? 'border-on-surface bg-surface-container-high' : 'border-transparent bg-surface-container-low hover:bg-surface-container'
                   }`}
@@ -222,24 +279,55 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
         </ol>
       </div>
 
-      {noValue.length > 0 && (
-        <div className="mt-px bg-surface-container-low p-5 md:p-6">
-          <h3 className="font-headline text-lg font-bold text-on-surface">{b.noValueHeading}</h3>
-          <ul className="mt-4 flex flex-wrap gap-3">
-            {noValue.map((i) => (
-              <li key={i.id} className="flex items-center gap-3 border border-outline-variant py-2 pl-2 pr-4">
-                <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-9" />
-                <span>
-                  <span className="block font-body text-[15px] font-bold text-on-surface">{i.name}</span>
-                  <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">
-                    {num(i.stocks)} {b.stocksLabel}
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <Sheet open={card !== null} onClose={() => setCard(null)} label={card?.name ?? b.heading}>
+        {card && (
+          <div>
+            <div className="flex items-center gap-4 pr-12">
+              <LogoTile logo={card.logo} text={card.name.slice(0, 3).toUpperCase()} className="w-16" />
+              <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{card.name}</p>
+            </div>
+            <dl className="mt-6 grid grid-cols-2 gap-px bg-primary/10">
+              {card.value !== null && (
+                <>
+                  <div className="bg-surface-container-low p-4">
+                    <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">{pct(card.value)}</dd>
+                    <dt className="font-body text-[13px] text-on-surface-variant">{b.share}</dt>
+                  </div>
+                  <div className="bg-surface-container-low p-4">
+                    <dd className="font-headline text-xl font-bold [font-variant-numeric:tabular-nums]">{usd(card.value)}</dd>
+                    <dt className="font-body text-[13px] text-on-surface-variant">{b.valueLabel}</dt>
+                  </div>
+                </>
+              )}
+              <div className="col-span-2 bg-surface-container-low p-4">
+                <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">
+                  {(b.partial as readonly string[]).includes(card.id) && <span className="mr-2 font-body text-[15px] font-normal text-on-surface-variant">{b.atLeast}</span>}
+                  {num(card.stocks)}
+                </dd>
+                <dt className="font-body text-[13px] text-on-surface-variant">{b.stocksLabel}</dt>
+              </div>
+            </dl>
+            {card.eligibility && (
+              <>
+                <h3 className="mt-6 font-headline text-lg font-bold text-on-surface">{b.eligibility}</h3>
+                <p className="mt-2 font-body text-base leading-relaxed text-on-surface-variant">{card.eligibility}</p>
+              </>
+            )}
+            {card.site && (
+              <a
+                href={card.site}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex min-h-[44px] items-center gap-2 border border-outline-variant px-4 font-body text-[15px] text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {b.site}
+                <ArrowUpRight size={16} aria-hidden />
+              </a>
+            )}
+            <p className={`${note} mt-6`}>{b.note(asOf, sector.source)}</p>
+          </div>
+        )}
+      </Sheet>
       <p className={`${note} mt-3`}>{b.note(asOf, sector.source)}</p>
     </section>
   );
@@ -414,7 +502,7 @@ function useUniverseCols() {
  * depths, bobs on its own clock and leans away from the cursor by its depth. Transform only;
  * reduced motion keeps it still. Tapping a logo opens its panel under the field.
  */
-function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<string, string>; asOf: string }) {
+function Universe({ tiles, names, idLogos, asOf }: { tiles: TechTile[]; names: Record<string, string>; idLogos: Record<string, Logo | null>; asOf: string }) {
   const t = R.tech;
   const cols = useUniverseCols();
   const rows = Math.ceil(tiles.length / cols);
@@ -436,8 +524,8 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
   };
 
   const pick = (slug: string) => {
-    if (open !== slug) track('tech_tile_open', { slug });
-    setOpen((cur) => (cur === slug ? null : slug));
+    track('tech_tile_open', { slug });
+    setOpen(slug);
   };
 
   return (
@@ -473,8 +561,7 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
                   <button
                     type="button"
                     onClick={() => pick(tile.slug)}
-                    aria-expanded={active}
-                    aria-controls="tech-panel"
+                    aria-haspopup="dialog"
                     aria-label={tile.name}
                     className={`group relative block animate-float motion-reduce:animate-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? 'outline outline-2 outline-offset-2 outline-primary' : ''}`}
                     style={{ animationDelay: `${-jx * 6}s`, animationDuration: `${5 + jy * 4}s` }}
@@ -497,35 +584,45 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
         </ul>
       </div>
 
-      {sel && (
-        <div id="tech-panel" role="region" aria-label={sel.name} className="border-l-2 border-outline-variant bg-surface-container p-5 md:p-6">
-          <p className="font-headline text-2xl font-bold tracking-tight text-on-surface">
-            {sel.name} <span className="font-mono text-[12px] font-normal text-outline">{sel.ticker}</span>
-          </p>
-          <div className="mt-4 grid gap-5 md:grid-cols-2">
-            <div>
-              <p className={label}>{t.routeA}</p>
-              <p className="mt-2 font-body text-base text-on-surface">
-                {sel.venues.length ? sel.venues.map((v) => names[v] ?? v).join(' · ') : t.none}
-              </p>
+      <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? t.heading}>
+        {sel && (
+          <div>
+            <div className="flex items-center gap-4 pr-12">
+              <LogoTile logo={sel.logo} text={sel.ticker} className="w-16" />
+              <div>
+                <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{sel.name}</p>
+                <p className="font-mono text-[12px] text-outline">{sel.ticker}</p>
+              </div>
             </div>
-            <div>
-              <p className={label}>{t.routeB(sel.issuers.length)}</p>
-              <ul className="mt-2 flex flex-wrap gap-2">
-                {sel.issuers.map((id) => (
-                  <li key={id} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">{names[id] ?? id}</li>
+            <h3 className="mt-6 font-headline text-lg font-bold text-on-surface">{t.routeA}</h3>
+            {sel.venues.length ? (
+              <ul className="mt-3 flex flex-col gap-3">
+                {sel.venues.map((v) => (
+                  <NamedLogo key={v} logo={idLogos[v] ?? null} name={names[v] ?? v} />
                 ))}
               </ul>
-            </div>
+            ) : (
+              <p className="mt-2 font-body text-base text-on-surface-variant">{t.none}</p>
+            )}
+            <h3 className="mt-6 font-headline text-lg font-bold text-on-surface">{t.routeB(sel.issuers.length)}</h3>
+            <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {sel.issuers.map((id) => (
+                <NamedLogo key={id} logo={idLogos[id] ?? null} name={names[id] ?? id} />
+              ))}
+            </ul>
+            <p className={`${note} mt-6`}>
+              {t.sources(asOf)}{' '}
+              <a
+                href={`#${SOURCES_ID}`}
+                onClick={() => setOpen(null)}
+                className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+              >
+                {t.sourcesLink}
+              </a>
+            </p>
           </div>
-          <p className={`${note} mt-5`}>
-            {t.sources(asOf)} ·{' '}
-            <a href={`#${SOURCES_ID}`} className="inline-flex min-h-[44px] items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
-              {t.sourcesLink}
-            </a>
-          </p>
-        </div>
-      )}
+        )}
+      </Sheet>
       <p className={`${note} mt-3`}>{t.note(asOf)}</p>
     </section>
   );
@@ -585,6 +682,7 @@ function Clip() {
   const c = R.clip;
   const ref = useRef<HTMLVideoElement>(null);
   const [reduce, setReduce] = useState(false);
+  const [step, setStep] = useState(0);
   // React does not render `muted` as an attribute, which blocks autoplay; set it and start by hand.
   useEffect(() => {
     const v = ref.current;
@@ -594,8 +692,22 @@ function Clip() {
     v.muted = true;
     v.play().catch(() => setReduce(true));
   }, []);
+  const onTime = () => {
+    const t = ref.current?.currentTime ?? 0;
+    let k = 0;
+    c.steps.forEach((s, i) => {
+      if (t >= s.at) k = i;
+    });
+    setStep(k);
+  };
+  const jump = (i: number) => {
+    const v = ref.current;
+    if (!v) return;
+    v.currentTime = c.steps[i].at;
+    setStep(i);
+  };
   return (
-    <figure className="flex flex-col items-center gap-3">
+    <figure className="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)] items-start gap-4 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] lg:grid-cols-1 xl:grid-cols-[minmax(0,13rem)_minmax(0,1fr)]">
       <video
         ref={ref}
         src={c.src}
@@ -605,12 +717,30 @@ function Clip() {
         loop
         controls={reduce}
         preload="metadata"
+        onTimeUpdate={onTime}
         aria-label={c.caption}
-        className="w-full max-w-[280px] border border-outline-variant bg-surface-container-lowest"
+        className="w-full border border-outline-variant bg-surface-container-lowest lg:mx-auto lg:max-w-[16rem] xl:max-w-none"
       />
-      <figcaption className="text-center">
-        <span className="block font-body text-[15px] text-on-surface">{c.caption}</span>
-        <span className={note}>{c.source}</span>
+      <figcaption>
+        <span className="block font-headline text-lg font-bold leading-snug text-on-surface">{c.caption}</span>
+        <ol className="mt-3 flex flex-col gap-1">
+          {c.steps.map((s, i) => (
+            <li key={s.at}>
+              <button
+                type="button"
+                onClick={() => jump(i)}
+                aria-current={i === step ? 'step' : undefined}
+                className={`flex min-h-[44px] w-full items-start gap-3 border-l-2 py-2 pl-3 text-left font-body text-[15px] leading-snug transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
+                  i === step ? 'border-on-surface text-on-surface' : 'border-outline-variant text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <span className="font-mono text-[12px] text-outline">{i + 1}</span>
+                {s.text}
+              </button>
+            </li>
+          ))}
+        </ol>
+        <span className={`${note} mt-2 block`}>{c.source}</span>
       </figcaption>
     </figure>
   );
@@ -855,7 +985,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, fork, selfCustodyLogos, custodialBand, selfCustodyBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, fork, selfCustodyLogos, custodialBand, selfCustodyBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
@@ -938,7 +1068,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
       </div>
 
       {/* Full-bleed bands: what you will use, and who issues the tokens. Only official logos. */}
-      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" still />
+      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" speed={3} />
       <LogoMarquee eyebrow={R.bands.selfCustody.eyebrow} title={R.bands.selfCustody.title} logos={marquee(selfCustodyBand)} plate="dark" shape="square" speed={3} reverse />
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
@@ -949,7 +1079,7 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
           </div>
           <Routes fork={fork} />
           <div>
-            <Universe tiles={tiles} names={names} asOf={asOf} />
+            <Universe tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} />
           </div>
           <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} />
           <Teacher />

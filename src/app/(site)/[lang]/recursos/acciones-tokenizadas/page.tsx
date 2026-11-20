@@ -22,6 +22,11 @@ export default function Page({ params }: { params: { lang: string } }) {
       tiles={tiles}
       sources={sourceList()}
       issuers={issuerStats()}
+      idLogos={Object.fromEntries([
+        // Symbol marks where a wordmark is unreadable at card size.
+        ...Object.keys(catalog.venues).map((id) => [id, logoFor(id === 'kraken' ? 'venue-kraken-mark' : `venue-${id}`)]),
+        ...Object.keys(catalog.issuers).map((id) => [id, logoFor(`issuer-${id}`)]),
+      ])}
       sector={{
         value: catalog.sector.distributed_value_usd,
         transfers: catalog.sector.monthly_transfer_volume_usd,

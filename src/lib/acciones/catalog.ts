@@ -45,6 +45,9 @@ export interface IssuerStat {
   stocks: number;
   /** Distributed tokenized value in USD (RWA.xyz), or null when there is no public figure. */
   value: number | null;
+  site: string | null;
+  /** Who may buy, in Spanish, from the issuer's own terms. */
+  eligibility: string | null;
 }
 
 interface Venue {
@@ -182,7 +185,7 @@ export function issuerStats(): IssuerStat[] {
   }
   return Object.entries(data.issuers)
     .filter(([id]) => counts.has(id))
-    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, value: i.value?.usd ?? null }))
+    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, value: i.value?.usd ?? null, site: i.site ?? null, eligibility: i.eligibility_es ?? null }))
     .sort((a, b) => b.stocks - a.stocks);
 }
 
