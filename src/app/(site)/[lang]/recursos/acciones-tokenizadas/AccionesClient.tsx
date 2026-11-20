@@ -45,8 +45,20 @@ interface Props {
 
 const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
-const PAY = R.price.paymentLink;
-const CTA = PAY ? R.reserve.paid(R.price.amount) : R.reserve.interest;
+/** What the button sells right now: the link, the amount and, during the promo, the real later price. */
+type Offer = { link: string | null; amount: number; was: number | null; note: string | null };
+
+function offerAt(now: Date): Offer {
+  const p = R.price;
+  if (p.links.promo && p.links.regular) {
+    return now.getTime() < Date.parse(p.promo.endsAt)
+      ? { link: p.links.promo, amount: p.promo.amount, was: p.regular, note: R.promoNote(p.promo.label, p.promo.until) }
+      : { link: p.links.regular, amount: p.regular, was: null, note: null };
+  }
+  return { link: p.current.link, amount: p.current.amount, was: null, note: p.current.note };
+}
+
+const ctaFor = (o: Offer) => (o.link ? R.reserve.paid(o.amount) : R.reserve.interest);
 const num = (n: number) => n.toLocaleString('es-CO');
 /** «US$1,4 mil millones», «US$875,2 millones». */
 const usd = (n: number) =>
@@ -746,11 +758,11 @@ function Clip() {
   );
 }
 
-function ReserveButton({ position, onReserve, className = '' }: { position: string; onReserve: (p: string) => void; className?: string }) {
+function ReserveButton({ position, onReserve, label, className = '' }: { position: string; onReserve: (p: string) => void; label: string; className?: string }) {
   return (
     <span data-cta className={`block w-full sm:w-auto ${className}`}>
       <Button size="lg" onClick={() => onReserve(position)} className="w-full justify-center sm:w-auto">
-        {CTA}
+        {label}
       </Button>
     </span>
   );
@@ -761,7 +773,7 @@ function ReserveButton({ position, onReserve, className = '' }: { position: stri
  * under reduced motion it never auto-advances and swaps without movement. Screen readers hear a
  * slide only when the visitor changes it (aria-live polite), never on the timer.
  */
-function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => void; selfCustodyLogos: (Logo | null)[] }) {
+function Course({ onReserve, selfCustodyLogos, offer }: { onReserve: (p: string) => void; selfCustodyLogos: (Logo | null)[]; offer: Offer }) {
   const c = R.course;
   const total = c.modules.length;
   const [i, setI] = useState(0);
@@ -859,8 +871,19 @@ function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => voi
         </div>
       </div>
       <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
-        <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{PAY ? R.priceLine(R.price.amount, R.price.until) : c.soon}</p>
-        <ReserveButton position="precio" onReserve={onReserve} />
+        {offer.link ? (
+          <div>
+            <p className="flex flex-wrap items-baseline gap-x-3 font-headline text-on-surface [font-variant-numeric:tabular-nums]">
+              <span className="text-5xl font-bold tracking-tighter">{R.priceLine(offer.amount)}</span>
+              {offer.was !== null && <s className="text-2xl text-on-surface-variant">{R.priceLine(offer.was)}</s>}
+              <span className="font-body text-base text-on-surface-variant">{R.single}</span>
+            </p>
+            {offer.note && <p className="mt-2 font-body text-base text-on-surface">{offer.note}</p>}
+          </div>
+        ) : (
+          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{c.soon}</p>
+        )}
+        <ReserveButton position="precio" onReserve={onReserve} label={ctaFor(offer)} />
       </div>
       <Disclaimer className="mt-4" />
     </section>
@@ -869,7 +892,7 @@ function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => voi
 
 type Status = 'idle' | 'sending' | 'error' | 'done';
 
-function ReserveForm() {
+function ReserveForm({ paid }: { paid: boolean }) {
   const f = R.form;
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
@@ -969,7 +992,7 @@ function ReserveForm() {
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
         {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
         <span data-cta className="block">
-          <Button type="submit" size="lg" variant={PAY ? 'ghost' : 'primary'} disabled={status === 'sending'} className="w-full justify-center">
+          <Button type="submit" size="lg" variant={paid ? 'ghost' : 'primary'} disabled={status === 'sending'} className="w-full justify-center">
             {status === 'sending' ? f.sending : f.submit}
           </Button>
         </span>
@@ -987,6 +1010,9 @@ const marquee = (items: BandItem[]) =>
 
 export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, fork, selfCustodyLogos, custodialBand, selfCustodyBand }: Props) {
   const [barShown, setBarShown] = useState(false);
+  // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
+  const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
+  useEffect(() => setOffer(offerAt(new Date())), []);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
     .map((s) => tiles.find((t) => t.slug === s))
@@ -1019,18 +1045,18 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
 
   const reserve = useCallback((position: string) => {
     track('reserve_click', { position });
-    if (PAY) {
+    if (offer.link) {
       // Attribution on the Stripe session: campaign (or «landing») + which button; Stripe accepts [A-Za-z0-9_-].
       const campaign = new URLSearchParams(window.location.search).get('utm_campaign') ?? 'landing';
       const ref = `${campaign}-${position}`.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 200);
-      window.location.assign(`${PAY}?client_reference_id=${encodeURIComponent(ref)}`);
+      window.location.assign(`${offer.link}?client_reference_id=${encodeURIComponent(ref)}`);
       return;
     }
     const el = formRef.current;
     if (!el) return;
     el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     el.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
-  }, []);
+  }, [offer]);
 
 
   return (
@@ -1053,7 +1079,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
                 </li>
               ))}
             </ul>
-            <ReserveButton position="hero" onReserve={reserve} className="mt-6 md:mt-10" />
+            <ReserveButton position="hero" onReserve={reserve} label={ctaFor(offer)} className="mt-6 md:mt-10" />
             <p className="mt-4 font-body text-[15px] text-on-surface-variant">
               {R.session.line(R.session.date, R.session.time)}{' '}
               {R.disclaimer}
@@ -1081,7 +1107,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
           <div>
             <Universe tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} />
           </div>
-          <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} />
+          <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} offer={offer} />
           <Teacher />
 
           <section aria-labelledby="risks-heading">
@@ -1099,7 +1125,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
 
           <section id={FORM_ID} ref={formRef} aria-labelledby="form-heading" className="scroll-mt-24">
             <p className="mb-px border-l-2 border-outline-variant bg-surface-container-low p-5 font-body text-base leading-relaxed text-on-surface md:p-6">{R.custody}</p>
-            <ReserveForm />
+            <ReserveForm paid={offer.link !== null} />
           </section>
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
@@ -1134,7 +1160,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
           tabIndex={barShown ? 0 : -1}
           className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-primary font-headline text-sm font-bold uppercase tracking-wider text-surface-container-lowest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
-          {CTA}
+          {ctaFor(offer)}
           <ArrowRight size={16} aria-hidden />
         </button>
       </div>

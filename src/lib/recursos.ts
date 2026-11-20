@@ -132,15 +132,18 @@ export const ACCIONES = {
     'Taller en vivo: compra acciones tokenizadas de las grandes tecnológicas del mundo con tu moneda bancaria, por el método custodio o con custodia propia. Esto no es asesoría de inversión.',
   disclaimer: 'Esto no es asesoría de inversión.',
 
-  /** Confirmed by William: one payment of US$15, bookable until 30 Nov. */
+  /**
+   * Confirmed by William (20 nov 2026): US$49 is the real price from 2 Dec; until then the
+   * Black Friday price is US$30. That is what makes the struck-through US$49 legitimate.
+   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4). The page picks the
+   * tier by the visitor's clock, so it switches on 2 Dec 00:00 COT without a deploy.
+   */
   price: {
-    amount: 15,
-    until: '30 de noviembre',
-    /**
-     * Stripe Payment Link (live, product prod_Vexh0me4TtKkC4). Stripe hosts the
-     * confirmation page. Set to null and the button falls back to the interest form.
-     */
-    paymentLink: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00' as string | null,
+    regular: 49,
+    promo: { amount: 30, label: 'Precio Black Friday', until: '1 de diciembre', endsAt: '2026-12-02T05:00:00Z' },
+    links: { promo: null as string | null, regular: null as string | null },
+    /** The live US$15 link, used only until both tier links exist; then delete this. */
+    current: { amount: 15, link: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00', note: 'Reserva hasta el 30 de noviembre.' },
   },
 
   /** Live session. `time` stays null until William sets it; null hides it. */
@@ -161,7 +164,9 @@ export const ACCIONES = {
 
   /** The button names the price only when it opens a real payment. */
   reserve: { interest: 'Reservar mi cupo', paid: (amount: number) => `Reservar mi cupo · US$${amount}` },
-  priceLine: (amount: number, until: string) => `US$${amount} · pago único · reserva hasta el ${until}`,
+  priceLine: (amount: number) => `US$${amount}`,
+  single: 'pago único',
+  promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$49.`,
 
   clip: {
     caption: 'Así se compra: SpaceX con 1 USDT en OKX.',
