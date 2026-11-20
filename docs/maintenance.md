@@ -11,7 +11,7 @@ Go to `/admin/hackers/new` — fill in name, photo, profile (EN + ES), universit
 Go to `/admin/hackathons/new` — fill in name, logo, website, start/end dates. Status (incoming/ongoing/past) is derived automatically from dates.
 
 ### Add or edit a course
-Edit `src/lib/courses.ts` — one `Course` object per course, every string in both `en` and `es`. `status` drives the badge and CTA label (`open` / `waitlist` / `coming_soon`); `price: null` renders "Price TBA"; `modules: { en: [], es: [] }` renders the "syllabus published with the announcement" note. `enrollUrl` falls back to Telegram. The detail route is prerendered from the registry, so a new slug needs a rebuild/deploy.
+Edit `src/lib/courses.ts` — one `Course` object per course, every string in both `en` and `es`. `status` drives the badge and CTA label (`open` / `waitlist` / `coming_soon`); `price: null` renders "Price TBA"; `modules: { en: [], es: [] }` renders the "syllabus published with the announcement" note. `enrollUrl` falls back to Telegram. The detail route (`/workshops/[slug]`) is prerendered from the registry, so a new slug needs a rebuild/deploy. A workshop with its own landing page goes in `workshops` as a `LandingWorkshop` with `href` (no detail page).
 
 ### Change service prices
 Consultation formats live in `src/app/services/consultation/page.tsx`; web packages in `src/app/services/web-development/page.tsx` (USD + COP); app-building tiers in `content.ts` → `services.pricing.plans`; the three "FROM $…" teasers on `/services` are in `src/app/services/page.tsx`. Keep all four in agreement and update both `en` and `es`.

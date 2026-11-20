@@ -31,7 +31,7 @@ export default function Footer() {
         { href: '/services/consultation', label: en ? 'Consultation' : 'Consultoría' },
         { href: '/services/web-development', label: en ? 'Websites' : 'Sitios web' },
         { href: '/services/app-building', label: en ? 'Software & apps' : 'Software y apps' },
-        { href: '/courses', label: t.nav.courses },
+        { href: '/workshops', label: t.nav.courses },
       ],
     },
     {

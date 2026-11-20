@@ -40,8 +40,8 @@
 │   │   ├── consultation/        # 5 topic cards + talks panel, 4-step funnel, 4 session formats (Focus / Roadmap Sprint / Workshop / Retainer)
 │   │   ├── web-development/     # Included chips → BuildLoop diagram (plan → build → rounds ring → live in 5 days) → tools → sites shipped → 3 packages → book-call panel
 │   │   └── app-building/        # BuildLoop diagram (diagnostic → demo → rounds ring → fit) → tools → work → 3 tiers from content.ts services.pricing (BuildLoop lives in src/components)
-│   ├── courses/
-│   │   ├── page.tsx             # Course grid from src/lib/courses.ts + "how we teach" + private-cohort CTA
+│   ├── workshops/
+│   │   ├── page.tsx             # Workshop grid from `workshops` in src/lib/courses.ts + "how we teach" + private-cohort CTA
 │   │   └── [slug]/
 │   │       ├── page.tsx         # Server Component — generateStaticParams from registry, notFound() on unknown slug
 │   │       └── CourseClient.tsx # Client Component — spec, price, audience/outcomes/prereqs, syllabus, enroll CTA
@@ -109,7 +109,7 @@ Value (dropdown)
   ├─ Certifications → /certifications
   └─ Education → /education
 Portfolio (dropdown: Products → /portfolio#products, Clients → /portfolio#clients, All work → /portfolio)
-Courses → /courses
+Workshops → /workshops (old /courses redirects)
 Hacker House → /hacker-house
 [EN/ES toggle]
 ```

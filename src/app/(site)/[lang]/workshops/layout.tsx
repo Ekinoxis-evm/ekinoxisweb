@@ -3,7 +3,7 @@ import { langOf } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/seo';
 
 export function generateMetadata({ params }: { params: { lang: string } }): Metadata {
-  return pageMetadata(langOf(params), '/courses', {
+  return pageMetadata(langOf(params), '/workshops', {
     section: true,
     title: { en: 'Courses', es: 'Cursos' },
     description: {

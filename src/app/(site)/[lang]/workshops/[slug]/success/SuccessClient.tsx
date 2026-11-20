@@ -38,7 +38,7 @@ export default function SuccessClient({ course }: { course: Course }) {
         <div className="max-w-screen-2xl mx-auto">
           <motion.div className="rise max-w-2xl">
             <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
-              <Link href="/courses" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">COURSES</Link>
+              <Link href="/workshops" className="border border-primary/30 px-2 py-1 hover:border-primary transition-colors">{language === 'es' ? 'TALLERES' : 'WORKSHOPS'}</Link>
               <span className="text-outline">/</span>
               <span className="border border-primary/30 px-2 py-1">{course.code}</span>
             </motion.div>
@@ -61,7 +61,7 @@ export default function SuccessClient({ course }: { course: Course }) {
               <a href="https://t.me/ekinoxis" target="_blank" rel="noopener noreferrer">
                 <Button variant="primary" className="w-full justify-center">{t.telegram}</Button>
               </a>
-              <Link href="/courses">
+              <Link href="/workshops">
                 <Button variant="ghost" className="w-full justify-center">{t.back}</Button>
               </Link>
             </motion.div>

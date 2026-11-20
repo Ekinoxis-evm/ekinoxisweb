@@ -240,8 +240,8 @@ export const ACCIONES = {
     share: 'del valor tokenizado',
     stocksLabel: 'acciones y ETF',
     atLeast: 'al menos',
-    others: 'Otros emisores',
-    othersNote: 'Emisores fuera del top de RWA.xyz.',
+    others: 'Otros emisores y plataformas',
+    othersNote: 'Fuera del top de RWA.xyz, incluidas plataformas fuera de nuestro catálogo.',
     noValueHeading: 'Sin dato público de valor',
     chartLabel: 'Participación de cada emisor en el valor tokenizado de acciones',
     note: (date: string, source: string) =>

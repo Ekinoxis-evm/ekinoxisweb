@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
     const session = await getStripe().checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${base}/courses/${course.slug}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/courses/${course.slug}`,
+      success_url: `${base}/workshops/${course.slug}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${base}/workshops/${course.slug}`,
       locale,
       allow_promotion_codes: true,
       billing_address_collection: 'required',

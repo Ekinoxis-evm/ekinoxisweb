@@ -72,7 +72,7 @@ export default function Navigation() {
     learn: {
       label: t.learn,
       items: [
-        { href: '/courses', label: t.courses },
+        { href: '/workshops', label: t.courses },
         { href: '/education', label: t.knowledge },
       ],
     },

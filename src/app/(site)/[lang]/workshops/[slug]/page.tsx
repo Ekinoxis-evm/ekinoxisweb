@@ -14,7 +14,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const course = getCourse(params.slug);
   if (!course) return {};
-  return pageMetadata(langOf(params), `/courses/${course.slug}`, { title: course.title, description: course.tagline });
+  return pageMetadata(langOf(params), `/workshops/${course.slug}`, { title: course.title, description: course.tagline });
 }
 
 export default function CoursePage({ params }: Props) {

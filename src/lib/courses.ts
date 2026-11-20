@@ -60,7 +60,7 @@ export const COURSES_ENROLL_FALLBACK = 'https://t.me/ekinoxis';
 export const courses: Course[] = [
   {
     slug: 'business-stack',
-    code: 'CRS_01',
+    code: 'WKS_01',
     status: 'waitlist',
     level: 'beginner',
     title: {
@@ -128,7 +128,7 @@ export const courses: Course[] = [
   },
   {
     slug: 'web3-app',
-    code: 'CRS_02',
+    code: 'WKS_02',
     status: 'coming_soon',
     level: 'intermediate',
     title: {
@@ -192,6 +192,39 @@ export const courses: Course[] = [
       ],
     },
   },
+];
+
+/**
+ * A workshop that lives on its own landing page (not a /workshops/[slug] detail page):
+ * the listing card shows these fields and links to `href`.
+ */
+export type LandingWorkshop = Pick<Course, 'slug' | 'code' | 'status' | 'level' | 'title' | 'tagline' | 'format' | 'duration' | 'price' | 'tools'> & {
+  href: string;
+};
+
+/** Every workshop on /workshops, landing pages first. Detail pages are prerendered from `courses` only. */
+export const workshops: (Course | LandingWorkshop)[] = [
+  {
+    slug: 'acciones-tokenizadas',
+    code: 'WKS_03',
+    status: 'open',
+    level: 'beginner',
+    href: '/recursos/acciones-tokenizadas',
+    title: { en: 'Tokenized Tech Stocks', es: 'Acciones tech tokenizadas' },
+    tagline: {
+      en: "Buy the world's big tech stocks as tokens, from an exchange or your own wallet.",
+      es: 'Compra acciones de las grandes tecnológicas tokenizadas, desde un exchange o tu propia wallet.',
+    },
+    format: { en: 'Live online · Spanish', es: 'En vivo online · español' },
+    duration: { en: '1 session · 3 hours · Fri 5 Dec', es: '1 sesión · 3 horas · vie 5 dic' },
+    price: '$15',
+    tools: [
+      { name: 'OKX', logo: '/recursos/acciones/logos/venue-okx.svg' },
+      { name: 'Uniswap', logo: '/recursos/acciones/logos/venue-uniswap.svg' },
+      { name: 'Rabby', logo: '/recursos/acciones/logos/tool-rabby.svg' },
+    ],
+  },
+  ...courses,
 ];
 
 export function getCourse(slug: string): Course | undefined {

@@ -5,7 +5,7 @@ import Link from '@/components/LocalizedLink';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
-import { courses, type CourseStatus, type CourseLevel } from '@/lib/courses';
+import { workshops, type CourseStatus, type CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
@@ -14,7 +14,7 @@ import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 const coursesContent = {
   en: {
-    title: 'COURSES',
+    title: 'WORKSHOPS',
     subtitle: 'Learn by shipping.',
     description:
       'Small groups, live sessions, real code. You finish with something running — not a certificate for watching videos.',
@@ -33,12 +33,12 @@ const coursesContent = {
     },
     cta: {
       label: 'WANT_A_PRIVATE_COHORT?',
-      text: 'We run any course privately for companies and universities, adapted to your stack and your data.',
+      text: 'We run any workshop privately for companies and universities, adapted to your stack and your data.',
       button: 'Talk to Us',
     },
   },
   es: {
-    title: 'CURSOS',
+    title: 'TALLERES',
     subtitle: 'Aprende lanzando.',
     description:
       'Grupos pequeños, sesiones en vivo, código real. Terminas con algo funcionando — no con un certificado por ver videos.',
@@ -57,7 +57,7 @@ const coursesContent = {
     },
     cta: {
       label: '¿COHORTE_PRIVADA?',
-      text: 'Dictamos cualquier curso de forma privada para empresas y universidades, adaptado a tu stack y tus datos.',
+      text: 'Dictamos cualquier taller de forma privada para empresas y universidades, adaptado a tu stack y tus datos.',
       button: 'Hablemos',
     },
   },
@@ -75,7 +75,7 @@ export default function CoursesPage() {
   const t = coursesContent[language];
 
   return (
-    <AnimatedBackground variant="ambient" banner="/media/banners/courses.webp">
+    <AnimatedBackground variant="ambient" banner="/media/banners/workshops.webp">
       <div className="min-h-screen py-12 md:py-24 px-6">
         <div className="max-w-screen-2xl mx-auto">
 
@@ -110,9 +110,9 @@ export default function CoursesPage() {
           <motion.div
             className="rise grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
           >
-            {courses.map((course) => (
+            {workshops.map((course) => (
               <motion.div key={course.slug} variants={fadeInUp}>
-                <Link href={`/courses/${course.slug}`} className="block group h-full">
+                <Link href={'href' in course ? course.href : `/workshops/${course.slug}`} className="block group h-full">
                   <div className="relative h-full bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 flex flex-col">
                     <div className="flex items-center justify-between mb-8">
                       <ScanBadge variant={statusVariant[course.status]}>{t.status[course.status]}</ScanBadge>
@@ -170,10 +170,10 @@ export default function CoursesPage() {
                 </Link>
               </motion.div>
             ))}
-            {courses.length % 3 !== 0 && (
+            {workshops.length % 3 !== 0 && (
               <motion.div
                 variants={fadeInUp}
-                className={`${courses.length % 2 === 0 ? 'md:col-span-2' : ''} ${courses.length % 3 === 1 ? 'lg:col-span-2' : 'lg:col-span-1'}`}
+                className={`${workshops.length % 2 === 0 ? 'md:col-span-2' : ''} ${workshops.length % 3 === 1 ? 'lg:col-span-2' : 'lg:col-span-1'}`}
               >
                 <button
                   type="button"
