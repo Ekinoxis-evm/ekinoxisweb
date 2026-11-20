@@ -236,13 +236,16 @@ export const ACCIONES = {
 
   issuersBlock: {
     heading: 'Los emisores',
-    lead: 'Quién crea cada token, cuántas acciones y ETF tokeniza y cuánto valor tiene hoy.',
+    lead: 'Quién crea cada token y cuánto del mercado tiene. Toca uno para ver sus números.',
+    share: 'del valor tokenizado',
     stocksLabel: 'acciones y ETF',
     atLeast: 'al menos',
-    valueLabel: 'valor tokenizado',
-    noValue: 'sin dato público',
-    valueSource: (source: string) => `Valor tokenizado: ${source}.`,
-    note: (date: string) => `Conteo de nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,
+    others: 'Otros emisores',
+    othersNote: 'Emisores fuera del top de RWA.xyz.',
+    noValueHeading: 'Sin dato público de valor',
+    chartLabel: 'Participación de cada emisor en el valor tokenizado de acciones',
+    note: (date: string, source: string) =>
+      `Valor y participación: ${source}. Conteo de acciones y ETF: nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],
   },
@@ -319,9 +322,27 @@ export const ACCIONES = {
     doneBody: 'Te escribimos antes de la sesión del viernes 5 de diciembre.',
   },
 
+  /** William's own published profile (0xwomb.xyz, read 19 nov 2026). Photo: portrait-nyc from the same site. */
   teacher: {
     heading: 'Quién lo enseña',
-    body: 'William Martínez, fundador de Ekinoxis Labs, el laboratorio de IA y cripto del Pacífico colombiano.',
+    name: 'William Martínez Bolaños',
+    role: 'Economista y Technical Product Manager en cripto, fintech e IA.',
+    photo: '/recursos/acciones/william.jpg',
+    photoAlt: 'William Martínez en el puente de Brooklyn con una gorra que dice «Verify Everything».',
+    facts: [
+      '7+ años en cripto y 4+ en IA.',
+      'Fundador de Ekinoxis Labs y de Convexo Protocol.',
+      'Steward de ETH Cali: 380+ usuarios y 100+ desarrolladores en 30+ meetups y 3 hackathons.',
+      'Diseñó y dictó un curso de DeFi de 32 horas en la Universidad de San Buenaventura Cali.',
+    ],
+    source: 'Fuente: 0xwomb.xyz',
+    socials: [
+      { label: 'X', href: 'https://twitter.com/wmb_eth', icon: '/socials/x.jpg' },
+      { label: 'LinkedIn', href: 'https://linkedin.com/in/williammartinez8', icon: '/socials/linkedin.png' },
+      { label: 'GitHub', href: 'https://github.com/wmb81321', icon: '/socials/github.png' },
+      { label: 'Farcaster', href: 'https://warpcast.com/williammartinez', icon: '/socials/farcaster.png' },
+      { label: '0xwomb.xyz', href: 'https://0xwomb.xyz', icon: null },
+    ],
     link: 'Conoce el lab',
   },
 

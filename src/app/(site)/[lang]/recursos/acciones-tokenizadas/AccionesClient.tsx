@@ -119,36 +119,128 @@ function SectorBlock({ s }: { s: Sector }) {
   );
 }
 
-/** Each issuer as a card: logo, how many companies it tokenizes and its tokenized value (RWA.xyz). */
-function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: string; source: string }) {
+/** One slice of the share chart: an issuer with a published value, or the «others» remainder. */
+type Slice = { id: string; name: string; logo: Logo | null; value: number; stocks: number | null; floor: boolean };
+
+/**
+ * Who issues the tokens and how much of the market each holds: a donut of tokenized value
+ * (one source, one date) with a ranked legend that doubles as the table view. Tap or hover a
+ * slice or a row to read its numbers in the centre. One neutral hue; the chosen slice lights up,
+ * so colour never carries identity alone (names are always printed).
+ */
+function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: string; sector: Sector }) {
   const b = R.issuersBlock;
+  const valued = issuers.filter((i): i is IssuerStat & { value: number } => i.value !== null).sort((x, y) => y.value - x.value);
+  const known = valued.reduce((sum, i) => sum + i.value, 0);
+  const slices: Slice[] = [
+    ...valued.map((i) => ({ id: i.id, name: i.name, logo: i.logo, value: i.value, stocks: i.stocks, floor: (b.partial as readonly string[]).includes(i.id) })),
+    ...(sector.value > known ? [{ id: 'otros', name: b.others, logo: null, value: sector.value - known, stocks: null, floor: false }] : []),
+  ];
+  const noValue = issuers.filter((i) => i.value === null);
+  const [sel, setSel] = useState(slices[0]?.id ?? '');
+  const current = slices.find((x) => x.id === sel) ?? slices[0];
+  const pct = (v: number) => `${((v / sector.value) * 100).toLocaleString('es-CO', { maximumFractionDigits: 1 })} %`;
+
+  const R0 = 80;
+  const CIRC = 2 * Math.PI * R0;
+  const GAP = 3;
+  let offset = 0;
+
   return (
     <section aria-labelledby="issuers-heading">
       <Heading id="issuers-heading">{b.heading}</Heading>
       <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{b.lead}</p>
-      <ul className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
-        {issuers.map((i) => {
-          const floor = (b.partial as readonly string[]).includes(i.id);
-          return (
-            <li key={i.id} className="flex flex-col bg-surface-container-low p-5">
-              <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-14" />
-              <p className="mt-4 font-headline text-lg font-bold text-on-surface">{i.name}</p>
-              <p className="mt-3 font-headline text-3xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">
-                {floor && <span className="block font-body text-[13px] font-normal text-on-surface-variant">{b.atLeast}</span>}
-                {num(i.stocks)}
-              </p>
-              <p className="font-body text-[15px] text-on-surface-variant">{b.stocksLabel}</p>
-              <p className="mt-3 font-headline text-lg font-bold text-on-surface [font-variant-numeric:tabular-nums]">
-                {i.value !== null ? usd(i.value) : <span className="font-body text-[15px] font-normal text-on-surface-variant">{b.noValue}</span>}
-              </p>
-              {i.value !== null && <p className="font-body text-[15px] text-on-surface-variant">{b.valueLabel}</p>}
-            </li>
-          );
-        })}
-      </ul>
-      <p className={`${note} mt-3`}>
-        {b.note(asOf)} {b.valueSource(source)}
-      </p>
+
+      <div className="grid grid-cols-1 gap-px bg-primary/10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        <div className="flex items-center justify-center bg-surface-container-low p-6 md:p-10">
+          <div className="relative w-full max-w-[20rem]">
+            <svg viewBox="0 0 200 200" className="block w-full -rotate-90" role="img" aria-label={b.chartLabel}>
+              {slices.map((x) => {
+                const len = (x.value / sector.value) * CIRC;
+                const dash = Math.max(len - GAP, 0.5);
+                const el = (
+                  <circle
+                    key={x.id}
+                    cx="100"
+                    cy="100"
+                    r={R0}
+                    fill="none"
+                    strokeWidth={x.id === current?.id ? 30 : 24}
+                    strokeDasharray={`${dash} ${CIRC - dash}`}
+                    strokeDashoffset={-offset}
+                    onClick={() => setSel(x.id)}
+                    onMouseEnter={() => setSel(x.id)}
+                    className={`cursor-pointer transition-[stroke-width] duration-150 motion-reduce:transition-none ${
+                      x.id === current?.id ? 'stroke-on-surface' : x.id === 'otros' ? 'stroke-outline-variant' : 'stroke-on-surface-variant'
+                    }`}
+                  />
+                );
+                offset += len;
+                return el;
+              })}
+            </svg>
+            {current && (
+              <div aria-live="polite" className="absolute inset-0 flex flex-col items-center justify-center px-12 text-center">
+                <p className="font-headline text-4xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums]">{pct(current.value)}</p>
+                <p className="font-body text-[13px] text-on-surface-variant">{b.share}</p>
+                <p className="mt-2 font-headline text-lg font-bold text-on-surface">{current.name}</p>
+                <p className="font-body text-[15px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(current.value)}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <ol className="flex flex-col gap-px bg-primary/10">
+          {slices.map((x) => {
+            const on = x.id === current?.id;
+            return (
+              <li key={x.id}>
+                <button
+                  type="button"
+                  onClick={() => setSel(x.id)}
+                  onMouseEnter={() => setSel(x.id)}
+                  aria-pressed={on}
+                  className={`grid min-h-[64px] w-full grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-4 border-l-2 p-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
+                    on ? 'border-on-surface bg-surface-container-high' : 'border-transparent bg-surface-container-low hover:bg-surface-container'
+                  }`}
+                >
+                  {x.id !== 'otros' ? <LogoTile logo={x.logo} text={x.name.slice(0, 3).toUpperCase()} className="w-10" /> : <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high font-mono text-[12px] text-on-surface-variant">+</span>}
+                  <span>
+                    <span className="block font-headline text-lg font-bold text-on-surface">{x.name}</span>
+                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">
+                      {x.stocks !== null ? `${x.floor ? `${b.atLeast} ` : ''}${num(x.stocks)} ${b.stocksLabel}` : b.othersNote}
+                    </span>
+                  </span>
+                  <span className="text-right">
+                    <span className="block font-headline text-lg font-bold text-on-surface [font-variant-numeric:tabular-nums]">{pct(x.value)}</span>
+                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(x.value)}</span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      {noValue.length > 0 && (
+        <div className="mt-px bg-surface-container-low p-5 md:p-6">
+          <h3 className="font-headline text-lg font-bold text-on-surface">{b.noValueHeading}</h3>
+          <ul className="mt-4 flex flex-wrap gap-3">
+            {noValue.map((i) => (
+              <li key={i.id} className="flex items-center gap-3 border border-outline-variant py-2 pl-2 pr-4">
+                <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-9" />
+                <span>
+                  <span className="block font-body text-[15px] font-bold text-on-surface">{i.name}</span>
+                  <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">
+                    {num(i.stocks)} {b.stocksLabel}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <p className={`${note} mt-3`}>{b.note(asOf, sector.source)}</p>
     </section>
   );
 }
@@ -435,6 +527,55 @@ function Universe({ tiles, names, asOf }: { tiles: TechTile[]; names: Record<str
         </div>
       )}
       <p className={`${note} mt-3`}>{t.note(asOf)}</p>
+    </section>
+  );
+}
+
+/** Who teaches: William's photo, what he has built (from his own site) and where to follow him. */
+function Teacher() {
+  const t = R.teacher;
+  return (
+    <section aria-labelledby="teacher-heading" className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div className="relative h-80 overflow-hidden bg-surface-container-lowest md:h-auto md:min-h-[28rem]">
+        {/* eslint-disable-next-line @next/next/no-img-element -- William's own portrait, served from /public */}
+        <img src={t.photo} alt={t.photoAlt} className="absolute inset-0 h-full w-full object-cover object-[50%_72%]" loading="lazy" />
+      </div>
+      <div className="flex flex-col justify-center bg-surface-container-low p-6 md:p-10">
+        <h2 id="teacher-heading" className="font-mono text-[12px] uppercase tracking-widest text-outline">{t.heading}</h2>
+        <p className="mt-3 font-headline text-3xl font-bold tracking-tight text-on-surface md:text-4xl">{t.name}</p>
+        <p className="mt-2 font-body text-lg text-on-surface-variant">{t.role}</p>
+        <ul className="mt-6 flex flex-col gap-3">
+          {t.facts.map((f) => (
+            <li key={f} className="border-l-2 border-outline-variant pl-3 font-body text-base leading-relaxed text-on-surface">{f}</li>
+          ))}
+        </ul>
+        <p className={`${note} mt-4`}>{t.source}</p>
+        <ul className="mt-6 flex flex-wrap gap-2">
+          {t.socials.map((x) => (
+            <li key={x.label}>
+              <a
+                href={x.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center gap-2 border border-outline-variant px-3 font-body text-[15px] text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- 18px social marks from /public/socials */}
+                {x.icon && <img src={x.icon} alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" />}
+                {x.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <LocalizedLink
+              href="/about"
+              className="inline-flex min-h-[44px] items-center gap-2 px-3 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:decoration-primary"
+            >
+              {t.link}
+              <ArrowRight size={14} aria-hidden />
+            </LocalizedLink>
+          </li>
+        </ul>
+      </div>
     </section>
   );
 }
@@ -802,15 +943,16 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
+          <div>
+            <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
+            <SectorBlock s={sector} />
+          </div>
           <Routes fork={fork} />
           <div>
             <Universe tiles={tiles} names={names} asOf={asOf} />
-            <div className="mt-10">
-              <SectorBlock s={sector} />
-              <IssuersBlock issuers={issuers} asOf={asOf} source={sector.source} />
-            </div>
           </div>
           <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} />
+          <Teacher />
 
           <section aria-labelledby="risks-heading">
             <Heading id="risks-heading">{R.risks.heading}</Heading>
@@ -847,17 +989,6 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
             </ul>
           </section>
 
-          <section aria-labelledby="teacher-heading">
-            <h2 id="teacher-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.teacher.heading}</h2>
-            <p className="mt-3 font-body text-lg leading-relaxed text-on-surface">{R.teacher.body}</p>
-            <LocalizedLink
-              href="/about"
-              className="mt-1 inline-flex min-h-[44px] items-center gap-2 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:decoration-primary"
-            >
-              {R.teacher.link}
-              <ArrowRight size={14} aria-hidden />
-            </LocalizedLink>
-          </section>
         </div>
       </div>
 
