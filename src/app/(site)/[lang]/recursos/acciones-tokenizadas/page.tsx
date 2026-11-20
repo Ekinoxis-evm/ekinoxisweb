@@ -11,7 +11,6 @@ export default function Page({ params }: { params: { lang: string } }) {
   if (langOf(params) !== 'es') redirect(`/es${ACCIONES.path}`);
 
   const m = catalog.metrics;
-  const maxName = m.top_by_issuers[0]?.[1] ?? '';
   const tiles = techTiles();
   const names = Object.fromEntries([
     ...Object.entries(catalog.venues).map(([id, v]) => [id, v.name]),
@@ -31,7 +30,13 @@ export default function Page({ params }: { params: { lang: string } }) {
       }}
       names={names}
       asOf={dateEs(m.as_of)}
-      metrics={{ tech: m.tech_companies, issuers: m.issuers, venues: m.venues, max: m.issuers_per_company_max, maxName }}
+      fork={{
+        account: ACCIONES.bands.custodial.venueIds.map((id) => logoFor(`venue-${id}`)),
+        a: [logoFor('issuer-xstocks')],
+        b: [logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom'), logoFor('venue-uniswap')],
+        goal: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
+      }}
+      selfCustodyLogos={[logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom'), logoFor('venue-uniswap')]}
       custodialBand={ACCIONES.bands.custodial.venueIds.map((id) => band(`venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url))}
       selfCustodyBand={[
         ...ACCIONES.bands.selfCustody.wallets.map((w) => band(`tool-${w.id}`, w.name, w.url)),

@@ -127,9 +127,9 @@ export const SKILLS_DISENO = {
 export const ACCIONES = {
   slug: 'acciones-tokenizadas',
   path: '/recursos/acciones-tokenizadas',
-  metaTitle: 'Acciones tech tokenizadas: compra Apple, NVIDIA o SpaceX desde un exchange o tu propia wallet',
+  metaTitle: 'Taller en vivo: compra acciones tech tokenizadas desde un exchange o tu propia wallet',
   metaDescription:
-    'Curso en vivo: compra acciones tokenizadas de las grandes tecnológicas del mundo con tu moneda bancaria, por el método custodio o con custodia propia. Esto no es asesoría de inversión.',
+    'Taller en vivo: compra acciones tokenizadas de las grandes tecnológicas del mundo con tu moneda bancaria, por el método custodio o con custodia propia. Esto no es asesoría de inversión.',
   disclaimer: 'Esto no es asesoría de inversión.',
 
   /** Confirmed by William: one payment of US$15, bookable until 30 Nov. */
@@ -151,7 +151,7 @@ export const ACCIONES = {
   },
 
   hero: {
-    badge: 'Curso en vivo',
+    badge: 'Taller en vivo',
     title: 'Compra acciones de las grandes tecnológicas del mundo, ',
     titleEm: 'tokenizadas',
     control: 'Siempre tuyos: en tu cuenta, a tu nombre, o en tu propia wallet, bajo tu control. Tú decides siempre.',
@@ -201,6 +201,7 @@ export const ACCIONES = {
     startNote: 'COP, USD, MXN…',
     account: 'Tu cuenta verificada',
     goal: 'Tienes el token',
+    goalNote: 'es tuyo',
     a: 'A · Método custodio',
     b: 'B · Método custodia propia',
     aShort: 'A · Custodio',
@@ -225,15 +226,6 @@ export const ACCIONES = {
     sourcesLink: 'Ver todas las fuentes',
   },
 
-  metrics: {
-    heading: 'En números',
-    tech: 'tecnológicas',
-    issuers: 'emisores',
-    venues: 'lugares para comprar: OKX, Kraken, Bybit y Uniswap',
-    max: (name: string) => `emisores para una sola empresa (${name})`,
-    sources: 'xStocks, Ondo, Dinari, Robinhood, Base, OKX, Kraken, Bybit y Uniswap',
-  },
-
   /** The whole tokenized-stocks market, one dashboard, one date. */
   sector: {
     heading: 'El mercado de acciones tokenizadas',
@@ -243,11 +235,13 @@ export const ACCIONES = {
   },
 
   issuersBlock: {
-    heading: 'Acciones tokenizadas por emisor',
-    stocks: (n: string) => `${n} acciones y ETF`,
+    heading: 'Los emisores',
+    lead: 'Quién crea cada token, cuántas acciones y ETF tokeniza y cuánto valor tiene hoy.',
+    stocksLabel: 'acciones y ETF',
     atLeast: 'al menos',
-    value: (amount: string, source: string) => `Valor tokenizado: ${amount} · ${source}`,
-    noValue: 'Valor tokenizado: sin dato público',
+    valueLabel: 'valor tokenizado',
+    noValue: 'sin dato público',
+    valueSource: (source: string) => `Valor tokenizado: ${source}.`,
     note: (date: string) => `Conteo de nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],
@@ -258,17 +252,33 @@ export const ACCIONES = {
   },
 
   course: {
-    heading: 'Una sesión, tres bloques',
+    heading: 'Un taller, tres bloques',
+    prev: 'Bloque anterior',
+    next: 'Bloque siguiente',
+    goTo: (n: number) => `Ir al bloque ${n}`,
     format: '1 sesión en vivo de 3 horas, en 3 bloques con preguntas al final de cada uno. Te quedas con la grabación y con un asistente de IA (Claude o ChatGPT) que te guía paso a paso.',
     modules: [
       {
         n: 'Bloque 1',
+        image: '/recursos/acciones/bloque-1.jpg',
+        imageAlt: 'Pantalla de inicio de OKX con los botones Deposit/Buy y Trade.',
         title: 'Tu cuenta: de tu moneda bancaria a USDT',
         desc: 'Cargas tu cuenta verificada con tu moneda bancaria y compras tus primeros USDT.',
         pre: 'Antes de la sesión: crea tu cuenta y completa la verificación (KYC). Te guiamos con el asistente.',
       },
-      { n: 'Bloque 2', title: 'Compra con el método custodio', desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.' },
-      { n: 'Bloque 3', title: 'Pasa a custodia propia', desc: 'Llevas USDT y el gas a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red: Ethereum, Arbitrum, Base, Robinhood Chain o Solana.' },
+      {
+        n: 'Bloque 2',
+        image: '/recursos/acciones/bloque-2.jpg',
+        imageAlt: 'Orden a mercado de xANT/USDT en OKX con el aviso «Order placed».',
+        title: 'Compra con el método custodio',
+        desc: 'Compras en el exchange por la ruta fácil y por la barata, y calculas cuánto te costó de verdad.',
+      },
+      {
+        n: 'Bloque 3',
+        networks: ['Ethereum', 'Arbitrum', 'Base', 'Robinhood Chain', 'Solana'],
+        title: 'Pasa a custodia propia',
+        desc: 'Llevas USDT y el gas a tu wallet, retiras lo que compraste en el exchange y compras en Uniswap eligiendo emisor y red.',
+      },
     ],
     /** Under the price only if the payment link is removed. */
     soon: 'El pago abre en unos días. Reserva tu cupo y te escribimos primero.',
@@ -303,7 +313,7 @@ export const ACCIONES = {
     sending: 'Enviando…',
     networkError: 'No se pudo enviar. Intenta de nuevo.',
     /** leads.message is required; the lead records what was asked for. */
-    message: 'Todavía no: quiero que me avisen del curso de acciones tokenizadas',
+    message: 'Todavía no: quiero que me avisen del taller de acciones tokenizadas',
     doneBadge: 'Listo',
     doneHeading: 'Estás en la lista.',
     doneBody: 'Te escribimos antes de la sesión del viernes 5 de diciembre.',
@@ -319,17 +329,17 @@ export const ACCIONES = {
   thanks: {
     path: '/recursos/acciones-tokenizadas/gracias',
     metaTitle: 'Gracias por tu reserva',
-    title: 'Gracias. Tu cupo está en camino.',
-    body: 'Stripe te envía el recibo a tu correo. Antes de la sesión te escribimos con el enlace y con la guía para crear tu cuenta y completar la verificación (KYC).',
-    back: 'Volver al curso',
+    title: 'Gracias. Tu cupo está reservado.',
+    body: 'Taller en vivo el viernes 5 de diciembre. Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
+    back: 'Volver al taller',
   },
 
   /** The lead's confirmation email (src/lib/notify.ts). No promise of a personal reply. */
   email: {
-    subject: 'Estás en la lista del curso de acciones tokenizadas',
+    subject: 'Estás en la lista del taller de acciones tokenizadas',
     hello: (name: string) => `Hola ${name}:`,
     body: 'Guardamos tus datos. Te escribimos antes de la sesión en vivo del viernes 5 de diciembre.',
-    button: 'Ver el curso',
+    button: 'Ver el taller',
     sign: '— Ekinoxis Labs',
   },
 } as const;

@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Landmark } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -23,7 +23,8 @@ export type BandItem = { name: string; href?: string; logo: Logo | null };
 
 type Sector = { value: number; transfers: number; holders: number; source: string };
 
-type Metrics = { tech: number; issuers: number; venues: number; max: number; maxName: string };
+/** Logos drawn under each step of the fork; a null is a missing file and is skipped. */
+type Fork = { account: (Logo | null)[]; a: (Logo | null)[]; b: (Logo | null)[]; goal: (Logo | null)[] };
 
 type SourceItem = { id: string; label: string; url: string | null };
 
@@ -34,7 +35,8 @@ interface Props {
   sector: Sector;
   names: Record<string, string>;
   asOf: string;
-  metrics: Metrics;
+  fork: Fork;
+  selfCustodyLogos: (Logo | null)[];
   custodialBand: BandItem[];
   selfCustodyBand: BandItem[];
 }
@@ -94,31 +96,6 @@ function Heading({ children, id }: { children: string; id: string }) {
 
 /* ── Sections ─────────────────────────────────────────────────────────────── */
 
-function MetricsBlock({ m, asOf }: { m: Metrics; asOf: string }) {
-  const items: [number, string][] = [
-    [m.tech, R.metrics.tech],
-    [m.issuers, R.metrics.issuers],
-    [m.venues, R.metrics.venues],
-    [m.max, R.metrics.max(m.maxName)],
-  ];
-  return (
-    <section aria-labelledby="metrics-heading">
-      <h2 id="metrics-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.metrics.heading}</h2>
-      <dl className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-4">
-        {items.map(([n, l]) => (
-          <div key={l} className="flex flex-col-reverse gap-2 bg-surface-container-low p-5 md:p-6">
-            <dt className="font-body text-[15px] leading-snug text-on-surface-variant">{l}</dt>
-            <dd className="font-headline text-5xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums] md:text-6xl">{n}</dd>
-          </div>
-        ))}
-      </dl>
-      <p className={`${note} mt-3`}>
-        Datos al {asOf} · {R.metrics.sources}
-      </p>
-    </section>
-  );
-}
-
 function SectorBlock({ s }: { s: Sector }) {
   const t = R.sector;
   const items: [string, string][] = [
@@ -142,44 +119,55 @@ function SectorBlock({ s }: { s: Sector }) {
   );
 }
 
-/** Each issuer: logo, how many companies it tokenizes (bar to scale) and, when published, its volume. */
+/** Each issuer as a card: logo, how many companies it tokenizes and its tokenized value (RWA.xyz). */
 function IssuersBlock({ issuers, asOf, source }: { issuers: IssuerStat[]; asOf: string; source: string }) {
   const b = R.issuersBlock;
-  const max = Math.max(...issuers.map((i) => i.stocks));
   return (
-    <section aria-labelledby="issuers-heading" className="mt-10">
-      <h2 id="issuers-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{b.heading}</h2>
-      <ul className="flex flex-col gap-px bg-primary/10">
+    <section aria-labelledby="issuers-heading">
+      <Heading id="issuers-heading">{b.heading}</Heading>
+      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{b.lead}</p>
+      <ul className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
         {issuers.map((i) => {
           const floor = (b.partial as readonly string[]).includes(i.id);
           return (
-            <li key={i.id} className="grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 bg-surface-container-low p-4 md:grid-cols-[2.75rem_10rem_minmax(0,1fr)_12rem] md:p-5">
-              <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-11" />
-              <p className="font-headline text-lg font-bold text-on-surface">{i.name}</p>
-              <div className="order-last col-span-3 md:order-none md:col-span-1">
-                <span aria-hidden className="block h-2 bg-surface-container-highest">
-                  <span className="block h-full origin-left bg-on-surface-variant" style={{ transform: `scaleX(${i.stocks / max})` }} />
-                </span>
-                <p className="mt-2 font-body text-[13px] text-on-surface-variant">
-                  {i.value !== null ? b.value(usd(i.value), source) : b.noValue}
-                </p>
-              </div>
-              <div className="text-right">
-                {floor && <p className="font-body text-[12px] text-on-surface-variant">{b.atLeast}</p>}
-                <p className="font-headline text-xl font-bold text-on-surface [font-variant-numeric:tabular-nums]">{b.stocks(num(i.stocks))}</p>
-
-              </div>
+            <li key={i.id} className="flex flex-col bg-surface-container-low p-5">
+              <LogoTile logo={i.logo} text={i.name.slice(0, 3).toUpperCase()} className="w-14" />
+              <p className="mt-4 font-headline text-lg font-bold text-on-surface">{i.name}</p>
+              <p className="mt-3 font-headline text-3xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">
+                {floor && <span className="block font-body text-[13px] font-normal text-on-surface-variant">{b.atLeast}</span>}
+                {num(i.stocks)}
+              </p>
+              <p className="font-body text-[15px] text-on-surface-variant">{b.stocksLabel}</p>
+              <p className="mt-3 font-headline text-lg font-bold text-on-surface [font-variant-numeric:tabular-nums]">
+                {i.value !== null ? usd(i.value) : <span className="font-body text-[15px] font-normal text-on-surface-variant">{b.noValue}</span>}
+              </p>
+              {i.value !== null && <p className="font-body text-[15px] text-on-surface-variant">{b.valueLabel}</p>}
             </li>
           );
         })}
       </ul>
-      <p className={`${note} mt-3`}>{b.note(asOf)}</p>
+      <p className={`${note} mt-3`}>
+        {b.note(asOf)} {b.valueSource(source)}
+      </p>
     </section>
   );
 }
 
+/** A row of small logo tiles under a step of the fork. */
+function MiniLogos({ logos, className = '' }: { logos: (Logo | null)[]; className?: string }) {
+  const shown = logos.filter((l): l is Logo => l !== null);
+  if (shown.length === 0) return null;
+  return (
+    <span className={`flex gap-1 ${className}`}>
+      {shown.map((l) => (
+        <LogoTile key={l.src} logo={l} text="" className="w-7" />
+      ))}
+    </span>
+  );
+}
+
 /** USDT → A or B → «Tienes el token» on one line that warms to lime (DESIGN.md Light Line). */
-function Routes() {
+function Routes({ fork }: { fork: Fork }) {
   const r = R.routes;
   const [tab, setTab] = useState<'a' | 'b'>('a');
   const node = 'border border-primary bg-surface-container-lowest px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-on-surface';
@@ -192,20 +180,25 @@ function Routes() {
 
       {/* Phones: the line runs down, splits into two lanes and meets again at the goal. */}
       <div aria-hidden className="mb-10 flex flex-col items-center md:hidden">
-        <span className={dot} />
+        <Landmark size={24} className="text-on-surface" />
         <span className={`${nodeText} mt-2 text-on-surface`}>{r.start}</span>
         <span className={`${nodeText} text-outline`}>{r.startNote}</span>
         <span className="mt-2 h-6 w-px bg-primary" />
         <span className={dot} />
         <span className={`${nodeText} mt-2 text-on-surface`}>{r.account}</span>
+        <MiniLogos logos={fork.account} className="mt-2" />
         <span className="mt-2 h-6 w-px bg-primary" />
         <span className="h-px w-1/2 bg-primary" />
         <div className="grid w-full grid-cols-2">
-          {[r.aShort, r.bShort].map((lane) => (
+          {([
+            [r.aShort, fork.a],
+            [r.bShort, fork.b],
+          ] as const).map(([lane, logos]) => (
             <div key={lane} className="flex flex-col items-center">
               <span className="h-6 w-px bg-primary" />
               <span className={dot} />
-              <span className={`${nodeText} my-2 text-on-surface`}>{lane}</span>
+              <span className={`${nodeText} mt-2 text-on-surface`}>{lane}</span>
+              <MiniLogos logos={logos} className="my-2 flex-wrap justify-center" />
               <span className="h-6 w-px bg-gradient-to-b from-primary to-tertiary-dim" />
             </div>
           ))}
@@ -213,22 +206,40 @@ function Routes() {
         <span className="h-px w-1/2 bg-tertiary-dim" />
         <span className="h-6 w-px bg-tertiary-dim" />
         <span className="h-3 w-3 rounded-full bg-tertiary-dim" />
-        <span className={`${nodeText} mt-2 text-tertiary-dim`}>{r.goal}</span>
+        <span className={`${nodeText} mt-2 text-tertiary-dim`}>
+          {r.goal} · {r.goalNote}
+        </span>
+        <MiniLogos logos={fork.goal} className="mt-2" />
       </div>
 
       <div aria-hidden className="mb-10 hidden items-center gap-3 md:flex">
-        <span className={node}>
-          {r.start} <span className="text-outline">· {r.startNote}</span>
+        <span className={`${node} flex flex-col items-start gap-2`}>
+          <span className="flex items-center gap-2">
+            <Landmark size={16} /> {r.start}
+          </span>
+          <span className="text-outline">{r.startNote}</span>
         </span>
         <span className="h-px flex-1 bg-primary" />
-        <span className={node}>{r.account}</span>
+        <span className={`${node} flex flex-col items-start gap-2`}>
+          {r.account}
+          <MiniLogos logos={fork.account} />
+        </span>
         <span className="h-px flex-1 bg-primary" />
         <span className="flex flex-col gap-2">
-          <span className={node}>{r.aShort}</span>
-          <span className={node}>{r.bShort}</span>
+          <span className={`${node} flex flex-col items-start gap-2`}>
+            {r.aShort}
+            <MiniLogos logos={fork.a} />
+          </span>
+          <span className={`${node} flex flex-col items-start gap-2`}>
+            {r.bShort}
+            <MiniLogos logos={fork.b} />
+          </span>
         </span>
         <span className="h-px flex-1 bg-gradient-to-r from-primary to-tertiary-dim" />
-        <span className="border border-tertiary-dim px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-tertiary-dim">{r.goal}</span>
+        <span className="flex flex-col items-start gap-2 border border-tertiary-dim px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-tertiary-dim">
+          {r.goal} · {r.goalNote}
+          <MiniLogos logos={fork.goal} />
+        </span>
       </div>
 
       {/* Phones: A/B tabs */}
@@ -473,30 +484,103 @@ function ReserveButton({ position, onReserve, className = '' }: { position: stri
   );
 }
 
-function Course({ onReserve }: { onReserve: (p: string) => void }) {
+/**
+ * The three blocks as cards that slide one to the next every 6 s. Pauses on hover and focus;
+ * under reduced motion it never auto-advances and swaps without movement.
+ */
+function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => void; selfCustodyLogos: (Logo | null)[] }) {
   const c = R.course;
+  const total = c.modules.length;
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [still, setStill] = useState(false);
+  useEffect(() => setStill(window.matchMedia('(prefers-reduced-motion: reduce)').matches), []);
+  useEffect(() => {
+    if (paused || still) return;
+    const t = setTimeout(() => setI((x) => (x + 1) % total), 6000);
+    return () => clearTimeout(t);
+  }, [i, paused, still, total]);
+  const go = (n: number) => setI((n + total) % total);
+  const arrow =
+    'flex h-11 w-11 items-center justify-center border border-outline-variant text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+
   return (
-    <section aria-labelledby="course-heading">
+    <section aria-labelledby="course-heading" aria-roledescription="carrusel">
       <Heading id="course-heading">{c.heading}</Heading>
       <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{c.format}</p>
-      <ol className="flex flex-col gap-px bg-primary/10">
-        {c.modules.map((m) => (
-          <li key={m.n} className="flex items-baseline gap-4 bg-surface-container-low p-5 md:p-6">
-            <span className="shrink-0 font-mono text-[12px] uppercase tracking-wider text-primary">{m.n}</span>
-            <div>
-              <p className="font-headline text-xl font-bold text-on-surface">{m.title}</p>
-              <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{m.desc}</p>
-              {'pre' in m && <p className="mt-3 border-l-2 border-outline-variant pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
-            </div>
-          </li>
-        ))}
-      </ol>
-      <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
-        <div>
-          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
-            {PAY ? R.priceLine(R.price.amount, R.price.until) : c.soon}
-          </p>
+      <div
+        className="overflow-hidden border border-primary/10 bg-surface-container-low"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={() => setPaused(false)}
+      >
+        <ol
+          className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
+          style={{ transform: `translateX(-${i * 100}%)` }}
+        >
+          {c.modules.map((m, k) => (
+            <li
+              key={m.n}
+              aria-roledescription="diapositiva"
+              aria-label={`${k + 1} / ${total}`}
+              aria-hidden={k !== i}
+              className="grid w-full shrink-0 grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+            >
+              <div className="flex h-72 items-center justify-center overflow-hidden bg-surface-container-lowest md:h-auto md:min-h-[26rem]">
+                {'image' in m ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- local screenshot from William's own recording
+                  <img src={m.image} alt={m.imageAlt} className="h-full w-full object-cover object-top" loading="lazy" />
+                ) : (
+                  <div className="flex flex-col items-center gap-5 p-6">
+                    <MiniLogos logos={selfCustodyLogos} className="gap-2 [&>span]:w-14" />
+                    <ul className="flex flex-wrap justify-center gap-2">
+                      {'networks' in m &&
+                        m.networks.map((n) => (
+                          <li key={n} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
+                            {n}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col justify-center p-6 md:p-10">
+                <p className="font-mono text-[12px] uppercase tracking-wider text-primary">{m.n}</p>
+                <h3 className="mt-3 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{m.title}</h3>
+                <p className="mt-3 font-body text-lg leading-relaxed text-on-surface-variant">{m.desc}</p>
+                {'pre' in m && <p className="mt-5 border-l-2 border-outline-variant pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="flex gap-1">
+          {c.modules.map((m, k) => (
+            <button
+              key={m.n}
+              type="button"
+              onClick={() => go(k)}
+              aria-label={c.goTo(k + 1)}
+              aria-current={k === i}
+              className="flex h-11 w-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+            >
+              <span className={`block h-1 w-8 transition-colors duration-150 ${k === i ? 'bg-primary' : 'bg-outline-variant'}`} />
+            </button>
+          ))}
         </div>
+        <div className="flex gap-2">
+          <button type="button" onClick={() => go(i - 1)} aria-label={c.prev} className={arrow}>
+            <ChevronLeft size={18} aria-hidden />
+          </button>
+          <button type="button" onClick={() => go(i + 1)} aria-label={c.next} className={arrow}>
+            <ChevronRight size={18} aria-hidden />
+          </button>
+        </div>
+      </div>
+      <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
+        <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{PAY ? R.priceLine(R.price.amount, R.price.until) : c.soon}</p>
         <ReserveButton position="precio" onReserve={onReserve} />
       </div>
       <Disclaimer className="mt-4" />
@@ -622,7 +706,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, metrics, custodialBand, selfCustodyBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, sector, names, asOf, fork, selfCustodyLogos, custodialBand, selfCustodyBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
@@ -710,16 +794,15 @@ export default function AccionesClient({ tiles, sources, issuers, sector, names,
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
-          <Routes />
+          <Routes fork={fork} />
           <div>
             <Universe tiles={tiles} names={names} asOf={asOf} />
             <div className="mt-10">
-              <MetricsBlock m={metrics} asOf={asOf} />
               <SectorBlock s={sector} />
               <IssuersBlock issuers={issuers} asOf={asOf} source={sector.source} />
             </div>
           </div>
-          <Course onReserve={reserve} />
+          <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} />
 
           <section aria-labelledby="risks-heading">
             <Heading id="risks-heading">{R.risks.heading}</Heading>
