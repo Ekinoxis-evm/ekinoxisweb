@@ -160,7 +160,7 @@ function MiniLogos({ logos, className = '' }: { logos: (Logo | null)[]; classNam
   return (
     <span className={`flex gap-1 ${className}`}>
       {shown.map((l) => (
-        <LogoTile key={l.src} logo={l} text="" className="w-7" />
+        <LogoTile key={l.src} logo={l} text="" className="w-10" />
       ))}
     </span>
   );
@@ -194,12 +194,13 @@ function Routes({ fork }: { fork: Fork }) {
             [r.aShort, fork.a],
             [r.bShort, fork.b],
           ] as const).map(([lane, logos]) => (
-            <div key={lane} className="flex flex-col items-center">
+            <div key={lane} className="flex h-full flex-col items-center">
               <span className="h-6 w-px bg-primary" />
               <span className={dot} />
               <span className={`${nodeText} mt-2 text-on-surface`}>{lane}</span>
               <MiniLogos logos={logos} className="my-2 flex-wrap justify-center" />
-              <span className="h-6 w-px bg-gradient-to-b from-primary to-tertiary-dim" />
+              {/* Stretches so both lanes meet the merge line even when one wraps its logos. */}
+              <span className="min-h-6 w-px flex-1 bg-gradient-to-b from-primary to-tertiary-dim" />
             </div>
           ))}
         </div>
@@ -485,22 +486,27 @@ function ReserveButton({ position, onReserve, className = '' }: { position: stri
 }
 
 /**
- * The three blocks as cards that slide one to the next every 6 s. Pauses on hover and focus;
- * under reduced motion it never auto-advances and swaps without movement.
+ * The three blocks as cards that slide one to the next every 8 s. Pauses on hover and focus;
+ * under reduced motion it never auto-advances and swaps without movement. Screen readers hear a
+ * slide only when the visitor changes it (aria-live polite), never on the timer.
  */
 function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => void; selfCustodyLogos: (Logo | null)[] }) {
   const c = R.course;
   const total = c.modules.length;
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [manual, setManual] = useState(false);
   const [still, setStill] = useState(false);
   useEffect(() => setStill(window.matchMedia('(prefers-reduced-motion: reduce)').matches), []);
   useEffect(() => {
     if (paused || still) return;
-    const t = setTimeout(() => setI((x) => (x + 1) % total), 6000);
+    const t = setTimeout(() => setI((x) => (x + 1) % total), 8000);
     return () => clearTimeout(t);
   }, [i, paused, still, total]);
-  const go = (n: number) => setI((n + total) % total);
+  const go = (n: number) => {
+    setManual(true);
+    setI((n + total) % total);
+  };
   const arrow =
     'flex h-11 w-11 items-center justify-center border border-outline-variant text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
@@ -516,6 +522,7 @@ function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => voi
         onBlur={() => setPaused(false)}
       >
         <ol
+          aria-live={paused || manual || still ? 'polite' : 'off'}
           className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${i * 100}%)` }}
         >
@@ -527,13 +534,14 @@ function Course({ onReserve, selfCustodyLogos }: { onReserve: (p: string) => voi
               aria-hidden={k !== i}
               className="grid w-full shrink-0 grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
             >
-              <div className="flex h-72 items-center justify-center overflow-hidden bg-surface-container-lowest md:h-auto md:min-h-[26rem]">
+              {/* Short on phones so «Bloque · title · line» fits in one view with the image. */}
+              <div className="flex h-40 items-center justify-center overflow-hidden bg-surface-container-lowest md:h-auto md:min-h-[26rem]">
                 {'image' in m ? (
                   // eslint-disable-next-line @next/next/no-img-element -- local screenshot from William's own recording
                   <img src={m.image} alt={m.imageAlt} className="h-full w-full object-cover object-top" loading="lazy" />
                 ) : (
-                  <div className="flex flex-col items-center gap-5 p-6">
-                    <MiniLogos logos={selfCustodyLogos} className="gap-2 [&>span]:w-14" />
+                  <div className="flex flex-col items-center gap-3 p-4 md:gap-5 md:p-6">
+                    <MiniLogos logos={selfCustodyLogos} className="gap-2 md:[&>span]:w-14" />
                     <ul className="flex flex-wrap justify-center gap-2">
                       {'networks' in m &&
                         m.networks.map((n) => (

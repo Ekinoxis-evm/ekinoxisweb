@@ -282,6 +282,11 @@
   "license": "trademark, company brand guidelines",
   "source": "https://brand.kraken.com"
  },
+ "venue-kraken-mark": {
+  "license": "trademark, company brand guidelines",
+  "note": "symbol only, cropped from the official wordmark (last path, viewBox 0 0 97 78)",
+  "source": "https://brand.kraken.com"
+ },
  "venue-okx": {
   "license": "Public domain (trademarked)",
   "note": "single-colour mark recoloured to First Light for the dark page",

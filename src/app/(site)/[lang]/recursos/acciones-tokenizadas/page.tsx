@@ -31,7 +31,8 @@ export default function Page({ params }: { params: { lang: string } }) {
       names={names}
       asOf={dateEs(m.as_of)}
       fork={{
-        account: ACCIONES.bands.custodial.venueIds.map((id) => logoFor(`venue-${id}`)),
+        // Symbol marks where they exist: wordmarks are unreadable at fork-step size.
+        account: [logoFor('venue-okx'), logoFor('venue-kraken-mark'), logoFor('venue-bybit')],
         a: [logoFor('issuer-xstocks')],
         b: [logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom'), logoFor('venue-uniswap')],
         goal: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
