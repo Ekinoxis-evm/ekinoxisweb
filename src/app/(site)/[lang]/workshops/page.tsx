@@ -2,73 +2,64 @@
 
 import { useEffect, useState } from 'react';
 
-import { motion } from 'framer-motion';
 import Link from '@/components/LocalizedLink';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
 import { workshops, type CourseStatus, type CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import ScanBadge from '@/components/ui/ScanBadge';
-import Button from '@/components/ui/Button';
-import { fadeInUp } from '@/lib/animations';
+import { ArrowRight, CalendarDays, GraduationCap, Hand, Radio, Video, Wrench } from 'lucide-react';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 const coursesContent = {
   en: {
     title: 'WORKSHOPS',
-    subtitle: 'Learn by shipping.',
-    description:
-      'Small groups, live sessions, real code. You finish with something running — not a certificate for watching videos.',
-    status: { open: 'Enrolling', waitlist: 'Waitlist', coming_soon: 'Coming soon' } as Record<CourseStatus, string>,
+    description: 'Live, in small groups. You leave having done it yourself, not with a certificate for watching videos.',
+    status: { open: 'Enrolling now', waitlist: 'Waitlist', coming_soon: 'Coming soon' } as Record<CourseStatus, string>,
     level: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' } as Record<CourseLevel, string>,
     priceTbd: 'Price TBA',
-    enter: 'ENTER →',
+    open: 'See the workshop',
+    more: 'See details',
+    others: 'Coming next',
     principles: {
-      label: 'How we teach',
+      heading: 'How we teach',
       items: [
-        { num: '01', title: 'Project first', desc: 'You pick the project on day one. Every session moves it forward.' },
-        { num: '02', title: 'Live, not recorded', desc: 'Small cohorts. Questions answered in the moment, code reviewed in the moment.' },
-        { num: '03', title: 'Production tools', desc: 'The same stack we use for clients: Next.js, Supabase, Base, Claude.' },
-        { num: '04', title: 'Deployed by the end', desc: 'Your project is live on a real URL before the last session closes.' },
+        { icon: 'hands', title: 'You do it, you don’t watch', desc: 'Every block ends with something you did yourself: a purchase, a contract, a connected store.' },
+        { icon: 'live', title: 'Live, with questions', desc: 'Small groups, questions answered in the moment.' },
+        { icon: 'tools', title: 'Real tools', desc: 'The ones we use with clients: OKX, Uniswap, Stripe, Shopify, Next.js and Claude.' },
       ],
     },
-    cta: {
-      label: 'WANT_A_PRIVATE_COHORT?',
-      text: 'We run any workshop privately for companies and universities, adapted to your stack and your data.',
-      button: 'Talk to Us',
+    company: {
+      label: 'For companies',
+      title: 'Train your whole team, on your own business.',
+      text: 'Any workshop as a private cohort, in English or Spanish, with your data and your goals.',
+      cta: 'Ask about a private cohort',
     },
   },
   es: {
     title: 'TALLERES',
-    subtitle: 'Aprende lanzando.',
-    description:
-      'Grupos pequeños, sesiones en vivo, código real. Terminas con algo funcionando — no con un certificado por ver videos.',
+    description: 'En vivo y en grupos pequeños. Sales habiéndolo hecho tú, no con un certificado por ver videos.',
     status: { open: 'Inscripciones abiertas', waitlist: 'Lista de espera', coming_soon: 'Muy pronto' } as Record<CourseStatus, string>,
     level: { beginner: 'Principiante', intermediate: 'Intermedio', advanced: 'Avanzado' } as Record<CourseLevel, string>,
     priceTbd: 'Precio por anunciar',
-    enter: 'ENTRAR →',
+    open: 'Ver el taller',
+    more: 'Ver detalles',
+    others: 'Lo que viene',
     principles: {
-      label: 'CÓMO_ENSEÑAMOS',
+      heading: 'Cómo enseñamos',
       items: [
-        { num: '01', title: 'Proyecto primero', desc: 'Eliges el proyecto el primer día. Cada sesión lo hace avanzar.' },
-        { num: '02', title: 'En vivo, no grabado', desc: 'Cohortes pequeñas. Preguntas respondidas al momento, código revisado al momento.' },
-        { num: '03', title: 'Herramientas de producción', desc: 'El mismo stack que usamos con clientes: Next.js, Supabase, Base, Claude.' },
-        { num: '04', title: 'Desplegado al final', desc: 'Tu proyecto está en vivo en una URL real antes de que cierre la última sesión.' },
+        { icon: 'hands', title: 'Lo haces tú, no lo miras', desc: 'Cada bloque termina con algo hecho por ti: una compra, un contrato, una tienda conectada.' },
+        { icon: 'live', title: 'En vivo, con preguntas', desc: 'Grupos pequeños y preguntas respondidas al momento.' },
+        { icon: 'tools', title: 'Herramientas reales', desc: 'Las que usamos con clientes: OKX, Uniswap, Stripe, Shopify, Next.js y Claude.' },
       ],
     },
-    cta: {
-      label: '¿COHORTE_PRIVADA?',
-      text: 'Dictamos cualquier taller de forma privada para empresas y universidades, adaptado a tu stack y tus datos.',
-      button: 'Hablemos',
+    company: {
+      label: 'Para empresas',
+      title: 'Entrena a todo tu equipo, sobre tu propio negocio.',
+      text: 'Cualquier taller como cohorte privada, en inglés o español, con tus datos y tus metas.',
+      cta: 'Pregunta por una cohorte privada',
     },
   },
-};
-
-const statusVariant: Record<CourseStatus, 'tertiary' | 'primary' | 'muted'> = {
-  open: 'tertiary',
-  waitlist: 'primary',
-  coming_soon: 'muted',
 };
 
 /** Shows the build-time price, then the price for the visitor's date once mounted (no hydration mismatch). */
@@ -78,10 +69,63 @@ function LivePrice({ initial, get }: { initial: string; get: () => string }) {
   return <>{price}</>;
 }
 
+const PRINCIPLE_ICONS = { hands: Hand, live: Radio, tools: Wrench } as const;
+
+type Workshop = (typeof workshops)[number];
+
+/** The workshop's tools as full-colour logo tiles (wordmarks get a wider tile). */
+function Tools({ course, big = false }: { course: Workshop; big?: boolean }) {
+  return (
+    <ul className="flex flex-wrap gap-2" aria-label={course.tools.map((x) => x.name).join(', ')}>
+      {course.tools.map((tool) => (
+        <li key={tool.name} title={tool.name} className={`relative bg-surface-container-high ${big ? 'h-16 w-28' : 'h-12 w-24'}`}>
+          <Image src={tool.logo} alt="" fill className="object-contain p-3" sizes="112px" />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Price({ course, tbd }: { course: Workshop; tbd: string }) {
+  if ('livePrice' in course && course.livePrice) return <LivePrice initial={course.price ?? ''} get={course.livePrice} />;
+  return <>{course.price ?? <span className="font-body text-base font-normal text-on-surface-variant">{tbd}</span>}</>;
+}
+
+/** Date, format and level as three icon facts, in reading case. */
+function Facts({ course, level }: { course: Workshop; level: string }) {
+  const { language } = useLanguage();
+  return (
+    <ul className="flex flex-col gap-2 font-body text-[15px] text-on-surface">
+      {([
+        [CalendarDays, course.duration[language]],
+        [Video, course.format[language]],
+        [GraduationCap, level],
+      ] as const).map(([Icon, text]) => (
+        <li key={text} className="flex items-start gap-3">
+          <Icon size={18} aria-hidden className="mt-0.5 shrink-0 text-primary" />
+          {text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Status({ status, label }: { status: CourseStatus; label: string }) {
+  return (
+    <span className={`inline-flex items-center gap-2 font-body text-[15px] font-bold ${status === 'open' ? 'text-tertiary-dim' : status === 'waitlist' ? 'text-primary' : 'text-on-surface-variant'}`}>
+      <span aria-hidden className={`h-2 w-2 rounded-full ${status === 'open' ? 'bg-tertiary-dim' : status === 'waitlist' ? 'bg-primary' : 'bg-outline'}`} />
+      {label}
+    </span>
+  );
+}
+
 export default function CoursesPage() {
   const { language } = useLanguage();
   const bookCall = useBookCall();
   const t = coursesContent[language];
+  const featured = workshops.find((w) => w.status === 'open') ?? null;
+  const rest = workshops.filter((w) => w !== featured);
+  const href = (w: Workshop) => ('href' in w ? w.href : `/workshops/${w.slug}`);
 
   return (
     <AnimatedBackground variant="ambient" banner="/media/banners/workshops.webp">
@@ -89,162 +133,95 @@ export default function CoursesPage() {
         <div className="max-w-screen-2xl mx-auto">
 
           {/* Header */}
-          <motion.div
-            className="rise mb-10 md:mb-20"
-          >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 font-mono text-[12px] text-primary/60 tracking-widest uppercase mb-6">
-              <span className="border border-primary/30 px-2 py-1">COURSES</span>
-            </motion.div>
+          <header className="rise mb-10 md:mb-16">
+            <h1 className="mb-6 font-headline text-5xl font-bold leading-[0.9] tracking-tighter text-on-surface sm:text-6xl md:text-8xl">{t.title}</h1>
+            <p className="max-w-2xl font-body text-lg leading-relaxed text-on-surface md:text-xl">{t.description}</p>
+          </header>
 
-            <motion.h1
-              variants={fadeInUp}
-              className="font-headline text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-4"
-            >
-              {t.title}
-            </motion.h1>
-
-            <motion.p variants={fadeInUp} className="font-mono text-[13px] text-primary tracking-widest uppercase mb-6">
-              {t.subtitle}
-            </motion.p>
-
-            <motion.p
-              variants={fadeInUp}
-              className="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed"
-            >
-              {t.description}
-            </motion.p>
-          </motion.div>
-
-          {/* Course grid */}
-          <motion.div
-            className="rise grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-primary/10 mb-px"
-          >
-            {workshops.map((course) => (
-              <motion.div key={course.slug} variants={fadeInUp}>
-                <Link href={'href' in course ? course.href : `/workshops/${course.slug}`} className="block group h-full">
-                  <div className="relative h-full bg-surface-container-low p-6 md:p-10 hover:bg-surface-container transition-colors duration-500 flex flex-col">
-                    <div className="flex items-center justify-between mb-8">
-                      <ScanBadge variant={statusVariant[course.status]}>{t.status[course.status]}</ScanBadge>
-                      <span className="font-mono text-[12px] text-outline tracking-widest">{course.code}</span>
-                    </div>
-
-                    <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors duration-300 mb-3">
-                      {course.title[language]}
-                    </h2>
-
-                    <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6 flex-1">
-                      {course.tagline[language]}
-                    </p>
-
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8">
-                      {course.tools.map((tool) => (
-                        <div key={tool.name} className="relative h-6 w-20" title={tool.name}>
-                          <Image
-                            src={tool.logo}
-                            alt={tool.name}
-                            fill
-                            className="object-contain object-left grayscale group-hover:grayscale-0 transition-all duration-300"
-                            sizes="80px"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="space-y-2 mb-8">
-                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
-                        <span className="text-outline">{language === 'en' ? 'Format' : 'Formato'}</span>
-                        <span className="text-on-surface-variant text-right">{course.format[language]}</span>
-                      </div>
-                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
-                        <span className="text-outline">{language === 'en' ? 'Duration' : 'Duración'}</span>
-                        <span className="text-on-surface-variant text-right">{course.duration[language]}</span>
-                      </div>
-                      <div className="flex justify-between gap-4 font-mono text-[12px] uppercase tracking-widest">
-                        <span className="text-outline">{language === 'en' ? 'Level' : 'Nivel'}</span>
-                        <span className="text-on-surface-variant text-right">{t.level[course.level]}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="font-headline text-xl font-bold text-primary">
-                        {('livePrice' in course && course.livePrice ? <LivePrice initial={course.price ?? ''} get={course.livePrice} /> : course.price) ?? <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.priceTbd}</span>}
-                      </span>
-                      <span className="font-mono text-primary text-[13px] group-hover:translate-x-1 transition-transform duration-200">
-                        {t.enter}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-            {workshops.length % 3 !== 0 && (
-              <motion.div
-                variants={fadeInUp}
-                className={`${workshops.length % 2 === 0 ? 'md:col-span-2' : ''} ${workshops.length % 3 === 1 ? 'lg:col-span-2' : 'lg:col-span-1'}`}
-              >
-                <button
-                  type="button"
-                  onClick={() => bookCall('course', { who: 'team' })}
-                  className="group relative flex h-full w-full min-h-[320px] flex-col justify-end gap-4 bg-surface-container-low p-6 md:p-10 text-left hover:bg-surface-container transition-colors duration-500 overflow-hidden"
-                >
-                  <PanelBackdrop name="fog" />
-                  <p className="relative font-mono text-[12px] text-primary uppercase tracking-widest">
-                    {language === 'en' ? 'For companies' : 'Para empresas'}
-                  </p>
-                  <h2 className="relative font-headline text-3xl font-bold tracking-tighter text-on-surface leading-tight group-hover:text-primary transition-colors">
-                    {language === 'en' ? 'Train your whole team, on your own business.' : 'Entrena a todo tu equipo, sobre tu propio negocio.'}
-                  </h2>
-                  <p className="relative font-body text-sm text-on-surface-variant leading-relaxed max-w-sm">
-                    {language === 'en'
-                      ? 'Any course as a private cohort, in English or Spanish, with your data and your goals.'
-                      : 'Cualquier curso como cohorte privada, en inglés o español, con tus datos y tus metas.'}
-                  </p>
-                  <span className="relative font-mono text-[12px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
-                    {language === 'en' ? 'Ask about a private cohort' : 'Pregunta por una cohorte privada'} →
-                  </span>
-                </button>
-              </motion.div>
-            )}
-          </motion.div>
-
-          {/* Principles */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-px mb-px"
-          >
-            <div className="flex items-center gap-4 py-6">
-              <ScanBadge variant="muted">{t.principles.label}</ScanBadge>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
-              {t.principles.items.map((p) => (
-                <div key={p.num} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                  <p className="font-mono text-primary text-[13px] mb-4">{p.num}</p>
-                  <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
-                    {p.title}
-                  </h4>
-                  <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{p.desc}</p>
+          {/* The open workshop, featured; the rest and the company offer in a row below. */}
+          {featured && (
+            <Link href={href(featured)} className="rise group block">
+              <article className="grid grid-cols-1 gap-8 border border-tertiary-dim/40 bg-surface-container-low p-6 transition-colors duration-300 hover:bg-surface-container md:p-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-12">
+                <div className="flex flex-col items-start gap-5">
+                  <Status status={featured.status} label={t.status[featured.status]} />
+                  <h2 className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-6xl">{featured.title[language]}</h2>
+                  <p className="max-w-xl font-body text-lg leading-relaxed text-on-surface">{featured.tagline[language]}</p>
+                  <Facts course={featured} level={t.level[featured.level]} />
                 </div>
-              ))}
-            </div>
-          </motion.div>
+                <div className="flex flex-col justify-between gap-8">
+                  <Tools course={featured} big />
+                  <div className="flex flex-col gap-4">
+                    <span className="font-headline text-5xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums]">
+                      <Price course={featured} tbd={t.priceTbd} />
+                    </span>
+                    <span className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 bg-primary px-8 font-headline text-sm font-bold uppercase tracking-widest text-on-primary transition-colors duration-150 group-hover:bg-primary-dim sm:w-auto sm:self-start">
+                      {t.open}
+                      <ArrowRight size={18} aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </Link>
+          )}
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-surface-container-low border-t border-primary/10 mt-6 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-          >
-            <div>
-              <p className="font-mono text-[13px] text-outline uppercase tracking-widest mb-1">{t.cta.label}</p>
-              <p className="font-body text-on-surface-variant text-sm max-w-lg">{t.cta.text}</p>
-            </div>
-            <Button variant="primary" onClick={() => bookCall('course', { who: 'team' })}>{t.cta.button}</Button>
-          </motion.div>
+          <h2 className="mb-6 mt-16 font-headline text-2xl font-bold tracking-tight text-on-surface md:mt-24 md:text-3xl">{t.others}</h2>
+          <div className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2 lg:grid-cols-3">
+            {rest.map((course) => (
+              <Link key={course.slug} href={href(course)} className="group block">
+                <article className="flex h-full flex-col gap-5 bg-surface-container-low p-6 transition-colors duration-300 hover:bg-surface-container md:p-8">
+                  <Status status={course.status} label={t.status[course.status]} />
+                  <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface transition-colors duration-200 group-hover:text-primary md:text-3xl">{course.title[language]}</h3>
+                  <p className="font-body text-base leading-relaxed text-on-surface-variant">{course.tagline[language]}</p>
+                  <Tools course={course} />
+                  <Facts course={course} level={t.level[course.level]} />
+                  <span className="mt-auto flex items-center justify-between pt-4">
+                    <span className="font-headline text-2xl font-bold text-on-surface">
+                      <Price course={course} tbd={t.priceTbd} />
+                    </span>
+                    <span className="inline-flex items-center gap-2 font-body text-[15px] font-bold text-primary">
+                      {t.more}
+                      <ArrowRight size={16} aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </span>
+                </article>
+              </Link>
+            ))}
+            <button
+              type="button"
+              onClick={() => bookCall('course', { who: 'team' })}
+              className="group relative flex min-h-[320px] flex-col justify-end gap-4 overflow-hidden bg-surface-container-low p-6 text-left transition-colors duration-300 hover:bg-surface-container focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:p-8"
+            >
+              <PanelBackdrop name="fog" />
+              <span className="relative font-body text-[15px] font-bold text-secondary">{t.company.label}</span>
+              <span className="relative font-headline text-3xl font-bold leading-tight tracking-tighter text-on-surface transition-colors group-hover:text-primary">{t.company.title}</span>
+              <span className="relative max-w-sm font-body text-base leading-relaxed text-on-surface-variant">{t.company.text}</span>
+              <span className="relative inline-flex items-center gap-2 font-body text-[15px] font-bold text-primary">
+                {t.company.cta}
+                <ArrowRight size={16} aria-hidden />
+              </span>
+            </button>
+          </div>
+
+          {/* How we teach */}
+          <section aria-labelledby="teach-heading" className="mt-16 md:mt-24">
+            <h2 id="teach-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{t.principles.heading}</h2>
+            <ul className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
+              {t.principles.items.map((p) => {
+                const Icon = PRINCIPLE_ICONS[p.icon as keyof typeof PRINCIPLE_ICONS];
+                return (
+                  <li key={p.title} className="flex gap-4 bg-surface-container-low p-6 md:p-8">
+                    <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
+                      <Icon size={22} />
+                    </span>
+                    <span>
+                      <span className="block font-headline text-lg font-bold text-on-surface">{p.title}</span>
+                      <span className="mt-1 block font-body text-base leading-relaxed text-on-surface-variant">{p.desc}</span>
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
 
         </div>
       </div>

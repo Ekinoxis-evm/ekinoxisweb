@@ -210,6 +210,9 @@ export const ACCIONES = {
         { id: 'eth', name: 'ETH', url: 'https://ethereum.org' },
         { id: 'usdt', name: 'USDT', url: 'https://tether.to' },
         { id: 'usdc', name: 'USDC', url: 'https://www.circle.com/usdc' },
+        { id: 'eurc', name: 'EURC', url: 'https://www.circle.com/eurc' },
+        { id: 'dai', name: 'DAI', url: 'https://sky.money' },
+        { id: 'sol', name: 'SOL', url: 'https://solana.com' },
       ],
     },
     stocks: { title: 'Acciones que puedes obtener', hint: 'Toca una para ver dónde comprarla y quién la emite.' },
@@ -283,17 +286,16 @@ export const ACCIONES = {
 
   /** The four issuers whose tokens the workshop buys, as one pie; each opens its card. Colours: DESIGN.md chart-1…4. */
   issuersBlock: {
-    heading: 'Los emisores',
-    lead: 'Quién crea los tokens que compras en el taller. Toca uno para ver su ficha.',
+    heading: 'Quién emite los tokens',
+    lead: 'Cuatro emisores crean los tokens que compras en el taller. Toca uno para ver su ficha.',
     shown: [
       { id: 'ondo', color: 'chart-1' },
       { id: 'xstocks', color: 'chart-2' },
       { id: 'robinhood', color: 'chart-3' },
       { id: 'coinbase', color: 'chart-4' },
     ],
-    center: 'entre estos 4',
-    together: (pct: string) => `Juntos tienen el ${pct} de todo el valor tokenizado en acciones.`,
-    ofFour: 'de estos 4',
+    center: 'todo el mercado',
+    others: 'Otros emisores',
     ofMarket: 'del mercado total',
     stocksLabel: 'acciones y ETF',
     valueLabel: 'valor tokenizado',
@@ -301,7 +303,7 @@ export const ACCIONES = {
     open: (name: string) => `Ver la ficha de ${name}`,
     eligibility: 'Quién puede comprar',
     site: 'Sitio oficial',
-    chartLabel: 'Reparto del valor tokenizado entre Ondo, xStocks, Robinhood y Coinbase',
+    chartLabel: 'Participación de Ondo, xStocks, Robinhood, Coinbase y los demás emisores en el valor tokenizado de acciones',
     note: (date: string, source: string) => `Valor: ${source}. Acciones y ETF: nuestro catálogo al ${date}.`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],

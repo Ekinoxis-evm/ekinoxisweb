@@ -226,7 +226,11 @@ export const workshops: (Course | LandingWorkshop)[] = [
     tools: [
       { name: 'OKX', logo: '/recursos/acciones/logos/venue-okx.svg' },
       { name: 'Uniswap', logo: '/recursos/acciones/logos/venue-uniswap.svg' },
+      { name: 'Kraken', logo: '/recursos/acciones/logos/venue-kraken-mark.svg' },
+      { name: 'Bybit', logo: '/recursos/acciones/logos/venue-bybit.svg' },
       { name: 'Rabby', logo: '/recursos/acciones/logos/tool-rabby.svg' },
+      { name: 'MetaMask', logo: '/recursos/acciones/logos/tool-metamask.svg' },
+      { name: 'USDT', logo: '/recursos/acciones/logos/coin-usdt.svg' },
     ],
   },
   ...courses,

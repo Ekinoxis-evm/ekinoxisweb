@@ -69,6 +69,9 @@ export const SITES: Record<string, string> = {
   'coin-eth': 'https://ethereum.org',
   'coin-usdt': 'https://tether.to',
   'coin-usdc': 'https://www.circle.com/usdc',
+  'coin-eurc': 'https://www.circle.com/eurc',
+  'coin-sol': 'https://solana.com',
+  'coin-dai': 'https://sky.money',
   // Blockchains
   'chain-ethereum': 'https://ethereum.org',
   'chain-arbitrum': 'https://arbitrum.io',

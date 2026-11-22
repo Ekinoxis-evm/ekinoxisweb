@@ -53,10 +53,9 @@
   "title": "Broadcom"
  },
  "coin": {
-  "hex": "0052FF",
-  "license": "CC0-1.0 (icon); trademark of its owner",
-  "source": "simple-icons 13.21.0",
-  "title": "Coinbase"
+  "title": "Coinbase",
+  "license": "MIT (@web3icons/core 4.0.0); trademark of Coinbase",
+  "source": "@web3icons/core 4.0.0 coinbase (branded symbol)"
  },
  "crm": {
   "hex": "00A1E0",
@@ -369,5 +368,20 @@
   "license": "MIT (@web3icons/core 4.0.0); trademark of Circle",
   "source": "@web3icons/core 4.0.0 USDC (branded)",
   "title": "USDC"
+ },
+ "coin-sol": {
+  "title": "SOL",
+  "license": "MIT (@web3icons/core 4.0.0); trademark of Solana Foundation",
+  "source": "@web3icons/core 4.0.0 SOL (branded)"
+ },
+ "coin-dai": {
+  "title": "DAI",
+  "license": "MIT (@web3icons/core 4.0.0); trademark of its owner",
+  "source": "@web3icons/core 4.0.0 DAI (branded)"
+ },
+ "coin-eurc": {
+  "title": "EURC",
+  "license": "trademark of Circle",
+  "source": "CoinGecko asset for euro-coin (Circle EURC mark)"
  }
 }

@@ -170,7 +170,8 @@ function NamedLogo({ logo, name }: { logo: Logo | null; name: string }) {
 
 /* ── Sections ─────────────────────────────────────────────────────────────── */
 
-function SectorBlock({ s }: { s: Sector }) {
+/** The whole market in three figures (one source, one date). */
+function SectorStats({ s }: { s: Sector }) {
   const t = R.sector;
   const items: [string, string][] = [
     [usd(s.value), t.value],
@@ -178,8 +179,7 @@ function SectorBlock({ s }: { s: Sector }) {
     [count(s.holders), t.holders],
   ];
   return (
-    <section aria-labelledby="sector-heading" className="mt-10">
-      <h2 id="sector-heading" className="mb-6 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{t.heading}</h2>
+    <>
       <dl className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
         {items.map(([n, l]) => (
           <div key={l} className="flex flex-col-reverse gap-1 bg-surface-container-low p-5 md:p-6">
@@ -189,7 +189,7 @@ function SectorBlock({ s }: { s: Sector }) {
         ))}
       </dl>
       <p className={`${note} mt-3`}>{s.source}</p>
-    </section>
+    </>
   );
 }
 
@@ -221,7 +221,9 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
       const i = issuers.find((x) => x.id === id);
       return i && i.value !== null ? [{ ...i, value: i.value, color }] : [];
     });
-  const total = rows.reduce((sum, r) => sum + r.value, 0);
+  const known = rows.reduce((sum, r) => sum + r.value, 0);
+  const total = sector.value;
+  const rest = Math.max(total - known, 0);
   const [hover, setHover] = useState<string | null>(null);
   const [card, setCard] = useState<(typeof rows)[number] | null>(null);
   const open = (r: (typeof rows)[number]) => {
@@ -239,16 +241,20 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
     start += sweep;
     return g;
   });
+  const restArc = rest > 0 ? arc(start + PAD / 2, 2 * Math.PI - PAD / 2, 112, 70) : null;
 
   return (
-    <section aria-labelledby="issuers-heading">
-      <Heading id="issuers-heading">{b.heading}</Heading>
-      <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{b.lead}</p>
+    <section aria-labelledby="market-heading">
+      <Heading id="market-heading">{R.sector.heading}</Heading>
+      <SectorStats s={sector} />
+      <h3 id="issuers-heading" className="mt-14 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{b.heading}</h3>
+      <p className="mb-6 mt-2 max-w-2xl font-body text-lg text-on-surface-variant">{b.lead}</p>
 
       <div className="grid grid-cols-1 gap-px bg-primary/10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="flex items-center justify-center bg-surface-container-low px-4 py-10 md:p-12">
           <div className="relative w-full max-w-sm">
             <svg viewBox="0 0 300 300" className="block w-full" role="img" aria-label={b.chartLabel}>
+              {restArc && <path d={restArc} className="fill-outline-variant" />}
               {geo.map(({ r, a0, a1, mid }) => {
                 const on = hover === r.id;
                 return (
@@ -264,8 +270,8 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
                 );
               })}
             </svg>
-            {/* Logos ride on their slices; a tap opens the same card as the row. */}
-            {geo.map(({ r, mid }) => (
+            {/* Logos ride on slices wide enough to hold one (≥ 6 %); a tap opens the same card as the row. */}
+            {geo.filter(({ r }) => r.value / total >= 0.06).map(({ r, mid }) => (
               <button
                 key={r.id}
                 type="button"
@@ -313,16 +319,30 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
                 <span className="flex items-center gap-3">
                   <span className="text-right">
                     <span className="block font-headline text-2xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">{fmt(r.value / total)}</span>
-                    <span className="block font-body text-[13px] text-on-surface-variant">{b.ofFour}</span>
+                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(r.value)}</span>
                   </span>
                   <ArrowUpRight size={18} aria-hidden className="text-primary" />
                 </span>
               </button>
             </li>
           ))}
+          {rest > 0 && (
+            <li className="flex-1">
+              <div className="grid h-full min-h-[80px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-surface-container-low px-5 py-4 md:px-8">
+                <span className="flex items-center gap-3">
+                  <span aria-hidden className="h-3 w-3 rounded-full bg-outline" />
+                  <span className="w-11" />
+                </span>
+                <span className="font-headline text-xl font-bold text-on-surface-variant">{b.others}</span>
+                <span className="pr-7 text-right">
+                  <span className="block font-headline text-2xl font-bold tracking-tight text-on-surface-variant [font-variant-numeric:tabular-nums]">{fmt(rest / total)}</span>
+                  <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(rest)}</span>
+                </span>
+              </div>
+            </li>
+          )}
         </ol>
       </div>
-      <p className="mt-4 font-body text-base text-on-surface">{b.together(fmt(total / sector.value))}</p>
 
       <Sheet open={card !== null} onClose={() => setCard(null)} label={card?.name ?? b.heading}>
         {card && (
@@ -574,6 +594,7 @@ function Routes({ marks }: { marks: Marks }) {
                 </span>
                 <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-3xl">{m.title}</span>
                 <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
+                <MiniLogos logos={key === 'a' ? [...marks.exchanges, ...marks.xstocks] : [...marks.wallets, ...marks.uniswap]} className="flex-wrap" tile="w-9 md:w-11" />
               </div>
             );
           })}
@@ -1080,7 +1101,6 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
           <div>
             <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
-            <SectorBlock s={sector} />
           </div>
           <Routes marks={marks} />
           <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
