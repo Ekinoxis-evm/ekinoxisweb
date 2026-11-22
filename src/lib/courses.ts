@@ -237,14 +237,14 @@ export const workshops: (Course | LandingWorkshop)[] = [
     },
     facts: {
       en: [
-        { kind: 'date', text: 'Sat 6 Dec, 10 am–1 pm (Colombia)' },
+        { kind: 'date', text: 'Sat 5 Dec, 10 am–1 pm (Colombia)' },
         { kind: 'sessions', text: '1 session' },
         { kind: 'duration', text: '3 hours' },
         { kind: 'format', text: 'Live online' },
         { kind: 'language', text: 'Spanish' },
       ],
       es: [
-        { kind: 'date', text: 'sáb 6 dic, 10:00 a. m. a 1:00 p. m. (Colombia)' },
+        { kind: 'date', text: 'sáb 5 dic, 10:00 a. m. a 1:00 p. m. (Colombia)' },
         { kind: 'sessions', text: '1 sesión' },
         { kind: 'duration', text: '3 horas' },
         { kind: 'format', text: 'En vivo online' },

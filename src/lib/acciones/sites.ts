@@ -57,6 +57,12 @@ export const SITES: Record<string, string> = {
   'issuer-coinbase': 'https://www.coinbase.com',
   'issuer-dinari': 'https://www.dinari.com',
   'issuer-backpack': 'https://backpack.exchange',
+  'issuer-bstocks': 'https://app.rwa.xyz/platforms/bstocks',
+  'issuer-securitize': 'https://app.rwa.xyz/platforms/securitize',
+  'issuer-reality': 'https://app.rwa.xyz/platforms/reality',
+  'issuer-figure': 'https://app.rwa.xyz/platforms/figure',
+  'issuer-wisdomtree': 'https://app.rwa.xyz/platforms/wisdomtree',
+  'issuer-superstate': 'https://app.rwa.xyz/platforms/superstate-opening-bell',
   // Wallets
   'tool-base': 'https://base.app',
   'tool-metamask': 'https://metamask.io',

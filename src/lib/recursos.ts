@@ -145,7 +145,7 @@ export const ACCIONES = {
 
   /** Live session. `time` stays null until William sets it; null hides it. */
   session: {
-    date: 'sábado 6 de diciembre',
+    date: 'sábado 5 de diciembre',
     time: '10:00 a. m.' as string | null,
     line: (date: string, time: string | null) => `En vivo el ${date}${time ? `, ${time} (hora Colombia)` : ''}.`,
   },
@@ -156,7 +156,7 @@ export const ACCIONES = {
     titleEm: 'tokenizadas',
     sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides cómo comprarlas y almacenarlas.',
     facts: {
-      date: 'Sábado 6 de diciembre',
+      date: 'Sábado 5 de diciembre',
       time: '10:00 a. m. a 1:00 p. m. (hora Colombia)',
       place: 'En línea, por Google Meet',
     },
@@ -299,6 +299,15 @@ export const ACCIONES = {
     ],
     center: 'todo el mercado',
     others: 'Otros emisores',
+    /** Next issuers by value on RWA.xyz (22 nov 2026), shown as logos in the «Otros emisores» row; each links to its RWA.xyz page. */
+    othersList: [
+      { id: 'bstocks', name: 'bStocks' },
+      { id: 'securitize', name: 'Securitize' },
+      { id: 'reality', name: 'Reality' },
+      { id: 'figure', name: 'Figure' },
+      { id: 'wisdomtree', name: 'WisdomTree' },
+      { id: 'superstate', name: 'Superstate', slug: 'superstate-opening-bell' },
+    ],
     tableLabel: 'Emisores: valor tokenizado, participación en el mercado y acciones y ETF',
     colIssuer: 'Emisor',
     sourceUrl: 'https://app.rwa.xyz/stocks',
@@ -413,7 +422,7 @@ export const ACCIONES = {
     path: '/recursos/acciones-tokenizadas/gracias',
     metaTitle: 'Gracias por tu reserva',
     title: 'Gracias. Tu cupo está reservado.',
-    body: 'Taller en vivo el sábado 6 de diciembre, de 10:00 a. m. a 1:00 p. m. (hora Colombia). Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
+    body: 'Taller en vivo el sábado 5 de diciembre, de 10:00 a. m. a 1:00 p. m. (hora Colombia). Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
     back: 'Volver al taller',
   },
 

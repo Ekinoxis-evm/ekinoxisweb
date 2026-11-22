@@ -35,6 +35,7 @@ export default function Page({ params }: { params: { lang: string } }) {
       }}
       names={names}
       asOf={dateEs(m.as_of)}
+      otherIssuers={ACCIONES.issuersBlock.othersList.map((o) => logoFor(`issuer-${o.id}`))}
       chains={Object.fromEntries(['ethereum', 'arbitrum', 'base', 'robinhood', 'solana'].map((id) => [id, logoFor(`chain-${id}`)]))}
       marks={{
         // Symbol marks where they exist: wordmarks are unreadable at tile size.

@@ -1,7 +1,7 @@
 # Acciones tokenizadas — onboarding after payment
 
 What happens when someone pays for the live workshop «Acciones tech tokenizadas»
-(sábado 6 dic 2026, 10:00 a. m. a 1:00 p. m. COT = 2026-12-06 15:00Z, 3 h).
+(sábado 5 dic 2026, 10:00 a. m. a 1:00 p. m. COT = 2026-12-05 15:00Z, 3 h).
 
 ## Flow
 

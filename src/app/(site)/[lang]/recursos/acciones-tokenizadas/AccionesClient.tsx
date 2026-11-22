@@ -33,6 +33,8 @@ interface Props {
   names: Record<string, string>;
   asOf: string;
   marks: Marks;
+  /** Logos of the next issuers by value, for the «Otros emisores» row. */
+  otherIssuers: (Logo | null)[];
   /** Logo per blockchain id (chain-<id> files). */
   chains: Record<string, Logo | null>;
   exchanges: BandItem[];
@@ -225,7 +227,7 @@ function arc(a0: number, a1: number, ro: number, ri: number): string {
  * its numbers in the centre, a tap opens its card. The legend rows are the accessible controls and
  * the table view, so colour never carries identity alone.
  */
-function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: string; sector: Sector }) {
+function IssuersBlock({ issuers, asOf, sector, others }: { issuers: IssuerStat[]; asOf: string; sector: Sector; others: (Logo | null)[] }) {
   const b = R.issuersBlock;
   const rows = b.shown
     .flatMap(({ id, color }): (IssuerStat & { value: number; color: string })[] => {
@@ -327,7 +329,7 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
               onBlur={() => setHover(null)}
               aria-haspopup="dialog"
               aria-label={b.open(r.name)}
-              className={`grid flex-1 grid-cols-3 items-center gap-x-4 gap-y-3 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6 ${
+              className={`grid flex-1 grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-4 gap-y-3 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6 ${
                 hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
               }`}
             >
@@ -343,7 +345,7 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
                 [`${(b.partial as readonly string[]).includes(r.id) ? '≥ ' : ''}${num(r.stocks)}`, b.stocksLabel],
               ] as const).map(([v, l]) => (
                 <span key={l} role="cell" className="flex flex-col md:items-end">
-                  <span className="whitespace-nowrap font-headline text-base font-bold text-on-surface [font-variant-numeric:tabular-nums] md:text-lg">{v}</span>
+                  <span className="font-headline text-base font-bold md:whitespace-nowrap text-on-surface [font-variant-numeric:tabular-nums] md:text-lg">{v}</span>
                   <span className="font-body text-[13px] text-on-surface-variant md:hidden">{l}</span>
                 </span>
               ))}
@@ -351,13 +353,16 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
             </button>
           ))}
           {rest > 0 && (
-            <div role="row" className="grid flex-1 grid-cols-3 items-center gap-x-4 gap-y-3 bg-surface-container-low px-5 py-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6">
+            <div role="row" className="grid flex-1 grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-4 gap-y-3 bg-surface-container-low px-5 py-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6">
               <span role="cell" className="col-span-3 flex items-center gap-3 md:col-span-1">
                 <span aria-hidden className="h-3 w-3 shrink-0 rounded-full bg-outline" />
-                <span className="font-headline text-lg font-bold text-on-surface-variant">{b.others}</span>
+                <span className="flex min-w-0 flex-col gap-2">
+                  <span className="font-headline text-lg font-bold text-on-surface-variant">{b.others}</span>
+                  <MiniLogos logos={others} tile="w-7" className="flex-wrap" />
+                </span>
               </span>
               <span role="cell" className="flex flex-col md:items-end">
-                <span className="whitespace-nowrap font-headline text-base font-bold text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{usd(rest)}</span>
+                <span className="font-headline text-base font-bold md:whitespace-nowrap text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{usd(rest)}</span>
                 <span className="font-body text-[13px] text-on-surface-variant md:hidden">{b.valueLabel}</span>
               </span>
               <span role="cell" className="flex flex-col md:items-end">
@@ -1029,7 +1034,7 @@ const band = (items: BandItem[]): BandTile[] => items.flatMap((it) => (it.logo ?
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, chains, exchanges, wallets, tokens }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, otherIssuers, chains, exchanges, wallets, tokens }: Props) {
   const [barShown, setBarShown] = useState(false);
   // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
   const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
@@ -1125,7 +1130,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
       <div className="px-4 py-20 sm:px-6 md:py-32">
         <div className="mx-auto flex max-w-screen-2xl flex-col gap-20 md:gap-32">
           <div>
-            <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
+            <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} others={otherIssuers} />
           </div>
           <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
           <Routes marks={marks} />

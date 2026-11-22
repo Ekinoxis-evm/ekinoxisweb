@@ -378,5 +378,35 @@
   "title": "EURC",
   "license": "trademark of Circle",
   "source": "CoinGecko asset for euro-coin (Circle EURC mark)"
+ },
+ "issuer-bstocks": {
+  "title": "bStocks",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
+ },
+ "issuer-securitize": {
+  "title": "Securitize",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
+ },
+ "issuer-reality": {
+  "title": "Reality",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
+ },
+ "issuer-figure": {
+  "title": "Figure",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
+ },
+ "issuer-wisdomtree": {
+  "title": "WisdomTree",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
+ },
+ "issuer-superstate": {
+  "title": "Superstate",
+  "license": "trademark of its owner",
+  "source": "RWA.xyz platform icon (app.rwa.xyz/stocks, 22 nov 2026)"
  }
 }
