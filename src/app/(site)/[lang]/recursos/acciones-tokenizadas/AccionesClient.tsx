@@ -191,7 +191,6 @@ function SectorStats({ s }: { s: Sector }) {
           </div>
         ))}
       </dl>
-      <p className={`${note} mt-3`}>{s.source}</p>
     </>
   );
 }
@@ -453,116 +452,52 @@ function MapStop({ logos, icon, text, seen, order, end = false, on = true, first
   );
 }
 
-/** The A / B switch on the map: lights its lane. 44px, pressed state announced. */
-function LaneButton({ lane, sel, onSel }: { lane: Lane; sel: Lane | null; onSel: (l: Lane | null) => void }) {
-  const m = R.routes[lane];
-  const pressed = sel === lane;
-  return (
-    <button
-      type="button"
-      aria-pressed={pressed}
-      aria-label={R.routes.map.show(m.letter)}
-      onClick={() => onSel(pressed ? null : lane)}
-      className={`flex h-11 w-11 shrink-0 items-center justify-center border font-headline text-lg font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-        pressed ? 'border-primary bg-primary text-on-primary' : 'border-primary/40 bg-surface-container-lowest text-primary hover:border-primary'
-      }`}
-    >
-      {m.letter}
-    </button>
-  );
-}
-
-/**
- * Bank money → exchange → USDT, then the split: straight on is A (the exchange keeps the token),
- * the branch down is B (your wallet, Uniswap). Tapping A or B, or hovering a method card, lights
- * that lane. Lines grow in once on scroll (instant under reduced motion). Laptop: left to right;
- * phones: top to bottom with the two lanes side by side.
- */
-function RoutesMap({ marks, sel, onSel }: { marks: Marks; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+/** The shared start, left to right on every width: bank → exchange → USDT. Grows in once on scroll. */
+function Trunk({ marks }: { marks: Marks }) {
   const t = R.routes.map;
   const [ref, seen] = useSeen<HTMLDivElement>();
-  const onA = sel !== 'b';
-  const onB = sel !== 'a';
-  const trunk = [
-    <MapStop key="bank" icon={<Landmark size={22} aria-hidden />} text={t.bank} seen={seen} order={0} />,
-    <MapStop key="ex" logos={marks.exchanges} text={t.exchange} seen={seen} order={2} />,
-    <MapStop key="usdt" logos={marks.usdt} text={t.usdt} seen={seen} order={4} />,
-  ];
-  const aStops = [
-    <MapStop key="abuy" logos={marks.xstocks} text={t.aBuy} seen={seen} order={7} />,
-    <MapStop key="aend" icon={<Vault size={22} aria-hidden />} text={t.aEnd} seen={seen} order={9} end on={onA} />,
-  ];
-  const bStops = [
-    <MapStop key="bw" logos={marks.wallets} text={t.bWallet} seen={seen} order={7} firstOnPhone />,
-    <MapStop key="bbuy" logos={marks.uniswap} text={t.bBuy} seen={seen} order={9} />,
-    <MapStop key="bend" icon={<Wallet size={22} aria-hidden />} text={t.bEnd} seen={seen} order={11} end on={onB} />,
-  ];
-
   return (
-    <div ref={ref} role="group" aria-label={t.label} className="bg-surface-container-lowest px-4 py-10 md:px-10">
-      {/* Laptop: the trunk runs straight into lane A; lane B drops from the fork. */}
-      <div className="hidden items-start lg:flex">
-        {trunk.map((stop, k) => (
-          <Fragment key={k}>
-            {stop}
-            <MapLine on seen={seen} order={k * 2 + 1} className="mt-7 min-w-6 flex-1" />
-          </Fragment>
-        ))}
-        <div className="flex flex-[3] flex-col">
-          <div className="relative flex items-start pb-8">
-            <MapLine on={onB} seen={seen} order={5} vertical className="absolute -bottom-7 left-0 top-7" />
-            <MapLine on={onA} seen={seen} order={5} className="mt-7 w-6" />
-            <span className="mt-1.5"><LaneButton lane="a" sel={sel} onSel={onSel} /></span>
-            <MapLine on={onA} seen={seen} order={6} className="mt-7 w-6" />
-            {aStops[0]}
-            <MapLine on={onA} seen={seen} order={8} toEnd className="mt-7 min-w-6 flex-1" />
-            {aStops[1]}
-          </div>
-          <div className="flex items-start">
-            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
-            <span className="mt-1.5"><LaneButton lane="b" sel={sel} onSel={onSel} /></span>
-            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
-            {bStops[0]}
-            <MapLine on={onB} seen={seen} order={8} className="mt-7 min-w-6 flex-1" />
-            {bStops[1]}
-            <MapLine on={onB} seen={seen} order={10} toEnd className="mt-7 min-w-6 flex-1" />
-            {bStops[2]}
-          </div>
-        </div>
-      </div>
-
-      {/* Phones and tablets: down the page, then two lanes side by side. */}
-      <div className="flex flex-col items-center lg:hidden">
-        {trunk.map((stop, k) => (
-          <Fragment key={k}>
-            {stop}
-            <MapLine on seen={seen} order={k * 2 + 1} vertical className="h-6" />
-          </Fragment>
-        ))}
-        <MapLine on seen={seen} order={5} className="w-1/2" />
-        <div className="grid w-full grid-cols-2">
-          {([
-            ['a', onA, aStops],
-            ['b', onB, bStops],
-          ] as const).map(([lane, on, stops]) => (
-            <div key={lane} className="flex flex-col items-center">
-              <MapLine on={on} seen={seen} order={6} vertical className="h-4" />
-              <LaneButton lane={lane} sel={sel} onSel={onSel} />
-              {stops.map((stop, k) => (
-                <Fragment key={k}>
-                  <MapLine on={on} seen={seen} order={7 + k * 2} vertical toEnd={k === stops.length - 1} className={k === stops.length - 1 ? 'min-h-6 flex-1' : 'h-6'} />
-                  {stop}
-                </Fragment>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
+    <div ref={ref} role="group" aria-label={t.label} className="flex items-start justify-center bg-surface-container-lowest px-4 py-8 md:px-10">
+      <MapStop icon={<Landmark size={22} aria-hidden />} text={t.bank} seen={seen} order={0} />
+      <MapLine on seen={seen} order={1} className="mt-6 min-w-4 flex-1 lg:mt-7" />
+      <MapStop logos={marks.exchanges} text={t.exchange} seen={seen} order={2} firstOnPhone />
+      <MapLine on seen={seen} order={3} className="mt-6 min-w-4 flex-1 lg:mt-7" />
+      <MapStop logos={marks.usdt} text={t.usdt} seen={seen} order={4} />
     </div>
   );
 }
 
-/** The map, then one card per method with its facts; hovering a card lights its lane on the map. */
+/** A method's own path, top to bottom inside its column, ending in lime where the token stays. */
+function LanePath({ lane, marks }: { lane: Lane; marks: Marks }) {
+  const t = R.routes.map;
+  const [ref, seen] = useSeen<HTMLDivElement>();
+  const stops =
+    lane === 'a'
+      ? [
+          { logos: marks.xstocks, text: t.aBuy },
+          { icon: <Vault size={22} aria-hidden />, text: t.aEnd, end: true },
+        ]
+      : [
+          { logos: marks.wallets, text: t.bWallet },
+          { logos: marks.uniswap, text: t.bBuy },
+          { icon: <Wallet size={22} aria-hidden />, text: t.bEnd, end: true },
+        ];
+  return (
+    <div ref={ref} className="flex flex-col items-center px-2 pb-6">
+      {stops.map((st, k) => (
+        <Fragment key={st.text}>
+          <MapLine on seen={seen} order={k * 2} vertical toEnd={'end' in st} className="h-6" />
+          <MapStop logos={'logos' in st ? st.logos : undefined} icon={'icon' in st ? st.icon : undefined} text={st.text} seen={seen} order={k * 2 + 1} end={'end' in st} firstOnPhone />
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * «2 métodos, el mismo resultado»: the shared start (bank → exchange → USDT), then one column per
+ * method with its image, its own path and its answers to the same four questions.
+ */
 function Routes({ marks }: { marks: Marks }) {
   const r = R.routes;
   const [sel, setSel] = useState<Lane | null>(null);
@@ -571,11 +506,10 @@ function Routes({ marks }: { marks: Marks }) {
       <Heading id="routes-heading">{r.heading}</Heading>
       <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{r.lead}</p>
 
-      <RoutesMap marks={marks} sel={sel} onSel={setSel} />
-
-      <h3 id="compare-heading" className="mb-6 mt-16 font-headline text-3xl font-bold tracking-tighter text-on-surface md:mt-24 md:text-5xl">{r.compareHeading}</h3>
+      <Trunk marks={marks} />
+      <span aria-hidden className="mx-auto block h-6 w-px bg-primary" />
       {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
-      <div role="table" aria-labelledby="compare-heading" className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
+      <div role="table" aria-labelledby="routes-heading" className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
         <div role="row" className="contents">
           <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
           {(['a', 'b'] as const).map((key) => {
@@ -588,15 +522,20 @@ function Routes({ marks }: { marks: Marks }) {
                 onMouseLeave={() => setSel(null)}
                 className={`flex flex-col transition-colors duration-200 md:col-span-2 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized for the column */}
-                <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
-                <span className="flex flex-col gap-2 p-4 md:p-6">
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-headline text-2xl font-bold text-primary md:text-3xl">{m.letter}</span>
-                    <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-3xl">{m.title}</span>
+                {/* The method's name sits on its image, over a black fade so it always reads. */}
+                <div className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized for the column */}
+                  <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[3/4] w-full object-cover sm:aspect-[4/3]" />
+                  <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10" />
+                  <span className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 md:p-6">
+                    <span className="flex items-baseline gap-3">
+                      <span className="font-headline text-2xl font-bold text-primary md:text-4xl">{m.letter}</span>
+                      <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-4xl">{m.title}</span>
+                    </span>
+                    <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
                   </span>
-                  <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
-                </span>
+                </div>
+                <LanePath lane={key} marks={marks} />
               </div>
             );
           })}
@@ -633,10 +572,6 @@ function Routes({ marks }: { marks: Marks }) {
           );
         })}
       </div>
-      <p className="mt-4 flex items-start gap-2 font-body text-base text-on-surface-variant">
-        <ArrowRight size={18} aria-hidden className="mt-1 shrink-0 text-primary" />
-        {r.move}
-      </p>
     </section>
   );
 }
@@ -734,7 +669,6 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
       <div className="flex flex-col gap-4">
         <Band title={k.stocks.title} hint={k.stocks.hint} items={tiles.slice(0, mid).map(stock)} onPick={pick} reverse />
         <Band items={tiles.slice(mid).map(stock)} onPick={pick} />
-        <p className={`${note} mx-auto w-full max-w-5xl px-4 sm:px-6`}>{t.note(asOf)}</p>
       </div>
 
       <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? k.stocks.title}>
@@ -993,10 +927,10 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
             <span className="font-body text-base text-on-surface-variant">{R.single}</span>
           </p>
           {offer.note && <p className="mt-2 font-body text-base text-on-surface">{offer.note}</p>}
+          <Disclaimer className="mt-2" />
         </div>
         <ReserveButton position="precio" onReserve={onReserve} label={ctaFor(offer)} />
       </div>
-      <Disclaimer className="mt-4" />
     </section>
   );
 }

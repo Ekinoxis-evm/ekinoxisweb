@@ -353,6 +353,8 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 - **Don't** join facts with a middle dot («viernes 5 dic · 7:00 p. m. · en línea»). Date, time,
   duration, place, language and format each get their own line with an icon (lucide `CalendarDays`,
   `Clock`, `MapPin`/`Video`, `Languages`…). Source credits and SEO titles may keep the dot.
+- **Don't** leave small loose one-liners under a section (a source, a date, a side note, a tip). A fact lives
+  inside a component or nowhere; sources go to the page's sources list.
 - **Don't** number steps or cards «01 / 02 / 03»; order comes from position, a line or a real `<ol>`.
 - **Don't** use `rounded-sm` through `rounded-3xl`; corners are 0px, pills only for dots
   and nodes.

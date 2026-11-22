@@ -223,10 +223,10 @@ export const ACCIONES = {
 
   /** A map (bank → exchange → USDT, then the split into A and B) over two method cards. */
   routes: {
-    heading: 'Dos formas de tener tus acciones',
+    heading: '2 métodos, el mismo resultado',
     lead: 'Las dos empiezan igual: cambias tu moneda bancaria (COP, USD, MXN…) a USDT, un dólar digital, en un exchange. Al final cambia quién guarda tu acción.',
     map: {
-      label: 'Mapa: de tu banco a tu acción tokenizada, por el método A o el B',
+      label: 'El inicio común: de tu banco a USDT en un exchange',
       bank: 'Tu banco',
       exchange: 'Exchange',
       usdt: 'USDT',
@@ -235,9 +235,7 @@ export const ACCIONES = {
       bWallet: 'A tu wallet',
       bBuy: 'Compras en Uniswap',
       bEnd: 'En tu wallet',
-      show: (m: string) => `Resaltar el método ${m}`,
     },
-    compareHeading: '2 métodos, el mismo resultado',
     /** Images: Higgsfield GPT Image 2.5, equinox style (no text, logos or faces), 21 nov 2026. */
     a: { letter: 'A', title: 'Lo guarda un custodio', tag: 'Lo más fácil', image: '/recursos/acciones/metodo-custodio.webp', imageAlt: 'La puerta de una bóveda de acero cerrada, iluminada por una luz cian.' },
     b: { letter: 'B', title: 'Lo guardas tú', tag: 'Más control', image: '/recursos/acciones/metodo-propia.webp', imageAlt: 'Una mano abierta sostiene una pequeña wallet física, iluminada por una luz cian.' },
@@ -268,12 +266,10 @@ export const ACCIONES = {
         b: { short: 'Tus 12 palabras', detail: 'Si las pierdes, pierdes la wallet.' },
       },
     ],
-    move: 'Puedes empezar en A y pasar a B cuando quieras: retiras el token del exchange a tu wallet.',
   },
 
   tech: {
     close: 'Cerrar',
-    note: (date: string) => `Datos al ${date}. Sin precios.`,
     routeA: 'Método custodio: dónde comprarla',
     routeB: (n: number) => `Custodia propia: ${n} ${n === 1 ? 'emisor' : 'emisores'} con token propio`,
     none: 'Ninguno en esta lista',
@@ -329,14 +325,14 @@ export const ACCIONES = {
       { icon: 'live', text: '3 horas en vivo' },
       { icon: 'questions', text: 'Preguntas al final de cada bloque' },
       { icon: 'recording', text: 'Te quedas con la grabación' },
-      { icon: 'ai', text: 'Un asistente de IA (Claude o ChatGPT) te guía' },
+      { icon: 'ai', text: 'Un Skill.md para tu agente de IA (Claude o ChatGPT) que te guía paso a paso' },
     ],
     steps: [
       {
         n: 'Antes',
         title: 'Crea tu cuenta',
         marks: ['exchanges'],
-        does: ['Abres tu cuenta en el exchange y completas la verificación (KYC).', 'Te guiamos con el asistente.'],
+        does: ['Abres tu cuenta en el exchange y completas la verificación (KYC).', 'Te guía el Skill.md en tu agente de IA.'],
       },
       {
         n: 'Bloque 1',

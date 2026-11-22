@@ -101,7 +101,7 @@ export const PREP_STEPS: PrepStep[] = [
   {
     id: 'ai',
     title: 'Computador, celular y tu IA abierta',
-    text: 'Claude o ChatGPT: el asistente que te guía paso a paso.',
+    text: 'Claude o ChatGPT: ahí cargas el Skill.md del taller, que te guía paso a paso.',
     logos: [],
   },
 ];
