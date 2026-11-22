@@ -9,6 +9,7 @@
 
 import { CALL_MINUTES, formatCot } from './booking';
 import { ACCIONES } from './recursos';
+import { ONBOARDING_EMAIL, PREP_STEPS, PREP_URL, SAFETY, SESSION, buildSessionIcs, sessionGoogleCalendarUrl } from './acciones/onboarding';
 import { BLOCK_HOURS, BLOCK_PRICE_USD, DETAIL_TITLE, SERVICES, detailLabel, type DetailKey, type DetailValue, type LeadDetails } from './leadForms';
 
 export interface LeadNotification {
@@ -186,13 +187,18 @@ function shell(inner: string, language: 'en' | 'es'): string {
 const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#8ff5ff;color:#000000;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 22px;">${label}</a>`;
 
-async function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
+/** `idempotencyKey`: Resend sends at most one email per key for 24 h, so a retried caller never mails twice. */
+async function sendEmail(payload: Record<string, unknown>, idempotencyKey?: string): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
+      },
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(8000),
     });
@@ -398,4 +404,60 @@ ${lead.details?.replay ? `<p style="margin:0 0 20px;font-size:13px;"><a href="${
     html: shell(inner, 'en'),
     attachments: [icsAttachment({ ...lead, language: 'en' })],
   });
+}
+
+/* ── Paid workshop: «Acciones tech tokenizadas» ─────────────────────────── */
+
+export interface WorkshopBuyer {
+  /** Stripe Checkout Session id; keys the idempotent send. */
+  sessionId: string;
+  email: string;
+  name: string | null;
+}
+
+/** The onboarding email after payment: date, the four prep steps, the prep page and the invite. Spanish only. */
+export function buildWorkshopOnboardingEmail(buyer: WorkshopBuyer): { subject: string; html: string } {
+  const e = ONBOARDING_EMAIL;
+  const first = esc((buyer.name ?? '').trim().split(/\s+/)[0] || 'hola');
+  const hello = buyer.name?.trim() ? e.hello(first) : 'Hola, tu cupo está listo.';
+  const link = SESSION.meetingUrl
+    ? `<a href="${esc(SESSION.meetingUrl)}" style="color:#8ff5ff;">${esc(SESSION.meetingUrl)}</a>`
+    : esc(SESSION.linkPending);
+  const inner = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:3px;color:#8ff5ff;">${e.eyebrow}</p>
+<h1 style="margin:0 0 20px;font-size:26px;line-height:30px;color:#e8f2fb;">${hello}</h1>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;border-left:2px solid #8ff5ff;margin:0 0 20px;">
+<tr><td style="padding:18px 20px;">
+  <p style="margin:0 0 4px;font-size:20px;color:#e8f2fb;font-weight:bold;">${esc(e.when)}</p>
+  <p style="margin:0 0 8px;font-size:13px;color:#8a949c;">${esc(e.whenSub)}</p>
+  <p style="margin:0;font-size:14px;line-height:21px;color:#a2acb5;">${link}</p>
+</td></tr></table>
+<p style="margin:0 0 12px;font-size:15px;line-height:24px;color:#a2acb5;">${esc(e.calendarNote)}</p>
+<p style="margin:0 0 8px;">${button(sessionGoogleCalendarUrl(), e.calendarButton)}</p>
+${h2(e.prepTitle)}
+${stepsHtml(PREP_STEPS.map((s) => [esc(s.title), esc(s.text)] as [string, string]), false)}
+<p style="margin:0 0 24px;font-size:15px;line-height:24px;"><a href="${PREP_URL}" style="color:#8ff5ff;">${e.prepButton} →</a></p>
+<p style="margin:0 0 6px;font-size:13px;line-height:20px;color:#8a949c;">${esc(e.receipt)} ${esc(e.questions)}</p>
+<p style="margin:0;font-size:13px;line-height:20px;color:#8a949c;">${esc(SAFETY.advice)} ${esc(SAFETY.keys)}</p>`;
+  return { subject: e.subject, html: shell(inner, 'es') };
+}
+
+export async function sendWorkshopOnboardingEmail(buyer: WorkshopBuyer): Promise<boolean> {
+  const { subject, html } = buildWorkshopOnboardingEmail(buyer);
+  return sendEmail(
+    {
+      from: FROM,
+      to: [buyer.email],
+      reply_to: 'hola@ekinoxis.xyz',
+      subject,
+      html,
+      attachments: [
+        {
+          filename: 'taller-acciones-tokenizadas.ics',
+          content: Buffer.from(buildSessionIcs()).toString('base64'),
+          content_type: 'text/calendar; charset=utf-8; method=PUBLISH',
+        },
+      ],
+    },
+    `acciones-onboarding/${buyer.sessionId}`,
+  );
 }

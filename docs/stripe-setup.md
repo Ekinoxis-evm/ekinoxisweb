@@ -57,7 +57,8 @@ commit, or `.env.local` that might be committed.**
 Stripe → Developers → Webhooks → Add endpoint:
 
 - URL: `https://www.ekinoxis.xyz/api/webhooks/stripe`
-- Events: `checkout.session.completed`
+- Events: `checkout.session.completed` and `checkout.session.async_payment_succeeded`
+  (the workshop onboarding email rides on the same endpoint: `docs/acciones-onboarding.md`)
 - Copy the signing secret (`whsec_…`) into `STRIPE_WEBHOOK_SECRET` above.
 
 ### 3. Redeploy, then open the course
