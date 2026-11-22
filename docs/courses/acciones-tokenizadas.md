@@ -15,13 +15,13 @@
 | Leads | `leads` via `/api/contact`, `topic = 'course'`, `details.resource = 'acciones-tokenizadas'`; own confirmation email in `src/lib/notify.ts` |
 
 ## Payment
-- **Stripe Payment Link** (live): US$15 one-time, product `prod_Vexh0me4TtKkC4`, set in `ACCIONES.price.paymentLink`.
-  Buttons append `?client_reference_id={utm_campaign|landing}-{position}`. After paying, Stripe redirects to
-  `/es/recursos/acciones-tokenizadas/gracias` (switched on in Stripe once that page is live in production).
+- **Stripe Payment Links** (live, product `prod_Vexh0me4TtKkC4`): US$30 Black Friday until 1 Dec 2026, US$49
+  from 2 Dec 00:00 COT, in `ACCIONES.price.links`; the page picks the tier by the visitor's clock. The old US$15
+  link is deactivated. Buttons append `?client_reference_id={utm_campaign|landing}-{position}`. After paying,
+  Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`.
   Buyers land in `course_enrollments` through the Stripe webhook, which also sends the onboarding email
-  (`docs/acciones-onboarding.md`); the interest form is the «¿Todavía no?» path into `leads`.
-- `/api/checkout` is not used here (no Stripe variables in Vercel, checked 19 nov 2026). Setting
-  `paymentLink: null` falls back to the interest form.
+  (`docs/acciones-onboarding.md`). There is no interest form on the page; the only action is paying.
+- `/api/checkout` is not used here.
 
 ## Not built yet
 - **Logins and course access (phase 2):** Privy login + a customers table + purchase → access flow.

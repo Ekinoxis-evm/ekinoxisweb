@@ -1,13 +1,11 @@
 'use client';
 
-import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, CalendarDays, Clock, Coins, Landmark, Scale, Search, ShieldAlert, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowRight, ArrowUpRight, Ban, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
-import LocalizedLink from '@/components/LocalizedLink';
-import { identifyLead, replayUrl, track } from '@/lib/analytics';
-import { COUNTRIES } from '@/lib/countries';
+import { track } from '@/lib/analytics';
 import { ACCIONES as R } from '@/lib/recursos';
 import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
@@ -42,10 +40,12 @@ interface Props {
   tokens: BandItem[];
 }
 
+/** Icon per comparison question in R.routes.facts. */
+const FACT_ICONS: Record<string, typeof Check> = { buy: ShoppingCart, choose: ListChecks, cost: Gauge, risk: ShieldAlert };
+
 /** One icon per «Antes de comprar» item, in the order of R.risks.items. */
 const RISK_ICONS = [Coins, Search, Ban, Scale, TrendingDown];
 
-const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
 /** What the button sells right now: the link, the amount and, during the promo, the real later price. */
 type Offer = { link: string; amount: number; was: number | null; note: string | null };
@@ -550,35 +550,63 @@ function Routes({ marks }: { marks: Marks }) {
 
       <RoutesMap marks={marks} sel={sel} onSel={setSel} />
 
-      <div className="mt-px grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
-        {(['a', 'b'] as const).map((key) => {
-          const m = r[key];
-          return (
-            <article
-              key={key}
-              aria-labelledby={`route-${key}`}
-              onMouseEnter={() => setSel(key)}
-              onMouseLeave={() => setSel(null)}
-              className={`flex flex-col transition-colors duration-200 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}
-            >
-              <header className="p-6 md:p-8">
-                <span className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{m.eyebrow}</span>
-                  <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{m.tag}</span>
+      {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
+      <div role="table" aria-label={r.heading} className="mt-px grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
+        <div role="row" className="contents">
+          <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
+          {(['a', 'b'] as const).map((key) => {
+            const m = r[key];
+            const Icon = key === 'a' ? Vault : Wallet;
+            return (
+              <div
+                key={key}
+                role="columnheader"
+                onMouseEnter={() => setSel(key)}
+                onMouseLeave={() => setSel(null)}
+                className={`flex flex-col gap-3 p-4 transition-colors duration-200 md:col-span-2 md:p-6 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
+              >
+                <span className="flex items-center gap-3">
+                  <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-lowest text-primary">
+                    <Icon size={22} />
+                  </span>
+                  <span className="font-headline text-2xl font-bold text-primary md:hidden">{m.letter}</span>
+                  <span className="hidden font-mono text-[12px] uppercase tracking-widest text-on-surface-variant md:inline">{m.eyebrow}</span>
                 </span>
-                <h3 id={`route-${key}`} className="mt-3 font-headline text-3xl font-bold tracking-tighter text-on-surface md:text-4xl">
-                  {m.title}
-                </h3>
-              </header>
-              <dl className="flex flex-col gap-px bg-primary/10">
-                {r.facts.map((f) => (
-                  <div key={f.label} className={`px-6 py-4 transition-colors duration-200 md:px-8 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}>
-                    <dt className={label}>{f.label}</dt>
-                    <dd className="mt-1 font-body text-[15px] leading-relaxed text-on-surface">{f[key]}</dd>
+                <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-3xl">{m.title}</span>
+                <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
+              </div>
+            );
+          })}
+        </div>
+        {r.facts.map((f) => {
+          const Icon = FACT_ICONS[f.icon] ?? CircleHelp;
+          return (
+            <div key={f.label} role="row" className="contents">
+              <span role="rowheader" className="col-span-2 flex items-center gap-3 bg-surface-container-lowest px-4 py-3 md:col-span-1 md:px-6 md:py-6">
+                <Icon size={20} aria-hidden className="shrink-0 text-primary" />
+                <span className="font-headline text-base font-bold text-on-surface md:text-lg">{f.label}</span>
+              </span>
+              {(['a', 'b'] as const).map((key) => {
+                const v = f[key];
+                const mark = 'mark' in v ? v.mark : null;
+                return (
+                  <div
+                    key={key}
+                    role="cell"
+                    onMouseEnter={() => setSel(key)}
+                    onMouseLeave={() => setSel(null)}
+                    className={`p-4 transition-colors duration-200 md:col-span-2 md:p-6 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}
+                  >
+                    <span className="flex items-center gap-2 font-headline text-lg font-bold leading-tight text-on-surface md:text-xl">
+                      {mark === 'yes' && <Check size={20} aria-hidden className="shrink-0 text-primary" />}
+                      {mark === 'no' && <X size={20} aria-hidden className="shrink-0 text-on-surface-variant" />}
+                      {v.short}
+                    </span>
+                    <span className="mt-1 block font-body text-[15px] leading-relaxed text-on-surface-variant">{v.detail}</span>
                   </div>
-                ))}
-              </dl>
-            </article>
+                );
+              })}
+            </div>
           );
         })}
       </div>
@@ -774,15 +802,6 @@ function Teacher() {
               </a>
             </li>
           ))}
-          <li>
-            <LocalizedLink
-              href="/about"
-              className="inline-flex min-h-[44px] items-center gap-2 px-3 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:decoration-primary"
-            >
-              {t.link}
-              <ArrowRight size={14} aria-hidden />
-            </LocalizedLink>
-          </li>
         </ul>
       </div>
     </section>
@@ -958,117 +977,6 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
   );
 }
 
-type Status = 'idle' | 'sending' | 'error' | 'done';
-
-function ReserveForm() {
-  const f = R.form;
-  const uid = useId();
-  const id = (k: string) => `${uid}-${k}`;
-  const [status, setStatus] = useState<Status>('idle');
-  const [errors, setErrors] = useState<{ name?: boolean; phone?: boolean; email?: boolean }>({});
-  const field =
-    'w-full bg-surface-container-high border border-outline-variant hover:border-outline focus:border-primary outline-none ' +
-    'focus-visible:ring-1 focus-visible:ring-primary text-on-surface font-body text-base px-4 py-3 min-h-[48px] transition-colors';
-  const fieldLabel = 'mb-2 block font-mono text-[12px] uppercase tracking-widest text-on-surface-variant';
-
-  async function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const name = String(data.get('name') ?? '').trim();
-    const email = String(data.get('email') ?? '').trim();
-    const phone = String(data.get('phone') ?? '').trim();
-    const bad = {
-      name: !name,
-      phone: !/^[0-9 ()-]{6,20}$/.test(phone),
-      email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-    };
-    setErrors(bad);
-    const first = (['name', 'phone', 'email'] as const).find((k) => bad[k]);
-    if (first) {
-      form.querySelector<HTMLInputElement>(`input[name=${first}]`)?.focus();
-      return;
-    }
-    setStatus('sending');
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          topic: 'course',
-          name,
-          email,
-          whatsapp: `${String(data.get('country') ?? '')} ${phone}`,
-          message: f.message,
-          language: 'es',
-          details: { resource: R.slug },
-          replay_url: replayUrl(),
-          website: String(data.get('website') ?? ''),
-        }),
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      const json: unknown = await res.json().catch(() => null);
-      const leadId = json && typeof json === 'object' && 'id' in json ? String((json as { id: unknown }).id) : '';
-      if (leadId) identifyLead(leadId, { topic: 'course', language: 'es', resource: R.slug });
-      track('acciones_form_submit');
-      setStatus('done');
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  if (status === 'done') {
-    return (
-      <div role="status" className="border border-tertiary-dim bg-surface-container-low p-6 md:p-10">
-        <ScanBadge variant="tertiary">{f.doneBadge}</ScanBadge>
-        <p className="mt-4 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{f.doneHeading}</p>
-        <p className="mt-3 font-body text-base text-on-surface-variant">{f.doneBody}</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-surface-container-low p-6 md:p-10">
-      <h2 id="form-heading" className="font-headline text-3xl font-bold tracking-tight text-on-surface md:text-4xl">{f.heading}</h2>
-      <p className="mt-3 font-body text-base text-on-surface-variant">{f.lead}</p>
-      <form onSubmit={submit} noValidate className="mt-8 flex flex-col gap-6">
-        <div>
-          <label htmlFor={id('name')} className={fieldLabel}>{f.name}</label>
-          <input id={id('name')} name="name" type="text" required maxLength={60} autoComplete="given-name" aria-invalid={errors.name || undefined} aria-describedby={errors.name ? id('name-err') : undefined} className={field} />
-          {errors.name && <p id={id('name-err')} className="mt-2 font-body text-[15px] text-error">{f.nameError}</p>}
-        </div>
-        <div>
-          <label htmlFor={id('phone')} className={fieldLabel}>{f.phone}</label>
-          <div className="flex">
-            <select name="country" aria-label={f.country} defaultValue="+57" className={`${field.replace('w-full ', '')} w-[6.75rem] shrink-0 border-r-0 px-3`}>
-              {COUNTRIES.map((c) => (
-                <option key={c.code + c.name} value={c.code}>
-                  {c.flag} {c.code}
-                </option>
-              ))}
-            </select>
-            <input id={id('phone')} name="phone" type="tel" required inputMode="tel" maxLength={20} autoComplete="tel-national" placeholder="300 123 4567" aria-invalid={errors.phone || undefined} aria-describedby={errors.phone ? id('phone-err') : undefined} className={`${field} min-w-0 flex-1`} />
-          </div>
-          {errors.phone && <p id={id('phone-err')} className="mt-2 font-body text-[15px] text-error">{f.phoneError}</p>}
-        </div>
-        <div>
-          <label htmlFor={id('email')} className={fieldLabel}>{f.email}</label>
-          <input id={id('email')} name="email" type="email" required maxLength={254} autoComplete="email" inputMode="email" aria-invalid={errors.email || undefined} aria-describedby={errors.email ? id('email-err') : undefined} className={field} />
-          {errors.email && <p id={id('email-err')} className="mt-2 font-body text-[15px] text-error">{f.emailError}</p>}
-        </div>
-        {/* Honeypot: hidden from people, filled by bots; the API answers 200 and saves nothing. */}
-        <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-        {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
-        <span data-cta className="block">
-          <Button type="submit" size="lg" variant="ghost" disabled={status === 'sending'} className="w-full justify-center">
-            {status === 'sending' ? f.sending : f.submit}
-          </Button>
-        </span>
-      </form>
-    </div>
-  );
-}
-
 /** Bands show official logos only; an entry without a file stays out until one lands. */
 const band = (items: BandItem[]): BandTile[] => items.flatMap((it) => (it.logo ? [{ key: it.name, name: it.name, logo: it.logo, href: it.href }] : []));
 
@@ -1199,10 +1107,13 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             </ul>
           </section>
 
-          <section id={FORM_ID} aria-labelledby="form-heading" className="scroll-mt-24">
-            <p className="mb-px border-l-2 border-outline-variant bg-surface-container-low p-5 font-body text-base leading-relaxed text-on-surface md:p-6">{R.custody}</p>
-            <ReserveForm />
-          </section>
+          {/* What Ekinoxis never does: set large, it is the promise a visitor needs before paying. */}
+          <aside aria-label={R.custodyLabel} className="flex flex-col gap-5 border border-primary/40 bg-surface-container-low p-6 md:flex-row md:items-start md:gap-8 md:p-10">
+            <span aria-hidden className="flex h-14 w-14 shrink-0 items-center justify-center bg-surface-container-high text-primary md:h-16 md:w-16">
+              <ShieldCheck size={32} />
+            </span>
+            <p className="font-headline text-2xl font-bold leading-snug tracking-tight text-on-surface [text-wrap:pretty] md:text-3xl">{R.custody}</p>
+          </aside>
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
             <h2 id="sources-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.sourcesList.heading}</h2>

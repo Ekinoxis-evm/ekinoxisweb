@@ -233,11 +233,32 @@ export const ACCIONES = {
     },
     a: { letter: 'A', eyebrow: 'A · Método custodio', title: 'La guarda el exchange', tag: 'Lo más fácil' },
     b: { letter: 'B', eyebrow: 'B · Custodia propia', title: 'La guardas tú', tag: 'Más control' },
+    /** One row per question; `short` is the answer at a glance, `detail` the line under it. `mark` draws a yes/no icon. */
     facts: [
-      { label: 'Cómo compras', a: 'Con tus USDT, en el mismo exchange.', b: 'Envías USDT y un poco de ETH (para el gas) a tu wallet y compras en Uniswap.' },
-      { label: 'Eliges emisor y red', a: 'No: lo decide el exchange (hoy, xStocks).', b: 'Sí, en Uniswap.' },
-      { label: 'Cuánto cuesta', a: 'En mis compras en OKX (19 nov 2026): Convert ≈ +2,1 %; orden a mercado 0,1 %.', b: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
-      { label: 'Si algo sale mal', a: 'Dependes de las reglas del exchange en tu país.', b: 'Si pierdes tus 12 palabras, pierdes la wallet.' },
+      {
+        icon: 'buy',
+        label: 'Cómo compras',
+        a: { short: 'En el exchange', detail: 'Con tus USDT, ahí mismo.' },
+        b: { short: 'En Uniswap', detail: 'Envías USDT y un poco de ETH (para el gas) a tu wallet.' },
+      },
+      {
+        icon: 'choose',
+        label: 'Eliges emisor y red',
+        a: { short: 'No', detail: 'Lo decide el exchange (hoy, xStocks).', mark: 'no' },
+        b: { short: 'Sí', detail: 'Tú eliges en Uniswap.', mark: 'yes' },
+      },
+      {
+        icon: 'cost',
+        label: 'Cuánto cuesta',
+        a: { short: '0,1 % a 2,1 %', detail: 'Mis compras en OKX (19 nov 2026): orden a mercado 0,1 %; Convert ≈ +2,1 %.' },
+        b: { short: 'Pool + gas', detail: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
+      },
+      {
+        icon: 'risk',
+        label: 'Si algo sale mal',
+        a: { short: 'Reglas del exchange', detail: 'Dependes de lo que el exchange permita en tu país.' },
+        b: { short: 'Tus 12 palabras', detail: 'Si las pierdes, pierdes la wallet.' },
+      },
     ],
     move: 'Puedes empezar en A y pasar a B cuando quieras: retiras el token del exchange a tu wallet.',
   },
@@ -347,28 +368,8 @@ export const ACCIONES = {
   },
 
   /** What Ekinoxis never does, shown beside the form. */
+  custodyLabel: 'Tu dinero y tus activos',
   custody: 'Ekinoxis nunca recibe, guarda ni mueve tu dinero ni tus activos, y nunca te pedirá tus 12 palabras ni tus claves. Tú compras directamente en cada plataforma.',
-
-  /** The soft path for visitors not ready to pay. */
-  form: {
-    heading: '¿Todavía no?',
-    lead: 'Déjanos tus datos y te avisamos.',
-    name: 'Nombre',
-    nameError: 'Escribe tu nombre.',
-    phone: 'WhatsApp',
-    country: 'Indicativo del país',
-    phoneError: 'Escribe tu número, sin el indicativo.',
-    email: 'Correo',
-    emailError: 'Revisa el correo.',
-    submit: 'Avísame',
-    sending: 'Enviando…',
-    networkError: 'No se pudo enviar. Intenta de nuevo.',
-    /** leads.message is required; the lead records what was asked for. */
-    message: 'Todavía no: quiero que me avisen del taller de acciones tokenizadas',
-    doneBadge: 'Listo',
-    doneHeading: 'Estás en la lista.',
-    doneBody: 'Te escribimos antes de la sesión del viernes 5 de diciembre.',
-  },
 
   /** William's own published profile (0xwomb.xyz, read 19 nov 2026). Photo: portrait-nyc from the same site. */
   teacher: {
@@ -391,7 +392,6 @@ export const ACCIONES = {
       { label: 'Farcaster', href: 'https://warpcast.com/williammartinez', icon: '/socials/farcaster.png' },
       { label: '0xwomb.xyz', href: 'https://0xwomb.xyz', icon: null },
     ],
-    link: 'Conoce el lab',
   },
 
   /** After-payment page; the Payment Link redirects here. It cannot verify the payment, so it claims nothing Stripe has not. */
@@ -403,14 +403,6 @@ export const ACCIONES = {
     back: 'Volver al taller',
   },
 
-  /** The lead's confirmation email (src/lib/notify.ts). No promise of a personal reply. */
-  email: {
-    subject: 'Estás en la lista del taller de acciones tokenizadas',
-    hello: (name: string) => `Hola ${name}:`,
-    body: 'Guardamos tus datos. Te escribimos antes de la sesión en vivo del viernes 5 de diciembre.',
-    button: 'Ver el taller',
-    sign: '— Ekinoxis Labs',
-  },
 } as const;
 
 /** The workshop price in force at `now`: the Black Friday price until 1 Dec, then the regular one. */
