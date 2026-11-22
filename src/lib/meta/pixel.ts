@@ -1,10 +1,10 @@
 /**
- * Meta pixel (dataset «ekinoxis», business Ekinoxis Labs). The ID is public by design: it ships
+ * Meta pixel (dataset «Ekinoxis Web», business Ekinoxis Labs, connected to ad account 1850948896350955). The ID is public by design: it ships
  * in every page that loads the pixel. Browser events go through `fbq`; the Purchase is also sent
  * server side by the Stripe webhook (src/lib/meta/capi.ts) with the same event_id, so Meta
  * counts it once.
  */
-export const META_PIXEL_ID = '2324952541576934';
+export const META_PIXEL_ID = '1130256370003599';
 
 type Fbq = (...args: unknown[]) => void;
 

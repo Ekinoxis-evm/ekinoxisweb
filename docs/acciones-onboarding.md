@@ -39,7 +39,7 @@ who already got the email do not get it automatically — send them the link by 
 | `STRIPE_SECRET_KEY` | Not needed by the webhook: it verifies with the static `Stripe.webhooks.constructEvent`, which only uses the signing secret. Only `/api/checkout` needs it. |
 | `SUPABASE_SERVICE_ROLE_KEY` (+ `NEXT_PUBLIC_SUPABASE_URL`) | `createServiceClient()` writes `course_enrollments`. Already set. |
 | `RESEND_API_KEY` | Sends the email. Missing = the enrollment is saved, no email, one error log line. `hola@ekinoxis.xyz` must stay a verified Resend sender domain. |
-| `META_CAPI_TOKEN` | Meta Conversions API token for dataset 2324952541576934 (Events Manager → the dataset → Settings → Conversions API → Generate access token). The webhook sends a server-side Purchase with `event_id` = the Stripe session id; `/gracias` sends the browser Purchase with the same id, so Meta counts one. Missing = no server Purchase, nothing breaks. |
+| `META_CAPI_TOKEN` | Meta Conversions API token for dataset 1130256370003599 («Ekinoxis Web») (Events Manager → the dataset → Settings → Conversions API → Generate access token). The webhook sends a server-side Purchase with `event_id` = the Stripe session id; `/gracias` sends the browser Purchase with the same id, so Meta counts one. Missing = no server Purchase, nothing breaks. |
 
 ## Owner steps
 
@@ -59,7 +59,7 @@ who already got the email do not get it automatically — send them the link by 
 
 ## Meta pixel
 
-- Dataset «ekinoxis» `2324952541576934` (business Ekinoxis Labs), in `src/lib/meta/pixel.ts`. Loads only on
+- Dataset «Ekinoxis Web» `1130256370003599` (business Ekinoxis Labs), in `src/lib/meta/pixel.ts`. Loads only on
   `/es/recursos/acciones-tokenizadas/**` and only on the ekinoxis.xyz host (local and preview builds send nothing).
 - Events: PageView (base code), ViewContent (landing, value = offer), InitiateCheckout («Reservar mi cupo»),
   Purchase (browser on `/gracias` + server via CAPI, deduplicated by the Stripe session id).
