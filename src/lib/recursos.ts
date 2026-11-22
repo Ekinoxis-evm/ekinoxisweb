@@ -223,25 +223,20 @@ export const ACCIONES = {
 
   /** A map (bank → exchange → USDT, then the split into A and B) over two method cards. */
   routes: {
-    heading: 'Dos formas de tener tus acciones',
-    lead: 'Las dos empiezan igual: cambias tu moneda bancaria (COP, USD, MXN…) a USDT, un dólar digital, en un exchange. Al final cambia quién guarda tu acción.',
-    map: {
-      label: 'Mapa: de tu banco a tu acción tokenizada, por el método A o el B',
-      show: (m: string) => `Resaltar el método ${m}`,
+    heading: '2 métodos, el mismo resultado',
+    lead: 'Los dos empiezan igual: tu moneda bancaria (COP, USD, MXN…) se vuelve USDT, un dólar digital, en un exchange. Al final cambia quién guarda tu acción.',
+    /** The animated bands: stop labels, and the coin's first face (cash). */
+    flow: {
+      label: 'Cómo viaja tu dinero en cada método, de tu banco a tu acción tokenizada',
+      cash: 'COP',
       bank: 'Tu banco',
-      exchange: 'Exchange',
-      usdt: 'USDT',
-      aBuy: 'Compras ahí',
-      aStay: 'No se mueve: sigue en el exchange',
-      colMove: 'Mover',
-      colBuy: 'Comprar',
-      colEnd: 'Dónde queda',
-      aEnd: 'En tu cuenta del exchange',
-      bWallet: 'A tu wallet',
+      exchange: 'Compras USDT en un exchange',
+      aBuy: 'Compras la acción ahí mismo',
+      aEnd: 'La guarda el exchange',
+      bWallet: 'Envías tus USDT a tu wallet',
       bBuy: 'Compras en Uniswap',
-      bEnd: 'En tu wallet',
+      bEnd: 'La guardas tú',
     },
-    compareHeading: '2 métodos, el mismo resultado',
     /** Images: Higgsfield GPT Image 2.5, equinox style (no text, logos or faces), 21 nov 2026. */
     a: { letter: 'A', title: 'Lo guarda un custodio', tag: 'Lo más fácil', image: '/recursos/acciones/metodo-custodio.webp', imageAlt: 'La puerta de una bóveda de acero cerrada, iluminada por una luz cian.' },
     b: { letter: 'B', title: 'Lo guardas tú', tag: 'Más control', image: '/recursos/acciones/metodo-propia.webp', imageAlt: 'Una mano abierta sostiene una pequeña wallet física, iluminada por una luz cian.' },
@@ -295,11 +290,16 @@ export const ACCIONES = {
   issuersBlock: {
     heading: 'Quién emite los tokens',
     lead: 'Cuatro emisores crean los tokens que compras en el taller. Toca uno para ver su ficha.',
+    /**
+     * `since`: when each issuer started issuing tokenized stocks. xStocks and Robinhood: launch on
+     * 30 jun 2025 (catalog sources, Kraken/xStocks and Robinhood docs). Coinbase: aug 2026 (press, per
+     * the catalog). Ondo Global Markets: sep 2025 (launch announcement; not yet in the catalog).
+     */
     shown: [
-      { id: 'ondo', color: 'chart-1' },
-      { id: 'xstocks', color: 'chart-2' },
-      { id: 'robinhood', color: 'chart-3' },
-      { id: 'coinbase', color: 'chart-4' },
+      { id: 'ondo', color: 'chart-1', since: 'sep 2025' },
+      { id: 'xstocks', color: 'chart-2', since: 'jun 2025' },
+      { id: 'robinhood', color: 'chart-3', since: 'jun 2025' },
+      { id: 'coinbase', color: 'chart-4', since: 'ago 2026' },
     ],
     center: 'todo el mercado',
     others: 'Otros emisores',
@@ -312,6 +312,9 @@ export const ACCIONES = {
       { id: 'wisdomtree', name: 'WisdomTree' },
       { id: 'superstate', name: 'Superstate', slug: 'superstate-opening-bell' },
     ],
+    tableLabel: 'Emisores: valor tokenizado, participación en el mercado, acciones y ETF, y desde cuándo emiten',
+    sinceLabel: 'Desde',
+    colIssuer: 'Emisor',
     sourceUrl: 'https://app.rwa.xyz/stocks',
     ofMarket: 'del mercado total',
     stocksLabel: 'acciones y ETF',

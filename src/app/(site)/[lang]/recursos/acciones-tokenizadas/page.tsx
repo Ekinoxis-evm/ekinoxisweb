@@ -46,6 +46,7 @@ export default function Page({ params }: { params: { lang: string } }) {
         wallets: [logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom')],
         uniswap: [logoFor('venue-uniswap')],
         stocks: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
+        token: [logoFor('ant')],
       }}
       exchanges={[
         ...ACCIONES.toolkit.exchanges.venueIds.map((id) => band(id === 'kraken' ? 'venue-kraken-mark' : `venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url)),
