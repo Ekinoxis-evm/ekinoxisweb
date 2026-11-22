@@ -18,6 +18,7 @@
 ## Other tables
 `hackers`, `hackathons`, `product_hackers` (join), `education_partners`, `certification_partners`, `leads` (booking form + qualification answers in `details`).
 
+- **`course_enrollments`:** one row per paid Stripe Checkout Session, written only by `/api/webhooks/stripe` (service role), keyed on `stripe_session_id`. Holds `email`, `name`, `phone` (Stripe collects it at checkout) and `client_reference_id` (the landing's «utm_campaign-button» attribution).
 - **Traction:** `users_count` (real users outside the team) and `monthly_income_usd`; null = not measured. Shown on Live cards only when set. Never fill a guess.
 
 ## Reading order of the portfolio

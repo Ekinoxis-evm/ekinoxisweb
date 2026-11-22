@@ -464,7 +464,7 @@ function useSeen<T extends HTMLElement>() {
 const settle = 'transition duration-500 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none';
 
 /** What the moving coin looks like at a stop: cash at the bank, USDT, then the stock token. */
-type Face = 'cash' | 'usdt' | 'token';
+type Face = 'cash' | 'usdt' | 'gas' | 'token';
 
 type FlowStop = { text: string; face: Face; logos?: readonly (Logo | null)[]; icon?: React.ReactNode; end?: boolean };
 
@@ -521,7 +521,7 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
   }, [measure]);
 
   const face = stops[at].face;
-  const coinLogo = face === 'usdt' ? marks.usdt[0] : face === 'token' ? marks.token[0] : null;
+  const coinLogo = face === 'usdt' || face === 'gas' ? marks.usdt[0] : face === 'token' ? marks.token[0] : null;
   const tint = lane === 'a' ? 'bg-secondary/10' : 'bg-primary/10';
 
   return (
@@ -564,12 +564,17 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
         {pos && (
           <span
             aria-hidden
-            className={`pointer-events-none absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full border border-primary bg-surface-container-lowest ${
+            className={`pointer-events-none absolute left-0 top-0 flex h-10 w-10 items-center justify-center gap-0.5 rounded-full border border-primary bg-surface-container-lowest ${
               hidden ? 'opacity-0 transition-opacity duration-300' : 'opacity-100 transition-[transform,opacity] duration-1000 ease-in-out motion-reduce:transition-none'
             }`}
             style={{ transform: `translate(${pos.x - 20}px, ${pos.y - 40}px)` }}
           >
-            {coinLogo ? (
+            {face === 'gas' ? (
+              <>
+                <LogoTile logo={marks.gas[0] ?? null} text="" className="w-5 bg-transparent" />
+                <LogoTile logo={marks.gas[1] ?? null} text="" className="w-4 bg-transparent" />
+              </>
+            ) : coinLogo ? (
               <LogoTile logo={coinLogo} text="" className="w-7 bg-transparent" />
             ) : (
               <span className="font-mono text-[11px] font-bold text-on-surface">{t.cash}</span>
@@ -610,7 +615,7 @@ function Routes({ marks }: { marks: Marks }) {
           stops={[
             { text: r.flow.bank, face: 'cash', icon: <Landmark size={26} aria-hidden /> },
             { text: r.flow.exchange, face: 'usdt', logos: marks.exchanges },
-            { text: r.flow.bWallet, face: 'usdt', logos: marks.wallets },
+            { text: r.flow.bWallet, face: 'gas', logos: marks.wallets },
             { text: r.flow.bBuy, face: 'token', logos: marks.uniswap },
             { text: r.flow.bEnd, face: 'token', icon: <Wallet size={26} aria-hidden />, end: true },
           ]}

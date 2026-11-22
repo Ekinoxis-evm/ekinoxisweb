@@ -233,7 +233,7 @@ export const ACCIONES = {
       exchange: 'Compras USDT en un exchange',
       aBuy: 'Compras la acción ahí mismo',
       aEnd: 'La guarda el exchange',
-      bWallet: 'Envías tus USDT a tu wallet',
+      bWallet: 'Envías USDT y un poco de ETH (gas) a tu wallet',
       bBuy: 'Compras en Uniswap',
       bEnd: 'La guardas tú',
     },

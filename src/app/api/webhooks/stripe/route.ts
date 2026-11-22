@@ -48,6 +48,8 @@ export async function POST(request: NextRequest) {
         course_slug: slug,
         email,
         name: session.customer_details?.name ?? null,
+        phone: session.customer_details?.phone ?? null,
+        client_reference_id: session.client_reference_id ?? null,
         amount_total: session.amount_total,
         currency: session.currency,
         status: 'paid',
