@@ -12,13 +12,21 @@ import { useBookCall } from '@/components/BookCall';
 import TopicExplorer from './TopicExplorer';
 import { staggerContainer, fadeInUp, EASE_SETTLE } from '@/lib/animations';
 import {
-  CalendarDays, Clock, FileSearch, Globe, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
+  CalendarDays, CalendarRange, FileSearch, Gift, Globe, Hourglass, MapPin, Mic, PhoneCall, Plug, Rocket, ServerCog, Users, Workflow,
   type LucideIcon,
 } from 'lucide-react';
+import FactList, { FreeCallFacts } from '@/components/ui/FactList';
 import { PlacesBand } from '@/components/LogoBands';
 
 /** Which booking-form format each pricing card pre-selects. */
 const FORMAT_BY_PLAN = ['hourly', 'workshop', 'advisor'] as const;
+
+/** One icon per plan fact, in the order the facts are listed. */
+const PLAN_FACT_ICONS: LucideIcon[][] = [
+  [Hourglass, Gift, Users, CalendarDays, Hourglass],
+  [Hourglass, Users, MapPin],
+  [Hourglass, CalendarDays, Users, CalendarDays, CalendarRange],
+];
 
 /** One icon per step of the flow, in order: talk, call, session, plan. */
 const FLOW_ICONS: LucideIcon[] = [Mic, PhoneCall, Users, Rocket];
@@ -95,10 +103,10 @@ const consultationContent = {
       title: 'From a talk to a plan, in four steps',
       book: 'Book the free call',
       steps: [
-        { chip: 'Free', num: '01', title: 'Attend a talk', desc: 'Catch us at an event or invite us to yours.' },
-        { chip: 'Free · 30 min', num: '02', title: 'Free call', desc: '30 minutes. We find the problem worth solving first.' },
-        { chip: '$100 · 2 hours', num: '03', title: 'Personalized session', desc: 'Two hours on your problem. Your team, your data, one topic.' },
-        { chip: 'Your plan', num: '04', title: 'Plan and build', desc: 'You keep the plan. Build it yourself, or with us.' },
+        { chip: 'Free', title: 'Attend a talk', desc: 'Catch us at an event or invite us to yours.' },
+        { chip: 'Free', duration: '30 min', title: 'Free call', desc: '30 minutes. We find the problem worth solving first.' },
+        { chip: '$100', duration: '2 hours', title: 'Personalized session', desc: 'Two hours on your problem. Your team, your data, one topic.' },
+        { chip: 'Your plan', title: 'Plan and build', desc: 'You keep the plan. Build it yourself, or with us.' },
       ],
     },
     pricing: {
@@ -109,7 +117,7 @@ const consultationContent = {
         {
           name: 'Personalized Session',
           price: '$100',
-          time: '2 hours · first 30 min free', people: 'Up to 5 people', format: 'Add 2-hour sessions as you need · up to 12 hours',
+          facts: ['2 hours', 'First 30 min free', 'Up to 5 people', 'Add 2-hour sessions as you need', 'Up to 12 hours'],
           badge: 'Start here',
           features: ['The free call is your first 30 minutes', 'One question answered in two hours', 'Or a full written roadmap, session by session', 'Estimate your time when you book', 'How the pieces fit, what to build and what to buy', 'What year one will cost', 'Recording and summary'],
           cta: 'Book a Session',
@@ -117,7 +125,7 @@ const consultationContent = {
         {
           name: 'Team Workshop',
           price: '$3,800',
-          time: 'Half day', people: 'Up to 15 people', format: 'In person or online',
+          facts: ['Half day', 'Up to 15 people', 'In person or online'],
           badge: 'Full day $6,500',
           features: ['We work with your real data', 'Something working by the end of the day', 'Slides and materials to keep'],
           cta: 'Book Workshop',
@@ -125,7 +133,7 @@ const consultationContent = {
         {
           name: 'Monthly Advisor',
           price: '$3,000',
-          time: '16 hours a month · 4 a week', people: 'Your team', format: 'Monthly · 3-month minimum',
+          facts: ['16 hours a month', '4 a week', 'Your team', 'Monthly', '3-month minimum'],
           badge: 'Best value',
           popular: true,
           features: ['4 hours with us every week', 'Reach us any time on Telegram', 'We review your decisions before you commit', 'First pick of dates'],
@@ -141,7 +149,6 @@ const consultationContent = {
       cta: 'Invite Us',
     },
     cta: {
-      label: 'Free · 30 minutes',
       title: 'Not sure which one fits?',
       text: 'Book the free call. We tell you which session fits — or that you do not need one.',
       button: 'Book your free call',
@@ -210,10 +217,10 @@ const consultationContent = {
       title: 'De una charla a un plan, en cuatro pasos',
       book: 'Agenda la llamada gratis',
       steps: [
-        { chip: 'Gratis', num: '01', title: 'Asiste a una charla', desc: 'Búscanos en un evento o invítanos al tuyo.' },
-        { chip: 'Gratis · 30 min', num: '02', title: 'Llamada gratis', desc: '30 minutos. Encontramos el problema que vale la pena resolver primero.' },
-        { chip: '$100 · 2 horas', num: '03', title: 'Sesión personalizada', desc: 'Dos horas en tu problema. Tu equipo, tus datos, un tema.' },
-        { chip: 'Tu plan', num: '04', title: 'Plan y construcción', desc: 'El plan es tuyo. Constrúyelo tú, o con nosotros.' },
+        { chip: 'Gratis', title: 'Asiste a una charla', desc: 'Búscanos en un evento o invítanos al tuyo.' },
+        { chip: 'Gratis', duration: '30 min', title: 'Llamada gratis', desc: '30 minutos. Encontramos el problema que vale la pena resolver primero.' },
+        { chip: '$100', duration: '2 horas', title: 'Sesión personalizada', desc: 'Dos horas en tu problema. Tu equipo, tus datos, un tema.' },
+        { chip: 'Tu plan', title: 'Plan y construcción', desc: 'El plan es tuyo. Constrúyelo tú, o con nosotros.' },
       ],
     },
     pricing: {
@@ -224,7 +231,7 @@ const consultationContent = {
         {
           name: 'Sesión Personalizada',
           price: '$100',
-          time: '2 horas · primeros 30 min gratis', people: 'Hasta 5 personas', format: 'Suma sesiones de 2 horas según necesites · hasta 12 horas',
+          facts: ['2 horas', 'Primeros 30 min gratis', 'Hasta 5 personas', 'Suma sesiones de 2 horas según necesites', 'Hasta 12 horas'],
           badge: 'Empieza aquí',
           features: ['La llamada gratis son tus primeros 30 minutos', 'Una pregunta resuelta en dos horas', 'O un plan escrito completo, sesión a sesión', 'Estima tu tiempo al agendar', 'Cómo encajan las piezas, qué construir y qué comprar', 'Cuánto costará el primer año', 'Grabación y resumen'],
           cta: 'Reservar Sesión',
@@ -232,7 +239,7 @@ const consultationContent = {
         {
           name: 'Taller de Equipo',
           price: '$3,800',
-          time: 'Medio día', people: 'Hasta 15 personas', format: 'Presencial u online',
+          facts: ['Medio día', 'Hasta 15 personas', 'Presencial u online'],
           badge: 'Día completo $6,500',
           features: ['Trabajamos con tus datos reales', 'Algo funcionando al final del día', 'Diapositivas y material para conservar'],
           cta: 'Reservar Taller',
@@ -240,7 +247,7 @@ const consultationContent = {
         {
           name: 'Asesor Mensual',
           price: '$3,000',
-          time: '16 horas al mes · 4 por semana', people: 'Tu equipo', format: 'Mensual · mínimo 3 meses',
+          facts: ['16 horas al mes', '4 por semana', 'Tu equipo', 'Mensual', 'Mínimo 3 meses'],
           badge: 'Mejor valor',
           popular: true,
           features: ['4 horas con nosotros cada semana', 'Escríbenos cuando quieras por Telegram', 'Revisamos tus decisiones antes de comprometerte', 'Primera opción de fechas'],
@@ -256,7 +263,6 @@ const consultationContent = {
       cta: 'Invitarnos',
     },
     cta: {
-      label: 'Gratis · 30 minutos',
       title: '¿No sabes cuál te sirve?',
       text: 'Agenda la llamada gratis. Te decimos qué sesión te sirve — o que no necesitas ninguna.',
       button: 'Agenda tu llamada gratis',
@@ -344,7 +350,7 @@ export default function ConsultationPage() {
                 const isCall = idx === 1;
                 return (
                   <motion.li
-                    key={step.num}
+                    key={step.title}
                     variants={fadeInUp}
                     className="relative flex md:flex-col md:items-center md:text-center gap-5 md:gap-0"
                   >
@@ -358,7 +364,6 @@ export default function ConsultationPage() {
                       <Icon size={22} strokeWidth={1.75} />
                     </div>
                     <div className="md:mt-6">
-                      <p className="font-mono text-[12px] text-outline tracking-widest mb-1">{step.num}</p>
                       <h3 className="font-headline text-lg font-bold tracking-tight text-on-surface mb-2">{step.title}</h3>
                       <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-4 md:max-w-[230px] md:mx-auto">
                         {step.desc}
@@ -366,6 +371,9 @@ export default function ConsultationPage() {
                       <ScanBadge variant={isCall ? 'primary' : idx === 2 ? 'secondary' : idx === 3 ? 'tertiary' : 'muted'}>
                         {step.chip}
                       </ScanBadge>
+                      {'duration' in step && step.duration && (
+                        <FactList className="mt-3 md:items-center" facts={[{ icon: Hourglass, text: step.duration }]} />
+                      )}
                     </div>
                   </motion.li>
                 );
@@ -410,19 +418,11 @@ export default function ConsultationPage() {
                   <div className="mb-6">
                     <span className="font-headline text-4xl font-bold text-primary">{plan.price}</span>
                   </div>
-                  {/* Time, group size and format — the three things a buyer compares first */}
-                  <ul className="space-y-2.5 bg-surface-container-lowest/60 p-4 mb-8">
-                    {([
-                      [Clock, plan.time],
-                      [Users, plan.people],
-                      [CalendarDays, plan.format],
-                    ] as const).map(([Icon, text]) => (
-                      <li key={text} className="flex items-center gap-3">
-                        <Icon size={16} strokeWidth={1.75} className="text-primary flex-shrink-0" />
-                        <span className="font-label text-[13px] font-semibold text-on-surface uppercase tracking-wide">{text}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Time, group size and format — the things a buyer compares first, one per row */}
+                  <FactList
+                    className="bg-surface-container-lowest/60 p-4 mb-8"
+                    facts={plan.facts.map((text, fi) => ({ icon: PLAN_FACT_ICONS[idx][fi], text }))}
+                  />
                   <ul className="space-y-3 flex-1 mb-8">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex gap-2">
@@ -464,7 +464,7 @@ export default function ConsultationPage() {
               {/* Phones stack the copy over the bright side — dim it */}
               <div className="absolute inset-0 bg-black/55 lg:hidden pointer-events-none" />
               <div className="relative">
-                <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">{t.cta.label}</p>
+                <FreeCallFacts en={language === 'en'} className="mb-4" />
                 <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter leading-[0.95] text-on-surface mb-4">{t.cta.title}</h2>
                 <p className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed mb-8">{t.cta.text}</p>
                 <Button variant="primary" size="lg" onClick={book} className="w-full sm:w-auto justify-center">{t.cta.button}</Button>

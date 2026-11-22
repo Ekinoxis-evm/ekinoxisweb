@@ -13,6 +13,13 @@ export type CourseLevel = 'beginner' | 'intermediate' | 'advanced';
 type Bilingual = Record<Language, string>;
 type BilingualList = Record<Language, string[]>;
 
+export type CourseFactKind = 'format' | 'language' | 'duration' | 'sessions' | 'date';
+
+export interface CourseFact {
+  kind: CourseFactKind;
+  text: string;
+}
+
 export interface CourseModule {
   title: string;
   desc: string;
@@ -32,14 +39,12 @@ export interface Course {
   title: Bilingual;
   tagline: Bilingual;
   description: Bilingual;
-  format: Bilingual;
-  duration: Bilingual;
+  /** One row per fact on the cards and the detail page; each has its own icon. */
+  facts: Record<Language, CourseFact[]>;
   /** USD display price, e.g. "$550". null while unpriced. */
   price: string | null;
   /** Optional COP display price, e.g. "2.200.000 COP". */
   priceAlt?: string;
-  /** ISO date of the first session, if scheduled. */
-  startDate?: string;
   audience: BilingualList;
   outcomes: BilingualList;
   prerequisites: BilingualList;
@@ -76,13 +81,19 @@ export const courses: Course[] = [
       en: 'Four weeks to turn an idea into a store that sells, charges and advertises itself. You build the store, connect payments, run your first Meta campaign, and set up WhatsApp follow-up — on your own business, with us in the room.',
       es: 'Cuatro semanas para convertir una idea en una tienda que vende, cobra y se promociona sola. Montas la tienda, conectas pagos, lanzas tu primera campaña en Meta y armas el seguimiento por WhatsApp — sobre tu propio negocio, con nosotros al lado.',
     },
-    format: {
-      en: 'Live online cohort · EN/ES',
-      es: 'Cohorte online en vivo · ES/EN',
-    },
-    duration: {
-      en: '4 weeks · 8 sessions of 2h',
-      es: '4 semanas · 8 sesiones de 2h',
+    facts: {
+      en: [
+        { kind: 'format', text: 'Live online cohort' },
+        { kind: 'language', text: 'EN/ES' },
+        { kind: 'duration', text: '4 weeks' },
+        { kind: 'sessions', text: '8 sessions of 2h' },
+      ],
+      es: [
+        { kind: 'format', text: 'Cohorte online en vivo' },
+        { kind: 'language', text: 'ES/EN' },
+        { kind: 'duration', text: '4 semanas' },
+        { kind: 'sessions', text: '8 sesiones de 2h' },
+      ],
     },
     price: '$550',
     priceAlt: '2.200.000 COP',
@@ -144,13 +155,19 @@ export const courses: Course[] = [
       en: 'Turn a Next.js app into a working crypto app: wallets and social login with Privy, your own contracts on-chain, and token swaps. You leave with it live on Base.',
       es: 'Convierte una app de Next.js en una app cripto funcional: wallets y login social con Privy, tus propios contratos en cadena, y swaps de tokens. Te lo llevas en vivo en Base.',
     },
-    format: {
-      en: 'Live online cohort · EN/ES',
-      es: 'Cohorte online en vivo · ES/EN',
-    },
-    duration: {
-      en: '4 weeks · 8 sessions of 2h',
-      es: '4 semanas · 8 sesiones de 2h',
+    facts: {
+      en: [
+        { kind: 'format', text: 'Live online cohort' },
+        { kind: 'language', text: 'EN/ES' },
+        { kind: 'duration', text: '4 weeks' },
+        { kind: 'sessions', text: '8 sessions of 2h' },
+      ],
+      es: [
+        { kind: 'format', text: 'Cohorte online en vivo' },
+        { kind: 'language', text: 'ES/EN' },
+        { kind: 'duration', text: '4 semanas' },
+        { kind: 'sessions', text: '8 sesiones de 2h' },
+      ],
     },
     price: null,
     tools: [
@@ -199,7 +216,7 @@ export const courses: Course[] = [
  * A workshop that lives on its own landing page (not a /workshops/[slug] detail page):
  * the listing card shows these fields and links to `href`.
  */
-export type LandingWorkshop = Pick<Course, 'slug' | 'code' | 'status' | 'level' | 'title' | 'tagline' | 'format' | 'duration' | 'price' | 'tools'> & {
+export type LandingWorkshop = Pick<Course, 'slug' | 'code' | 'status' | 'level' | 'title' | 'tagline' | 'facts' | 'price' | 'tools'> & {
   href: string;
   /** A price that depends on the date, read in the browser after hydration. */
   livePrice?: () => string;
@@ -218,8 +235,22 @@ export const workshops: (Course | LandingWorkshop)[] = [
       en: "Buy the world's big tech stocks as tokens, from an exchange or your own wallet.",
       es: 'Compra acciones de las grandes tecnológicas tokenizadas, desde un exchange o tu propia wallet.',
     },
-    format: { en: 'Live online · Spanish', es: 'En vivo online · español' },
-    duration: { en: '1 session · 3 hours · Sat 6 Dec', es: '1 sesión · 3 horas · sáb 6 dic' },
+    facts: {
+      en: [
+        { kind: 'date', text: 'Sat 6 Dec, 10 am–1 pm (Colombia)' },
+        { kind: 'sessions', text: '1 session' },
+        { kind: 'duration', text: '3 hours' },
+        { kind: 'format', text: 'Live online' },
+        { kind: 'language', text: 'Spanish' },
+      ],
+      es: [
+        { kind: 'date', text: 'sáb 6 dic, 10:00 a. m. a 1:00 p. m. (Colombia)' },
+        { kind: 'sessions', text: '1 sesión' },
+        { kind: 'duration', text: '3 horas' },
+        { kind: 'format', text: 'En vivo online' },
+        { kind: 'language', text: 'Español' },
+      ],
+    },
     /** Same on server and client (no hydration mismatch); `livePrice` replaces it in the browser, so the listing follows the 2 Dec switch without a deploy. */
     price: `$${ACCIONES.price.promo.amount}`,
     livePrice: () => `$${accionesAmount(new Date())}`,

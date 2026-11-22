@@ -63,9 +63,9 @@ export default function CaseStudyClient({ division, product }: Props) {
     product.website_url && { href: product.website_url, label: t.visit },
     product.app_url && { href: product.app_url, label: 'App' },
     product.instagram && { href: product.instagram, label: 'Instagram' },
-    product.repo_frontend && { href: product.repo_frontend, label: 'GitHub · FE' },
-    product.repo_backend && { href: product.repo_backend, label: 'GitHub · BE' },
-    product.repo_contracts && { href: product.repo_contracts, label: 'GitHub · SC' },
+    product.repo_frontend && { href: product.repo_frontend, label: 'GitHub FE' },
+    product.repo_backend && { href: product.repo_backend, label: 'GitHub BE' },
+    product.repo_contracts && { href: product.repo_contracts, label: 'GitHub SC' },
   ].filter(Boolean) as { href: string; label: string }[];
 
   return (

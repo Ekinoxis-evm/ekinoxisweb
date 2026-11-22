@@ -30,7 +30,7 @@ interface Props {
   onBook: (code: string) => void;
 }
 
-const num = (i: number) => String(i + 1).padStart(2, '0');
+const num = (i: number) => String(i + 1);
 
 /**
  * The five topics as one readable view: pick a topic from the list (or the
@@ -108,7 +108,6 @@ export default function TopicExplorer({ topics, icons, fallbackIcon, t, onBook }
                     transition={{ duration: 0.45, ease: EASE_SETTLE }}
                   />
                 )}
-                <span className={`font-mono text-[12px] tracking-widest ${on ? 'text-primary' : 'text-outline'}`}>{num(i)}</span>
                 <TabIcon size={18} strokeWidth={1.75} className={`flex-shrink-0 ${on ? 'text-primary' : 'text-outline'}`} />
                 <span className="min-w-0">
                   <span className={`block font-headline text-[15px] font-bold tracking-tight leading-snug ${on ? 'text-on-surface' : 'text-on-surface-variant'}`}>
@@ -130,7 +129,7 @@ export default function TopicExplorer({ topics, icons, fallbackIcon, t, onBook }
                 key={tp.code}
                 type="button"
                 onClick={() => go(i)}
-                aria-label={`${num(i)} · ${tp.title}`}
+                aria-label={tp.title}
                 aria-current={i === active ? 'step' : undefined}
                 className="group flex-1 py-3 lg:pointer-events-none"
               >
@@ -171,7 +170,7 @@ export default function TopicExplorer({ topics, icons, fallbackIcon, t, onBook }
                   </div>
                   <div className="min-w-0">
                     <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-2">
-                      {num(active)} · {topic.tech}
+                      {topic.tech}
                     </p>
                     <h3 className="font-headline text-2xl md:text-4xl font-bold tracking-tighter leading-[1.05] text-on-surface">
                       {topic.title}

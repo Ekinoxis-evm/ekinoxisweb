@@ -3,7 +3,8 @@
 import Link from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import ScanBadge from '@/components/ui/ScanBadge';
+import FactList from '@/components/ui/FactList';
+import { CalendarDays } from 'lucide-react';
 import { LEGAL_SLUGS, PRIVACY_EMAIL, legal, type LegalBlock, type LegalSlug } from '@/lib/legal';
 
 /**
@@ -82,7 +83,7 @@ export default function LegalDocument({ slug }: { slug: LegalSlug }) {
             <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-6">{doc.title}</h1>
             <p className="font-body text-lg md:text-xl text-on-surface-variant max-w-2xl leading-relaxed mb-6">{doc.summary}</p>
             <div className="flex flex-wrap items-center gap-3">
-              <ScanBadge variant="muted">{en ? 'Last updated' : 'Última actualización'} · {formatDate(doc.updated, language)}</ScanBadge>
+              <FactList facts={[{ icon: CalendarDays, text: `${en ? 'Last updated' : 'Última actualización'} ${formatDate(doc.updated, language)}` }]} />
             </div>
           </header>
 

@@ -8,7 +8,8 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
 import { fadeInUp } from '@/lib/animations';
-import { ArrowRight, Check, Clock, Code2, Globe2, MessagesSquare } from 'lucide-react';
+import { ArrowRight, Check, Clock, Code2, Globe2, Hourglass, MessagesSquare } from 'lucide-react';
+import FactList from '@/components/ui/FactList';
 import { useBookCall } from '@/components/BookCall';
 
 const ICONS = { chat: MessagesSquare, globe: Globe2, code: Code2 };
@@ -17,7 +18,6 @@ const SERVICE_TRACKS = {
   en: [
     {
       id: 'consultation',
-      code: '01',
       type: 'ADVICE',
       title: 'Consultation',
       tagline: 'We tell you what to build. You leave with a written plan.',
@@ -25,13 +25,13 @@ const SERVICE_TRACKS = {
       time: 'Book this week',
       cta: 'See sessions',
       icon: 'chat' as const,
-      price: '$100 · 2 hours',
+      price: '$100',
+      duration: '2 hours',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
     {
       id: 'web',
-      code: '02',
       type: 'WEBSITES',
       title: 'Websites',
       tagline: 'Your business online in 5 days.',
@@ -45,7 +45,6 @@ const SERVICE_TRACKS = {
     },
     {
       id: 'app',
-      code: '03',
       type: 'SOFTWARE',
       title: 'Software & apps',
       tagline: 'Software built for you, with AI and blockchain.',
@@ -61,7 +60,6 @@ const SERVICE_TRACKS = {
   es: [
     {
       id: 'consultation',
-      code: '01',
       type: 'ASESORÍA',
       title: 'Consultoría',
       tagline: 'Te decimos qué construir. Te llevas un plan escrito.',
@@ -69,13 +67,13 @@ const SERVICE_TRACKS = {
       time: 'Agenda esta semana',
       cta: 'Ver sesiones',
       icon: 'chat' as const,
-      price: '$100 · 2 horas',
+      price: '$100',
+      duration: '2 horas',
       href: '/services/consultation',
       badgeVariant: 'primary' as const,
     },
     {
       id: 'web',
-      code: '02',
       type: 'SITIOS WEB',
       title: 'Sitios web',
       tagline: 'Tu negocio online en 5 días.',
@@ -89,7 +87,6 @@ const SERVICE_TRACKS = {
     },
     {
       id: 'app',
-      code: '03',
       type: 'SOFTWARE',
       title: 'Software y apps',
       tagline: 'Software hecho para ti, con IA y blockchain.',
@@ -108,7 +105,7 @@ export default function ServicesPage() {
   const { language } = useLanguage();
   const bookCall = useBookCall();
   const t = content[language].services;
-  const tracks = SERVICE_TRACKS[language];
+  const tracks: ((typeof SERVICE_TRACKS)['en'][number] & { duration?: string })[] = SERVICE_TRACKS[language];
 
   return (
     <AnimatedBackground variant="ambient">
@@ -174,10 +171,12 @@ export default function ServicesPage() {
                     <div className="mt-auto pt-8 border-t border-primary/10">
                       <div className="flex flex-col gap-2 mb-6">
                         <span className="font-headline text-3xl font-bold text-primary">{track.price}</span>
-                        <span className="flex items-center gap-2 font-mono text-[12px] text-outline uppercase tracking-widest">
-                          <Clock size={14} className="text-primary flex-shrink-0" />
-                          {track.time}
-                        </span>
+                        <FactList
+                          facts={[
+                            ...(track.duration ? [{ icon: Hourglass, text: track.duration }] : []),
+                            { icon: Clock, text: track.time },
+                          ]}
+                        />
                       </div>
                       <span className="flex w-full items-center justify-center gap-2 border border-primary/30 py-3.5 font-label text-[13px] font-bold uppercase tracking-widest text-primary group-hover:bg-primary group-hover:text-surface-container-lowest group-hover:border-primary transition-colors duration-300">
                         {track.cta} <ArrowRight size={16} />

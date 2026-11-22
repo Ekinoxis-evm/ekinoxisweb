@@ -163,7 +163,7 @@ export default function KnowledgeClient({ universities, government, certificatio
 
           {/* ── 1. Education ── */}
           <section id="education" className="scroll-mt-24 mb-20">
-            <SectionHead index="01" label={t.navEducation} title={edu.title} body={edu.description} />
+            <SectionHead label={t.navEducation} title={edu.title} body={edu.description} />
 
             {/* Banner */}
             <div className="bg-primary px-6 md:px-10 py-6 mb-px flex flex-col sm:flex-row sm:items-center justify-between gap-4 overflow-hidden">
@@ -196,7 +196,7 @@ export default function KnowledgeClient({ universities, government, certificatio
 
           {/* ── 2. Certifications ── */}
           <section id="certifications" className="scroll-mt-24 mb-20">
-            <SectionHead index="02" label={t.navCertifications} title={cert.title} body={cert.description} />
+            <SectionHead label={t.navCertifications} title={cert.title} body={cert.description} />
 
             <div className={`grid grid-cols-1 md:grid-cols-2 ${certifications.length % 4 === 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-px bg-primary/10`}>
               {certifications.map((partner) => (
@@ -230,7 +230,7 @@ export default function KnowledgeClient({ universities, government, certificatio
 
           {/* ── 3. Research ── */}
           <section id="research" className="scroll-mt-24">
-            <SectionHead index="03" label={t.navResearch} title={res.title} body={res.description} />
+            <SectionHead label={t.navResearch} title={res.title} body={res.description} />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-primary/10 mb-px">
               {streams.map((stream) => (
@@ -319,12 +319,10 @@ export default function KnowledgeClient({ universities, government, certificatio
 /* ── Local bits ── */
 
 function SectionHead({
-  index,
   label,
   title,
   body,
 }: {
-  index: string;
   label: string;
   title: string;
   body: string;
@@ -332,7 +330,7 @@ function SectionHead({
   return (
     <div className="mb-8">
       <span className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-4">
-        {index} / {label}
+        {label}
       </span>
       <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface uppercase mb-4">
         {title}

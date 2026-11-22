@@ -4,19 +4,22 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { COUNTRIES } from '@/lib/countries';
-import { ArrowLeft, ArrowRight, Check, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BadgeDollarSign, Check, Gift, Hourglass, Info, Minus, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
 import Link from '@/components/LocalizedLink';
 import VoiceInput from '@/components/VoiceInput';
+import FactList from '@/components/ui/FactList';
 import type { LeadTopic } from '@/lib/supabase/types';
 import { bookingDays, type BookingDay } from '@/lib/booking';
 import {
   APP_PLANS, APP_STAGES, APP_USERS, AUDIENCES, BUDGET_BANDS, CONSULTATION_FORMATS, CONSULTATION_TYPES, COURSE_WHO,
   HAS_SITE, SERVICES, TEAM_SIZES, TIMING, WEB_NEEDS, WEB_PLANS,
   BLOCK_HOURS, BLOCK_PRICE_USD, FREE_CALL_MINUTES, MIN_HOURS, MAX_HOURS, MULTI_KEYS, SLOT_REQUIRED, clampHours, estimateUsd,
-  type DetailKey, type LeadPreset, type Option,
+  type DetailKey, type HintFact, type LeadPreset, type Option,
 } from '@/lib/leadForms';
+
+const HINT_ICONS = { price: BadgeDollarSign, time: Hourglass, note: Info } as const;
 
 /**
  * The booking form, the same one everywhere on the site.
@@ -52,7 +55,7 @@ const COPY = {
     typeQ: 'What do you want to talk about?',
     formatQ: 'Which format?',
     hoursQ: 'How much time do you estimate?',
-    hoursHint: `$${BLOCK_PRICE_USD} per ${BLOCK_HOURS}-hour session · the first ${FREE_CALL_MINUTES} minutes (the call) are free`,
+    hoursHint: [`$${BLOCK_PRICE_USD} per ${BLOCK_HOURS}-hour session`, `The first ${FREE_CALL_MINUTES} minutes (the call) are free`],
     hour: 'hour',
     hours: 'hours',
     fewer: 'One session less',
@@ -126,7 +129,7 @@ const COPY = {
     typeQ: '¿De qué quieres hablar?',
     formatQ: '¿En qué formato?',
     hoursQ: '¿Cuánto tiempo estimas?',
-    hoursHint: `$${BLOCK_PRICE_USD} por sesión de ${BLOCK_HOURS} horas · los primeros ${FREE_CALL_MINUTES} minutos (la llamada) son gratis`,
+    hoursHint: [`$${BLOCK_PRICE_USD} por sesión de ${BLOCK_HOURS} horas`, `Los primeros ${FREE_CALL_MINUTES} minutos (la llamada) son gratis`],
     hour: 'hora',
     hours: 'horas',
     fewer: 'Una sesión menos',
@@ -445,7 +448,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
   /* ── pieces ─────────────────────────────────────────────────────────── */
 
-  const chip = (active: boolean, onClick: () => void, title: string, hint?: string, multi = false, key?: string) => (
+  const chip = (active: boolean, onClick: () => void, title: string, hint?: HintFact[], multi = false, key?: string) => (
     <button
       key={key}
       type="button"
@@ -467,7 +470,19 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         <span className={`block font-label text-[13px] font-semibold uppercase tracking-wide leading-snug ${active ? 'text-primary' : 'text-on-surface'}`}>
           {title}
         </span>
-        {hint && <span className="block mt-1 font-mono text-[12px] text-on-surface-variant tracking-wider">{hint}</span>}
+        {hint && (
+          <span className="mt-2 flex flex-col gap-1">
+            {hint.map((h) => {
+              const Icon = HINT_ICONS[h.kind];
+              return (
+                <span key={h.text} className="flex items-start gap-2 font-body text-[13px] font-normal normal-case tracking-normal text-on-surface">
+                  <Icon size={14} strokeWidth={1.75} aria-hidden className="mt-0.5 shrink-0 text-primary" />
+                  {h.text}
+                </span>
+              );
+            })}
+          </span>
+        )}
       </span>
     </button>
   );
@@ -522,7 +537,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
           </span>
         </div>
       </div>
-      <p className="mt-2 font-mono text-[12px] text-on-surface-variant tracking-wider">{t.hoursHint}</p>
+      <FactList className="mt-3" facts={[{ icon: BadgeDollarSign, text: t.hoursHint[0] }, { icon: Gift, text: t.hoursHint[1] }]} />
     </div>
   );
 
@@ -624,7 +639,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
 
       <div>
         <p className={label}>
-          {t.time} <span className="normal-case text-on-surface-variant">({t.yourTime}{tzName ? ` · ${tzName}` : ''})</span>
+          {t.time} <span className="normal-case text-on-surface-variant">({t.yourTime}{tzName ? `, ${tzName}` : ''})</span>
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {day?.slots.map((s) => {

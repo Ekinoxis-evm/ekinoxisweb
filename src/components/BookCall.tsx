@@ -9,6 +9,7 @@ import { EASE_SETTLE } from '@/lib/animations';
 import type { LeadTopic } from '@/lib/supabase/types';
 import type { LeadPreset } from '@/lib/leadForms';
 import ContactForm from './ContactForm';
+import { FreeCallFacts } from './ui/FactList';
 
 /**
  * "Book a free call" opens the booking form right where the visitor is — no
@@ -27,11 +28,11 @@ export const useBookCall = () => useContext(BookCallContext);
 
 type LenisLike = { stop: () => void; start: () => void };
 
-const HEADER: Record<LeadTopic | 'any', { en: [string, string]; es: [string, string] }> = {
-  any: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
-  consultation: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
-  web: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
-  app: { en: ['Free · 30 minutes', 'Book your free call'], es: ['Gratis · 30 minutos', 'Agenda tu llamada gratis'] },
+const HEADER: Record<LeadTopic | 'any', { en: [string | null, string]; es: [string | null, string] }> = {
+  any: { en: [null, 'Book your free call'], es: [null, 'Agenda tu llamada gratis'] },
+  consultation: { en: [null, 'Book your free call'], es: [null, 'Agenda tu llamada gratis'] },
+  web: { en: [null, 'Book your free call'], es: [null, 'Agenda tu llamada gratis'] },
+  app: { en: [null, 'Book your free call'], es: [null, 'Agenda tu llamada gratis'] },
   talk: { en: ['Talks', 'Invite us to speak'], es: ['Charlas', 'Invítanos a hablar'] },
   course: { en: ['Courses', 'Ask about the course'], es: ['Cursos', 'Pregunta por el curso'] },
   general: { en: ['Write to us', 'Tell us what you are building'], es: ['Escríbenos', 'Cuéntanos qué estás construyendo'] },
@@ -104,7 +105,9 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
               >
                 <X size={20} />
               </button>
-              <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{header[0]}</p>
+              {header[0] === null
+                ? <FreeCallFacts en={en} className="mb-4" />
+                : <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-3">{header[0]}</p>}
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-8 pr-10">{header[1]}</h2>
               <ContactForm key={`${open.topic ?? 'any'}-${JSON.stringify(open.preset ?? {})}`} topic={open.topic} preset={open.preset} />
             </motion.div>

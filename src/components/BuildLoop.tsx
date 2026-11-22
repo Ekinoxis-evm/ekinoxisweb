@@ -6,7 +6,7 @@ import { Eye, Flag, Hammer, MessageSquare, PenTool, RefreshCw, Search, Shuffle, 
 import ScanBadge from '@/components/ui/ScanBadge';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
-export type FlowStep = { num: string; title: string; desc: string; chip: string };
+export type FlowStep = { title: string; desc: string; chip: string };
 
 export type BuildLoopCopy = {
   label: string;
@@ -121,7 +121,7 @@ export default function BuildLoop({
         <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface">{t.title}</h2>
       </div>
 
-      {/* Laptop: the line runs through the loop — the ring is step 03, sitting on it */}
+      {/* Laptop: the line runs through the loop — the ring is the third step, sitting on it */}
       <ol className="relative grid grid-cols-1 lg:grid-cols-[1fr_1fr_1.4fr_1fr] gap-10 lg:gap-6">
         <motion.div
           aria-hidden
@@ -139,7 +139,7 @@ export default function BuildLoop({
           const isGoal = idx === 3;
           return (
             <motion.li
-              key={step.num}
+              key={step.title}
               variants={fadeInUp}
               className={`relative flex lg:flex-col lg:items-center lg:text-center gap-5 lg:gap-0 ${isLoop ? '' : 'lg:pt-[102px]'}`}
             >
@@ -157,7 +157,6 @@ export default function BuildLoop({
               </div>
               {isLoop && <Ring round={t.round} center={t.center} icons={roundIcons} className="hidden lg:block relative z-10 w-[260px]" />}
               <div className="lg:mt-6 min-w-0 flex-1 lg:flex-none">
-                <p className="font-mono text-[12px] text-outline tracking-widest mb-1">{step.num}</p>
                 <h3 className="font-headline text-lg font-bold tracking-tight text-on-surface mb-2">{step.title}</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-4 lg:max-w-[260px] lg:mx-auto">{step.desc}</p>
                 <ScanBadge variant={isLoop ? 'primary' : isGoal ? 'tertiary' : 'muted'}>{step.chip}</ScanBadge>
