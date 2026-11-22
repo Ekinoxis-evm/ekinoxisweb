@@ -154,7 +154,7 @@ export const ACCIONES = {
     badge: 'Taller en vivo',
     title: 'Compra acciones tech, ',
     titleEm: 'tokenizadas',
-    sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides quién las guarda.',
+    sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides cómo comprarlas y almacenarlas.',
     facts: {
       date: 'Sábado 6 de diciembre',
       time: '10:00 a. m. a 1:00 p. m. (hora Colombia)',
