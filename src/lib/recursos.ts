@@ -312,8 +312,6 @@ export const ACCIONES = {
       { id: 'wisdomtree', name: 'WisdomTree' },
       { id: 'superstate', name: 'Superstate', slug: 'superstate-opening-bell' },
     ],
-    tableLabel: 'Emisores: valor tokenizado, participación en el mercado y acciones y ETF',
-    colIssuer: 'Emisor',
     sourceUrl: 'https://app.rwa.xyz/stocks',
     ofMarket: 'del mercado total',
     stocksLabel: 'acciones y ETF',

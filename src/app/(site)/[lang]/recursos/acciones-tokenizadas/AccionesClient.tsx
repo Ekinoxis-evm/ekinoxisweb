@@ -309,72 +309,43 @@ function IssuersBlock({ issuers, asOf, sector, others }: { issuers: IssuerStat[]
           </div>
         </div>
 
-        {/* The table: one row per issuer, the same three figures for each; a row opens its card. */}
-        <div role="table" aria-label={b.tableLabel} className="flex flex-col gap-px bg-primary/10">
-          <div role="row" className="hidden grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] items-end gap-4 bg-surface-container-lowest px-5 py-3 md:grid md:px-6">
-            <span role="columnheader" className={label}>{b.colIssuer}</span>
-            <span role="columnheader" className={`${label} text-right`}>{b.valueLabel}</span>
-            <span role="columnheader" className={`${label} text-right`}>{b.ofMarket}</span>
-            <span role="columnheader" className={`${label} text-right`}>{b.stocksLabel}</span>
-            <span />
-          </div>
+        {/* The legend: one line per issuer, its share of the whole market; a line opens its card with the details. */}
+        <ul className="flex flex-col justify-center gap-px bg-primary/10">
           {rows.map((r) => (
-            <button
-              key={r.id}
-              type="button"
-              role="row"
-              onClick={() => open(r)}
-              onMouseEnter={() => setHover(r.id)}
-              onMouseLeave={() => setHover(null)}
-              onFocus={() => setHover(r.id)}
-              onBlur={() => setHover(null)}
-              aria-haspopup="dialog"
-              aria-label={b.open(r.name)}
-              className={`grid flex-1 grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-4 gap-y-3 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6 ${
-                hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
-              }`}
-            >
-              <span role="cell" className="col-span-3 flex items-center gap-3 md:col-span-1">
+            <li key={r.id} className="flex-1">
+              <button
+                type="button"
+                onClick={() => open(r)}
+                onMouseEnter={() => setHover(r.id)}
+                onMouseLeave={() => setHover(null)}
+                onFocus={() => setHover(r.id)}
+                onBlur={() => setHover(null)}
+                aria-haspopup="dialog"
+                aria-label={b.open(r.name)}
+                className={`flex h-full min-h-[64px] w-full items-center gap-4 px-5 py-3 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:px-8 ${
+                  hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
+                }`}
+              >
                 <span aria-hidden className={`h-3 w-3 shrink-0 rounded-full ${CHART[r.color].bg}`} />
                 <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-10" />
-                <span className="font-headline text-lg font-bold text-on-surface">{r.name}</span>
-                <ArrowUpRight size={16} aria-hidden className="ml-auto text-primary md:hidden" />
-              </span>
-              {([
-                [usd(r.value), b.valueLabel],
-                [fmt(r.value / total), b.ofMarket],
-                [`${(b.partial as readonly string[]).includes(r.id) ? '≥ ' : ''}${num(r.stocks)}`, b.stocksLabel],
-              ] as const).map(([v, l]) => (
-                <span key={l} role="cell" className="flex flex-col md:items-end">
-                  <span className="font-headline text-base font-bold md:whitespace-nowrap text-on-surface [font-variant-numeric:tabular-nums] md:text-lg">{v}</span>
-                  <span className="font-body text-[13px] text-on-surface-variant md:hidden">{l}</span>
-                </span>
-              ))}
-              <ArrowUpRight size={16} aria-hidden className="hidden text-primary md:block" />
-            </button>
+                <span className="flex-1 font-headline text-lg font-bold text-on-surface md:text-xl">{r.name}</span>
+                <span className="font-headline text-2xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">{fmt(r.value / total)}</span>
+                <ArrowUpRight size={18} aria-hidden className="text-primary" />
+              </button>
+            </li>
           ))}
           {rest > 0 && (
-            <div role="row" className="grid flex-1 grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-4 gap-y-3 bg-surface-container-low px-5 py-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6">
-              <span role="cell" className="col-span-3 flex items-center gap-3 md:col-span-1">
-                <span aria-hidden className="h-3 w-3 shrink-0 rounded-full bg-outline" />
-                <span className="flex min-w-0 flex-col gap-2">
-                  <span className="font-headline text-lg font-bold text-on-surface-variant">{b.others}</span>
-                  <MiniLogos logos={others} tile="w-7" className="flex-wrap" />
-                </span>
+            <li className="flex flex-1 items-center gap-4 bg-surface-container-low px-5 py-3 md:px-8">
+              <span aria-hidden className="h-3 w-3 shrink-0 rounded-full bg-outline" />
+              <span className="flex flex-1 flex-col gap-2">
+                <span className="font-headline text-lg font-bold text-on-surface-variant md:text-xl">{b.others}</span>
+                <MiniLogos logos={others} tile="w-7" className="flex-wrap" />
               </span>
-              <span role="cell" className="flex flex-col md:items-end">
-                <span className="font-headline text-base font-bold md:whitespace-nowrap text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{usd(rest)}</span>
-                <span className="font-body text-[13px] text-on-surface-variant md:hidden">{b.valueLabel}</span>
-              </span>
-              <span role="cell" className="flex flex-col md:items-end">
-                <span className="font-headline text-base font-bold text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{fmt(rest / total)}</span>
-                <span className="font-body text-[13px] text-on-surface-variant md:hidden">{b.ofMarket}</span>
-              </span>
-              <span role="cell" />
-              <span />
-            </div>
+              <span className="font-headline text-2xl font-bold tracking-tight text-on-surface-variant [font-variant-numeric:tabular-nums]">{fmt(rest / total)}</span>
+              <ArrowUpRight size={18} aria-hidden className="invisible" />
+            </li>
           )}
-        </div>
+        </ul>
       </div>
 
       <Sheet open={card !== null} onClose={() => setCard(null)} label={card?.name ?? b.heading}>
