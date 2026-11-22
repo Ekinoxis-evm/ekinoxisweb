@@ -51,7 +51,7 @@ export default function Page({ params }: { params: { lang: string } }) {
         band(`venue-${ACCIONES.toolkit.exchanges.dexId}`, catalog.venues.uniswap?.name ?? 'Uniswap', 'https://app.uniswap.org'),
       ]}
       wallets={ACCIONES.toolkit.wallets.items.map((w) => band(`tool-${w.id}`, w.name, w.url))}
-      tokens={ACCIONES.toolkit.tokens.items.map((x) => band(`coin-${x.id}`, x.name, x.url))}
+      tokens={ACCIONES.toolkit.tokens.items.map((x) => band(x.logo, x.name, x.url))}
     />
   );
 }

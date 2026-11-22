@@ -181,7 +181,6 @@ export const ACCIONES = {
       { at: 9.5, text: 'Confirmas «Buy xSPCX». Dice «No fee»; el costo va en el precio.' },
       { at: 13, text: '«Your order is complete»: el token ya está en tu cuenta.' },
     ],
-    source: 'Grabación propia, 19 nov 2026',
     src: '/recursos/acciones/clip-okx-spacex.mp4',
     poster: '/recursos/acciones/clip-okx-spacex.jpg',
   },
@@ -205,15 +204,19 @@ export const ACCIONES = {
         { id: 'safe', name: 'Safe', url: 'https://safe.global' },
       ],
     },
+    /** Blockchains, then the stablecoins; ETH and SOL share their chain's mark, so they appear once. `logo` is the file key. */
     tokens: {
-      title: 'Tokens que usaremos',
+      title: 'Tecnología blockchain que usaremos',
       items: [
-        { id: 'eth', name: 'ETH', url: 'https://ethereum.org' },
-        { id: 'usdt', name: 'USDT', url: 'https://tether.to' },
-        { id: 'usdc', name: 'USDC', url: 'https://www.circle.com/usdc' },
-        { id: 'eurc', name: 'EURC', url: 'https://www.circle.com/eurc' },
-        { id: 'dai', name: 'DAI', url: 'https://sky.money' },
-        { id: 'sol', name: 'SOL', url: 'https://solana.com' },
+        { logo: 'chain-ethereum', name: 'Ethereum', url: 'https://ethereum.org' },
+        { logo: 'chain-arbitrum', name: 'Arbitrum', url: 'https://arbitrum.io' },
+        { logo: 'chain-base', name: 'Base', url: 'https://www.base.org' },
+        { logo: 'chain-robinhood', name: 'Robinhood Chain', url: 'https://robinhood.com' },
+        { logo: 'chain-solana', name: 'Solana', url: 'https://solana.com' },
+        { logo: 'coin-usdt', name: 'USDT', url: 'https://tether.to' },
+        { logo: 'coin-usdc', name: 'USDC', url: 'https://www.circle.com/usdc' },
+        { logo: 'coin-eurc', name: 'EURC', url: 'https://www.circle.com/eurc' },
+        { logo: 'coin-dai', name: 'DAI', url: 'https://sky.money' },
       ],
     },
     stocks: { title: 'Acciones que puedes obtener', hint: 'Toca una para ver dónde comprarla y quién la emite.' },
@@ -235,8 +238,10 @@ export const ACCIONES = {
       bEnd: 'En tu wallet',
       show: (m: string) => `Resaltar el método ${m}`,
     },
-    a: { letter: 'A', eyebrow: 'A · Método custodio', title: 'La guarda el exchange', tag: 'Lo más fácil' },
-    b: { letter: 'B', eyebrow: 'B · Custodia propia', title: 'La guardas tú', tag: 'Más control' },
+    compareHeading: '2 métodos, el mismo resultado',
+    /** Images: Higgsfield GPT Image 2.5, equinox style (no text, logos or faces), 21 nov 2026. */
+    a: { letter: 'A', title: 'Lo guarda un custodio', tag: 'Lo más fácil', image: '/recursos/acciones/metodo-custodio.webp', imageAlt: 'La puerta de una bóveda de acero cerrada, iluminada por una luz cian.' },
+    b: { letter: 'B', title: 'Lo guardas tú', tag: 'Más control', image: '/recursos/acciones/metodo-propia.webp', imageAlt: 'Una mano abierta sostiene una pequeña wallet física, iluminada por una luz cian.' },
     /** One row per question; `short` is the answer at a glance, `detail` the line under it. `mark` draws a yes/no icon. */
     facts: [
       {
@@ -320,7 +325,13 @@ export const ACCIONES = {
    */
   course: {
     heading: 'Qué haces en el taller',
-    facts: ['3 horas en vivo', 'Preguntas al final de cada bloque', 'Te quedas con la grabación', 'Un asistente de IA (Claude o ChatGPT) te guía paso a paso'],
+    /** Four icon cells, a 2×2 grid on phones and one row on laptops. */
+    facts: [
+      { icon: 'live', text: '3 horas en vivo' },
+      { icon: 'questions', text: 'Preguntas al final de cada bloque' },
+      { icon: 'recording', text: 'Te quedas con la grabación' },
+      { icon: 'ai', text: 'Un asistente de IA (Claude o ChatGPT) te guía' },
+    ],
     steps: [
       {
         n: 'Antes',

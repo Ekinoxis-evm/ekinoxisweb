@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Bot, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -39,6 +39,9 @@ interface Props {
   wallets: BandItem[];
   tokens: BandItem[];
 }
+
+/** Icon per workshop fact in R.course.facts. */
+const COURSE_FACT_ICONS = { live: Radio, questions: MessageCircleQuestion, recording: Video, ai: Bot } as const;
 
 /** Icon per comparison question in R.routes.facts. */
 const FACT_ICONS: Record<string, typeof Check> = { buy: ShoppingCart, choose: ListChecks, cost: Gauge, risk: ShieldAlert };
@@ -570,31 +573,30 @@ function Routes({ marks }: { marks: Marks }) {
 
       <RoutesMap marks={marks} sel={sel} onSel={setSel} />
 
+      <h3 id="compare-heading" className="mb-6 mt-16 font-headline text-3xl font-bold tracking-tighter text-on-surface md:mt-24 md:text-5xl">{r.compareHeading}</h3>
       {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
-      <div role="table" aria-label={r.heading} className="mt-px grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
+      <div role="table" aria-labelledby="compare-heading" className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
         <div role="row" className="contents">
           <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
           {(['a', 'b'] as const).map((key) => {
             const m = r[key];
-            const Icon = key === 'a' ? Vault : Wallet;
             return (
               <div
                 key={key}
                 role="columnheader"
                 onMouseEnter={() => setSel(key)}
                 onMouseLeave={() => setSel(null)}
-                className={`flex flex-col gap-3 p-4 transition-colors duration-200 md:col-span-2 md:p-6 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
+                className={`flex flex-col transition-colors duration-200 md:col-span-2 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
               >
-                <span className="flex items-center gap-3">
-                  <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-lowest text-primary">
-                    <Icon size={22} />
+                {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized for the column */}
+                <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                <span className="flex flex-col gap-2 p-4 md:p-6">
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-headline text-2xl font-bold text-primary md:text-3xl">{m.letter}</span>
+                    <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-3xl">{m.title}</span>
                   </span>
-                  <span className="font-headline text-2xl font-bold text-primary md:hidden">{m.letter}</span>
-                  <span className="hidden font-mono text-[12px] uppercase tracking-widest text-on-surface-variant md:inline">{m.eyebrow}</span>
+                  <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
                 </span>
-                <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-3xl">{m.title}</span>
-                <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
-                <MiniLogos logos={key === 'a' ? [...marks.exchanges, ...marks.xstocks] : [...marks.wallets, ...marks.uniswap]} className="flex-wrap" tile="w-9 md:w-11" />
               </div>
             );
           })}
@@ -720,7 +722,7 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
   const stock = (x: TechTile): BandTile => ({ key: x.slug, name: x.ticker, logo: x.logo });
   const mid = Math.ceil(tiles.length / 2);
   return (
-    <section aria-labelledby="toolkit-heading" className="flex flex-col gap-12 py-20 md:gap-16 md:py-28">
+    <section aria-labelledby="toolkit-heading" className="flex flex-col gap-12 pt-20 md:gap-16 md:pt-28">
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
         <h2 id="toolkit-heading" className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-5xl">
           {k.heading}
@@ -896,7 +898,6 @@ function Clip() {
         <span className="mr-2 font-mono text-[12px] uppercase tracking-wider text-primary">{c.step(step + 1, c.steps.length)}</span>
         {c.steps[step].text}
       </p>
-      <span className={`${note} mt-1 block`}>{c.source}</span>
     </figure>
   );
 }
@@ -922,12 +923,18 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
   return (
     <section aria-labelledby="course-heading">
       <Heading id="course-heading">{c.heading}</Heading>
-      <ul className="-mt-2 mb-10 flex flex-wrap gap-2">
-        {c.facts.map((f) => (
-          <li key={f} className="border border-primary/20 bg-surface-container-low px-3 py-2 font-body text-[15px] text-on-surface">
-            {f}
-          </li>
-        ))}
+      <ul className="-mt-2 mb-12 grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-4">
+        {c.facts.map((f) => {
+          const Icon = COURSE_FACT_ICONS[f.icon as keyof typeof COURSE_FACT_ICONS];
+          return (
+            <li key={f.icon} className="flex flex-col items-start gap-3 bg-surface-container-low p-4 md:p-6">
+              <span aria-hidden className="flex h-11 w-11 items-center justify-center bg-surface-container-high text-primary">
+                <Icon size={22} />
+              </span>
+              <span className="font-body text-base leading-snug text-on-surface">{f.text}</span>
+            </li>
+          );
+        })}
       </ul>
 
       <ol ref={ref} className="relative grid grid-cols-1 gap-10 pl-10 lg:grid-cols-4 lg:gap-8 lg:pl-0 lg:pt-12">
@@ -966,7 +973,7 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
                 ))}
               </ul>
               {'networks' in st && (
-                <ul aria-label="Redes" className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
+                <ul aria-label="Redes" className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
                   {st.networks.map((n) => (
                     <li key={n.id} className="flex items-center gap-2 font-body text-[15px] text-on-surface">
                       <LogoLink logo={chains[n.id] ?? null} className="flex items-center gap-2">
@@ -1112,8 +1119,9 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <ul className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
               {R.risks.items.map((r, k) => {
                 const Icon = RISK_ICONS[k] ?? ShieldAlert;
+                const lastOdd = k === R.risks.items.length - 1 && R.risks.items.length % 2 === 1;
                 return (
-                  <li key={r.title} className="flex gap-4 bg-surface-container-low p-5 md:p-6">
+                  <li key={r.title} className={`flex gap-4 bg-surface-container-low p-5 md:p-6 ${lastOdd ? 'md:col-span-2' : ''}`}>
                     <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
                       <Icon size={22} />
                     </span>

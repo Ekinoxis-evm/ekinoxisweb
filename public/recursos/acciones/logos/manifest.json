@@ -369,11 +369,6 @@
   "source": "@web3icons/core 4.0.0 USDC (branded)",
   "title": "USDC"
  },
- "coin-sol": {
-  "title": "SOL",
-  "license": "MIT (@web3icons/core 4.0.0); trademark of Solana Foundation",
-  "source": "@web3icons/core 4.0.0 SOL (branded)"
- },
  "coin-dai": {
   "title": "DAI",
   "license": "MIT (@web3icons/core 4.0.0); trademark of its owner",
