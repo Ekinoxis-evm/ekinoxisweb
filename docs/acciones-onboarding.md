@@ -36,7 +36,7 @@ who already got the email do not get it automatically — send them the link by 
 | Name | Why |
 |---|---|
 | `STRIPE_WEBHOOK_SECRET` | Verifies the webhook signature (`whsec_…`). Without it every call returns 400. |
-| `STRIPE_SECRET_KEY` | **Required.** `constructEvent` runs on the client from `getStripe()` (`src/lib/stripe.ts`), which throws when the key is missing; the route then answers 400 and nothing is saved. |
+| `STRIPE_SECRET_KEY` | Not needed by the webhook: it verifies with the static `Stripe.webhooks.constructEvent`, which only uses the signing secret. Only `/api/checkout` needs it. |
 | `SUPABASE_SERVICE_ROLE_KEY` (+ `NEXT_PUBLIC_SUPABASE_URL`) | `createServiceClient()` writes `course_enrollments`. Already set. |
 | `RESEND_API_KEY` | Sends the email. Missing = the enrollment is saved, no email, one error log line. `hola@ekinoxis.xyz` must stay a verified Resend sender domain. |
 
@@ -47,8 +47,7 @@ who already got the email do not get it automatically — send them the link by 
    - Events: `checkout.session.completed` and `checkout.session.async_payment_succeeded`
 2. Open the endpoint, **reveal the signing secret** (`whsec_…`) and copy it.
 3. **Vercel → ekinoxisweb → Settings → Environment Variables (Production)**: add
-   `STRIPE_WEBHOOK_SECRET`, and `STRIPE_SECRET_KEY` (a live restricted or secret key from Developers →
-   API keys) if it is not there yet. Check `RESEND_API_KEY` exists. Never paste a key in a chat or commit.
+   `STRIPE_WEBHOOK_SECRET`. Check `RESEND_API_KEY` exists. Never paste a key in a chat or commit.
 4. **Redeploy** production (env vars apply only to a new deployment).
 5. **Test with a real purchase:** buy the US$30 link with your own card and a mailbox you can read.
    Expect within a minute: Stripe receipt, the onboarding email with the `.ics`, a row in
