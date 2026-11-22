@@ -11,7 +11,7 @@ import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
 /**
  * «Acciones tech tokenizadas»: the page behind the OKX reel (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md).
- * One action: «Reservar mi cupo · US$30» (US$49 from 2 Dec) opens the Stripe Payment Link (same tab).
+ * One action: «Reservar mi cupo por US$30» (US$49 from 2 Dec) opens the Stripe Payment Link (same tab).
  */
 
 export type BandItem = { name: string; href?: string; logo: Logo | null };
