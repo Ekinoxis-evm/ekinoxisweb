@@ -525,16 +525,22 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
   const tint = lane === 'a' ? 'bg-secondary/10' : 'bg-primary/10';
 
   return (
-    <div ref={viewRef} className={`grid grid-cols-1 gap-6 p-6 md:p-8 lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-center lg:gap-10 ${tint}`}>
-      <div className="flex flex-col gap-2">
-        <span className="flex items-baseline gap-3">
-          <span className="font-headline text-4xl font-bold text-primary">{m.letter}</span>
-          <span className="font-headline text-2xl font-bold leading-tight tracking-tight text-on-surface">{m.title}</span>
+    <div ref={viewRef} className={`grid grid-cols-1 lg:grid-cols-[18rem_minmax(0,1fr)] ${tint}`}>
+      {/* The method's image with its name on it, over a black fade so it always reads. */}
+      <div className="relative">
+        {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized */}
+        <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[16/9] h-full w-full object-cover lg:aspect-auto" />
+        <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10" />
+        <span className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-5 md:p-6">
+          <span className="flex items-baseline gap-3">
+            <span className="font-headline text-4xl font-bold text-primary">{m.letter}</span>
+            <span className="font-headline text-2xl font-bold leading-tight tracking-tight text-on-surface">{m.title}</span>
+          </span>
+          <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
         </span>
-        <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
       </div>
 
-      <div ref={wrap} className="relative flex flex-col items-center lg:flex-row lg:items-start lg:pt-12">
+      <div ref={wrap} className="relative flex flex-col items-center px-6 py-8 md:px-8 lg:flex-row lg:items-start lg:px-10 lg:pb-10 lg:pt-20">
         {stops.map((st, k) => (
           <Fragment key={st.text}>
             {k > 0 && <span aria-hidden className={`h-8 w-px lg:mt-8 lg:h-px lg:w-auto lg:min-w-6 lg:flex-1 ${st.end ? 'bg-gradient-to-b from-primary to-tertiary-dim lg:bg-gradient-to-r' : 'bg-primary/60'}`} />}
@@ -612,7 +618,7 @@ function Routes({ marks }: { marks: Marks }) {
       </div>
 
       {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
-      <div role="table" aria-labelledby="routes-heading" className="mt-px grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
+      <div role="table" aria-labelledby="routes-heading" className="mt-12 grid md:mt-16 grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
         <div role="row" className="contents">
           <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
           {(['a', 'b'] as const).map((key) => {
@@ -625,19 +631,13 @@ function Routes({ marks }: { marks: Marks }) {
                 onMouseLeave={() => setSel(null)}
                 className={`flex flex-col transition-colors duration-200 md:col-span-2 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
               >
-                {/* The method's name sits on its image, over a black fade so it always reads. */}
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized for the column */}
-                  <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[3/4] w-full object-cover sm:aspect-[4/3] lg:aspect-[16/9]" />
-                  <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10" />
-                  <span className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 md:p-6">
-                    <span className="flex items-baseline gap-3">
-                      <span className="font-headline text-2xl font-bold text-primary md:text-4xl">{m.letter}</span>
-                      <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-4xl">{m.title}</span>
-                    </span>
-                    <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
+                <span className="flex flex-col gap-1 p-4 md:p-6">
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-headline text-2xl font-bold text-primary md:text-3xl">{m.letter}</span>
+                    <span className="font-headline text-lg font-bold leading-tight tracking-tight text-on-surface md:text-2xl">{m.title}</span>
                   </span>
-                </div>
+                  <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
+                </span>
               </div>
             );
           })}

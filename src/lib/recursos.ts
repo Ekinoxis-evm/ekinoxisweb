@@ -313,7 +313,7 @@ export const ACCIONES = {
       { id: 'superstate', name: 'Superstate', slug: 'superstate-opening-bell' },
     ],
     tableLabel: 'Emisores: valor tokenizado, participación en el mercado, acciones y ETF, y desde cuándo emiten',
-    sinceLabel: 'Desde',
+    sinceLabel: 'desde',
     colIssuer: 'Emisor',
     sourceUrl: 'https://app.rwa.xyz/stocks',
     ofMarket: 'del mercado total',
