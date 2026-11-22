@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import LocalizedLink from '@/components/LocalizedLink';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { track } from '@/lib/analytics';
 import { ACCIONES as R } from '@/lib/recursos';
+import { PREP_PAGE, PREP_PATH } from '@/lib/acciones/onboarding';
 
 /** Where the Stripe Payment Link sends the buyer. The receipt and the record live in Stripe. */
 export default function GraciasClient() {
@@ -24,6 +25,13 @@ export default function GraciasClient() {
           <p className="mt-6 font-body text-lg leading-relaxed text-on-surface-variant">{t.body}</p>
           <p className="mt-6 border-l-2 border-outline-variant pl-4 font-body text-base leading-relaxed text-on-surface">{R.custody}</p>
           <p className="mt-4 font-body text-[15px] text-on-surface-variant">{R.disclaimer}</p>
+          <LocalizedLink
+            href={PREP_PATH}
+            className="mt-8 inline-flex min-h-[44px] items-center gap-2 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:decoration-primary"
+          >
+            {PREP_PAGE.fromThanks}
+            <ArrowRight size={14} aria-hidden />
+          </LocalizedLink>
           <LocalizedLink
             href={R.path}
             className="mt-8 inline-flex min-h-[44px] items-center gap-2 font-body text-[15px] text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:decoration-primary"

@@ -18,7 +18,8 @@
 - **Stripe Payment Link** (live): US$15 one-time, product `prod_Vexh0me4TtKkC4`, set in `ACCIONES.price.paymentLink`.
   Buttons append `?client_reference_id={utm_campaign|landing}-{position}`. After paying, Stripe redirects to
   `/es/recursos/acciones-tokenizadas/gracias` (switched on in Stripe once that page is live in production).
-  Buyers live only in Stripe (no webhook yet); the interest form is the «¿Todavía no?» path into `leads`.
+  Buyers land in `course_enrollments` through the Stripe webhook, which also sends the onboarding email
+  (`docs/acciones-onboarding.md`); the interest form is the «¿Todavía no?» path into `leads`.
 - `/api/checkout` is not used here (no Stripe variables in Vercel, checked 19 nov 2026). Setting
   `paymentLink: null` falls back to the interest form.
 
