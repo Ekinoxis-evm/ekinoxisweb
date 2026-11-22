@@ -247,16 +247,6 @@
   98% { opacity: 0.198; }
 }
 
-/* Carousel timer — the bar under the active tab fills while the block waits to advance */
-@keyframes progress {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-.animate-progress {
-  animation: progress 9s linear forwards;
-}
-
 /* ── Reduced motion — disable decorative animations ── */
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-core,

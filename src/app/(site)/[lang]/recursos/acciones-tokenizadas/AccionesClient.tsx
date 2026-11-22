@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUpRight, Landmark, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Landmark, Vault, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -352,97 +352,199 @@ function MiniLogos({ logos, className = '', firstOnPhone = false }: { logos: rea
   );
 }
 
-/** A numbered trunk step: the two paths share these before they split. */
-function TrunkStep({ n, title, body, children }: { n: string; title: string; body: string; children: React.ReactNode }) {
+type Lane = 'a' | 'b';
+
+/** True once the element has scrolled into view (at once under reduced motion), for one-time reveals. */
+function useSeen<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return setSeen(true);
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setSeen(true), io.disconnect()), { threshold: 0.3 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return [ref, seen] as const;
+}
+
+const settle = 'transition duration-500 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none';
+
+/** A stretch of the map's line: grows in on reveal, cyan when its lane is lit, hairline when not. */
+function MapLine({ on, seen, order, vertical = false, toEnd = false, className = '' }: { on: boolean; seen: boolean; order: number; vertical?: boolean; toEnd?: boolean; className?: string }) {
+  const color = !on ? 'bg-outline-variant' : toEnd ? (vertical ? 'bg-gradient-to-b from-primary to-tertiary-dim' : 'bg-gradient-to-r from-primary to-tertiary-dim') : 'bg-primary';
+  const grow = vertical ? `origin-top ${seen ? 'scale-y-100' : 'scale-y-0'}` : `origin-left ${seen ? 'scale-x-100' : 'scale-x-0'}`;
+  return <span aria-hidden className={`block ${vertical ? 'w-px' : 'h-px'} ${color} ${grow} ${settle} ${className}`} style={{ transitionDelay: `${order * 120}ms` }} />;
+}
+
+/** A stop on the map: its logos (or an icon) over a short label. The end stops are lime: arrival. */
+function MapStop({ logos, icon, text, seen, order, end = false, on = true, firstOnPhone = false }: { logos?: readonly (Logo | null)[]; icon?: React.ReactNode; text: string; seen: boolean; order: number; end?: boolean; on?: boolean; firstOnPhone?: boolean }) {
   return (
-    <li className="flex flex-col gap-4 bg-surface-container-low p-6 md:p-8">
-      <span className="flex items-center gap-3">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary font-mono text-[12px] text-primary">{n}</span>
-        {children}
-      </span>
-      <span>
-        <span className="block font-headline text-xl font-bold tracking-tight text-on-surface md:text-2xl">{title}</span>
-        <span className="mt-2 block font-body text-base leading-relaxed text-on-surface-variant">{body}</span>
-      </span>
-    </li>
+    <span className={`flex min-w-24 shrink-0 flex-col items-center gap-2 text-center ${settle} ${seen ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`} style={{ transitionDelay: `${order * 120}ms` }}>
+      {icon ? (
+        <span className={`flex h-14 w-14 items-center justify-center border transition-colors duration-200 ${end ? (on ? 'border-tertiary-dim text-tertiary-dim' : 'border-outline-variant text-on-surface-variant') : 'border-transparent bg-surface-container-high text-on-surface'}`}>
+          {icon}
+        </span>
+      ) : (
+        <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} className="justify-center [&>span]:w-12 lg:[&>span]:w-14" />
+      )}
+      <span className={`max-w-28 font-mono text-[12px] uppercase leading-snug tracking-wider transition-colors duration-200 ${end && on ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{text}</span>
+    </span>
+  );
+}
+
+/** The A / B switch on the map: lights its lane. 44px, pressed state announced. */
+function LaneButton({ lane, sel, onSel }: { lane: Lane; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+  const m = R.routes[lane];
+  const pressed = sel === lane;
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      aria-label={R.routes.map.show(m.letter)}
+      onClick={() => onSel(pressed ? null : lane)}
+      className={`flex h-11 w-11 shrink-0 items-center justify-center border font-headline text-lg font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        pressed ? 'border-primary bg-primary text-on-primary' : 'border-primary/40 bg-surface-container-lowest text-primary hover:border-primary'
+      }`}
+    >
+      {m.letter}
+    </button>
   );
 }
 
 /**
- * Bank money → USDT on an exchange (shared trunk), then the split: A, the exchange keeps the
- * token; B, you keep it in your wallet. Each method card carries its own facts, so the old
- * side-by-side table is gone. Light Line: cyan through the trunk, lime at each arrival.
+ * Bank money → exchange → USDT, then the split: straight on is A (the exchange keeps the token),
+ * the branch down is B (your wallet, Uniswap). Tapping A or B, or hovering a method card, lights
+ * that lane. Lines grow in once on scroll (instant under reduced motion). Laptop: left to right;
+ * phones: top to bottom with the two lanes side by side.
  */
+function RoutesMap({ marks, sel, onSel }: { marks: Marks; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+  const t = R.routes.map;
+  const [ref, seen] = useSeen<HTMLDivElement>();
+  const onA = sel !== 'b';
+  const onB = sel !== 'a';
+  const trunk = [
+    <MapStop key="bank" icon={<Landmark size={22} aria-hidden />} text={t.bank} seen={seen} order={0} />,
+    <MapStop key="ex" logos={marks.exchanges} text={t.exchange} seen={seen} order={2} />,
+    <MapStop key="usdt" logos={marks.usdt} text={t.usdt} seen={seen} order={4} />,
+  ];
+  const aStops = [
+    <MapStop key="abuy" logos={marks.xstocks} text={t.aBuy} seen={seen} order={7} />,
+    <MapStop key="aend" icon={<Vault size={22} aria-hidden />} text={t.aEnd} seen={seen} order={9} end on={onA} />,
+  ];
+  const bStops = [
+    <MapStop key="bw" logos={marks.wallets} text={t.bWallet} seen={seen} order={7} firstOnPhone />,
+    <MapStop key="bbuy" logos={marks.uniswap} text={t.bBuy} seen={seen} order={9} />,
+    <MapStop key="bend" icon={<Wallet size={22} aria-hidden />} text={t.bEnd} seen={seen} order={11} end on={onB} />,
+  ];
+
+  return (
+    <div ref={ref} role="group" aria-label={t.label} className="bg-surface-container-lowest px-4 py-10 md:px-10">
+      {/* Laptop: the trunk runs straight into lane A; lane B drops from the fork. */}
+      <div className="hidden items-start lg:flex">
+        {trunk.map((stop, k) => (
+          <Fragment key={k}>
+            {stop}
+            <MapLine on seen={seen} order={k * 2 + 1} className="mt-7 min-w-6 flex-1" />
+          </Fragment>
+        ))}
+        <div className="flex flex-[3] flex-col">
+          <div className="relative flex items-start pb-8">
+            <MapLine on={onB} seen={seen} order={5} vertical className="absolute -bottom-7 left-0 top-7" />
+            <MapLine on={onA} seen={seen} order={5} className="mt-7 w-6" />
+            <span className="mt-1.5"><LaneButton lane="a" sel={sel} onSel={onSel} /></span>
+            <MapLine on={onA} seen={seen} order={6} className="mt-7 w-6" />
+            {aStops[0]}
+            <MapLine on={onA} seen={seen} order={8} toEnd className="mt-7 min-w-6 flex-1" />
+            {aStops[1]}
+          </div>
+          <div className="flex items-start">
+            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
+            <span className="mt-1.5"><LaneButton lane="b" sel={sel} onSel={onSel} /></span>
+            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
+            {bStops[0]}
+            <MapLine on={onB} seen={seen} order={8} className="mt-7 min-w-6 flex-1" />
+            {bStops[1]}
+            <MapLine on={onB} seen={seen} order={10} toEnd className="mt-7 min-w-6 flex-1" />
+            {bStops[2]}
+          </div>
+        </div>
+      </div>
+
+      {/* Phones and tablets: down the page, then two lanes side by side. */}
+      <div className="flex flex-col items-center lg:hidden">
+        {trunk.map((stop, k) => (
+          <Fragment key={k}>
+            {stop}
+            <MapLine on seen={seen} order={k * 2 + 1} vertical className="h-6" />
+          </Fragment>
+        ))}
+        <MapLine on seen={seen} order={5} className="w-1/2" />
+        <div className="grid w-full grid-cols-2">
+          {([
+            ['a', onA, aStops],
+            ['b', onB, bStops],
+          ] as const).map(([lane, on, stops]) => (
+            <div key={lane} className="flex flex-col items-center">
+              <MapLine on={on} seen={seen} order={6} vertical className="h-4" />
+              <LaneButton lane={lane} sel={sel} onSel={onSel} />
+              {stops.map((stop, k) => (
+                <Fragment key={k}>
+                  <MapLine on={on} seen={seen} order={7 + k * 2} vertical toEnd={k === stops.length - 1} className={k === stops.length - 1 ? 'min-h-6 flex-1' : 'h-6'} />
+                  {stop}
+                </Fragment>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** The map, then one card per method with its facts; hovering a card lights its lane on the map. */
 function Routes({ marks }: { marks: Marks }) {
   const r = R.routes;
-  const methods = [
-    { key: 'a', m: r.a, steps: [[...marks.exchanges, ...marks.xstocks]] },
-    { key: 'b', m: r.b, steps: [[...marks.gas, ...marks.wallets], marks.uniswap] },
-  ] as const;
+  const [sel, setSel] = useState<Lane | null>(null);
   return (
     <section aria-labelledby="routes-heading">
       <Heading id="routes-heading">{r.heading}</Heading>
       <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{r.lead}</p>
 
-      <ol className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
-        <TrunkStep n={r.start.n} title={r.start.title} body={r.start.body}>
-          <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high text-on-surface">
-            <Landmark size={20} aria-hidden />
-          </span>
-        </TrunkStep>
-        <TrunkStep n={r.stable.n} title={r.stable.title} body={r.stable.body}>
-          <MiniLogos logos={[...marks.usdt, ...marks.exchanges]} />
-        </TrunkStep>
-      </ol>
+      <RoutesMap marks={marks} sel={sel} onSel={setSel} />
 
-      {/* The split: one line down, then one into each method. */}
-      <div aria-hidden className="flex flex-col items-center">
-        <span className="h-8 w-px bg-primary" />
-        <span className="hidden h-px w-1/2 bg-primary md:block" />
-        <span className="hidden w-1/2 justify-between md:flex">
-          <span className="h-6 w-px bg-primary" />
-          <span className="h-6 w-px bg-primary" />
-        </span>
-      </div>
-      <p className="mb-4 text-center font-mono text-[12px] uppercase tracking-widest text-primary md:mb-0 md:sr-only">{r.fork}</p>
-
-      <div className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
-        {methods.map(({ key, m, steps }) => (
-          <article key={key} aria-labelledby={`route-${key}`} className="flex flex-col bg-surface-container-low">
-            <header className="border-b border-primary/10 p-6 md:p-8">
-              <span className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{m.eyebrow}</span>
-                <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{m.tag}</span>
-              </span>
-              <h3 id={`route-${key}`} className="mt-3 font-headline text-3xl font-bold tracking-tighter text-on-surface md:text-4xl">
-                {m.title}
-              </h3>
-            </header>
-            <ol className="flex flex-col gap-5 p-6 md:p-8">
-              {m.steps.map((text, k) => (
-                <li key={text} className="flex flex-col gap-3">
-                  <MiniLogos logos={steps[k] ?? []} />
-                  <span className="font-body text-base leading-relaxed text-on-surface">{text}</span>
-                </li>
-              ))}
-            </ol>
-            <dl className="mt-auto flex flex-col gap-px bg-primary/10">
-              {r.facts.map((f) => (
-                <div key={f.label} className="bg-surface-container-low px-6 py-4 md:px-8">
-                  <dt className={label}>{f.label}</dt>
-                  <dd className="mt-1 font-body text-[15px] leading-relaxed text-on-surface">{f[key]}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="flex items-start gap-3 border-t border-tertiary-dim/40 px-6 py-5 font-body text-base text-tertiary-dim md:px-8">
-              <span aria-hidden className="mt-2 h-2 w-2 shrink-0 rounded-full bg-tertiary-dim" />
-              <span>
-                {m.arrival}
-                <MiniLogos logos={marks.stocks} className="mt-3" />
-              </span>
-            </p>
-          </article>
-        ))}
+      <div className="mt-px grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
+        {(['a', 'b'] as const).map((key) => {
+          const m = r[key];
+          return (
+            <article
+              key={key}
+              aria-labelledby={`route-${key}`}
+              onMouseEnter={() => setSel(key)}
+              onMouseLeave={() => setSel(null)}
+              className={`flex flex-col transition-colors duration-200 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}
+            >
+              <header className="p-6 md:p-8">
+                <span className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{m.eyebrow}</span>
+                  <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{m.tag}</span>
+                </span>
+                <h3 id={`route-${key}`} className="mt-3 font-headline text-3xl font-bold tracking-tighter text-on-surface md:text-4xl">
+                  {m.title}
+                </h3>
+              </header>
+              <dl className="flex flex-col gap-px bg-primary/10">
+                {r.facts.map((f) => (
+                  <div key={f.label} className={`px-6 py-4 transition-colors duration-200 md:px-8 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}>
+                    <dt className={label}>{f.label}</dt>
+                    <dd className="mt-1 font-body text-[15px] leading-relaxed text-on-surface">{f[key]}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          );
+        })}
       </div>
       <p className="mt-4 flex items-start gap-2 font-body text-base text-on-surface-variant">
         <ArrowRight size={18} aria-hidden className="mt-1 shrink-0 text-primary" />
@@ -734,143 +836,75 @@ function ReserveButton({ position, onReserve, label, className = '' }: { positio
   );
 }
 
-/** One block's money flow: nodes settle in one after another along a cyan line that warms to lime. */
-function Flow({ steps, marks, active, still }: { steps: readonly { k: string; label: string }[]; marks: Marks; active: boolean; still: boolean }) {
-  const show = active || still;
-  const ease = 'transition duration-500 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none';
-  return (
-    <ol className="flex items-start justify-center">
-      {steps.map((s, k) => {
-        const last = k === steps.length - 1;
-        return (
-          <Fragment key={`${s.k}-${k}`}>
-            {k > 0 && (
-              <li aria-hidden className="mt-5 flex-1 px-1 md:mt-7 md:px-2">
-                <span
-                  className={`block h-px origin-left ${last ? 'bg-gradient-to-r from-primary to-tertiary-dim' : 'bg-primary'} ${ease} ${show ? 'scale-x-100' : 'scale-x-0'}`}
-                  style={{ transitionDelay: still ? undefined : `${k * 220 - 110}ms` }}
-                />
-              </li>
-            )}
-            <li
-              className={`flex shrink-0 flex-col items-center gap-2 ${ease} ${show ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}
-              style={{ transitionDelay: still ? undefined : `${k * 220}ms` }}
-            >
-              {s.k === 'bank' ? (
-                <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high text-on-surface md:h-14 md:w-14">
-                  <Landmark size={22} aria-hidden />
-                </span>
-              ) : (
-                <MiniLogos logos={marks[s.k as keyof Marks] ?? []} firstOnPhone className="md:[&>span]:w-14" />
-              )}
-              <span className={`font-mono text-[12px] uppercase tracking-wider ${last ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{s.label}</span>
-            </li>
-          </Fragment>
-        );
-      })}
-    </ol>
-  );
-}
-
 /**
- * The three blocks as tabs that advance every 9 s; a cyan bar under the active tab shows the time
- * left. Pauses on hover and focus; under reduced motion it never advances and nothing moves.
- * Screen readers hear a block only when the visitor changes it (aria-live polite).
+ * The session as one timeline: «Antes» then the three blocks, all visible at once. Laptop: a line
+ * across the top with a node per step and its column below; phones: the line runs down the left.
+ * The line draws in and the steps settle in a short stagger once, on scroll (instant under reduced motion).
  */
 function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; marks: Marks; offer: Offer }) {
   const c = R.course;
-  const total = c.modules.length;
-  const uid = useId();
-  const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [manual, setManual] = useState(false);
-  const [still, setStill] = useState(false);
-  useEffect(() => setStill(window.matchMedia('(prefers-reduced-motion: reduce)').matches), []);
-  const auto = !paused && !still && !manual;
-  useEffect(() => {
-    if (!auto) return;
-    const t = setTimeout(() => setI((x) => (x + 1) % total), 9000);
-    return () => clearTimeout(t);
-  }, [i, auto, total]);
-  const go = (n: number) => {
-    setManual(true);
-    setI(n);
-  };
-  const m = c.modules[i];
-
+  const [ref, seen] = useSeen<HTMLOListElement>();
   return (
     <section aria-labelledby="course-heading">
       <Heading id="course-heading">{c.heading}</Heading>
-      <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{c.format}</p>
-      <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
-        <div role="tablist" aria-label={c.heading} className="grid grid-cols-3 gap-px bg-primary/10">
-          {c.modules.map((x, k) => (
-            <button
-              key={x.n}
-              id={`${uid}-tab-${k}`}
-              role="tab"
-              type="button"
-              aria-selected={k === i}
-              aria-controls={`${uid}-panel`}
-              onClick={() => go(k)}
-              className={`relative flex min-h-[64px] flex-col items-start justify-center gap-1 px-3 py-3 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:px-6 ${
-                k === i ? 'bg-surface-container-high' : 'bg-surface-container-low hover:bg-surface-container'
-              }`}
+      <ul className="-mt-2 mb-10 flex flex-wrap gap-2">
+        {c.facts.map((f) => (
+          <li key={f} className="border border-primary/20 bg-surface-container-low px-3 py-2 font-body text-[15px] text-on-surface">
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <ol ref={ref} className="relative grid grid-cols-1 gap-10 pl-10 lg:grid-cols-4 lg:gap-8 lg:pl-0 lg:pt-12">
+        {/* The line: down the left on phones, across the top on laptops. */}
+        <span aria-hidden className={`absolute bottom-2 left-[11px] top-2 w-px origin-top bg-gradient-to-b from-outline-variant via-primary to-tertiary-dim lg:hidden ${settle} duration-1000 ${seen ? 'scale-y-100' : 'scale-y-0'}`} />
+        <span aria-hidden className={`absolute left-0 right-0 top-[11px] hidden h-px origin-left bg-gradient-to-r from-outline-variant via-primary to-tertiary-dim lg:block ${settle} duration-1000 ${seen ? 'scale-x-100' : 'scale-x-0'}`} />
+        {c.steps.map((st, k) => {
+          const before = k === 0;
+          const last = k === c.steps.length - 1;
+          return (
+            <li
+              key={st.n}
+              className={`relative ${settle} ${seen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+              style={{ transitionDelay: `${150 + k * 80}ms` }}
             >
-              <span className={`font-mono text-[12px] uppercase tracking-wider ${k === i ? 'text-primary' : 'text-outline'}`}>{x.n}</span>
-              <span className={`font-headline text-sm font-bold leading-tight md:text-base ${k === i ? 'text-on-surface' : 'text-on-surface-variant'}`}>{x.tab}</span>
-              {k === i && (
-                <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 bg-primary/20">
-                  <span
-                    key={`${i}-${auto}`}
-                    className={`block h-full origin-left bg-primary ${auto ? 'animate-progress' : ''}`}
-                    style={auto ? undefined : { transform: 'scaleX(1)' }}
-                  />
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-        <div
-          id={`${uid}-panel`}
-          role="tabpanel"
-          aria-labelledby={`${uid}-tab-${i}`}
-          aria-live={auto ? 'off' : 'polite'}
-          className="mt-px bg-surface-container-low"
-        >
-          <div className="border-b border-primary/10 bg-surface-container-lowest px-4 py-8 md:px-10 md:py-12">
-            {c.modules.map((x, k) =>
-              k === i ? <Flow key={`${x.n}-${i}`} steps={x.flow} marks={marks} active={k === i} still={still} /> : null,
-            )}
-          </div>
-          <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-10 md:p-10">
-            <div>
-              <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{m.title}</h3>
-              <ul className="mt-4 flex flex-col gap-3">
-                {m.does.map((d) => (
-                  <li key={d} className="flex items-start gap-3 font-body text-base leading-relaxed text-on-surface md:text-lg">
-                    <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <span
+                aria-hidden
+                className={`absolute -left-10 top-0.5 h-6 w-6 rounded-full border bg-surface-container-lowest lg:-top-12 lg:left-0 ${
+                  before ? 'border-outline-variant' : last ? 'border-tertiary-dim' : 'border-primary'
+                }`}
+              >
+                <span className={`absolute inset-1.5 rounded-full ${before ? 'bg-outline-variant' : last ? 'bg-tertiary-dim' : 'bg-primary'}`} />
+              </span>
+              <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className={`font-mono text-[12px] uppercase tracking-widest ${before ? 'text-outline' : 'text-primary'}`}>{st.n}</span>
+                {'method' in st && <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{st.method}</span>}
+              </p>
+              <h3 className="mt-2 font-headline text-2xl font-bold leading-tight tracking-tight text-on-surface">{st.title}</h3>
+              <MiniLogos logos={st.marks.flatMap((m) => marks[m as keyof Marks] ?? [])} className="mt-4" />
+              <ul className="mt-4 flex flex-col gap-2">
+                {st.does.map((d) => (
+                  <li key={d} className="flex items-start gap-3 font-body text-base leading-relaxed text-on-surface">
+                    <span aria-hidden className={`mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full ${before ? 'bg-outline-variant' : 'bg-primary'}`} />
                     {d}
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="flex flex-col gap-4">
-              {'pre' in m && <p className="border-l-2 border-primary pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
-              {'networks' in m && (
-                <ul aria-label="Redes" className="flex flex-wrap gap-2">
-                  {m.networks.map((n) => (
+              {'networks' in st && (
+                <ul aria-label="Redes" className="mt-4 flex flex-wrap gap-2">
+                  {st.networks.map((n) => (
                     <li key={n} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
                       {n}
                     </li>
                   ))}
                 </ul>
               )}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
+            </li>
+          );
+        })}
+      </ol>
+
+      <div className="mt-12 flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
           <p className="flex flex-wrap items-baseline gap-x-3 font-headline text-on-surface [font-variant-numeric:tabular-nums]">
             <span className="text-5xl font-bold tracking-tighter">{R.priceLine(offer.amount)}</span>

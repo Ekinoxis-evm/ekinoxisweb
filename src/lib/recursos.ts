@@ -203,32 +203,26 @@ export const ACCIONES = {
     },
   },
 
-  /** Money → USDT on an exchange (shared trunk), then the two ways to hold the token. */
+  /** A map (bank → exchange → USDT, then the split into A and B) over two method cards. */
   routes: {
     heading: 'Dos formas de tener tus acciones',
-    lead: 'Empiezan igual. Al final cambia quién guarda el token: el exchange o tú.',
-    start: { n: '1', title: 'Tu moneda bancaria', body: 'COP, USD, MXN… la que ya tienes.' },
-    stable: {
-      n: '2',
-      title: 'La cambias a USDT en un exchange',
-      body: 'USDT es una stablecoin: un dólar digital. La compras en tu cuenta verificada de OKX, Kraken o Bybit.',
+    lead: 'Las dos empiezan igual: cambias tu moneda bancaria (COP, USD, MXN…) a USDT, un dólar digital, en un exchange. Al final cambia quién guarda tu acción.',
+    map: {
+      label: 'Mapa: de tu banco a tu acción tokenizada, por el método A o el B',
+      bank: 'Tu banco',
+      exchange: 'Exchange',
+      usdt: 'USDT',
+      aBuy: 'Compras ahí',
+      aEnd: 'En tu cuenta del exchange',
+      bWallet: 'A tu wallet',
+      bBuy: 'Compras en Uniswap',
+      bEnd: 'En tu wallet',
+      show: (m: string) => `Resaltar el método ${m}`,
     },
-    fork: 'Paso 3 · Eliges quién la guarda',
-    a: {
-      eyebrow: 'A · Método custodio',
-      title: 'La guarda el exchange',
-      tag: 'Lo más fácil',
-      steps: ['Con tus USDT compras la acción tokenizada en el mismo exchange.'],
-      arrival: 'El token queda en tu cuenta del exchange, a tu nombre.',
-    },
-    b: {
-      eyebrow: 'B · Custodia propia',
-      title: 'La guardas tú',
-      tag: 'Más control',
-      steps: ['Envías USDT y un poco de ETH (para el gas) del exchange a tu wallet.', 'En Uniswap compras la acción tokenizada eligiendo emisor y red.'],
-      arrival: 'El token queda en tu wallet, bajo tu control.',
-    },
+    a: { letter: 'A', eyebrow: 'A · Método custodio', title: 'La guarda el exchange', tag: 'Lo más fácil' },
+    b: { letter: 'B', eyebrow: 'B · Custodia propia', title: 'La guardas tú', tag: 'Más control' },
     facts: [
+      { label: 'Cómo compras', a: 'Con tus USDT, en el mismo exchange.', b: 'Envías USDT y un poco de ETH (para el gas) a tu wallet y compras en Uniswap.' },
       { label: 'Eliges emisor y red', a: 'No: lo decide el exchange (hoy, xStocks).', b: 'Sí, en Uniswap.' },
       { label: 'Cuánto cuesta', a: 'En mis compras en OKX (19 nov 2026): Convert ≈ +2,1 %; orden a mercado 0,1 %.', b: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
       { label: 'Si algo sale mal', a: 'Dependes de las reglas del exchange en tu país.', b: 'Si pierdes tus 12 palabras, pierdes la wallet.' },
@@ -280,51 +274,42 @@ export const ACCIONES = {
   },
 
   /**
-   * The three blocks as tabs that advance by themselves. Each draws its money flow with the
-   * marks keyed in `flow` (see `Marks` in AccionesClient); `bank` is an icon, not a logo.
+   * The session as one timeline: before the session, then the three blocks. Blocks 2 and 3 are the
+   * map's methods A and B. `marks` keys the logo groups (see `Marks` in AccionesClient).
    */
   course: {
     heading: 'Qué haces en el taller',
-    format: '1 sesión en vivo de 3 horas, en 3 bloques con preguntas al final de cada uno. Te quedas con la grabación y con un asistente de IA (Claude o ChatGPT) que te guía paso a paso.',
-    modules: [
+    facts: ['3 horas en vivo', 'Preguntas al final de cada bloque', 'Te quedas con la grabación', 'Un asistente de IA (Claude o ChatGPT) te guía paso a paso'],
+    steps: [
+      {
+        n: 'Antes',
+        title: 'Crea tu cuenta',
+        marks: ['exchanges'],
+        does: ['Abres tu cuenta en el exchange y completas la verificación (KYC).', 'Te guiamos con el asistente.'],
+      },
       {
         n: 'Bloque 1',
-        tab: 'Tus primeros USDT',
         title: 'De tu banco a tus primeros USDT',
-        flow: [
-          { k: 'bank', label: 'Tu banco' },
-          { k: 'exchanges', label: 'Exchange' },
-          { k: 'usdt', label: 'USDT' },
-        ],
-        does: ['Cargas tu cuenta verificada con tu moneda bancaria.', 'Compras tus primeros USDT y ves cuánto te cobraron.'],
-        pre: 'Antes de la sesión: crea tu cuenta y completa la verificación (KYC). Te guiamos con el asistente.',
+        marks: ['usdt'],
+        does: ['Cargas tu cuenta con tu moneda bancaria.', 'Compras tus primeros USDT y ves cuánto te cobraron.'],
       },
       {
         n: 'Bloque 2',
-        tab: 'Método custodio',
+        method: 'Método A',
         title: 'Tu primera acción tokenizada, en el exchange',
-        flow: [
-          { k: 'usdt', label: 'USDT' },
-          { k: 'exchanges', label: 'Exchange' },
-          { k: 'stocks', label: 'Tu acción' },
-        ],
+        marks: ['xstocks', 'stocks'],
         does: ['Compras por la ruta fácil (Convert) y por la barata (orden a mercado).', 'Calculas cuánto te costó de verdad.'],
       },
       {
         n: 'Bloque 3',
-        tab: 'Custodia propia',
+        method: 'Método B',
         title: 'A tu propia wallet',
-        flow: [
-          { k: 'gas', label: 'USDT + ETH' },
-          { k: 'wallets', label: 'Tu wallet' },
-          { k: 'uniswap', label: 'Uniswap' },
-          { k: 'stocks', label: 'Tu acción' },
-        ],
+        marks: ['wallets', 'uniswap'],
         does: ['Llevas USDT y el gas (ETH) a tu wallet.', 'Retiras a tu wallet lo que compraste en el exchange.', 'Compras en Uniswap eligiendo emisor y red.'],
         networks: ['Ethereum', 'Arbitrum', 'Base', 'Robinhood Chain', 'Solana'],
       },
     ],
-      },
+  },
 
   risks: {
     heading: 'Antes de comprar',
