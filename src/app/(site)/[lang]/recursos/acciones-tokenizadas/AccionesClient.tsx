@@ -14,9 +14,7 @@ import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
 /**
  * «Acciones tech tokenizadas»: the page behind the OKX reel (products/digital products/acciones-tokenizadas/landing/DISENO-v3-reserva.md).
- * One action, «Reservar con US$5». Card payment is not live yet, so the button takes the
- * One action: «Reservar mi cupo · US$15» opens the Stripe Payment Link (same tab).
- * Without a link it falls back to the interest form below.
+ * One action: «Reservar mi cupo · US$30» (US$49 from 2 Dec) opens the Stripe Payment Link (same tab).
  */
 
 export type BandItem = { name: string; href?: string; logo: Logo | null };
@@ -45,19 +43,16 @@ interface Props {
 const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
 /** What the button sells right now: the link, the amount and, during the promo, the real later price. */
-type Offer = { link: string | null; amount: number; was: number | null; note: string | null };
+type Offer = { link: string; amount: number; was: number | null; note: string | null };
 
 function offerAt(now: Date): Offer {
   const p = R.price;
-  if (p.links.promo && p.links.regular) {
-    return now.getTime() < Date.parse(p.promo.endsAt)
-      ? { link: p.links.promo, amount: p.promo.amount, was: p.regular, note: R.promoNote(p.promo.label, p.promo.until) }
-      : { link: p.links.regular, amount: p.regular, was: null, note: null };
-  }
-  return { link: p.current.link, amount: p.current.amount, was: null, note: p.current.note };
+  return now.getTime() < Date.parse(p.promo.endsAt)
+    ? { link: p.links.promo, amount: p.promo.amount, was: p.regular, note: R.promoNote(p.promo.label, p.promo.until) }
+    : { link: p.links.regular, amount: p.regular, was: null, note: null };
 }
 
-const ctaFor = (o: Offer) => (o.link ? R.reserve.paid(o.amount) : R.reserve.interest);
+const ctaFor = (o: Offer) => R.reserve.paid(o.amount);
 const num = (n: number) => n.toLocaleString('es-CO');
 /** «US$1,4 mil millones», «US$875,2 millones». */
 const usd = (n: number) =>
@@ -876,18 +871,14 @@ function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; m
         </div>
       </div>
       <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
-        {offer.link ? (
-          <div>
-            <p className="flex flex-wrap items-baseline gap-x-3 font-headline text-on-surface [font-variant-numeric:tabular-nums]">
-              <span className="text-5xl font-bold tracking-tighter">{R.priceLine(offer.amount)}</span>
-              {offer.was !== null && <s className="text-2xl text-on-surface-variant">{R.priceLine(offer.was)}</s>}
-              <span className="font-body text-base text-on-surface-variant">{R.single}</span>
-            </p>
-            {offer.note && <p className="mt-2 font-body text-base text-on-surface">{offer.note}</p>}
-          </div>
-        ) : (
-          <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{c.soon}</p>
-        )}
+        <div>
+          <p className="flex flex-wrap items-baseline gap-x-3 font-headline text-on-surface [font-variant-numeric:tabular-nums]">
+            <span className="text-5xl font-bold tracking-tighter">{R.priceLine(offer.amount)}</span>
+            {offer.was !== null && <s className="text-2xl text-on-surface-variant">{R.priceLine(offer.was)}</s>}
+            <span className="font-body text-base text-on-surface-variant">{R.single}</span>
+          </p>
+          {offer.note && <p className="mt-2 font-body text-base text-on-surface">{offer.note}</p>}
+        </div>
         <ReserveButton position="precio" onReserve={onReserve} label={ctaFor(offer)} />
       </div>
       <Disclaimer className="mt-4" />
@@ -897,7 +888,7 @@ function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; m
 
 type Status = 'idle' | 'sending' | 'error' | 'done';
 
-function ReserveForm({ paid }: { paid: boolean }) {
+function ReserveForm() {
   const f = R.form;
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
@@ -997,7 +988,7 @@ function ReserveForm({ paid }: { paid: boolean }) {
         <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
         {status === 'error' && <p role="alert" className="font-body text-[15px] text-error">{f.networkError}</p>}
         <span data-cta className="block">
-          <Button type="submit" size="lg" variant={paid ? 'ghost' : 'primary'} disabled={status === 'sending'} className="w-full justify-center">
+          <Button type="submit" size="lg" variant="ghost" disabled={status === 'sending'} className="w-full justify-center">
             {status === 'sending' ? f.sending : f.submit}
           </Button>
         </span>
@@ -1018,7 +1009,6 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
   // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
   const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
   useEffect(() => setOffer(offerAt(new Date())), []);
-  const formRef = useRef<HTMLElement>(null);
   const wall = R.hero.wall
     .map((s) => tiles.find((t) => t.slug === s))
     .filter((t): t is TechTile => t?.logo != null)
@@ -1050,17 +1040,10 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
 
   const reserve = useCallback((position: string) => {
     track('reserve_click', { position });
-    if (offer.link) {
-      // Attribution on the Stripe session: campaign (or «landing») + which button; Stripe accepts [A-Za-z0-9_-].
-      const campaign = new URLSearchParams(window.location.search).get('utm_campaign') ?? 'landing';
-      const ref = `${campaign}-${position}`.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 200);
-      window.location.assign(`${offer.link}?client_reference_id=${encodeURIComponent(ref)}`);
-      return;
-    }
-    const el = formRef.current;
-    if (!el) return;
-    el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-    el.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
+    // Attribution on the Stripe session: campaign (or «landing») + which button; Stripe accepts [A-Za-z0-9_-].
+    const campaign = new URLSearchParams(window.location.search).get('utm_campaign') ?? 'landing';
+    const ref = `${campaign}-${position}`.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 200);
+    window.location.assign(`${offer.link}?client_reference_id=${encodeURIComponent(ref)}`);
   }, [offer]);
 
 
@@ -1128,9 +1111,9 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             </ul>
           </section>
 
-          <section id={FORM_ID} ref={formRef} aria-labelledby="form-heading" className="scroll-mt-24">
+          <section id={FORM_ID} aria-labelledby="form-heading" className="scroll-mt-24">
             <p className="mb-px border-l-2 border-outline-variant bg-surface-container-low p-5 font-body text-base leading-relaxed text-on-surface md:p-6">{R.custody}</p>
-            <ReserveForm paid={offer.link !== null} />
+            <ReserveForm />
           </section>
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">

@@ -122,7 +122,6 @@ export const SKILLS_DISENO = {
  * Numbers on the page come from the catalog's computed `metrics` (src/lib/acciones/catalog.ts);
  * the only figures typed here are William's own three OKX buys (marketing/referencias/acciones-okx/datos-fuentes.md, 19 nov 2026).
  * `price.total`, `opens` and `refund` stay null until William sets them; null hides the line.
- * Until Stripe env vars exist in Vercel, «Reservar» opens the interest form (no payment).
  */
 export const ACCIONES = {
   slug: 'acciones-tokenizadas',
@@ -135,15 +134,13 @@ export const ACCIONES = {
   /**
    * Confirmed by William (20 nov 2026): US$49 is the real price from 2 Dec; until then the
    * Black Friday price is US$30. That is what makes the struck-through US$49 legitimate.
-   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4). The page picks the
-   * tier by the visitor's clock, so it switches on 2 Dec 00:00 COT without a deploy.
+   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4, created 21 nov 2026).
+   * The page picks the tier by the visitor's clock, so it switches on 2 Dec 00:00 COT without a deploy.
    */
   price: {
     regular: 49,
     promo: { amount: 30, label: 'Precio Black Friday', until: '1 de diciembre', endsAt: '2026-12-02T05:00:00Z' },
-    links: { promo: null as string | null, regular: null as string | null },
-    /** The live US$15 link, used only until both tier links exist; then delete this. */
-    current: { amount: 15, link: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00', note: 'Reserva hasta el 30 de noviembre.' },
+    links: { promo: 'https://buy.stripe.com/fZu6oH3EK5c91eG9vWcfK01', regular: 'https://buy.stripe.com/bJeeVd2AG6gde1sbE4cfK02' },
   },
 
   /** Live session. `time` stays null until William sets it; null hides it. */
@@ -162,8 +159,7 @@ export const ACCIONES = {
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
 
-  /** The button names the price only when it opens a real payment. */
-  reserve: { interest: 'Reservar mi cupo', paid: (amount: number) => `Reservar mi cupo · US$${amount}` },
+  reserve: { paid: (amount: number) => `Reservar mi cupo · US$${amount}` },
   priceLine: (amount: number) => `US$${amount}`,
   single: 'pago único',
   promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$49.`,
@@ -328,9 +324,7 @@ export const ACCIONES = {
         networks: ['Ethereum', 'Arbitrum', 'Base', 'Robinhood Chain', 'Solana'],
       },
     ],
-    /** Under the price only if the payment link is removed. */
-    soon: 'El pago abre en unos días. Reserva tu cupo y te escribimos primero.',
-  },
+      },
 
   risks: {
     heading: 'Antes de comprar',
@@ -409,3 +403,9 @@ export const ACCIONES = {
     sign: '— Ekinoxis Labs',
   },
 } as const;
+
+/** The workshop price in force at `now`: the Black Friday price until 1 Dec, then the regular one. */
+export function accionesAmount(now: Date): number {
+  const p = ACCIONES.price;
+  return now.getTime() < Date.parse(p.promo.endsAt) ? p.promo.amount : p.regular;
+}

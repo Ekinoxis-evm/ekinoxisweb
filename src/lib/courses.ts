@@ -1,4 +1,5 @@
 import type { Language } from './content';
+import { accionesAmount } from './recursos';
 
 /**
  * Course registry — static for now. When there are more than a handful of
@@ -217,7 +218,10 @@ export const workshops: (Course | LandingWorkshop)[] = [
     },
     format: { en: 'Live online · Spanish', es: 'En vivo online · español' },
     duration: { en: '1 session · 3 hours · Fri 5 Dec', es: '1 sesión · 3 horas · vie 5 dic' },
-    price: '$15',
+    /** Read at render time; /workshops revalidates hourly, so it follows the 2 Dec switch. */
+    get price() {
+      return `$${accionesAmount(new Date())}`;
+    },
     tools: [
       { name: 'OKX', logo: '/recursos/acciones/logos/venue-okx.svg' },
       { name: 'Uniswap', logo: '/recursos/acciones/logos/venue-uniswap.svg' },
