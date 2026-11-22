@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUpRight, Landmark, Vault, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Coins, Landmark, Scale, Search, ShieldAlert, TrendingDown, Vault, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -41,6 +41,9 @@ interface Props {
   wallets: BandItem[];
   tokens: BandItem[];
 }
+
+/** One icon per «Antes de comprar» item, in the order of R.risks.items. */
+const RISK_ICONS = [Coins, Search, Ban, Scale, TrendingDown];
 
 const FORM_ID = 'reservar';
 const SOURCES_ID = 'fuentes';
@@ -261,8 +264,8 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
                 <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-full" />
               </button>
             ))}
-            <div aria-live="polite" className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-24 text-center">
-              <p className="font-headline text-3xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums] md:text-4xl">
+            <div aria-live="polite" className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-20 text-center md:px-24">
+              <p className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface [font-variant-numeric:tabular-nums] [text-wrap:balance] md:text-3xl">
                 {active ? fmt(active.value / total) : usd(total)}
               </p>
               <p className="mt-1 font-body text-[15px] text-on-surface">{active ? active.name : b.center}</p>
@@ -404,7 +407,7 @@ function MapStop({ logos, icon, text, seen, order, end = false, on = true, first
       ) : (
         <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} className="justify-center [&>span]:w-12 lg:[&>span]:w-14" />
       )}
-      <span className={`max-w-28 font-mono text-[12px] uppercase leading-snug tracking-wider transition-colors duration-200 ${end && on ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{text}</span>
+      <span className={`max-w-28 font-body text-[14px] leading-snug transition-colors duration-200 ${end && on ? 'font-bold text-tertiary-dim' : 'text-on-surface'}`}>{text}</span>
     </span>
   );
 }
@@ -1027,7 +1030,6 @@ function ReserveForm() {
             {status === 'sending' ? f.sending : f.submit}
           </Button>
         </span>
-        <Disclaimer />
       </form>
     </div>
   );
@@ -1130,14 +1132,22 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
 
           <section aria-labelledby="risks-heading">
             <Heading id="risks-heading">{R.risks.heading}</Heading>
-            <ul className="flex flex-col gap-px bg-primary/10">
-              {R.risks.items.map((r) => (
-                <li key={r.title} className="bg-surface-container-low p-5 md:p-6">
-                  <p className="font-headline text-lg font-bold text-on-surface">{r.title}</p>
-                  <p className="mt-1 font-body text-base leading-relaxed text-on-surface-variant">{r.body}</p>
-                  {'source' in r && <p className={`${note} mt-2`}>{r.source}</p>}
-                </li>
-              ))}
+            <ul className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
+              {R.risks.items.map((r, k) => {
+                const Icon = RISK_ICONS[k] ?? ShieldAlert;
+                return (
+                  <li key={r.title} className="flex gap-4 bg-surface-container-low p-5 md:p-6">
+                    <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
+                      <Icon size={22} />
+                    </span>
+                    <span>
+                      <span className="block font-headline text-lg font-bold text-on-surface">{r.title}</span>
+                      <span className="mt-1 block font-body text-base leading-relaxed text-on-surface">{r.body}</span>
+                      {'source' in r && <span className={`${note} mt-2 block`}>{r.source}</span>}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </section>
 

@@ -176,6 +176,9 @@ export function techTiles(): TechTile[] {
     .sort((a, b) => b.issuers.length - a.issuers.length);
 }
 
+/** Symbol marks for issuers whose wordmark is unreadable in a square tile. */
+const ISSUER_MARK: Record<string, string> = { robinhood: 'hood', coinbase: 'coin' };
+
 /** Each issuer with how many companies it tokenizes across the whole catalog, most first. */
 export function issuerStats(): IssuerStat[] {
   const counts = new Map<string, number>();
@@ -185,7 +188,7 @@ export function issuerStats(): IssuerStat[] {
   }
   return Object.entries(data.issuers)
     .filter(([id]) => counts.has(id))
-    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(`issuer-${id}`), stocks: counts.get(id) ?? 0, value: i.value?.usd ?? null, site: i.site ?? null, eligibility: i.eligibility_es ?? null }))
+    .map(([id, i]) => ({ id, name: i.name, logo: logoFor(ISSUER_MARK[id] ?? `issuer-${id}`), stocks: counts.get(id) ?? 0, value: i.value?.usd ?? null, site: i.site ?? null, eligibility: i.eligibility_es ?? null }))
     .sort((a, b) => b.stocks - a.stocks);
 }
 
