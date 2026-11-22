@@ -472,13 +472,23 @@ function MapStop({ logos, icon, text, seen, order, end = false, on = true, first
   return (
     <span className={`flex min-w-24 shrink-0 flex-col items-center gap-2 text-center ${settle} ${seen ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`} style={{ transitionDelay: `${order * 120}ms` }}>
       {icon ? (
-        <span className={`flex h-14 w-14 items-center justify-center border transition-colors duration-200 ${end ? (on ? 'border-tertiary-dim text-tertiary-dim' : 'border-outline-variant text-on-surface-variant') : 'border-transparent bg-surface-container-high text-on-surface'}`}>
+        <span className={`flex h-14 w-14 items-center justify-center border transition-colors duration-200 lg:h-16 lg:w-16 ${end ? (on ? 'border-tertiary-dim text-tertiary-dim' : 'border-outline-variant text-on-surface-variant') : 'border-transparent bg-surface-container-high text-on-surface'}`}>
           {icon}
         </span>
       ) : (
-        <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} tile="w-12 lg:w-14" className="justify-center" />
+        <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} tile="w-12 lg:w-16" className="justify-center" />
       )}
-      <span className={`max-w-28 font-body text-[14px] leading-snug transition-colors duration-200 ${end && on ? 'font-bold text-tertiary-dim' : 'text-on-surface'}`}>{text}</span>
+      <span className={`max-w-28 font-body text-[14px] leading-snug lg:max-w-32 lg:text-[15px] transition-colors duration-200 ${end && on ? 'font-bold text-tertiary-dim' : 'text-on-surface'}`}>{text}</span>
+    </span>
+  );
+}
+
+/** A lane's start on the laptop map: the A / B switch with the method's short name under it. */
+function LaneHead({ lane, sel, onSel }: { lane: Lane; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+  return (
+    <span className="flex flex-col items-center gap-2 pt-2.5">
+      <LaneButton lane={lane} sel={sel} onSel={onSel} />
+      <span className="max-w-28 text-center font-body text-[14px] font-bold leading-snug text-secondary">{R.routes[lane].tag}</span>
     </span>
   );
 }
@@ -530,35 +540,50 @@ function RoutesMap({ marks, sel, onSel }: { marks: Marks; sel: Lane | null; onSe
 
   return (
     <div ref={ref} role="group" aria-label={t.label} className="bg-surface-container-lowest px-4 py-10 md:px-10">
-      {/* Laptop: the trunk runs straight into lane A; lane B drops from the fork. */}
-      <div className="hidden items-start lg:flex">
-        {trunk.map((stop, k) => (
-          <Fragment key={k}>
-            {stop}
-            <MapLine on seen={seen} order={k * 2 + 1} className="mt-7 min-w-6 flex-1" />
-          </Fragment>
-        ))}
-        <div className="flex flex-[3] flex-col">
-          <div className="relative flex items-start pb-8">
-            <MapLine on={onB} seen={seen} order={5} vertical className="absolute -bottom-7 left-0 top-7" />
-            <MapLine on={onA} seen={seen} order={5} className="mt-7 w-6" />
-            <span className="mt-1.5"><LaneButton lane="a" sel={sel} onSel={onSel} /></span>
-            <MapLine on={onA} seen={seen} order={6} className="mt-7 w-6" />
-            {aStops[0]}
-            <MapLine on={onA} seen={seen} order={8} toEnd className="mt-7 min-w-6 flex-1" />
-            {aStops[1]}
-          </div>
-          <div className="flex items-start">
-            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
-            <span className="mt-1.5"><LaneButton lane="b" sel={sel} onSel={onSel} /></span>
-            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
-            {bStops[0]}
-            <MapLine on={onB} seen={seen} order={8} className="mt-7 min-w-6 flex-1" />
-            {bStops[1]}
-            <MapLine on={onB} seen={seen} order={10} toEnd className="mt-7 min-w-6 flex-1" />
-            {bStops[2]}
-          </div>
-        </div>
+      {/*
+        Laptop: one grid, so the two lanes line up by step. Columns: the shared start (bank, exchange,
+        USDT), the fork, then «Mover», «Comprar» and «Dónde queda». A has nothing to move (the token
+        never leaves the exchange), so its line runs straight through that column.
+      */}
+      <div className="hidden lg:grid lg:grid-cols-[auto_minmax(1rem,1fr)_auto_minmax(1rem,1fr)_auto_2.5rem_auto_minmax(1rem,1fr)_auto_minmax(1rem,1fr)_auto_minmax(1rem,1fr)_auto]">
+        {/* Column captions over the lanes */}
+        <span className="col-start-9 pb-4 text-center font-mono text-[12px] uppercase tracking-widest text-outline">{t.colMove}</span>
+        <span className="col-start-11 pb-4 text-center font-mono text-[12px] uppercase tracking-widest text-outline">{t.colBuy}</span>
+        <span className="col-start-13 pb-4 text-center font-mono text-[12px] uppercase tracking-widest text-outline">{t.colEnd}</span>
+
+        {/* Lane A, with the shared start in front */}
+        {trunk[0]}
+        <MapLine on seen={seen} order={1} className="mt-8" />
+        {trunk[1]}
+        <MapLine on seen={seen} order={3} className="mt-8" />
+        {trunk[2]}
+        <span className="relative">
+          <MapLine on={onA} seen={seen} order={5} className="mt-8" />
+          <MapLine on={onB} seen={seen} order={5} vertical className="absolute bottom-0 left-0 top-8" />
+        </span>
+        <LaneHead lane="a" sel={sel} onSel={onSel} />
+        <MapLine on={onA} seen={seen} order={6} className="mt-8" />
+        <span className="flex flex-col items-center pb-12">
+          <MapLine on={onA} seen={seen} order={7} className="mt-8 w-full" />
+          <span className="mt-8 max-w-32 text-center font-body text-[14px] leading-snug text-on-surface-variant">{t.aStay}</span>
+        </span>
+        <MapLine on={onA} seen={seen} order={8} className="mt-8" />
+        {aStops[0]}
+        <MapLine on={onA} seen={seen} order={9} toEnd className="mt-8" />
+        {aStops[1]}
+
+        {/* Lane B */}
+        <span className="relative col-start-6">
+          <MapLine on={onB} seen={seen} order={6} vertical className="absolute left-0 top-0 h-8" />
+          <MapLine on={onB} seen={seen} order={6} className="mt-8" />
+        </span>
+        <LaneHead lane="b" sel={sel} onSel={onSel} />
+        <MapLine on={onB} seen={seen} order={7} className="mt-8" />
+        {bStops[0]}
+        <MapLine on={onB} seen={seen} order={8} className="mt-8" />
+        {bStops[1]}
+        <MapLine on={onB} seen={seen} order={10} toEnd className="mt-8" />
+        {bStops[2]}
       </div>
 
       {/* Phones and tablets: down the page, then two lanes side by side. */}
