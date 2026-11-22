@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, Coins, Landmark, Scale, Search, ShieldAlert, TrendingDown, Vault, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, CalendarDays, Clock, Coins, Landmark, Scale, Search, ShieldAlert, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -91,6 +91,22 @@ function LogoTile({ logo, text, className = '' }: { logo: Logo | null; text: str
     mark = <img src={logo.src} alt="" className={`h-3/5 object-contain ${logo.wide ? 'w-4/5' : 'w-3/5'}`} loading="lazy" />;
   }
   return <span className={`flex aspect-square items-center justify-center bg-surface-container-high ${className}`}>{mark}</span>;
+}
+
+/** Wraps a logo in a link to its owner's official site (new tab); plain when the site is unknown. */
+function LogoLink({ logo, children, className = '' }: { logo: Logo | null; children: React.ReactNode; className?: string }) {
+  if (!logo?.href) return <span className={className}>{children}</span>;
+  return (
+    <a
+      href={logo.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={logo.name ?? logo.href}
+      className={`block transition-opacity duration-150 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${className}`}
+    >
+      {children}
+    </a>
+  );
 }
 
 function Disclaimer({ className = '' }: { className?: string }) {
@@ -358,13 +374,15 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
 }
 
 /** A row of small logo tiles; on phones only the first, so a flow of four still fits 375px. */
-function MiniLogos({ logos, className = '', firstOnPhone = false }: { logos: readonly (Logo | null)[]; className?: string; firstOnPhone?: boolean }) {
+function MiniLogos({ logos, className = '', firstOnPhone = false, tile = 'w-10' }: { logos: readonly (Logo | null)[]; className?: string; firstOnPhone?: boolean; tile?: string }) {
   const shown = logos.filter((l): l is Logo => l !== null);
   if (shown.length === 0) return null;
   return (
     <span className={`flex gap-1 ${className}`}>
       {shown.map((l, k) => (
-        <LogoTile key={l.src} logo={l} text="" className={`w-10 ${firstOnPhone && k > 0 ? 'max-md:hidden' : ''}`} />
+        <LogoLink key={l.src} logo={l} className={`${tile} ${firstOnPhone && k > 0 ? 'max-md:hidden' : ''}`}>
+          <LogoTile logo={l} text="" className="w-full" />
+        </LogoLink>
       ))}
     </span>
   );
@@ -405,7 +423,7 @@ function MapStop({ logos, icon, text, seen, order, end = false, on = true, first
           {icon}
         </span>
       ) : (
-        <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} className="justify-center [&>span]:w-12 lg:[&>span]:w-14" />
+        <MiniLogos logos={logos ?? []} firstOnPhone={firstOnPhone} tile="w-12 lg:w-14" className="justify-center" />
       )}
       <span className={`max-w-28 font-body text-[14px] leading-snug transition-colors duration-200 ${end && on ? 'font-bold text-tertiary-dim' : 'text-on-surface'}`}>{text}</span>
     </span>
@@ -678,6 +696,17 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
                 <p className="font-mono text-[12px] text-outline">{sel.ticker}</p>
               </div>
             </div>
+            {sel.logo?.href && (
+              <a
+                href={sel.logo.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex min-h-[44px] items-center gap-2 border border-outline-variant px-4 font-body text-[15px] text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {R.issuersBlock.site}
+                <ArrowUpRight size={16} aria-hidden />
+              </a>
+            )}
             <h3 className="mt-6 font-headline text-lg font-bold text-on-surface">{t.routeA}</h3>
             {sel.venues.length ? (
               <ul className="mt-3 flex flex-col gap-3">
@@ -790,7 +819,11 @@ function Clip() {
     setStep(i);
   };
   return (
-    <figure className="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)] items-start gap-4 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] lg:grid-cols-1 xl:grid-cols-[minmax(0,13rem)_minmax(0,1fr)]">
+    <figure className="mx-auto flex w-full max-w-xs flex-col lg:max-w-72">
+      <figcaption className="mb-3 flex items-center gap-2 font-body text-[15px] font-bold text-on-surface">
+        <span aria-hidden className="h-2 w-2 rounded-full bg-tertiary-dim" />
+        {c.caption}
+      </figcaption>
       <video
         ref={ref}
         src={c.src}
@@ -802,29 +835,28 @@ function Clip() {
         preload="metadata"
         onTimeUpdate={onTime}
         aria-label={c.caption}
-        className="w-full border border-outline-variant bg-surface-container-lowest lg:mx-auto lg:max-w-[16rem] xl:max-w-none"
+        className="w-full border border-outline-variant bg-surface-container-lowest"
       />
-      <figcaption>
-        <span className="block font-headline text-lg font-bold leading-snug text-on-surface">{c.caption}</span>
-        <ol className="mt-3 flex flex-col gap-1">
-          {c.steps.map((s, i) => (
-            <li key={s.at}>
-              <button
-                type="button"
-                onClick={() => jump(i)}
-                aria-current={i === step ? 'step' : undefined}
-                className={`flex min-h-[44px] w-full items-start gap-3 border-l-2 py-2 pl-3 text-left font-body text-[15px] leading-snug transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
-                  i === step ? 'border-on-surface text-on-surface' : 'border-outline-variant text-on-surface-variant hover:text-on-surface'
-                }`}
-              >
-                <span className="font-mono text-[12px] text-outline">{i + 1}</span>
-                {s.text}
-              </button>
-            </li>
-          ))}
-        </ol>
-        <span className={`${note} mt-2 block`}>{c.source}</span>
-      </figcaption>
+      {/* One subtitle at a time; the segments jump the clip to each step. */}
+      <div className="mt-3 flex gap-1" role="group" aria-label={c.caption}>
+        {c.steps.map((st, i) => (
+          <button
+            key={st.at}
+            type="button"
+            onClick={() => jump(i)}
+            aria-label={`${c.step(i + 1, c.steps.length)}: ${st.text}`}
+            aria-current={i === step ? 'step' : undefined}
+            className="flex h-11 flex-1 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          >
+            <span className={`block h-1 w-full transition-colors duration-150 ${i <= step ? 'bg-primary' : 'bg-outline-variant'}`} />
+          </button>
+        ))}
+      </div>
+      <p className="min-h-14 font-body text-base leading-snug text-on-surface">
+        <span className="mr-2 font-mono text-[12px] uppercase tracking-wider text-primary">{c.step(step + 1, c.steps.length)}</span>
+        {c.steps[step].text}
+      </p>
+      <span className={`${note} mt-1 block`}>{c.source}</span>
     </figure>
   );
 }
@@ -897,8 +929,10 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
                 <ul aria-label="Redes" className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
                   {st.networks.map((n) => (
                     <li key={n.id} className="flex items-center gap-2 font-body text-[15px] text-on-surface">
-                      <LogoTile logo={chains[n.id] ?? null} text={n.name.slice(0, 2).toUpperCase()} className="w-8" />
-                      {n.name}
+                      <LogoLink logo={chains[n.id] ?? null} className="flex items-center gap-2">
+                        <LogoTile logo={chains[n.id] ?? null} text={n.name.slice(0, 2).toUpperCase()} className="w-8" />
+                        <span>{n.name}</span>
+                      </LogoLink>
                     </li>
                   ))}
                 </ul>
@@ -1087,27 +1121,41 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
     <AnimatedBackground variant="ambient">
       <div className="px-4 pb-20 pt-12 sm:px-6 md:pb-32 md:pt-24">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
-          {/* 1 · Hero: copy left, the real purchase right from lg; stacked on phones */}
-          <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-12">
+          {/* 1 · Hero: the promise, the 8 biggest names (each links to its site), one action and three facts; the real purchase beside it. */}
+          <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <header className="rise flex flex-col items-start lg:col-span-7">
             <ScanBadge>{R.hero.badge}</ScanBadge>
             <h1 className="mt-6 font-headline text-5xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-7xl">
               {R.hero.title}
               <em className="text-primary">{R.hero.titleEm}</em>
             </h1>
-            <p className="mt-6 max-w-2xl font-headline text-xl font-bold leading-snug text-on-surface md:text-2xl">{R.hero.control}</p>
-            <ul className="mt-6 grid w-full max-w-xl grid-cols-8 gap-px bg-primary/10 md:mt-8" aria-label={wall.map((t) => t.name).join(', ')}>
+            <p className="mt-6 max-w-xl font-body text-lg leading-relaxed text-on-surface md:text-xl">{R.hero.sub}</p>
+            <ul className="mt-8 grid w-full max-w-xl grid-cols-8 gap-px bg-primary/10" aria-label={wall.map((t) => t.name).join(', ')}>
               {wall.map((t) => (
                 <li key={t.slug}>
-                  <LogoTile logo={t.logo} text={t.ticker} className="w-full" />
+                  <LogoLink logo={t.logo}>
+                    <LogoTile logo={t.logo} text={t.ticker} className="w-full" />
+                  </LogoLink>
                 </li>
               ))}
             </ul>
-            <ReserveButton position="hero" onReserve={reserve} label={ctaFor(offer)} className="mt-6 md:mt-10" />
-            <p className="mt-4 font-body text-[15px] text-on-surface-variant">
-              {R.session.line(R.session.date, R.session.time)}{' '}
-              {R.disclaimer}
-            </p>
+            <ReserveButton position="hero" onReserve={reserve} label={ctaFor(offer)} className="mt-8" />
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 font-body text-base text-on-surface">
+              {[
+                [CalendarDays, R.hero.facts.when(R.session.date, R.session.time)],
+                [Clock, R.hero.facts.length],
+                [Video, R.hero.facts.recording],
+              ].map(([Icon, text]) => {
+                const I = Icon as typeof Clock;
+                return (
+                  <li key={text as string} className="flex items-center gap-2">
+                    <I size={18} aria-hidden className="text-primary" />
+                    {text as string}
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="mt-4 font-body text-[13px] text-on-surface-variant">{R.disclaimer}</p>
           </header>
 
           <div className="lg:col-span-5">

@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import raw from '@/data/acciones/catalogo.json';
+import { SITES } from './sites';
 import logoManifest from '../../../public/recursos/acciones/logos/manifest.json';
 
 /**
@@ -89,7 +90,7 @@ interface RawCatalog {
 }
 
 const data = raw as unknown as RawCatalog;
-const manifest = logoManifest as Record<string, { hex?: string }>;
+const manifest = logoManifest as Record<string, { hex?: string; title?: string }>;
 
 export interface Logo {
   src: string;
@@ -97,6 +98,10 @@ export interface Logo {
   mono: boolean;
   /** A wordmark, not a symbol: it gets the tile's width instead of a square box. */
   wide: boolean;
+  /** The owner's official site (src/lib/acciones/sites.ts); the logo links there. */
+  href: string | null;
+  /** The owner's name from the logo manifest, for the link's accessible name. */
+  name: string | null;
 }
 
 /** One of the 40 tiles, with what its panel shows. */
@@ -140,7 +145,7 @@ export function logoFor(name: string): Logo | null {
     const file = join(process.cwd(), 'public', src);
     if (!existsSync(file)) continue;
     const hex = manifest[name]?.hex;
-    return { src, mono: hex ? luminance(hex) < 0.2 : false, wide: isWide(name, file) };
+    return { src, mono: hex ? luminance(hex) < 0.2 : false, wide: isWide(name, file), href: SITES[name] ?? null, name: manifest[name]?.title ?? null };
   }
   return null;
 }

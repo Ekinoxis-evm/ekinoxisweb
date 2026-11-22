@@ -32,7 +32,8 @@
  "app": {
   "license": "trademark of AppLovin",
   "note": "currentColor recoloured to First Light",
-  "source": "https://www.applovin.com/ (header logo)"
+  "source": "https://www.applovin.com/ (header logo)",
+  "title": "AppLovin"
  },
  "arm": {
   "hex": "0091BD",
@@ -42,7 +43,8 @@
  },
  "asml": {
   "license": "Public domain (trademarked)",
-  "source": "https://commons.wikimedia.org/wiki/File:ASML_Holding_N.V._logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:ASML_Holding_N.V._logo.svg",
+  "title": "ASML"
  },
  "avgo": {
   "hex": "E31837",
@@ -64,12 +66,14 @@
  },
  "crwd": {
   "license": "Public domain (trademark)",
-  "source": "https://commons.wikimedia.org/wiki/File:CrowdStrike_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:CrowdStrike_logo.svg",
+  "title": "CrowdStrike"
  },
  "crwv": {
   "license": "Public domain (trademarked)",
   "note": "dark parts recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:CoreWeave_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:CoreWeave_logo.svg",
+  "title": "CoreWeave"
  },
  "csco": {
   "hex": "1BA0D7",
@@ -97,7 +101,8 @@
  },
  "ibm": {
   "license": "Public domain (trademarked)",
-  "source": "https://commons.wikimedia.org/wiki/File:IBM_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:IBM_logo.svg",
+  "title": "IBM"
  },
  "intc": {
   "hex": "0071C5",
@@ -108,29 +113,35 @@
  "issuer-backpack": {
   "license": "trademark, company brand kit",
   "note": "dark parts recoloured to First Light for the dark page",
-  "source": "https://backpack.exchange/brand"
+  "source": "https://backpack.exchange/brand",
+  "title": "Backpack"
  },
  "issuer-coinbase": {
   "license": "Public domain (trademarked)",
-  "source": "https://commons.wikimedia.org/wiki/File:Coinbase.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Coinbase.svg",
+  "title": "Coinbase"
  },
  "issuer-dinari": {
   "license": "trademark, company website",
-  "source": "https://dinari.com"
+  "source": "https://dinari.com",
+  "title": "Dinari"
  },
  "issuer-ondo": {
   "license": "trademark of Ondo Finance",
   "note": "currentColor recoloured to First Light for the dark page",
-  "source": "https://ondo.finance/ (header logo)"
+  "source": "https://ondo.finance/ (header logo)",
+  "title": "Ondo"
  },
  "issuer-robinhood": {
   "license": "Public domain (trademarked)",
   "note": "single-colour mark recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:Robinhood_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Robinhood_logo.svg",
+  "title": "Robinhood"
  },
  "issuer-xstocks": {
   "license": "trademark of Backed Assets (xStocks)",
-  "source": "https://xstocks.fi/favicon.svg"
+  "source": "https://xstocks.fi/favicon.svg",
+  "title": "xStocks"
  },
  "meta": {
   "hex": "0467DF",
@@ -141,17 +152,20 @@
  "mrvl": {
   "license": "Public domain (trademark)",
   "note": "recoloured to First Light",
-  "source": "https://commons.wikimedia.org/wiki/File:Marvell_Logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Marvell_Logo.svg",
+  "title": "Marvell"
  },
  "msft": {
   "license": "Public domain (trademarked)",
   "note": "cropped to the four-square symbol (viewBox 0 0 72 72)",
-  "source": "https://commons.wikimedia.org/wiki/File:Microsoft_logo_(2012).svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Microsoft_logo_(2012).svg",
+  "title": "Microsoft"
  },
  "mu": {
   "license": "Public domain (trademarked)",
   "note": "single-colour mark recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:Micron_Technology_logo_2024.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Micron_Technology_logo_2024.svg",
+  "title": "Micron"
  },
  "net": {
   "hex": "F38020",
@@ -168,7 +182,8 @@
  "now": {
   "license": "Public domain (trademarked)",
   "note": "dark parts recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:ServiceNow_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:ServiceNow_logo.svg",
+  "title": "ServiceNow"
  },
  "nvda": {
   "hex": "76B900",
@@ -214,7 +229,8 @@
  },
  "smci": {
   "license": "Public domain (trademarked)",
-  "source": "https://commons.wikimedia.org/wiki/File:Super_Micro_Computer_Logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Super_Micro_Computer_Logo.svg",
+  "title": "Supermicro"
  },
  "snow": {
   "hex": "29B5E8",
@@ -230,32 +246,39 @@
  },
  "tool-base": {
   "license": "Base brand kit",
-  "source": "https://github.com/base-org/brand-kit (logo/TheSquare/Digital/Base_square_blue.svg)"
+  "source": "https://github.com/base-org/brand-kit (logo/TheSquare/Digital/Base_square_blue.svg)",
+  "title": "Base app"
  },
  "tool-ledger": {
   "license": "trademark of its owner",
   "note": "recoloured to First Light",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "Ledger"
  },
  "tool-metamask": {
   "license": "trademark of its owner",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "MetaMask"
  },
  "tool-phantom": {
   "license": "trademark of its owner",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "Phantom"
  },
  "tool-rabby": {
   "license": "trademark of its owner",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "Rabby"
  },
  "tool-safe": {
   "license": "trademark of its owner",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "Safe"
  },
  "tool-trustwallet": {
   "license": "trademark of its owner",
-  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)"
+  "source": "marketing/produccion/portadas/logos (Ekinoxis marketing library)",
+  "title": "Trust Wallet"
  },
  "tsla": {
   "hex": "CC0000",
@@ -265,7 +288,8 @@
  },
  "tsm": {
   "license": "Public domain (trademarked)",
-  "source": "https://commons.wikimedia.org/wiki/File:TSMC_wordmark.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:TSMC_wordmark.svg",
+  "title": "TSMC"
  },
  "uber": {
   "hex": "000000",
@@ -276,25 +300,30 @@
  "venue-bybit": {
   "license": "Public domain (trademarked)",
   "note": "dark parts recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:Bybit_Logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Bybit_Logo.svg",
+  "title": "Bybit"
  },
  "venue-kraken": {
   "license": "trademark, company brand guidelines",
-  "source": "https://brand.kraken.com"
+  "source": "https://brand.kraken.com",
+  "title": "Kraken"
  },
  "venue-kraken-mark": {
   "license": "trademark, company brand guidelines",
   "note": "symbol only, cropped from the official wordmark (last path, viewBox 0 0 97 78)",
-  "source": "https://brand.kraken.com"
+  "source": "https://brand.kraken.com",
+  "title": "Kraken"
  },
  "venue-okx": {
   "license": "Public domain (trademarked)",
   "note": "single-colour mark recoloured to First Light for the dark page",
-  "source": "https://commons.wikimedia.org/wiki/File:OKX_logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:OKX_logo.svg",
+  "title": "OKX"
  },
  "venue-uniswap": {
   "license": "GPLv3",
-  "source": "https://commons.wikimedia.org/wiki/File:Uniswap_Logo.svg"
+  "source": "https://commons.wikimedia.org/wiki/File:Uniswap_Logo.svg",
+  "title": "Uniswap"
  },
  "coin-usdt": {
   "hex": "50AF95",

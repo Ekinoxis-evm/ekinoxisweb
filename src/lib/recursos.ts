@@ -152,9 +152,14 @@ export const ACCIONES = {
 
   hero: {
     badge: 'Taller en vivo',
-    title: 'Compra acciones de las grandes tecnológicas del mundo, ',
+    title: 'Compra acciones tech, ',
     titleEm: 'tokenizadas',
-    control: 'Siempre tuyos: en tu cuenta, a tu nombre, o en tu propia wallet, bajo tu control. Tú decides siempre.',
+    sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides quién las guarda.',
+    facts: {
+      when: (date: string, time: string | null) => `${date}${time ? ` · ${time} (Colombia)` : ''}`,
+      length: '3 horas en vivo',
+      recording: 'Grabación incluida',
+    },
     /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
@@ -165,7 +170,8 @@ export const ACCIONES = {
   promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$49.`,
 
   clip: {
-    caption: 'Así se compra: SpaceX con 1 USDT en OKX.',
+    caption: 'Compra real: SpaceX con 1 USDT en OKX',
+    step: (n: number, total: number) => `Paso ${n} de ${total}`,
     /** Steps of the 15 s clip; `at` is the second each one starts. Tapping a step jumps the video there. */
     steps: [
       { at: 0, text: 'Quick → Stock: eliges SpaceX (xSPCX).' },
