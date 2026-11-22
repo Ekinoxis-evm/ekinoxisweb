@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import { motion } from 'framer-motion';
 import Link from '@/components/LocalizedLink';
 import Image from 'next/image';
@@ -68,6 +70,13 @@ const statusVariant: Record<CourseStatus, 'tertiary' | 'primary' | 'muted'> = {
   waitlist: 'primary',
   coming_soon: 'muted',
 };
+
+/** Shows the build-time price, then the price for the visitor's date once mounted (no hydration mismatch). */
+function LivePrice({ initial, get }: { initial: string; get: () => string }) {
+  const [price, setPrice] = useState(initial);
+  useEffect(() => setPrice(get()), [get]);
+  return <>{price}</>;
+}
 
 export default function CoursesPage() {
   const { language } = useLanguage();
@@ -158,7 +167,7 @@ export default function CoursesPage() {
 
                     <div className="flex items-center justify-between">
                       <span className="font-headline text-xl font-bold text-primary">
-                        {course.price ?? <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.priceTbd}</span>}
+                        {('livePrice' in course && course.livePrice ? <LivePrice initial={course.price ?? ''} get={course.livePrice} /> : course.price) ?? <span className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.priceTbd}</span>}
                       </span>
                       <span className="font-mono text-primary text-[13px] group-hover:translate-x-1 transition-transform duration-200">
                         {t.enter}

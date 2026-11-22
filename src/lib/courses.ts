@@ -1,5 +1,5 @@
 import type { Language } from './content';
-import { accionesAmount } from './recursos';
+import { ACCIONES, accionesAmount } from './recursos';
 
 /**
  * Course registry — static for now. When there are more than a handful of
@@ -201,6 +201,8 @@ export const courses: Course[] = [
  */
 export type LandingWorkshop = Pick<Course, 'slug' | 'code' | 'status' | 'level' | 'title' | 'tagline' | 'format' | 'duration' | 'price' | 'tools'> & {
   href: string;
+  /** A price that depends on the date, read in the browser after hydration. */
+  livePrice?: () => string;
 };
 
 /** Every workshop on /workshops, landing pages first. Detail pages are prerendered from `courses` only. */
@@ -218,10 +220,9 @@ export const workshops: (Course | LandingWorkshop)[] = [
     },
     format: { en: 'Live online · Spanish', es: 'En vivo online · español' },
     duration: { en: '1 session · 3 hours · Fri 5 Dec', es: '1 sesión · 3 horas · vie 5 dic' },
-    /** Read at render time; /workshops revalidates hourly, so it follows the 2 Dec switch. */
-    get price() {
-      return `$${accionesAmount(new Date())}`;
-    },
+    /** Same on server and client (no hydration mismatch); `livePrice` replaces it in the browser, so the listing follows the 2 Dec switch without a deploy. */
+    price: `$${ACCIONES.price.promo.amount}`,
+    livePrice: () => `$${accionesAmount(new Date())}`,
     tools: [
       { name: 'OKX', logo: '/recursos/acciones/logos/venue-okx.svg' },
       { name: 'Uniswap', logo: '/recursos/acciones/logos/venue-uniswap.svg' },
