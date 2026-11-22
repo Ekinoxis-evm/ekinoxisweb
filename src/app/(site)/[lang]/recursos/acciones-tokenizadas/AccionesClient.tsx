@@ -190,6 +190,15 @@ function SectorStats({ s }: { s: Sector }) {
             <dd className="font-headline text-3xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums] md:text-4xl">{n}</dd>
           </div>
         ))}
+        <a
+          href={R.issuersBlock.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex min-h-[44px] items-center justify-end gap-2 bg-surface-container-lowest px-5 font-body text-[13px] text-on-surface-variant transition-colors duration-150 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:col-span-3 md:px-6"
+        >
+          {s.source}
+          <ArrowUpRight size={14} aria-hidden />
+        </a>
       </dl>
     </>
   );
@@ -297,53 +306,69 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
           </div>
         </div>
 
-        <ol className="flex flex-col gap-px bg-primary/10">
+        {/* The table: one row per issuer, the same three figures for each; a row opens its card. */}
+        <div role="table" aria-label={b.tableLabel} className="flex flex-col gap-px bg-primary/10">
+          <div role="row" className="hidden grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] items-end gap-4 bg-surface-container-lowest px-5 py-3 md:grid md:px-6">
+            <span role="columnheader" className={label}>{b.colIssuer}</span>
+            <span role="columnheader" className={`${label} text-right`}>{b.valueLabel}</span>
+            <span role="columnheader" className={`${label} text-right`}>{b.ofMarket}</span>
+            <span role="columnheader" className={`${label} text-right`}>{b.stocksLabel}</span>
+            <span />
+          </div>
           {rows.map((r) => (
-            <li key={r.id} className="flex-1">
-              <button
-                type="button"
-                onClick={() => open(r)}
-                onMouseEnter={() => setHover(r.id)}
-                onMouseLeave={() => setHover(null)}
-                onFocus={() => setHover(r.id)}
-                onBlur={() => setHover(null)}
-                aria-haspopup="dialog"
-                aria-label={b.open(r.name)}
-                className={`grid h-full min-h-[80px] w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:px-8 ${
-                  hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <span aria-hidden className={`h-3 w-3 rounded-full ${CHART[r.color].bg}`} />
-                  <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-11" />
+            <button
+              key={r.id}
+              type="button"
+              role="row"
+              onClick={() => open(r)}
+              onMouseEnter={() => setHover(r.id)}
+              onMouseLeave={() => setHover(null)}
+              onFocus={() => setHover(r.id)}
+              onBlur={() => setHover(null)}
+              aria-haspopup="dialog"
+              aria-label={b.open(r.name)}
+              className={`grid flex-1 grid-cols-3 items-center gap-x-4 gap-y-3 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6 ${
+                hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
+              }`}
+            >
+              <span role="cell" className="col-span-3 flex items-center gap-3 md:col-span-1">
+                <span aria-hidden className={`h-3 w-3 shrink-0 rounded-full ${CHART[r.color].bg}`} />
+                <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-10" />
+                <span className="font-headline text-lg font-bold text-on-surface">{r.name}</span>
+                <ArrowUpRight size={16} aria-hidden className="ml-auto text-primary md:hidden" />
+              </span>
+              {([
+                [usd(r.value), b.valueLabel],
+                [fmt(r.value / total), b.ofMarket],
+                [`${(b.partial as readonly string[]).includes(r.id) ? '≥ ' : ''}${num(r.stocks)}`, b.stocksLabel],
+              ] as const).map(([v, l]) => (
+                <span key={l} role="cell" className="flex flex-col md:items-end">
+                  <span className="whitespace-nowrap font-headline text-base font-bold text-on-surface [font-variant-numeric:tabular-nums] md:text-lg">{v}</span>
+                  <span className="font-body text-[13px] text-on-surface-variant md:hidden">{l}</span>
                 </span>
-                <span className="font-headline text-xl font-bold text-on-surface">{r.name}</span>
-                <span className="flex items-center gap-3">
-                  <span className="text-right">
-                    <span className="block font-headline text-2xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">{fmt(r.value / total)}</span>
-                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(r.value)}</span>
-                  </span>
-                  <ArrowUpRight size={18} aria-hidden className="text-primary" />
-                </span>
-              </button>
-            </li>
+              ))}
+              <ArrowUpRight size={16} aria-hidden className="hidden text-primary md:block" />
+            </button>
           ))}
           {rest > 0 && (
-            <li className="flex-1">
-              <div className="grid h-full min-h-[80px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-surface-container-low px-5 py-4 md:px-8">
-                <span className="flex items-center gap-3">
-                  <span aria-hidden className="h-3 w-3 rounded-full bg-outline" />
-                  <span className="w-11" />
-                </span>
-                <span className="font-headline text-xl font-bold text-on-surface-variant">{b.others}</span>
-                <span className="pr-7 text-right">
-                  <span className="block font-headline text-2xl font-bold tracking-tight text-on-surface-variant [font-variant-numeric:tabular-nums]">{fmt(rest / total)}</span>
-                  <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(rest)}</span>
-                </span>
-              </div>
-            </li>
+            <div role="row" className="grid flex-1 grid-cols-3 items-center gap-x-4 gap-y-3 bg-surface-container-low px-5 py-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_repeat(2,minmax(0,1fr))_1.5rem] md:px-6">
+              <span role="cell" className="col-span-3 flex items-center gap-3 md:col-span-1">
+                <span aria-hidden className="h-3 w-3 shrink-0 rounded-full bg-outline" />
+                <span className="font-headline text-lg font-bold text-on-surface-variant">{b.others}</span>
+              </span>
+              <span role="cell" className="flex flex-col md:items-end">
+                <span className="whitespace-nowrap font-headline text-base font-bold text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{usd(rest)}</span>
+                <span className="font-body text-[13px] text-on-surface-variant md:hidden">{b.valueLabel}</span>
+              </span>
+              <span role="cell" className="flex flex-col md:items-end">
+                <span className="font-headline text-base font-bold text-on-surface-variant [font-variant-numeric:tabular-nums] md:text-lg">{fmt(rest / total)}</span>
+                <span className="font-body text-[13px] text-on-surface-variant md:hidden">{b.ofMarket}</span>
+              </span>
+              <span role="cell" />
+              <span />
+            </div>
           )}
-        </ol>
+        </div>
       </div>
 
       <Sheet open={card !== null} onClose={() => setCard(null)} label={card?.name ?? b.heading}>
@@ -452,52 +477,116 @@ function MapStop({ logos, icon, text, seen, order, end = false, on = true, first
   );
 }
 
-/** The shared start, left to right on every width: bank → exchange → USDT. Grows in once on scroll. */
-function Trunk({ marks }: { marks: Marks }) {
-  const t = R.routes.map;
-  const [ref, seen] = useSeen<HTMLDivElement>();
+/** The A / B switch on the map: lights its lane. 44px, pressed state announced. */
+function LaneButton({ lane, sel, onSel }: { lane: Lane; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+  const m = R.routes[lane];
+  const pressed = sel === lane;
   return (
-    <div ref={ref} role="group" aria-label={t.label} className="flex items-start justify-center bg-surface-container-lowest px-4 py-8 md:px-10">
-      <MapStop icon={<Landmark size={22} aria-hidden />} text={t.bank} seen={seen} order={0} />
-      <MapLine on seen={seen} order={1} className="mt-6 min-w-4 flex-1 lg:mt-7" />
-      <MapStop logos={marks.exchanges} text={t.exchange} seen={seen} order={2} firstOnPhone />
-      <MapLine on seen={seen} order={3} className="mt-6 min-w-4 flex-1 lg:mt-7" />
-      <MapStop logos={marks.usdt} text={t.usdt} seen={seen} order={4} />
-    </div>
-  );
-}
-
-/** A method's own path, top to bottom inside its column, ending in lime where the token stays. */
-function LanePath({ lane, marks }: { lane: Lane; marks: Marks }) {
-  const t = R.routes.map;
-  const [ref, seen] = useSeen<HTMLDivElement>();
-  const stops =
-    lane === 'a'
-      ? [
-          { logos: marks.xstocks, text: t.aBuy },
-          { icon: <Vault size={22} aria-hidden />, text: t.aEnd, end: true },
-        ]
-      : [
-          { logos: marks.wallets, text: t.bWallet },
-          { logos: marks.uniswap, text: t.bBuy },
-          { icon: <Wallet size={22} aria-hidden />, text: t.bEnd, end: true },
-        ];
-  return (
-    <div ref={ref} className="flex flex-col items-center px-2 pb-6">
-      {stops.map((st, k) => (
-        <Fragment key={st.text}>
-          <MapLine on seen={seen} order={k * 2} vertical toEnd={'end' in st} className="h-6" />
-          <MapStop logos={'logos' in st ? st.logos : undefined} icon={'icon' in st ? st.icon : undefined} text={st.text} seen={seen} order={k * 2 + 1} end={'end' in st} firstOnPhone />
-        </Fragment>
-      ))}
-    </div>
+    <button
+      type="button"
+      aria-pressed={pressed}
+      aria-label={R.routes.map.show(m.letter)}
+      onClick={() => onSel(pressed ? null : lane)}
+      className={`flex h-11 w-11 shrink-0 items-center justify-center border font-headline text-lg font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        pressed ? 'border-primary bg-primary text-on-primary' : 'border-primary/40 bg-surface-container-lowest text-primary hover:border-primary'
+      }`}
+    >
+      {m.letter}
+    </button>
   );
 }
 
 /**
- * «2 métodos, el mismo resultado»: the shared start (bank → exchange → USDT), then one column per
- * method with its image, its own path and its answers to the same four questions.
+ * Bank money → exchange → USDT, then the split: straight on is A (the exchange keeps the token),
+ * the branch down is B (your wallet, Uniswap). Tapping A or B, or hovering a method card, lights
+ * that lane. Lines grow in once on scroll (instant under reduced motion). Laptop: left to right;
+ * phones: top to bottom with the two lanes side by side.
  */
+function RoutesMap({ marks, sel, onSel }: { marks: Marks; sel: Lane | null; onSel: (l: Lane | null) => void }) {
+  const t = R.routes.map;
+  const [ref, seen] = useSeen<HTMLDivElement>();
+  const onA = sel !== 'b';
+  const onB = sel !== 'a';
+  const trunk = [
+    <MapStop key="bank" icon={<Landmark size={22} aria-hidden />} text={t.bank} seen={seen} order={0} />,
+    <MapStop key="ex" logos={marks.exchanges} text={t.exchange} seen={seen} order={2} />,
+    <MapStop key="usdt" logos={marks.usdt} text={t.usdt} seen={seen} order={4} />,
+  ];
+  const aStops = [
+    <MapStop key="abuy" logos={marks.xstocks} text={t.aBuy} seen={seen} order={7} />,
+    <MapStop key="aend" icon={<Vault size={22} aria-hidden />} text={t.aEnd} seen={seen} order={9} end on={onA} />,
+  ];
+  const bStops = [
+    <MapStop key="bw" logos={marks.wallets} text={t.bWallet} seen={seen} order={7} firstOnPhone />,
+    <MapStop key="bbuy" logos={marks.uniswap} text={t.bBuy} seen={seen} order={9} />,
+    <MapStop key="bend" icon={<Wallet size={22} aria-hidden />} text={t.bEnd} seen={seen} order={11} end on={onB} />,
+  ];
+
+  return (
+    <div ref={ref} role="group" aria-label={t.label} className="bg-surface-container-lowest px-4 py-10 md:px-10">
+      {/* Laptop: the trunk runs straight into lane A; lane B drops from the fork. */}
+      <div className="hidden items-start lg:flex">
+        {trunk.map((stop, k) => (
+          <Fragment key={k}>
+            {stop}
+            <MapLine on seen={seen} order={k * 2 + 1} className="mt-7 min-w-6 flex-1" />
+          </Fragment>
+        ))}
+        <div className="flex flex-[3] flex-col">
+          <div className="relative flex items-start pb-8">
+            <MapLine on={onB} seen={seen} order={5} vertical className="absolute -bottom-7 left-0 top-7" />
+            <MapLine on={onA} seen={seen} order={5} className="mt-7 w-6" />
+            <span className="mt-1.5"><LaneButton lane="a" sel={sel} onSel={onSel} /></span>
+            <MapLine on={onA} seen={seen} order={6} className="mt-7 w-6" />
+            {aStops[0]}
+            <MapLine on={onA} seen={seen} order={8} toEnd className="mt-7 min-w-6 flex-1" />
+            {aStops[1]}
+          </div>
+          <div className="flex items-start">
+            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
+            <span className="mt-1.5"><LaneButton lane="b" sel={sel} onSel={onSel} /></span>
+            <MapLine on={onB} seen={seen} order={6} className="mt-7 w-6" />
+            {bStops[0]}
+            <MapLine on={onB} seen={seen} order={8} className="mt-7 min-w-6 flex-1" />
+            {bStops[1]}
+            <MapLine on={onB} seen={seen} order={10} toEnd className="mt-7 min-w-6 flex-1" />
+            {bStops[2]}
+          </div>
+        </div>
+      </div>
+
+      {/* Phones and tablets: down the page, then two lanes side by side. */}
+      <div className="flex flex-col items-center lg:hidden">
+        {trunk.map((stop, k) => (
+          <Fragment key={k}>
+            {stop}
+            <MapLine on seen={seen} order={k * 2 + 1} vertical className="h-6" />
+          </Fragment>
+        ))}
+        <MapLine on seen={seen} order={5} className="w-1/2" />
+        <div className="grid w-full grid-cols-2">
+          {([
+            ['a', onA, aStops],
+            ['b', onB, bStops],
+          ] as const).map(([lane, on, stops]) => (
+            <div key={lane} className="flex flex-col items-center">
+              <MapLine on={on} seen={seen} order={6} vertical className="h-4" />
+              <LaneButton lane={lane} sel={sel} onSel={onSel} />
+              {stops.map((stop, k) => (
+                <Fragment key={k}>
+                  <MapLine on={on} seen={seen} order={7 + k * 2} vertical toEnd={k === stops.length - 1} className={k === stops.length - 1 ? 'min-h-6 flex-1' : 'h-6'} />
+                  {stop}
+                </Fragment>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** The map, then one card per method with its facts; hovering a card lights its lane on the map. */
 function Routes({ marks }: { marks: Marks }) {
   const r = R.routes;
   const [sel, setSel] = useState<Lane | null>(null);
@@ -506,10 +595,11 @@ function Routes({ marks }: { marks: Marks }) {
       <Heading id="routes-heading">{r.heading}</Heading>
       <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{r.lead}</p>
 
-      <Trunk marks={marks} />
-      <span aria-hidden className="mx-auto block h-6 w-px bg-primary" />
+      <RoutesMap marks={marks} sel={sel} onSel={setSel} />
+
+      <h3 id="compare-heading" className="mb-6 mt-16 font-headline text-3xl font-bold tracking-tighter text-on-surface md:mt-24 md:text-5xl">{r.compareHeading}</h3>
       {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
-      <div role="table" aria-labelledby="routes-heading" className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
+      <div role="table" aria-labelledby="compare-heading" className="grid grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
         <div role="row" className="contents">
           <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
           {(['a', 'b'] as const).map((key) => {
@@ -525,7 +615,7 @@ function Routes({ marks }: { marks: Marks }) {
                 {/* The method's name sits on its image, over a black fade so it always reads. */}
                 <div className="relative">
                   {/* eslint-disable-next-line @next/next/no-img-element -- local generated still, already sized for the column */}
-                  <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[3/4] w-full object-cover sm:aspect-[4/3]" />
+                  <img src={m.image} alt={m.imageAlt} loading="lazy" className="aspect-[3/4] w-full object-cover sm:aspect-[4/3] lg:aspect-[16/9]" />
                   <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10" />
                   <span className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 md:p-6">
                     <span className="flex items-baseline gap-3">
@@ -535,7 +625,6 @@ function Routes({ marks }: { marks: Marks }) {
                     <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
                   </span>
                 </div>
-                <LanePath lane={key} marks={marks} />
               </div>
             );
           })}
@@ -614,7 +703,7 @@ function Band({ title, hint, items, onPick, reverse = false }: { title?: string;
   return (
     <div className="marquee [&:focus-within_.animate-marquee]:[animation-play-state:paused]">
       {title && (
-        <div className="mx-auto mb-4 max-w-5xl px-4 sm:px-6">
+        <div className="mx-auto mb-4 max-w-screen-2xl px-4 sm:px-6">
           <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface">{title}</h3>
           {hint && <p className="mt-1 font-body text-base text-on-surface-variant">{hint}</p>}
         </div>
@@ -658,7 +747,7 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
   const mid = Math.ceil(tiles.length / 2);
   return (
     <section aria-labelledby="toolkit-heading" className="flex flex-col gap-12 pt-20 md:gap-16 md:pt-28">
-      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6">
         <h2 id="toolkit-heading" className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-5xl">
           {k.heading}
         </h2>
@@ -986,7 +1075,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
   return (
     <AnimatedBackground variant="ambient">
       <div className="px-4 pb-20 pt-12 sm:px-6 md:pb-32 md:pt-24">
-        <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
+        <div className="mx-auto flex max-w-screen-2xl flex-col gap-20 md:gap-32">
           {/* 1 · Hero: the promise, the 8 biggest names (each links to its site), one action and three facts; the real purchase beside it. */}
           <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <header className="rise flex flex-col items-start lg:col-span-7">
@@ -1034,7 +1123,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
       <Toolkit tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} exchanges={band(exchanges)} wallets={band(wallets)} tokens={band(tokens)} />
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
-        <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
+        <div className="mx-auto flex max-w-screen-2xl flex-col gap-20 md:gap-32">
           <div>
             <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
           </div>

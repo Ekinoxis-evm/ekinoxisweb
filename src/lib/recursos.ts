@@ -223,10 +223,11 @@ export const ACCIONES = {
 
   /** A map (bank → exchange → USDT, then the split into A and B) over two method cards. */
   routes: {
-    heading: '2 métodos, el mismo resultado',
+    heading: 'Dos formas de tener tus acciones',
     lead: 'Las dos empiezan igual: cambias tu moneda bancaria (COP, USD, MXN…) a USDT, un dólar digital, en un exchange. Al final cambia quién guarda tu acción.',
     map: {
-      label: 'El inicio común: de tu banco a USDT en un exchange',
+      label: 'Mapa: de tu banco a tu acción tokenizada, por el método A o el B',
+      show: (m: string) => `Resaltar el método ${m}`,
       bank: 'Tu banco',
       exchange: 'Exchange',
       usdt: 'USDT',
@@ -236,6 +237,7 @@ export const ACCIONES = {
       bBuy: 'Compras en Uniswap',
       bEnd: 'En tu wallet',
     },
+    compareHeading: '2 métodos, el mismo resultado',
     /** Images: Higgsfield GPT Image 2.5, equinox style (no text, logos or faces), 21 nov 2026. */
     a: { letter: 'A', title: 'Lo guarda un custodio', tag: 'Lo más fácil', image: '/recursos/acciones/metodo-custodio.webp', imageAlt: 'La puerta de una bóveda de acero cerrada, iluminada por una luz cian.' },
     b: { letter: 'B', title: 'Lo guardas tú', tag: 'Más control', image: '/recursos/acciones/metodo-propia.webp', imageAlt: 'Una mano abierta sostiene una pequeña wallet física, iluminada por una luz cian.' },
@@ -297,6 +299,9 @@ export const ACCIONES = {
     ],
     center: 'todo el mercado',
     others: 'Otros emisores',
+    tableLabel: 'Emisores: valor tokenizado, participación en el mercado y acciones y ETF',
+    colIssuer: 'Emisor',
+    sourceUrl: 'https://app.rwa.xyz/stocks',
     ofMarket: 'del mercado total',
     stocksLabel: 'acciones y ETF',
     valueLabel: 'valor tokenizado',
