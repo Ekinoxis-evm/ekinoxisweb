@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { OG_IMAGE } from '@/lib/seo';
 import { ACCIONES as R } from '@/lib/recursos';
+import MetaPixel from '@/components/MetaPixel';
 
 const URL = `/es${R.path}`;
 
@@ -21,6 +22,12 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: R.metaTitle, description: R.metaDescription, images: [OG_IMAGE.url] },
 };
 
+/** The Meta pixel loads on the workshop pages only (landing, thanks, prep), for the ads that point here. */
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      {children}
+      <MetaPixel />
+    </>
+  );
 }

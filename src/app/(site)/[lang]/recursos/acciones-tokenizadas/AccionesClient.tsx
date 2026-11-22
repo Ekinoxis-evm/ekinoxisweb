@@ -6,6 +6,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { track } from '@/lib/analytics';
+import { fbq } from '@/lib/meta/pixel';
 import { ACCIONES as R } from '@/lib/recursos';
 import type { IssuerStat, Logo, TechTile } from '@/lib/acciones/catalog';
 
@@ -1068,8 +1069,14 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
     return () => io.disconnect();
   }, []);
 
+  // Meta: the landing view, priced at the offer in force (PageView comes from the base code).
+  useEffect(() => {
+    fbq('track', 'ViewContent', { value: offer.amount, currency: 'USD', content_name: R.slug, content_type: 'product' });
+  }, [offer.amount]);
+
   const reserve = useCallback((position: string) => {
     track('reserve_click', { position });
+    fbq('track', 'InitiateCheckout', { value: offer.amount, currency: 'USD', content_name: R.slug });
     // Attribution on the Stripe session: campaign (or «landing») + which button; Stripe accepts [A-Za-z0-9_-].
     const campaign = new URLSearchParams(window.location.search).get('utm_campaign') ?? 'landing';
     const ref = `${campaign}-${position}`.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 200);

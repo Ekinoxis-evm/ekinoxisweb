@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { createServiceClient } from '@/lib/supabase/server';
 import { ACCIONES_COURSE_SLUG, ACCIONES_PAYMENT_LINKS } from '@/lib/acciones/onboarding';
 import { sendWorkshopOnboardingEmail } from '@/lib/notify';
+import { sendMetaPurchase } from '@/lib/meta/capi';
 
 /** Payment Link sessions carry no course metadata; the link id says which course was bought. */
 function courseSlug(session: Stripe.Checkout.Session): string {
@@ -64,6 +65,17 @@ export async function POST(request: NextRequest) {
     if (slug === ACCIONES_COURSE_SLUG && inserted && inserted.length > 0 && email) {
       const sent = await sendWorkshopOnboardingEmail({ sessionId: session.id, email, name: session.customer_details?.name ?? null }).catch(() => false);
       if (!sent) console.error('[stripe webhook] onboarding email not sent', maskEmail(email), session.id);
+      // Meta Conversions API: same event_id as the browser Purchase on /gracias. No-op without META_CAPI_TOKEN.
+      await sendMetaPurchase({
+        eventId: session.id,
+        value: (session.amount_total ?? 0) / 100,
+        currency: session.currency ?? 'usd',
+        email,
+        phone: session.customer_details?.phone ?? null,
+        firstName: session.customer_details?.name?.split(' ')[0] ?? null,
+        sourceUrl: 'https://www.ekinoxis.xyz/es/recursos/acciones-tokenizadas',
+        contentName: ACCIONES_COURSE_SLUG,
+      });
     }
   }
 

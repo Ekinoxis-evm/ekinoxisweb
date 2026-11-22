@@ -6,6 +6,8 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import LocalizedLink from '@/components/LocalizedLink';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { track } from '@/lib/analytics';
+import { fbq } from '@/lib/meta/pixel';
+import { accionesAmount } from '@/lib/recursos';
 import { ACCIONES as R } from '@/lib/recursos';
 import { PREP_PAGE, PREP_PATH } from '@/lib/acciones/onboarding';
 
@@ -14,7 +16,10 @@ export default function GraciasClient() {
   const t = R.thanks;
   // session_id only marks that Stripe sent the visitor here; it is not proof of payment (no webhook yet).
   useEffect(() => {
-    track('checkout_success', { resource: R.slug, from_stripe: new URLSearchParams(window.location.search).has('session_id') });
+    const sessionId = new URLSearchParams(window.location.search).get('session_id');
+    track('checkout_success', { resource: R.slug, from_stripe: sessionId !== null });
+    // Same event_id as the webhook's server-side Purchase (the Stripe session id), so Meta counts one.
+    if (sessionId) fbq('track', 'Purchase', { value: accionesAmount(new Date()), currency: 'USD', content_name: R.slug }, { eventID: sessionId });
   }, []);
   return (
     <AnimatedBackground variant="ambient">
