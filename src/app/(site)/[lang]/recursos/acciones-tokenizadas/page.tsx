@@ -35,14 +35,16 @@ export default function Page({ params }: { params: { lang: string } }) {
       }}
       names={names}
       asOf={dateEs(m.as_of)}
-      fork={{
-        // Symbol marks where they exist: wordmarks are unreadable at fork-step size.
-        account: [logoFor('venue-okx'), logoFor('venue-kraken-mark'), logoFor('venue-bybit')],
-        a: [logoFor('issuer-xstocks')],
-        b: [logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom'), logoFor('venue-uniswap')],
-        goal: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
+      marks={{
+        // Symbol marks where they exist: wordmarks are unreadable at tile size.
+        exchanges: [logoFor('venue-okx'), logoFor('venue-kraken-mark'), logoFor('venue-bybit')],
+        usdt: [logoFor('coin-usdt')],
+        gas: [logoFor('coin-usdt'), logoFor('coin-eth')],
+        xstocks: [logoFor('issuer-xstocks')],
+        wallets: [logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom')],
+        uniswap: [logoFor('venue-uniswap')],
+        stocks: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
       }}
-      selfCustodyLogos={[logoFor('tool-rabby'), logoFor('tool-metamask'), logoFor('tool-phantom'), logoFor('venue-uniswap')]}
       custodialBand={ACCIONES.bands.custodial.venueIds.map((id) => band(`venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url))}
       selfCustodyBand={[
         ...ACCIONES.bands.selfCustody.wallets.map((w) => band(`tool-${w.id}`, w.name, w.url)),

@@ -295,5 +295,17 @@
  "venue-uniswap": {
   "license": "GPLv3",
   "source": "https://commons.wikimedia.org/wiki/File:Uniswap_Logo.svg"
+ },
+ "coin-usdt": {
+  "hex": "50AF95",
+  "license": "CC0-1.0 (icon); trademark of its owner",
+  "source": "simple-icons 13.21.0",
+  "title": "Tether"
+ },
+ "coin-eth": {
+  "hex": "3C3C3D",
+  "license": "CC0-1.0 (icon); trademark of its owner",
+  "source": "simple-icons 13.21.0",
+  "title": "Ethereum"
  }
 }

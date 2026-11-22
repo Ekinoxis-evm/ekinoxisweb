@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Landmark, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Landmark, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -23,8 +23,8 @@ export type BandItem = { name: string; href?: string; logo: Logo | null };
 
 type Sector = { value: number; transfers: number; holders: number; source: string };
 
-/** Logos drawn under each step of the fork; a null is a missing file and is skipped. */
-type Fork = { account: (Logo | null)[]; a: (Logo | null)[]; b: (Logo | null)[]; goal: (Logo | null)[] };
+/** Logo groups the money-flow diagrams draw; a null is a missing file and is skipped. */
+export type Marks = Record<'exchanges' | 'usdt' | 'gas' | 'xstocks' | 'wallets' | 'uniswap' | 'stocks', (Logo | null)[]>;
 
 type SourceItem = { id: string; label: string; url: string | null };
 
@@ -37,8 +37,7 @@ interface Props {
   sector: Sector;
   names: Record<string, string>;
   asOf: string;
-  fork: Fork;
-  selfCustodyLogos: (Logo | null)[];
+  marks: Marks;
   custodialBand: BandItem[];
   selfCustodyBand: BandItem[];
 }
@@ -345,143 +344,115 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
   );
 }
 
-/** A row of small logo tiles under a step of the fork. */
-function MiniLogos({ logos, className = '' }: { logos: (Logo | null)[]; className?: string }) {
+/** A row of small logo tiles; on phones only the first, so a flow of four still fits 375px. */
+function MiniLogos({ logos, className = '', firstOnPhone = false }: { logos: readonly (Logo | null)[]; className?: string; firstOnPhone?: boolean }) {
   const shown = logos.filter((l): l is Logo => l !== null);
   if (shown.length === 0) return null;
   return (
     <span className={`flex gap-1 ${className}`}>
-      {shown.map((l) => (
-        <LogoTile key={l.src} logo={l} text="" className="w-10" />
+      {shown.map((l, k) => (
+        <LogoTile key={l.src} logo={l} text="" className={`w-10 ${firstOnPhone && k > 0 ? 'max-md:hidden' : ''}`} />
       ))}
     </span>
   );
 }
 
-/** USDT → A or B → «Tienes el token» on one line that warms to lime (DESIGN.md Light Line). */
-function Routes({ fork }: { fork: Fork }) {
+/** A numbered trunk step: the two paths share these before they split. */
+function TrunkStep({ n, title, body, children }: { n: string; title: string; body: string; children: React.ReactNode }) {
+  return (
+    <li className="flex flex-col gap-4 bg-surface-container-low p-6 md:p-8">
+      <span className="flex items-center gap-3">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary font-mono text-[12px] text-primary">{n}</span>
+        {children}
+      </span>
+      <span>
+        <span className="block font-headline text-xl font-bold tracking-tight text-on-surface md:text-2xl">{title}</span>
+        <span className="mt-2 block font-body text-base leading-relaxed text-on-surface-variant">{body}</span>
+      </span>
+    </li>
+  );
+}
+
+/**
+ * Bank money → USDT on an exchange (shared trunk), then the split: A, the exchange keeps the
+ * token; B, you keep it in your wallet. Each method card carries its own facts, so the old
+ * side-by-side table is gone. Light Line: cyan through the trunk, lime at each arrival.
+ */
+function Routes({ marks }: { marks: Marks }) {
   const r = R.routes;
-  const [tab, setTab] = useState<'a' | 'b'>('a');
-  const node = 'border border-primary bg-surface-container-lowest px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-on-surface';
-  const dot = 'h-3 w-3 shrink-0 rounded-full border border-primary bg-surface-container-lowest';
-  const nodeText = 'font-mono text-[12px] uppercase tracking-wider';
+  const methods = [
+    { key: 'a', m: r.a, steps: [[...marks.exchanges, ...marks.xstocks]] },
+    { key: 'b', m: r.b, steps: [[...marks.gas, ...marks.wallets], marks.uniswap] },
+  ] as const;
   return (
     <section aria-labelledby="routes-heading">
       <Heading id="routes-heading">{r.heading}</Heading>
-      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{r.lead}</p>
+      <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{r.lead}</p>
 
-      {/* Phones: the line runs down, splits into two lanes and meets again at the goal. */}
-      <div aria-hidden className="mb-10 flex flex-col items-center md:hidden">
-        <Landmark size={24} className="text-on-surface" />
-        <span className={`${nodeText} mt-2 text-on-surface`}>{r.start}</span>
-        <span className={`${nodeText} text-outline`}>{r.startNote}</span>
-        <span className="mt-2 h-6 w-px bg-primary" />
-        <span className={dot} />
-        <span className={`${nodeText} mt-2 text-on-surface`}>{r.account}</span>
-        <MiniLogos logos={fork.account} className="mt-2" />
-        <span className="mt-2 h-6 w-px bg-primary" />
-        <span className="h-px w-1/2 bg-primary" />
-        <div className="grid w-full grid-cols-2">
-          {([
-            [r.aShort, fork.a],
-            [r.bShort, fork.b],
-          ] as const).map(([lane, logos]) => (
-            <div key={lane} className="flex h-full flex-col items-center">
-              <span className="h-6 w-px bg-primary" />
-              <span className={dot} />
-              <span className={`${nodeText} mt-2 text-on-surface`}>{lane}</span>
-              <MiniLogos logos={logos} className="my-2 flex-wrap justify-center" />
-              {/* Stretches so both lanes meet the merge line even when one wraps its logos. */}
-              <span className="min-h-6 w-px flex-1 bg-gradient-to-b from-primary to-tertiary-dim" />
-            </div>
-          ))}
-        </div>
-        <span className="h-px w-1/2 bg-tertiary-dim" />
-        <span className="h-6 w-px bg-tertiary-dim" />
-        <span className="h-3 w-3 rounded-full bg-tertiary-dim" />
-        <span className={`${nodeText} mt-2 text-tertiary-dim`}>
-          {r.goal} · {r.goalNote}
-        </span>
-        <MiniLogos logos={fork.goal} className="mt-2" />
-      </div>
+      <ol className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
+        <TrunkStep n={r.start.n} title={r.start.title} body={r.start.body}>
+          <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high text-on-surface">
+            <Landmark size={20} aria-hidden />
+          </span>
+        </TrunkStep>
+        <TrunkStep n={r.stable.n} title={r.stable.title} body={r.stable.body}>
+          <MiniLogos logos={[...marks.usdt, ...marks.exchanges]} />
+        </TrunkStep>
+      </ol>
 
-      <div aria-hidden className="mb-10 hidden items-center gap-3 md:flex">
-        <span className={`${node} flex flex-col items-start gap-2`}>
-          <span className="flex items-center gap-2">
-            <Landmark size={16} /> {r.start}
-          </span>
-          <span className="text-outline">{r.startNote}</span>
-        </span>
-        <span className="h-px flex-1 bg-primary" />
-        <span className={`${node} flex flex-col items-start gap-2`}>
-          {r.account}
-          <MiniLogos logos={fork.account} />
-        </span>
-        <span className="h-px flex-1 bg-primary" />
-        <span className="flex flex-col gap-2">
-          <span className={`${node} flex flex-col items-start gap-2`}>
-            {r.aShort}
-            <MiniLogos logos={fork.a} />
-          </span>
-          <span className={`${node} flex flex-col items-start gap-2`}>
-            {r.bShort}
-            <MiniLogos logos={fork.b} />
-          </span>
-        </span>
-        <span className="h-px flex-1 bg-gradient-to-r from-primary to-tertiary-dim" />
-        <span className="flex flex-col items-start gap-2 border border-tertiary-dim px-3 py-2 font-mono text-[12px] uppercase tracking-wider text-tertiary-dim">
-          {r.goal} · {r.goalNote}
-          <MiniLogos logos={fork.goal} />
+      {/* The split: one line down, then one into each method. */}
+      <div aria-hidden className="flex flex-col items-center">
+        <span className="h-8 w-px bg-primary" />
+        <span className="hidden h-px w-1/2 bg-primary md:block" />
+        <span className="hidden w-1/2 justify-between md:flex">
+          <span className="h-6 w-px bg-primary" />
+          <span className="h-6 w-px bg-primary" />
         </span>
       </div>
+      <p className="mb-4 text-center font-mono text-[12px] uppercase tracking-widest text-primary md:mb-0 md:sr-only">{r.fork}</p>
 
-      {/* Phones: A/B tabs */}
-      <div className="md:hidden">
-        <div role="tablist" aria-label={r.heading} className="grid grid-cols-2 gap-px bg-primary/10">
-          {(['a', 'b'] as const).map((k) => (
-            <button
-              key={k}
-              role="tab"
-              type="button"
-              aria-selected={tab === k}
-              onClick={() => setTab(k)}
-              className={`min-h-[48px] px-3 font-headline text-sm font-bold uppercase tracking-wider transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
-                tab === k ? 'bg-surface-container-high text-primary' : 'bg-surface-container-low text-on-surface-variant'
-              }`}
-            >
-              {k === 'a' ? r.aShort : r.bShort}
-            </button>
-          ))}
-        </div>
-        <dl role="tabpanel" className="flex flex-col gap-px bg-primary/10">
-          {r.rows.map((row) => (
-            <div key={row.label} className="bg-surface-container-low p-5">
-              <dt className={label}>{row.label}</dt>
-              <dd className="mt-2 font-body text-base leading-relaxed text-on-surface">{tab === 'a' ? row.a : row.b}</dd>
-            </div>
-          ))}
-        </dl>
+      <div className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
+        {methods.map(({ key, m, steps }) => (
+          <article key={key} aria-labelledby={`route-${key}`} className="flex flex-col bg-surface-container-low">
+            <header className="border-b border-primary/10 p-6 md:p-8">
+              <span className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-mono text-[12px] uppercase tracking-widest text-outline">{m.eyebrow}</span>
+                <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{m.tag}</span>
+              </span>
+              <h3 id={`route-${key}`} className="mt-3 font-headline text-3xl font-bold tracking-tighter text-on-surface md:text-4xl">
+                {m.title}
+              </h3>
+            </header>
+            <ol className="flex flex-col gap-5 p-6 md:p-8">
+              {m.steps.map((text, k) => (
+                <li key={text} className="flex flex-col gap-3">
+                  <MiniLogos logos={steps[k] ?? []} />
+                  <span className="font-body text-base leading-relaxed text-on-surface">{text}</span>
+                </li>
+              ))}
+            </ol>
+            <dl className="mt-auto flex flex-col gap-px bg-primary/10">
+              {r.facts.map((f) => (
+                <div key={f.label} className="bg-surface-container-low px-6 py-4 md:px-8">
+                  <dt className={label}>{f.label}</dt>
+                  <dd className="mt-1 font-body text-[15px] leading-relaxed text-on-surface">{f[key]}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="flex items-start gap-3 border-t border-tertiary-dim/40 px-6 py-5 font-body text-base text-tertiary-dim md:px-8">
+              <span aria-hidden className="mt-2 h-2 w-2 shrink-0 rounded-full bg-tertiary-dim" />
+              <span>
+                {m.arrival}
+                <MiniLogos logos={marks.stocks} className="mt-3" />
+              </span>
+            </p>
+          </article>
+        ))}
       </div>
-
-      {/* Desktop: side by side */}
-      <table className="hidden w-full border-collapse md:table">
-        <thead>
-          <tr>
-            <th className="w-1/4" />
-            <th scope="col" className="bg-surface-container-high p-5 text-left font-headline text-lg font-bold text-on-surface">{r.a}</th>
-            <th scope="col" className="bg-surface-container-high p-5 text-left font-headline text-lg font-bold text-on-surface">{r.b}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {r.rows.map((row) => (
-            <tr key={row.label} className="border-t border-primary/10">
-              <th scope="row" className={`${label} p-5 text-left align-top font-normal`}>{row.label}</th>
-              <td className="bg-surface-container-low p-5 align-top font-body text-base leading-relaxed text-on-surface">{row.a}</td>
-              <td className="bg-surface-container-low p-5 align-top font-body text-base leading-relaxed text-on-surface">{row.b}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <p className="mt-4 flex items-start gap-2 font-body text-base text-on-surface-variant">
+        <ArrowRight size={18} aria-hidden className="mt-1 shrink-0 text-primary" />
+        {r.move}
+      </p>
     </section>
   );
 }
@@ -768,106 +739,140 @@ function ReserveButton({ position, onReserve, label, className = '' }: { positio
   );
 }
 
+/** One block's money flow: nodes settle in one after another along a cyan line that warms to lime. */
+function Flow({ steps, marks, active, still }: { steps: readonly { k: string; label: string }[]; marks: Marks; active: boolean; still: boolean }) {
+  const show = active || still;
+  const ease = 'transition duration-500 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none';
+  return (
+    <ol className="flex items-start justify-center">
+      {steps.map((s, k) => {
+        const last = k === steps.length - 1;
+        return (
+          <Fragment key={`${s.k}-${k}`}>
+            {k > 0 && (
+              <li aria-hidden className="mt-5 flex-1 px-1 md:mt-7 md:px-2">
+                <span
+                  className={`block h-px origin-left ${last ? 'bg-gradient-to-r from-primary to-tertiary-dim' : 'bg-primary'} ${ease} ${show ? 'scale-x-100' : 'scale-x-0'}`}
+                  style={{ transitionDelay: still ? undefined : `${k * 220 - 110}ms` }}
+                />
+              </li>
+            )}
+            <li
+              className={`flex shrink-0 flex-col items-center gap-2 ${ease} ${show ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}
+              style={{ transitionDelay: still ? undefined : `${k * 220}ms` }}
+            >
+              {s.k === 'bank' ? (
+                <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high text-on-surface md:h-14 md:w-14">
+                  <Landmark size={22} aria-hidden />
+                </span>
+              ) : (
+                <MiniLogos logos={marks[s.k as keyof Marks] ?? []} firstOnPhone className="md:[&>span]:w-14" />
+              )}
+              <span className={`font-mono text-[12px] uppercase tracking-wider ${last ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>{s.label}</span>
+            </li>
+          </Fragment>
+        );
+      })}
+    </ol>
+  );
+}
+
 /**
- * The three blocks as cards that slide one to the next every 8 s. Pauses on hover and focus;
- * under reduced motion it never auto-advances and swaps without movement. Screen readers hear a
- * slide only when the visitor changes it (aria-live polite), never on the timer.
+ * The three blocks as tabs that advance every 9 s; a cyan bar under the active tab shows the time
+ * left. Pauses on hover and focus; under reduced motion it never advances and nothing moves.
+ * Screen readers hear a block only when the visitor changes it (aria-live polite).
  */
-function Course({ onReserve, selfCustodyLogos, offer }: { onReserve: (p: string) => void; selfCustodyLogos: (Logo | null)[]; offer: Offer }) {
+function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; marks: Marks; offer: Offer }) {
   const c = R.course;
   const total = c.modules.length;
+  const uid = useId();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const [manual, setManual] = useState(false);
   const [still, setStill] = useState(false);
   useEffect(() => setStill(window.matchMedia('(prefers-reduced-motion: reduce)').matches), []);
+  const auto = !paused && !still && !manual;
   useEffect(() => {
-    if (paused || still) return;
-    const t = setTimeout(() => setI((x) => (x + 1) % total), 8000);
+    if (!auto) return;
+    const t = setTimeout(() => setI((x) => (x + 1) % total), 9000);
     return () => clearTimeout(t);
-  }, [i, paused, still, total]);
+  }, [i, auto, total]);
   const go = (n: number) => {
     setManual(true);
-    setI((n + total) % total);
+    setI(n);
   };
-  const arrow =
-    'flex h-11 w-11 items-center justify-center border border-outline-variant text-on-surface transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+  const m = c.modules[i];
 
   return (
-    <section aria-labelledby="course-heading" aria-roledescription="carrusel">
+    <section aria-labelledby="course-heading">
       <Heading id="course-heading">{c.heading}</Heading>
-      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{c.format}</p>
-      <div
-        className="overflow-hidden border border-primary/10 bg-surface-container-low"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
-      >
-        <ol
-          aria-live={paused || manual || still ? 'polite' : 'off'}
-          className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
-          style={{ transform: `translateX(-${i * 100}%)` }}
-        >
-          {c.modules.map((m, k) => (
-            <li
-              key={m.n}
-              aria-roledescription="diapositiva"
-              aria-label={`${k + 1} / ${total}`}
-              aria-hidden={k !== i}
-              className="grid w-full shrink-0 grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
-            >
-              {/* Short on phones so «Bloque · title · line» fits in one view with the image. */}
-              <div className="flex h-40 items-center justify-center overflow-hidden bg-surface-container-lowest md:h-auto md:min-h-[26rem]">
-                {'image' in m ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- local screenshot from William's own recording
-                  <img src={m.image} alt={m.imageAlt} className="h-full w-full object-cover object-top" loading="lazy" />
-                ) : (
-                  <div className="flex flex-col items-center gap-3 p-4 md:gap-5 md:p-6">
-                    <MiniLogos logos={selfCustodyLogos} className="gap-2 md:[&>span]:w-14" />
-                    <ul className="flex flex-wrap justify-center gap-2">
-                      {'networks' in m &&
-                        m.networks.map((n) => (
-                          <li key={n} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
-                            {n}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col justify-center p-6 md:p-10">
-                <p className="font-mono text-[12px] uppercase tracking-wider text-primary">{m.n}</p>
-                <h3 className="mt-3 font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{m.title}</h3>
-                <p className="mt-3 font-body text-lg leading-relaxed text-on-surface-variant">{m.desc}</p>
-                {'pre' in m && <p className="mt-5 border-l-2 border-outline-variant pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-4">
-        <div className="flex gap-1">
-          {c.modules.map((m, k) => (
+      <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{c.format}</p>
+      <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+        <div role="tablist" aria-label={c.heading} className="grid grid-cols-3 gap-px bg-primary/10">
+          {c.modules.map((x, k) => (
             <button
-              key={m.n}
+              key={x.n}
+              id={`${uid}-tab-${k}`}
+              role="tab"
               type="button"
+              aria-selected={k === i}
+              aria-controls={`${uid}-panel`}
               onClick={() => go(k)}
-              aria-label={c.goTo(k + 1)}
-              aria-current={k === i}
-              className="flex h-11 w-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+              className={`relative flex min-h-[64px] flex-col items-start justify-center gap-1 px-3 py-3 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:px-6 ${
+                k === i ? 'bg-surface-container-high' : 'bg-surface-container-low hover:bg-surface-container'
+              }`}
             >
-              <span className={`block h-1 w-8 transition-colors duration-150 ${k === i ? 'bg-primary' : 'bg-outline-variant'}`} />
+              <span className={`font-mono text-[12px] uppercase tracking-wider ${k === i ? 'text-primary' : 'text-outline'}`}>{x.n}</span>
+              <span className={`font-headline text-sm font-bold leading-tight md:text-base ${k === i ? 'text-on-surface' : 'text-on-surface-variant'}`}>{x.tab}</span>
+              {k === i && (
+                <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 bg-primary/20">
+                  <span
+                    key={`${i}-${auto}`}
+                    className={`block h-full origin-left bg-primary ${auto ? 'animate-progress' : ''}`}
+                    style={auto ? undefined : { transform: 'scaleX(1)' }}
+                  />
+                </span>
+              )}
             </button>
           ))}
         </div>
-        <div className="flex gap-2">
-          <button type="button" onClick={() => go(i - 1)} aria-label={c.prev} className={arrow}>
-            <ChevronLeft size={18} aria-hidden />
-          </button>
-          <button type="button" onClick={() => go(i + 1)} aria-label={c.next} className={arrow}>
-            <ChevronRight size={18} aria-hidden />
-          </button>
+        <div
+          id={`${uid}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${uid}-tab-${i}`}
+          aria-live={auto ? 'off' : 'polite'}
+          className="mt-px bg-surface-container-low"
+        >
+          <div className="border-b border-primary/10 bg-surface-container-lowest px-4 py-8 md:px-10 md:py-12">
+            {c.modules.map((x, k) =>
+              k === i ? <Flow key={`${x.n}-${i}`} steps={x.flow} marks={marks} active={k === i} still={still} /> : null,
+            )}
+          </div>
+          <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-10 md:p-10">
+            <div>
+              <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{m.title}</h3>
+              <ul className="mt-4 flex flex-col gap-3">
+                {m.does.map((d) => (
+                  <li key={d} className="flex items-start gap-3 font-body text-base leading-relaxed text-on-surface md:text-lg">
+                    <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-4">
+              {'pre' in m && <p className="border-l-2 border-primary pl-3 font-body text-[15px] leading-relaxed text-on-surface">{m.pre}</p>}
+              {'networks' in m && (
+                <ul aria-label="Redes" className="flex flex-wrap gap-2">
+                  {m.networks.map((n) => (
+                    <li key={n} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
+                      {n}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <div className="mt-px flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
@@ -1008,7 +1013,7 @@ const marquee = (items: BandItem[]) =>
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, fork, selfCustodyLogos, custodialBand, selfCustodyBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, custodialBand, selfCustodyBand }: Props) {
   const [barShown, setBarShown] = useState(false);
   // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
   const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
@@ -1103,11 +1108,11 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
             <SectorBlock s={sector} />
           </div>
-          <Routes fork={fork} />
+          <Routes marks={marks} />
           <div>
             <Universe tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} />
           </div>
-          <Course onReserve={reserve} selfCustodyLogos={selfCustodyLogos} offer={offer} />
+          <Course onReserve={reserve} marks={marks} offer={offer} />
           <Teacher />
 
           <section aria-labelledby="risks-heading">
