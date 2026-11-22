@@ -6,7 +6,6 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
 import LocalizedLink from '@/components/LocalizedLink';
-import LogoMarquee from '@/components/LogoMarquee';
 import { identifyLead, replayUrl, track } from '@/lib/analytics';
 import { COUNTRIES } from '@/lib/countries';
 import { ACCIONES as R } from '@/lib/recursos';
@@ -36,8 +35,11 @@ interface Props {
   names: Record<string, string>;
   asOf: string;
   marks: Marks;
-  custodialBand: BandItem[];
-  selfCustodyBand: BandItem[];
+  /** Logo per blockchain id (chain-<id> files). */
+  chains: Record<string, Logo | null>;
+  exchanges: BandItem[];
+  wallets: BandItem[];
+  tokens: BandItem[];
 }
 
 const FORM_ID = 'reservar';
@@ -172,139 +174,153 @@ function SectorBlock({ s }: { s: Sector }) {
   );
 }
 
-/** One slice of the share chart: an issuer with a published value, or the «others» remainder. */
-type Slice = { id: string; name: string; logo: Logo | null; value: number; stocks: number | null; floor: boolean };
+/** Fill and swatch classes per chart token, spelled out so Tailwind keeps them. */
+const CHART: Record<string, { fill: string; bg: string }> = {
+  'chart-1': { fill: 'fill-chart-1', bg: 'bg-chart-1' },
+  'chart-2': { fill: 'fill-chart-2', bg: 'bg-chart-2' },
+  'chart-3': { fill: 'fill-chart-3', bg: 'bg-chart-3' },
+  'chart-4': { fill: 'fill-chart-4', bg: 'bg-chart-4' },
+};
+
+/** A donut segment between two angles (radians, 0 = top, clockwise) in a 300×300 box. */
+function arc(a0: number, a1: number, ro: number, ri: number): string {
+  const p = (r: number, a: number) => `${(150 + r * Math.sin(a)).toFixed(2)} ${(150 - r * Math.cos(a)).toFixed(2)}`;
+  const large = a1 - a0 > Math.PI ? 1 : 0;
+  return `M ${p(ro, a0)} A ${ro} ${ro} 0 ${large} 1 ${p(ro, a1)} L ${p(ri, a1)} A ${ri} ${ri} 0 ${large} 0 ${p(ri, a0)} Z`;
+}
 
 /**
- * Who issues the tokens and how much of the market each holds: a donut of tokenized value
- * (one source, one date) with a ranked legend that doubles as the table view. Tap or hover a
- * slice or a row to read its numbers in the centre. One neutral hue; the chosen slice lights up,
- * so colour never carries identity alone (names are always printed).
+ * The four issuers the workshop buys from, as one pie of their tokenized value (one source, one
+ * date). Each slice wears its chart colour and the issuer's logo; hovering a slice or a row shows
+ * its numbers in the centre, a tap opens its card. The legend rows are the accessible controls and
+ * the table view, so colour never carries identity alone.
  */
 function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: string; sector: Sector }) {
-  const [card, setCard] = useState<IssuerStat | null>(null);
   const b = R.issuersBlock;
-  const valued = issuers.filter((i): i is IssuerStat & { value: number } => i.value !== null).sort((x, y) => y.value - x.value);
-  const known = valued.reduce((sum, i) => sum + i.value, 0);
-  const slices: Slice[] = [
-    ...valued.map((i) => ({ id: i.id, name: i.name, logo: i.logo, value: i.value, stocks: i.stocks, floor: (b.partial as readonly string[]).includes(i.id) })),
-    ...(sector.value > known ? [{ id: 'otros', name: b.others, logo: null, value: sector.value - known, stocks: null, floor: false }] : []),
-  ];
-  const [sel, setSel] = useState(slices[0]?.id ?? '');
-  const openCard = (id: string) => {
-    setSel(id);
-    const found = issuers.find((i) => i.id === id);
-    if (found) {
-      setCard(found);
-      track('issuer_open', { issuer: id });
-    }
+  const rows = b.shown
+    .flatMap(({ id, color }): (IssuerStat & { value: number; color: string })[] => {
+      const i = issuers.find((x) => x.id === id);
+      return i && i.value !== null ? [{ ...i, value: i.value, color }] : [];
+    });
+  const total = rows.reduce((sum, r) => sum + r.value, 0);
+  const [hover, setHover] = useState<string | null>(null);
+  const [card, setCard] = useState<(typeof rows)[number] | null>(null);
+  const open = (r: (typeof rows)[number]) => {
+    setCard(r);
+    track('issuer_open', { issuer: r.id });
   };
-  const current = slices.find((x) => x.id === sel) ?? slices[0];
-  const pct = (v: number) => `${((v / sector.value) * 100).toLocaleString('es-CO', { maximumFractionDigits: 1 })} %`;
+  const fmt = (v: number) => `${(v * 100).toLocaleString('es-CO', { maximumFractionDigits: 1 })} %`;
+  const active = rows.find((r) => r.id === hover) ?? null;
 
-  const R0 = 80;
-  const CIRC = 2 * Math.PI * R0;
-  const GAP = 3;
-  let offset = 0;
+  const PAD = 0.025;
+  let start = 0;
+  const geo = rows.map((r) => {
+    const sweep = (r.value / total) * 2 * Math.PI;
+    const g = { r, a0: start + PAD / 2, a1: start + sweep - PAD / 2, mid: start + sweep / 2 };
+    start += sweep;
+    return g;
+  });
 
   return (
     <section aria-labelledby="issuers-heading">
       <Heading id="issuers-heading">{b.heading}</Heading>
-      <p className="-mt-4 mb-8 font-body text-lg text-on-surface-variant">{b.lead}</p>
+      <p className="-mt-4 mb-8 max-w-2xl font-body text-lg text-on-surface-variant">{b.lead}</p>
 
-      <div className="grid grid-cols-1 gap-px bg-primary/10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-        <div className="flex items-center justify-center bg-surface-container-low p-6 md:p-10">
-          <div className="relative w-full max-w-[20rem]">
-            <svg viewBox="0 0 200 200" className="block w-full -rotate-90" role="img" aria-label={b.chartLabel}>
-              {slices.map((x) => {
-                const len = (x.value / sector.value) * CIRC;
-                const dash = Math.max(len - GAP, 0.5);
-                const el = (
-                  <circle
-                    key={x.id}
-                    cx="100"
-                    cy="100"
-                    r={R0}
-                    fill="none"
-                    strokeWidth={x.id === current?.id ? 30 : 24}
-                    strokeDasharray={`${dash} ${CIRC - dash}`}
-                    strokeDashoffset={-offset}
-                    onClick={() => openCard(x.id)}
-                    onMouseEnter={() => setSel(x.id)}
-                    className={`cursor-pointer transition-[stroke-width] duration-150 motion-reduce:transition-none ${
-                      x.id === current?.id ? 'stroke-on-surface' : x.id === 'otros' ? 'stroke-outline-variant' : 'stroke-on-surface-variant'
-                    }`}
+      <div className="grid grid-cols-1 gap-px bg-primary/10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="flex items-center justify-center bg-surface-container-low px-4 py-10 md:p-12">
+          <div className="relative w-full max-w-sm">
+            <svg viewBox="0 0 300 300" className="block w-full" role="img" aria-label={b.chartLabel}>
+              {geo.map(({ r, a0, a1, mid }) => {
+                const on = hover === r.id;
+                return (
+                  <path
+                    key={r.id}
+                    d={arc(a0, a1, 112, 70)}
+                    onClick={() => open(r)}
+                    onMouseEnter={() => setHover(r.id)}
+                    onMouseLeave={() => setHover(null)}
+                    className={`cursor-pointer ${CHART[r.color].fill} transition-transform duration-200 [transition-timing-function:var(--ease-settle)] motion-reduce:transition-none`}
+                    style={{ transform: on ? `translate(${(Math.sin(mid) * 6).toFixed(2)}px, ${(-Math.cos(mid) * 6).toFixed(2)}px)` : undefined }}
                   />
                 );
-                offset += len;
-                return el;
               })}
             </svg>
-            {current && (
-              <div aria-live="polite" className="absolute inset-0 flex flex-col items-center justify-center px-12 text-center">
-                <p className="font-headline text-4xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums]">{pct(current.value)}</p>
-                <p className="font-body text-[13px] text-on-surface-variant">{b.share}</p>
-                <p className="mt-2 font-headline text-lg font-bold text-on-surface">{current.name}</p>
-                <p className="font-body text-[15px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(current.value)}</p>
-              </div>
-            )}
+            {/* Logos ride on their slices; a tap opens the same card as the row. */}
+            {geo.map(({ r, mid }) => (
+              <button
+                key={r.id}
+                type="button"
+                tabIndex={-1}
+                aria-hidden
+                onClick={() => open(r)}
+                onMouseEnter={() => setHover(r.id)}
+                onMouseLeave={() => setHover(null)}
+                className="absolute w-9 -translate-x-1/2 -translate-y-1/2 md:w-11"
+                style={{ left: `${((150 + 91 * Math.sin(mid)) / 300) * 100}%`, top: `${((150 - 91 * Math.cos(mid)) / 300) * 100}%` }}
+              >
+                <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-full" />
+              </button>
+            ))}
+            <div aria-live="polite" className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-24 text-center">
+              <p className="font-headline text-3xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums] md:text-4xl">
+                {active ? fmt(active.value / total) : usd(total)}
+              </p>
+              <p className="mt-1 font-body text-[15px] text-on-surface">{active ? active.name : b.center}</p>
+            </div>
           </div>
         </div>
 
         <ol className="flex flex-col gap-px bg-primary/10">
-          {slices.map((x) => {
-            const on = x.id === current?.id;
-            return (
-              <li key={x.id}>
-                <button
-                  type="button"
-                  onClick={() => (x.id === 'otros' ? setSel(x.id) : openCard(x.id))}
-                  onMouseEnter={() => setSel(x.id)}
-                  aria-pressed={on}
-                  aria-haspopup={x.id === 'otros' ? undefined : 'dialog'}
-                  aria-label={x.id === 'otros' ? undefined : b.open(x.name)}
-                  className={`grid min-h-[64px] w-full grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-4 border-l-2 p-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary ${
-                    on ? 'border-on-surface bg-surface-container-high' : 'border-transparent bg-surface-container-low hover:bg-surface-container'
-                  }`}
-                >
-                  {x.id !== 'otros' ? <LogoTile logo={x.logo} text={x.name.slice(0, 3).toUpperCase()} className="w-10" /> : <span className="flex h-10 w-10 items-center justify-center bg-surface-container-high font-mono text-[12px] text-on-surface-variant">+</span>}
-                  <span>
-                    <span className="block font-headline text-lg font-bold text-on-surface">{x.name}</span>
-                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">
-                      {x.stocks !== null ? `${x.floor ? `${b.atLeast} ` : ''}${num(x.stocks)} ${b.stocksLabel}` : b.othersNote}
-                    </span>
-                  </span>
+          {rows.map((r) => (
+            <li key={r.id} className="flex-1">
+              <button
+                type="button"
+                onClick={() => open(r)}
+                onMouseEnter={() => setHover(r.id)}
+                onMouseLeave={() => setHover(null)}
+                onFocus={() => setHover(r.id)}
+                onBlur={() => setHover(null)}
+                aria-haspopup="dialog"
+                aria-label={b.open(r.name)}
+                className={`grid h-full min-h-[80px] w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 text-left transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary md:px-8 ${
+                  hover === r.id ? 'bg-surface-container-high' : 'bg-surface-container-low'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <span aria-hidden className={`h-3 w-3 rounded-full ${CHART[r.color].bg}`} />
+                  <LogoTile logo={r.logo} text={r.name.slice(0, 2).toUpperCase()} className="w-11" />
+                </span>
+                <span className="font-headline text-xl font-bold text-on-surface">{r.name}</span>
+                <span className="flex items-center gap-3">
                   <span className="text-right">
-                    <span className="block font-headline text-lg font-bold text-on-surface [font-variant-numeric:tabular-nums]">{pct(x.value)}</span>
-                    <span className="block font-body text-[13px] text-on-surface-variant [font-variant-numeric:tabular-nums]">{usd(x.value)}</span>
+                    <span className="block font-headline text-2xl font-bold tracking-tight text-on-surface [font-variant-numeric:tabular-nums]">{fmt(r.value / total)}</span>
+                    <span className="block font-body text-[13px] text-on-surface-variant">{b.ofFour}</span>
                   </span>
-                </button>
-              </li>
-            );
-          })}
+                  <ArrowUpRight size={18} aria-hidden className="text-primary" />
+                </span>
+              </button>
+            </li>
+          ))}
         </ol>
       </div>
+      <p className="mt-4 font-body text-base text-on-surface">{b.together(fmt(total / sector.value))}</p>
 
       <Sheet open={card !== null} onClose={() => setCard(null)} label={card?.name ?? b.heading}>
         {card && (
           <div>
             <div className="flex items-center gap-4 pr-12">
-              <LogoTile logo={card.logo} text={card.name.slice(0, 3).toUpperCase()} className="w-16" />
+              <LogoTile logo={card.logo} text={card.name.slice(0, 2).toUpperCase()} className="w-16" />
               <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">{card.name}</p>
             </div>
             <dl className="mt-6 grid grid-cols-2 gap-px bg-primary/10">
-              {card.value !== null && (
-                <>
-                  <div className="bg-surface-container-low p-4">
-                    <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">{pct(card.value)}</dd>
-                    <dt className="font-body text-[13px] text-on-surface-variant">{b.share}</dt>
-                  </div>
-                  <div className="bg-surface-container-low p-4">
-                    <dd className="font-headline text-xl font-bold [font-variant-numeric:tabular-nums]">{usd(card.value)}</dd>
-                    <dt className="font-body text-[13px] text-on-surface-variant">{b.valueLabel}</dt>
-                  </div>
-                </>
-              )}
+              <div className="bg-surface-container-low p-4">
+                <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">{fmt(card.value / sector.value)}</dd>
+                <dt className="font-body text-[13px] text-on-surface-variant">{b.ofMarket}</dt>
+              </div>
+              <div className="bg-surface-container-low p-4">
+                <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">{usd(card.value)}</dd>
+                <dt className="font-body text-[13px] text-on-surface-variant">{b.valueLabel}</dt>
+              </div>
               <div className="col-span-2 bg-surface-container-low p-4">
                 <dd className="font-headline text-3xl font-bold tracking-tight [font-variant-numeric:tabular-nums]">
                   {(b.partial as readonly string[]).includes(card.id) && <span className="mr-2 font-body text-[15px] font-normal text-on-surface-variant">{b.atLeast}</span>}
@@ -316,7 +332,7 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
             {card.eligibility && (
               <>
                 <h3 className="mt-6 font-headline text-lg font-bold text-on-surface">{b.eligibility}</h3>
-                <p className="mt-2 font-body text-base leading-relaxed text-on-surface-variant">{card.eligibility}</p>
+                <p className="mt-2 font-body text-base leading-relaxed text-on-surface">{card.eligibility}</p>
               </>
             )}
             {card.site && (
@@ -334,7 +350,6 @@ function IssuersBlock({ issuers, asOf, sector }: { issuers: IssuerStat[]; asOf: 
           </div>
         )}
       </Sheet>
-      <p className={`${note} mt-3`}>{b.note(asOf, sector.source)}</p>
     </section>
   );
 }
@@ -554,117 +569,103 @@ function Routes({ marks }: { marks: Marks }) {
   );
 }
 
-/** Deterministic 0..1 values from a slug, so positions match on server and client. */
-function seeds(slug: string): [number, number, number] {
-  let h = 2166136261;
-  for (const ch of slug) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
-  const r = (k: number) => ((Math.imul(h ^ k, 2654435761) >>> 0) % 1000) / 1000;
-  return [r(1), r(2), r(3)];
-}
+/** A tile in a sliding band: a logo with its name; a link, a card opener, or plain. */
+type BandTile = { key: string; name: string; logo: Logo | null; href?: string };
 
-/** Three depth layers: far logos are smaller and drift less. Sizes leave room for the 20px float between rows. */
-const LAYER = ['h-11 w-11 md:h-12 md:w-12', 'h-12 w-12 md:h-14 md:w-14', 'h-[3.25rem] w-[3.25rem] md:h-16 md:w-16'] as const;
-
-function useUniverseCols() {
-  const [cols, setCols] = useState(5);
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const on = () => setCols(mq.matches ? 8 : 5);
-    on();
-    mq.addEventListener('change', on);
-    return () => mq.removeEventListener('change', on);
-  }, []);
-  return cols;
+/**
+ * One full-bleed band sliding sideways (the site's marquee: two identical halves, CSS only).
+ * Pauses on hover and keyboard focus; under reduced motion the repeats hide and the row wraps.
+ * With `onPick`, each tile opens a card instead of following a link.
+ */
+function Band({ title, hint, items, onPick, reverse = false }: { title?: string; hint?: string; items: BandTile[]; onPick?: (key: string) => void; reverse?: boolean }) {
+  if (items.length === 0) return null;
+  const reps = Math.max(1, Math.ceil(14 / items.length));
+  const half = Array.from({ length: reps }, () => items).flat();
+  const tile = (it: BandTile, repeat: boolean) => {
+    const face = 'group flex w-24 flex-col items-center gap-2 p-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary md:w-28';
+    const inner = (
+      <>
+        <LogoTile logo={it.logo} text={it.name.slice(0, 4).toUpperCase()} className="w-16 border border-primary/10 transition-colors duration-150 group-hover:border-primary/60 md:w-20" />
+        <span className="w-full truncate font-body text-[13px] text-on-surface">{it.name}</span>
+      </>
+    );
+    const a11y = repeat ? { tabIndex: -1, 'aria-hidden': true } : {};
+    if (onPick)
+      return (
+        <button type="button" onClick={() => onPick(it.key)} aria-haspopup="dialog" aria-label={it.name} className={face} {...a11y}>
+          {inner}
+        </button>
+      );
+    if (it.href)
+      return (
+        <a href={it.href} target="_blank" rel="noopener noreferrer" aria-label={it.name} className={face} {...a11y}>
+          {inner}
+        </a>
+      );
+    return <span className={face}>{inner}</span>;
+  };
+  return (
+    <div className="marquee [&:focus-within_.animate-marquee]:[animation-play-state:paused]">
+      {title && (
+        <div className="mx-auto mb-4 max-w-5xl px-4 sm:px-6">
+          <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface">{title}</h3>
+          {hint && <p className="mt-1 font-body text-base text-on-surface-variant">{hint}</p>}
+        </div>
+      )}
+      <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+        <ul
+          className={`flex w-max animate-marquee motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:justify-center ${reverse ? '[animation-direction:reverse]' : ''}`}
+          style={{ ['--marquee-duration' as string]: `${half.length * 3}s` }}
+        >
+          {[0, 1].flatMap((h) =>
+            half.map((it, k) => {
+              const repeat = h === 1 || k >= items.length;
+              return (
+                <li key={`${h}-${k}`} className={`mr-2 shrink-0 ${repeat ? 'motion-reduce:hidden' : ''}`}>
+                  {tile(it, repeat)}
+                </li>
+              );
+            }),
+          )}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 /**
- * The 40 companies as a floating field: each logo sits on a jittered grid cell at one of three
- * depths, bobs on its own clock and leans away from the cursor by its depth. Transform only;
- * reduced motion keeps it still. Tapping a logo opens its panel under the field.
+ * «Lo que usaremos»: exchanges, wallets and tokens as sliding bands of official logos, then the
+ * 40 tech stocks in two bands running opposite ways; a stock opens its card (where to buy it,
+ * who issues it).
  */
-function Universe({ tiles, names, idLogos, asOf }: { tiles: TechTile[]; names: Record<string, string>; idLogos: Record<string, Logo | null>; asOf: string }) {
+function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { tiles: TechTile[]; names: Record<string, string>; idLogos: Record<string, Logo | null>; asOf: string; exchanges: BandTile[]; wallets: BandTile[]; tokens: BandTile[] }) {
+  const k = R.toolkit;
   const t = R.tech;
-  const cols = useUniverseCols();
-  const rows = Math.ceil(tiles.length / cols);
-  const field = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState<string | null>(null);
   const sel = tiles.find((x) => x.slug === open) ?? null;
-
-  const lean = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const el = field.current;
-    if (!el) return;
-    const box = el.getBoundingClientRect();
-    el.style.setProperty('--mx', String(((e.clientX - box.left) / box.width) * 2 - 1));
-    el.style.setProperty('--my', String(((e.clientY - box.top) / box.height) * 2 - 1));
-  };
-  const rest = () => {
-    field.current?.style.setProperty('--mx', '0');
-    field.current?.style.setProperty('--my', '0');
-  };
-
   const pick = (slug: string) => {
     track('tech_tile_open', { slug });
     setOpen(slug);
   };
-
+  const stock = (x: TechTile): BandTile => ({ key: x.slug, name: x.ticker, logo: x.logo });
+  const mid = Math.ceil(tiles.length / 2);
   return (
-    <section aria-labelledby="tech-heading">
-      <Heading id="tech-heading">{t.heading}</Heading>
-      <p className="-mt-4 mb-6 font-body text-lg text-on-surface-variant">{t.lead}</p>
-      <div
-        ref={field}
-        onPointerMove={lean}
-        onPointerLeave={rest}
-        className="relative h-[700px] overflow-hidden border border-primary/10 bg-surface-container-lowest md:h-[520px]"
-      >
-        <ul aria-label={t.heading}>
-          {tiles.map((tile, i) => {
-            const [jx, jy, jd] = seeds(tile.slug);
-            const layer = jd < 0.34 ? 0 : jd < 0.67 ? 1 : 2;
-            // Sideways jitter only where cells are wide; the float supplies the vertical life.
-            // A margin keeps the lean from pushing a logo off the field.
-            const spread = cols === 8 ? 0.3 : 0.1;
-            const x = 0.07 + 0.86 * (((i % cols) + 0.5 + (jx - 0.5) * spread) / cols);
-            const y = 0.08 + 0.84 * ((Math.floor(i / cols) + 0.5) / rows);
-            const active = open === tile.slug;
-            return (
-              <li
-                key={tile.slug}
-                className="absolute -translate-x-1/2 -translate-y-1/2 hover:!z-20 focus-within:!z-20"
-                style={{ left: `${x * 100}%`, top: `${y * 100}%`, zIndex: layer + 1 }}
-              >
-                <span
-                  className="block transition-transform duration-300 ease-out motion-reduce:transition-none"
-                  style={{ transform: `translate(calc(var(--mx, 0) * ${-(layer + 1) * 10}px), calc(var(--my, 0) * ${-(layer + 1) * 10}px))` }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => pick(tile.slug)}
-                    aria-haspopup="dialog"
-                    aria-label={tile.name}
-                    className={`group relative block animate-float motion-reduce:animate-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? 'outline outline-2 outline-offset-2 outline-primary' : ''}`}
-                    style={{ animationDelay: `${-jx * 6}s`, animationDuration: `${5 + jy * 4}s` }}
-                  >
-                    <LogoTile logo={tile.logo} text={tile.ticker} className={`${LAYER[layer]} border border-primary/10 transition-colors duration-150 group-hover:border-primary/50`} />
-                    {/* Ticker on hover, focus or selection; monogram tiles already show it. */}
-                    {tile.logo && (
-                      <span
-                        aria-hidden
-                        className={`pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 bg-surface-container-lowest px-1 font-mono text-[12px] text-outline transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 ${active ? 'opacity-100' : 'opacity-0'}`}
-                      >
-                        {tile.ticker}
-                      </span>
-                    )}
-                  </button>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
+    <section aria-labelledby="toolkit-heading" className="flex flex-col gap-12 py-20 md:gap-16 md:py-28">
+      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+        <h2 id="toolkit-heading" className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-5xl">
+          {k.heading}
+        </h2>
+      </div>
+      <Band title={k.exchanges.title} items={exchanges} />
+      <Band title={k.wallets.title} items={wallets} reverse />
+      <Band title={k.tokens.title} items={tokens} />
+      <div className="flex flex-col gap-4">
+        <Band title={k.stocks.title} hint={k.stocks.hint} items={tiles.slice(0, mid).map(stock)} onPick={pick} reverse />
+        <Band items={tiles.slice(mid).map(stock)} onPick={pick} />
+        <p className={`${note} mx-auto w-full max-w-5xl px-4 sm:px-6`}>{t.note(asOf)}</p>
       </div>
 
-      <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? t.heading}>
+      <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? k.stocks.title}>
         {sel && (
           <div>
             <div className="flex items-center gap-4 pr-12">
@@ -703,7 +704,6 @@ function Universe({ tiles, names, idLogos, asOf }: { tiles: TechTile[]; names: R
           </div>
         )}
       </Sheet>
-      <p className={`${note} mt-3`}>{t.note(asOf)}</p>
     </section>
   );
 }
@@ -841,7 +841,7 @@ function ReserveButton({ position, onReserve, label, className = '' }: { positio
  * across the top with a node per step and its column below; phones: the line runs down the left.
  * The line draws in and the steps settle in a short stagger once, on scroll (instant under reduced motion).
  */
-function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; marks: Marks; offer: Offer }) {
+function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) => void; marks: Marks; chains: Record<string, Logo | null>; offer: Offer }) {
   const c = R.course;
   const [ref, seen] = useSeen<HTMLOListElement>();
   return (
@@ -891,10 +891,11 @@ function Course({ onReserve, marks, offer }: { onReserve: (p: string) => void; m
                 ))}
               </ul>
               {'networks' in st && (
-                <ul aria-label="Redes" className="mt-4 flex flex-wrap gap-2">
+                <ul aria-label="Redes" className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
                   {st.networks.map((n) => (
-                    <li key={n} className="border border-outline-variant px-2 py-1 font-mono text-[12px] text-on-surface-variant">
-                      {n}
+                    <li key={n.id} className="flex items-center gap-2 font-body text-[15px] text-on-surface">
+                      <LogoTile logo={chains[n.id] ?? null} text={n.name.slice(0, 2).toUpperCase()} className="w-8" />
+                      {n.name}
                     </li>
                   ))}
                 </ul>
@@ -1033,12 +1034,11 @@ function ReserveForm() {
 }
 
 /** Bands show official logos only; an entry without a file stays out until one lands. */
-const marquee = (items: BandItem[]) =>
-  items.flatMap((it) => (it.logo ? [{ name: it.name, src: it.logo.src, href: it.href }] : []));
+const band = (items: BandItem[]): BandTile[] => items.flatMap((it) => (it.logo ? [{ key: it.name, name: it.name, logo: it.logo, href: it.href }] : []));
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, custodialBand, selfCustodyBand }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, chains, exchanges, wallets, tokens }: Props) {
   const [barShown, setBarShown] = useState(false);
   // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
   const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
@@ -1115,9 +1115,8 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
         </div>
       </div>
 
-      {/* Full-bleed bands: what you will use, and who issues the tokens. Only official logos. */}
-      <LogoMarquee eyebrow={R.bands.custodial.eyebrow} title={R.bands.custodial.title} logos={marquee(custodialBand)} plate="dark" shape="square" speed={3} />
-      <LogoMarquee eyebrow={R.bands.selfCustody.eyebrow} title={R.bands.selfCustody.title} logos={marquee(selfCustodyBand)} plate="dark" shape="square" speed={3} reverse />
+      {/* Full-bleed: what you will use, and the stocks you can get. Only official logos. */}
+      <Toolkit tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} exchanges={band(exchanges)} wallets={band(wallets)} tokens={band(tokens)} />
 
       <div className="px-4 py-20 sm:px-6 md:py-32">
         <div className="mx-auto flex max-w-5xl flex-col gap-20 md:gap-32">
@@ -1126,10 +1125,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <SectorBlock s={sector} />
           </div>
           <Routes marks={marks} />
-          <div>
-            <Universe tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} />
-          </div>
-          <Course onReserve={reserve} marks={marks} offer={offer} />
+          <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
           <Teacher />
 
           <section aria-labelledby="risks-heading">

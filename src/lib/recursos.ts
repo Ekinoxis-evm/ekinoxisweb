@@ -146,7 +146,7 @@ export const ACCIONES = {
   /** Live session. `time` stays null until William sets it; null hides it. */
   session: {
     date: 'viernes 5 de diciembre',
-    time: null as string | null,
+    time: '7:00 p. m.' as string | null,
     line: (date: string, time: string | null) => `En vivo el ${date}${time ? ` · ${time} (hora Colombia)` : ''}.`,
   },
 
@@ -179,17 +179,16 @@ export const ACCIONES = {
     poster: '/recursos/acciones/clip-okx-spacex.jpg',
   },
 
-  /** Two full-bleed bands, one per method. Logos only from public/recursos/acciones/logos. */
-  bands: {
-    custodial: {
-      eyebrow: 'Método custodio',
-      title: 'Exchanges para empezar',
-      venueIds: ['okx', 'kraken', 'bybit'],
-    },
-    selfCustody: {
-      eyebrow: 'Método custodia propia',
-      title: 'Wallets y Uniswap: para tener y comprar tus activos',
-      wallets: [
+  /**
+   * «Lo que usaremos»: four full-bleed bands sliding sideways. Logos only from
+   * public/recursos/acciones/logos. The stock tiles open their card (where to buy, who issues).
+   */
+  toolkit: {
+    heading: 'Lo que usaremos',
+    exchanges: { title: 'Exchanges que usaremos', venueIds: ['okx', 'kraken', 'bybit'], dexId: 'uniswap' },
+    wallets: {
+      title: 'Wallets que usaremos',
+      items: [
         { id: 'base', name: 'Base app', url: 'https://base.app' },
         { id: 'metamask', name: 'MetaMask', url: 'https://metamask.io' },
         { id: 'rabby', name: 'Rabby', url: 'https://rabby.io' },
@@ -198,9 +197,16 @@ export const ACCIONES = {
         { id: 'ledger', name: 'Ledger', url: 'https://www.ledger.com' },
         { id: 'safe', name: 'Safe', url: 'https://safe.global' },
       ],
-      /** Where you buy once the wallet holds USDT and ETH. */
-      dexId: 'uniswap',
     },
+    tokens: {
+      title: 'Tokens que usaremos',
+      items: [
+        { id: 'eth', name: 'ETH', url: 'https://ethereum.org' },
+        { id: 'usdt', name: 'USDT', url: 'https://tether.to' },
+        { id: 'usdc', name: 'USDC', url: 'https://www.circle.com/usdc' },
+      ],
+    },
+    stocks: { title: 'Acciones que puedes obtener', hint: 'Toca una para ver dónde comprarla y quién la emite.' },
   },
 
   /** A map (bank → exchange → USDT, then the split into A and B) over two method cards. */
@@ -231,8 +237,6 @@ export const ACCIONES = {
   },
 
   tech: {
-    heading: 'Las 40 tecnológicas',
-    lead: 'Toca una para abrir su ficha: dónde comprarla y quién la emite.',
     close: 'Cerrar',
     note: (date: string) => `Datos al ${date}. Sin precios.`,
     routeA: 'Método custodio: dónde comprarla',
@@ -250,21 +254,28 @@ export const ACCIONES = {
     holders: 'de direcciones que las tienen',
   },
 
+  /** The four issuers whose tokens the workshop buys, as one pie; each opens its card. Colours: DESIGN.md chart-1…4. */
   issuersBlock: {
     heading: 'Los emisores',
-    lead: 'Quién crea cada token y cuánto del mercado tiene. Toca uno para ver su ficha.',
-    share: 'del valor tokenizado',
+    lead: 'Quién crea los tokens que compras en el taller. Toca uno para ver su ficha.',
+    shown: [
+      { id: 'ondo', color: 'chart-1' },
+      { id: 'xstocks', color: 'chart-2' },
+      { id: 'robinhood', color: 'chart-3' },
+      { id: 'coinbase', color: 'chart-4' },
+    ],
+    center: 'entre estos 4',
+    together: (pct: string) => `Juntos tienen el ${pct} de todo el valor tokenizado en acciones.`,
+    ofFour: 'de estos 4',
+    ofMarket: 'del mercado total',
     stocksLabel: 'acciones y ETF',
     valueLabel: 'valor tokenizado',
     atLeast: 'al menos',
-    others: 'Otros emisores y plataformas',
-    othersNote: 'Fuera del top de RWA.xyz, incluidas plataformas fuera de nuestro catálogo.',
-    open: (name: string) => `Ver detalles de ${name}`,
+    open: (name: string) => `Ver la ficha de ${name}`,
     eligibility: 'Quién puede comprar',
     site: 'Sitio oficial',
-    chartLabel: 'Participación de cada emisor en el valor tokenizado de acciones',
-    note: (date: string, source: string) =>
-      `Valor y participación: ${source}. Conteo de acciones y ETF: nuestro catálogo al ${date}, sobre todas las empresas, no solo las 40.`,
+    chartLabel: 'Reparto del valor tokenizado entre Ondo, xStocks, Robinhood y Coinbase',
+    note: (date: string, source: string) => `Valor: ${source}. Acciones y ETF: nuestro catálogo al ${date}.`,
     /** Issuers whose official list is partial; their count is a floor. */
     partial: ['ondo'],
   },
@@ -306,7 +317,14 @@ export const ACCIONES = {
         title: 'A tu propia wallet',
         marks: ['wallets', 'uniswap'],
         does: ['Llevas USDT y el gas (ETH) a tu wallet.', 'Retiras a tu wallet lo que compraste en el exchange.', 'Compras en Uniswap eligiendo emisor y red.'],
-        networks: ['Ethereum', 'Arbitrum', 'Base', 'Robinhood Chain', 'Solana'],
+        /** Shown as logo + name (DESIGN.md: blockchains always by their logo); files chain-<id>. */
+        networks: [
+          { id: 'ethereum', name: 'Ethereum' },
+          { id: 'arbitrum', name: 'Arbitrum' },
+          { id: 'base', name: 'Base' },
+          { id: 'robinhood', name: 'Robinhood Chain' },
+          { id: 'solana', name: 'Solana' },
+        ],
       },
     ],
   },

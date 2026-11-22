@@ -307,5 +307,38 @@
   "license": "CC0-1.0 (icon); trademark of its owner",
   "source": "simple-icons 13.21.0",
   "title": "Ethereum"
+ },
+ "chain-ethereum": {
+  "hex": "3C3C3D",
+  "license": "CC0-1.0 (icon); trademark of its owner",
+  "source": "simple-icons 13.21.0",
+  "title": "Ethereum"
+ },
+ "chain-solana": {
+  "hex": "9945FF",
+  "license": "CC0-1.0 (icon); trademark of its owner",
+  "source": "simple-icons 13.21.0",
+  "title": "Solana"
+ },
+ "chain-robinhood": {
+  "hex": "CCFF00",
+  "license": "CC0-1.0 (icon); trademark of its owner",
+  "source": "simple-icons 13.21.0",
+  "title": "Robinhood Chain (Robinhood mark)"
+ },
+ "chain-arbitrum": {
+  "license": "MIT (@web3icons/core 4.0.0); trademark of its owner",
+  "source": "@web3icons/core 4.0.0 arbitrum-one (branded)",
+  "title": "Arbitrum One"
+ },
+ "chain-base": {
+  "license": "MIT (@web3icons/core 4.0.0); trademark of its owner",
+  "source": "@web3icons/core 4.0.0 base (branded)",
+  "title": "Base"
+ },
+ "coin-usdc": {
+  "license": "MIT (@web3icons/core 4.0.0); trademark of Circle",
+  "source": "@web3icons/core 4.0.0 USDC (branded)",
+  "title": "USDC"
  }
 }

@@ -35,6 +35,7 @@ export default function Page({ params }: { params: { lang: string } }) {
       }}
       names={names}
       asOf={dateEs(m.as_of)}
+      chains={Object.fromEntries(['ethereum', 'arbitrum', 'base', 'robinhood', 'solana'].map((id) => [id, logoFor(`chain-${id}`)]))}
       marks={{
         // Symbol marks where they exist: wordmarks are unreadable at tile size.
         exchanges: [logoFor('venue-okx'), logoFor('venue-kraken-mark'), logoFor('venue-bybit')],
@@ -45,11 +46,12 @@ export default function Page({ params }: { params: { lang: string } }) {
         uniswap: [logoFor('venue-uniswap')],
         stocks: ['aapl', 'nvda', 'spcx'].map((slug) => logoFor(slug)),
       }}
-      custodialBand={ACCIONES.bands.custodial.venueIds.map((id) => band(`venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url))}
-      selfCustodyBand={[
-        ...ACCIONES.bands.selfCustody.wallets.map((w) => band(`tool-${w.id}`, w.name, w.url)),
-        band(`venue-${ACCIONES.bands.selfCustody.dexId}`, catalog.venues.uniswap?.name ?? 'Uniswap', 'https://app.uniswap.org'),
+      exchanges={[
+        ...ACCIONES.toolkit.exchanges.venueIds.map((id) => band(id === 'kraken' ? 'venue-kraken-mark' : `venue-${id}`, catalog.venues[id]?.name ?? id, catalog.venues[id]?.url)),
+        band(`venue-${ACCIONES.toolkit.exchanges.dexId}`, catalog.venues.uniswap?.name ?? 'Uniswap', 'https://app.uniswap.org'),
       ]}
+      wallets={ACCIONES.toolkit.wallets.items.map((w) => band(`tool-${w.id}`, w.name, w.url))}
+      tokens={ACCIONES.toolkit.tokens.items.map((x) => band(`coin-${x.id}`, x.name, x.url))}
     />
   );
 }

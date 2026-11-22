@@ -34,6 +34,10 @@ module.exports = {
         'inverse-primary': '#006a71',
         'surface-tint': '#8ff5ff',
         // ── Secondary: Cosmic Blue ──
+        'chart-1': '#c47524',
+        'chart-2': '#0f98a6',
+        'chart-3': '#7a9700',
+        'chart-4': '#5585ff',
         'secondary': '#9492ff',
         'secondary-dim': '#625dff',
         'secondary-container': '#3106ff',

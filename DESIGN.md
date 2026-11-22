@@ -18,6 +18,10 @@ colors:
   cosmic-blue: "#9492ff"
   signal-lime: "#beee00"
   alert-coral: "#ff716c"
+  chart-1: "#c47524"
+  chart-2: "#0f98a6"
+  chart-3: "#7a9700"
+  chart-4: "#5585ff"
 typography:
   display:
     fontFamily: "Space Grotesk, sans-serif"
@@ -180,6 +184,10 @@ cyan, and two rare signal colours.
   may use (passes 4.5:1 on every surface).
 - **Hairline**: ghost borders and dividers drawn as 1px grid gaps.
 - **Alert Coral**: errors only.
+- **Chart 1–4**: categorical series colours for charts only, in this fixed order and never
+  cycled; each follows its entity (on the issuers pie: Ondo, xStocks, Robinhood, Coinbase).
+  Validated for the dark surface (OKLCH L 0.48–0.67, adjacent CVD ΔE ≥ 9). Never for text,
+  buttons or decoration; a chart always pairs them with a logo or name.
 
 ### Named Rules
 **The One Light Rule.** Each screen has one cyan focal point: the primary action or the
@@ -335,6 +343,8 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 - **Do** keep one primary action per screen and route every booking button to the
   booking popup.
 - **Do** keep tap targets ≥44px and the main CTA full width on phones.
+- **Do** show a blockchain by its logo with the name beside it (Ethereum, Arbitrum, Base,
+  Robinhood Chain, Solana…), never as a text-only chip; files in `public/recursos/acciones/logos/chain-*`.
 
 ### Don't:
 - **Don't** repeat a message across a page or between pages. One idea gets one place;
