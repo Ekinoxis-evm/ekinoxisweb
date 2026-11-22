@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, Bot, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -42,6 +42,9 @@ interface Props {
   wallets: BandItem[];
   tokens: BandItem[];
 }
+
+/** Icon per point of the «Lo haces tú» block. */
+const CONTROL_ICONS = { money: ShieldCheck, keys: KeyRound, guide: Compass } as const;
 
 /** Icon per workshop fact in R.course.facts. */
 const COURSE_FACT_ICONS = { live: Radio, questions: MessageCircleQuestion, recording: Video, ai: Bot } as const;
@@ -1140,6 +1143,27 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <Clip />
           </div>
           </div>
+
+          {/* The offer in one block: you do it yourself, with your own tools; your money never passes through us. */}
+          <section aria-labelledby="control-heading" className="border-t border-primary/30 pt-12 md:pt-16">
+            <h2 id="control-heading" className="max-w-3xl font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface [text-wrap:balance] md:text-6xl">
+              {R.control.heading}
+            </h2>
+            <ul className="mt-10 grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
+              {R.control.items.map((it) => {
+                const Icon = CONTROL_ICONS[it.icon as keyof typeof CONTROL_ICONS];
+                return (
+                  <li key={it.title} className="flex flex-col gap-4 bg-surface-container-low p-6 md:p-8">
+                    <span aria-hidden className="flex h-12 w-12 items-center justify-center bg-surface-container-high text-primary">
+                      <Icon size={24} />
+                    </span>
+                    <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-2xl">{it.title}</span>
+                    <span className="font-body text-base leading-relaxed text-on-surface-variant md:text-lg">{it.body}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         </div>
       </div>
 
@@ -1176,14 +1200,6 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
               })}
             </ul>
           </section>
-
-          {/* What Ekinoxis never does: set large, it is the promise a visitor needs before paying. */}
-          <aside aria-label={R.custodyLabel} className="flex flex-col gap-5 border border-primary/40 bg-surface-container-low p-6 md:flex-row md:items-start md:gap-8 md:p-10">
-            <span aria-hidden className="flex h-14 w-14 shrink-0 items-center justify-center bg-surface-container-high text-primary md:h-16 md:w-16">
-              <ShieldCheck size={32} />
-            </span>
-            <p className="font-headline text-2xl font-bold leading-snug tracking-tight text-on-surface [text-wrap:pretty] md:text-3xl">{R.custody}</p>
-          </aside>
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
             <h2 id="sources-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.sourcesList.heading}</h2>
