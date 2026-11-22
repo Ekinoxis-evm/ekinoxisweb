@@ -147,7 +147,7 @@ export const ACCIONES = {
   session: {
     date: 'viernes 5 de diciembre',
     time: '7:00 p. m.' as string | null,
-    line: (date: string, time: string | null) => `En vivo el ${date}${time ? ` · ${time} (hora Colombia)` : ''}.`,
+    line: (date: string, time: string | null) => `En vivo el ${date}${time ? `, ${time} (hora Colombia)` : ''}.`,
   },
 
   hero: {
@@ -156,7 +156,8 @@ export const ACCIONES = {
     titleEm: 'tokenizadas',
     sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides quién las guarda.',
     facts: {
-      when: (date: string, time: string | null) => `${date}${time ? ` · ${time} (Colombia)` : ''}`,
+      date: 'Viernes 5 de diciembre',
+      time: '7:00 p. m. (hora Colombia)',
       length: '3 horas en vivo',
       recording: 'Grabación incluida',
     },
@@ -164,7 +165,7 @@ export const ACCIONES = {
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
   },
 
-  reserve: { paid: (amount: number) => `Reservar mi cupo · US$${amount}` },
+  reserve: { paid: (amount: number) => `Reservar mi cupo por US$${amount}` },
   priceLine: (amount: number) => `US$${amount}`,
   single: 'pago único',
   promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$49.`,

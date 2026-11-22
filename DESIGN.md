@@ -350,6 +350,10 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 - **Don't** repeat a message across a page or between pages. One idea gets one place;
   if a description, hint or counter says what the title or another block already says,
   delete it. Every line of text must add value the reader does not already have.
+- **Don't** join facts with a middle dot («viernes 5 dic · 7:00 p. m. · en línea»). Date, time,
+  duration, place, language and format each get their own line with an icon (lucide `CalendarDays`,
+  `Clock`, `MapPin`/`Video`, `Languages`…). Source credits and SEO titles may keep the dot.
+- **Don't** number steps or cards «01 / 02 / 03»; order comes from position, a line or a real `<ol>`.
 - **Don't** use `rounded-sm` through `rounded-3xl`; corners are 0px, pills only for dots
   and nodes.
 - **Don't** use dark drop shadows; use surface steps or a cyan glow.

@@ -29,10 +29,15 @@ export const SESSION = {
    * email and its invite carry it; public pages and the public .ics never do.
    */
   meetingUrl: 'https://meet.google.com/jwm-pynr-kwe' as string | null,
-  title: 'Taller en vivo · Acciones tech tokenizadas',
-  date: 'Viernes 5 de diciembre',
-  time: '7:00 p. m. hora Colombia',
-  duration: '3 horas · en vivo, en línea, en español',
+  title: 'Taller en vivo: Acciones tech tokenizadas',
+  /** Shown as separate icon rows, never joined (DESIGN.md: no dot-joined facts). */
+  facts: [
+    { icon: 'date', label: 'Fecha', text: 'Viernes 5 de diciembre' },
+    { icon: 'time', label: 'Hora', text: '7:00 p. m. hora Colombia' },
+    { icon: 'length', label: 'Duración', text: '3 horas, en vivo' },
+    { icon: 'place', label: 'Lugar', text: 'En línea, por Google Meet' },
+    { icon: 'language', label: 'Idioma', text: 'Español' },
+  ],
   linkPending: 'El enlace de la sesión está en tu correo de confirmación y en tu invitación de calendario.',
 } as const;
 
@@ -188,8 +193,6 @@ export const ONBOARDING_EMAIL = {
   subject: 'Tu cupo está listo: prepárate para el taller del 5 de diciembre',
   eyebrow: 'CUPO CONFIRMADO',
   hello: (first: string) => `Hola ${first}, tu cupo está listo.`,
-  when: `${SESSION.date} · ${SESSION.time}`,
-  whenSub: SESSION.duration,
   calendarNote: 'La invitación adjunta guarda la sesión en tu calendario, en tu zona horaria.',
   calendarButton: 'Añadir a Google Calendar',
   prepTitle: 'ANTES DE LA SESIÓN',

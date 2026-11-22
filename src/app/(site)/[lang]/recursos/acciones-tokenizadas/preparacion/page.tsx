@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { ArrowLeft, Banknote, CalendarPlus, Download, MonitorSmartphone } from 'lucide-react';
+import { ArrowLeft, Banknote, CalendarDays, CalendarPlus, Clock, Download, Hourglass, Languages, MonitorSmartphone, Video } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import LocalizedLink from '@/components/LocalizedLink';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 const focus = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+const FACT_ICONS = { date: CalendarDays, time: Clock, length: Hourglass, place: Video, language: Languages } as const;
 const ICONS: Partial<Record<PrepStep['id'], typeof Banknote>> = { cop: Banknote, ai: MonitorSmartphone };
 
 function StepMark({ step }: { step: PrepStep }) {
@@ -51,15 +52,19 @@ export default function Page({ params }: { params: { lang: string } }) {
           <ScanBadge variant="primary">{COPY.badge}</ScanBadge>
           <h1 className="mt-6 font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-5xl">{COPY.title}</h1>
 
-          <div className="mt-8 border-l-2 border-primary pl-4">
-            <p className="font-headline text-2xl font-bold text-on-surface">
-              {SESSION.date} · {SESSION.time}
-            </p>
-            <p className="mt-1 font-mono text-xs uppercase tracking-widest text-outline">{SESSION.duration}</p>
-            <p className="mt-3 font-body text-base text-on-surface-variant">
-              {SESSION.linkPending}
-            </p>
-          </div>
+          <ul className="mt-8 flex flex-col gap-3">
+            {SESSION.facts.map((f) => {
+              const Icon = FACT_ICONS[f.icon as keyof typeof FACT_ICONS];
+              return (
+                <li key={f.icon} className="flex items-center gap-3 font-body text-lg text-on-surface">
+                  <Icon size={20} aria-hidden className="shrink-0 text-primary" />
+                  <span className="sr-only">{f.label}: </span>
+                  {f.text}
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-4 font-body text-base text-on-surface-variant">{SESSION.linkPending}</p>
 
           <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
@@ -84,9 +89,8 @@ export default function Page({ params }: { params: { lang: string } }) {
           <p className="mt-12 max-w-xl font-body text-lg leading-relaxed text-on-surface-variant">{COPY.lead}</p>
 
           <ol className="mt-6 grid w-full gap-px bg-primary/10">
-            {PREP_STEPS.map((step, i) => (
+            {PREP_STEPS.map((step) => (
               <li key={step.id} className="flex gap-4 bg-surface-container-low p-6 sm:gap-6 md:p-8">
-                <span className="pt-1 font-mono text-xs tracking-widest text-outline">{String(i + 1).padStart(2, '0')}</span>
                 <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-start">
                   <StepMark step={step} />
                   <div className="min-w-0">

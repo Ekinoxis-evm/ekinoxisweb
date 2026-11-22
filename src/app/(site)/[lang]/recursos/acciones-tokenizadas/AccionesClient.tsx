@@ -1071,7 +1071,8 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <ReserveButton position="hero" onReserve={reserve} label={ctaFor(offer)} className="mt-8" />
             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 font-body text-base text-on-surface">
               {[
-                [CalendarDays, R.hero.facts.when(R.session.date, R.session.time)],
+                [CalendarDays, R.hero.facts.date],
+                [Clock, R.hero.facts.time],
                 [Clock, R.hero.facts.length],
                 [Video, R.hero.facts.recording],
               ].map(([Icon, text]) => {

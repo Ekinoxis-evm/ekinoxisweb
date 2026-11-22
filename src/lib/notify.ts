@@ -410,8 +410,9 @@ export function buildWorkshopOnboardingEmail(buyer: WorkshopBuyer): { subject: s
 <h1 style="margin:0 0 20px;font-size:26px;line-height:30px;color:#e8f2fb;">${hello}</h1>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;border-left:2px solid #8ff5ff;margin:0 0 20px;">
 <tr><td style="padding:18px 20px;">
-  <p style="margin:0 0 4px;font-size:20px;color:#e8f2fb;font-weight:bold;">${esc(e.when)}</p>
-  <p style="margin:0 0 8px;font-size:13px;color:#8a949c;">${esc(e.whenSub)}</p>
+  <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 8px;border-collapse:collapse;">${SESSION.facts
+    .map((f) => `<tr><td style="padding:2px 16px 2px 0;font-size:13px;color:#8a949c;">${esc(f.label)}</td><td style="padding:2px 0;font-size:16px;color:#e8f2fb;font-weight:bold;">${esc(f.text)}</td></tr>`)
+    .join('')}</table>
   <p style="margin:0;font-size:14px;line-height:21px;color:#a2acb5;">${link}</p>
 </td></tr></table>
 <p style="margin:0 0 12px;font-size:15px;line-height:24px;color:#a2acb5;">${esc(e.calendarNote)}</p>
