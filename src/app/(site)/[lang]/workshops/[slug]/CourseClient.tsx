@@ -8,6 +8,7 @@ import type { Course, CourseStatus, CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import ScanBadge from '@/components/ui/ScanBadge';
 import Button from '@/components/ui/Button';
+import CourseFacts from '@/components/courses/CourseFacts';
 import EnrollButton from '@/components/courses/EnrollButton';
 import { fadeInUp } from '@/lib/animations';
 
@@ -16,10 +17,6 @@ const ui = {
     status: { open: 'Enrolling', waitlist: 'Waitlist', coming_soon: 'Coming soon' } as Record<CourseStatus, string>,
     level: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' } as Record<CourseLevel, string>,
     cta: { open: 'Enroll', waitlist: 'Join Waitlist', coming_soon: 'Join Waitlist' } as Record<CourseStatus, string>,
-    format: 'Format',
-    duration: 'Duration',
-    levelLabel: 'Level',
-    starts: 'Starts',
     price: 'Price',
     priceTbd: 'To be announced',
     audience: "Who It's For",
@@ -36,10 +33,6 @@ const ui = {
     status: { open: 'Inscripciones abiertas', waitlist: 'Lista de espera', coming_soon: 'Muy pronto' } as Record<CourseStatus, string>,
     level: { beginner: 'Principiante', intermediate: 'Intermedio', advanced: 'Avanzado' } as Record<CourseLevel, string>,
     cta: { open: 'Inscribirme', waitlist: 'Unirme a la Lista', coming_soon: 'Unirme a la Lista' } as Record<CourseStatus, string>,
-    format: 'Formato',
-    duration: 'Duración',
-    levelLabel: 'Nivel',
-    starts: 'Inicio',
     price: 'Precio',
     priceTbd: 'Por anunciar',
     audience: 'Para Quién Es',
@@ -66,13 +59,6 @@ export default function CourseClient({ course }: Props) {
   const { language } = useLanguage();
   const t = ui[language];
   const modules = course.modules[language];
-
-  const facts = [
-    { label: t.format, value: course.format[language] },
-    { label: t.duration, value: course.duration[language] },
-    { label: t.levelLabel, value: t.level[course.level] },
-    ...(course.startDate ? [{ label: t.starts, value: course.startDate }] : []),
-  ];
 
   return (
     <AnimatedBackground variant="gradient">
@@ -123,14 +109,7 @@ export default function CourseClient({ course }: Props) {
               <div className="mb-6">
                 <ScanBadge variant="muted">{language === 'en' ? 'The course' : 'El curso'}</ScanBadge>
               </div>
-              <div className={`grid grid-cols-1 ${facts.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-x-10 gap-y-4 mb-10`}>
-                {facts.map((f) => (
-                  <div key={f.label} className="flex justify-between border-b border-primary/10 pb-3 font-mono text-[11px] uppercase tracking-widest">
-                    <span className="text-outline">{f.label}</span>
-                    <span className="text-on-surface-variant text-right">{f.value}</span>
-                  </div>
-                ))}
-              </div>
+              <CourseFacts course={{ facts: course.facts }} level={t.level[course.level]} className="mb-10" />
 
               <p className="font-mono text-[12px] text-outline uppercase tracking-widest mb-4">{t.stack}</p>
               <div className="flex flex-wrap items-center gap-x-10 gap-y-4 group">
@@ -209,17 +188,16 @@ export default function CourseClient({ course }: Props) {
               <span className="font-headline text-xl font-bold text-on-surface tracking-tighter">{t.syllabus}</span>
             </div>
             {modules.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
+              <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-primary/10">
                 {modules.map((m, idx) => (
-                  <div key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
-                    <p className="font-mono text-primary text-[13px] mb-4">{String(idx + 1).padStart(2, '0')}</p>
+                  <li key={idx} className="bg-surface-container-low p-6 group hover:bg-surface-container transition-colors duration-500">
                     <h4 className="font-headline text-base font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2">
                       {m.title}
                     </h4>
                     <p className="font-label text-[13px] font-medium text-outline uppercase tracking-widest leading-relaxed">{m.desc}</p>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
             ) : (
               <div className="bg-surface-container-low p-6 md:p-10">
                 <p className="font-mono text-[13px] text-outline uppercase tracking-widest">{t.syllabusEmpty}</p>

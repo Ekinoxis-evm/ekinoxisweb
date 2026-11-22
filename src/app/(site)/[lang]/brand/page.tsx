@@ -9,6 +9,8 @@ import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
+import FactList from '@/components/ui/FactList';
+import { FileText, HardDrive, Package } from 'lucide-react';
 import { BrandMark } from '@/components/ui/BrandLogo';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
@@ -149,7 +151,7 @@ const FACES = [
   {
     name: 'Space Grotesk',
     className: 'font-headline',
-    role: { en: 'Headlines · wordmark · labels · buttons', es: 'Titulares · logotipo · etiquetas · botones' },
+    role: { en: 'Headlines, wordmark, labels, buttons', es: 'Titulares, logotipo, etiquetas, botones' },
     weights: '300 — 700',
     rule: { en: 'Headlines: 700, uppercase, tracking −0.04em, line-height 0.9', es: 'Titulares: 700, mayúsculas, tracking −0.04em, interlineado 0.9' },
     specimen: 'INNOVATION WITHOUT FRONTIERS',
@@ -167,7 +169,7 @@ const FACES = [
   {
     name: 'Space Mono',
     className: 'font-mono',
-    role: { en: 'Labels · numbers · code', es: 'Etiquetas · números · código' },
+    role: { en: 'Labels, numbers, code', es: 'Etiquetas, números, código' },
     weights: '400, 700',
     rule: { en: 'Metadata: 400, 10px, uppercase, tracking +0.2em', es: 'Metadatos: 400, 10px, mayúsculas, tracking +0.2em' },
     specimen: 'CALI, COLOMBIA // 3.4516° N // 0123456789',
@@ -280,9 +282,13 @@ export default function BrandPage() {
                     {t.openBook}
                   </Button>
                 </a>
-                <p className="font-mono text-[12px] text-outline tracking-widest uppercase">
-                  ZIP · 0.9 MB · SVG + PNG + {language === 'en' ? 'DOCS' : 'DOCS'}
-                </p>
+                <FactList
+                  facts={[
+                    { icon: Package, text: 'ZIP' },
+                    { icon: HardDrive, text: '0.9 MB' },
+                    { icon: FileText, text: 'SVG + PNG + DOCS' },
+                  ]}
+                />
               </motion.div>
             </div>
           </motion.div>
@@ -318,13 +324,13 @@ export default function BrandPage() {
               <p className="text-on-surface font-normal leading-relaxed mb-8 border-l-2 border-primary pl-5">{t.markMeaning}</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-primary/10">
                 {[
-                  { k: t.markSpecGeometry, v: '95r · 1.6 stroke' },
-                  { k: t.markSpecAxis, v: '2.4 · 90°' },
-                  { k: t.markSpecMin, v: '24 px' },
+                  { k: t.markSpecGeometry, v: ['95r', '1.6 stroke'] },
+                  { k: t.markSpecAxis, v: ['2.4', '90°'] },
+                  { k: t.markSpecMin, v: ['24 px'] },
                 ].map((s) => (
                   <div key={s.k} className="bg-surface-container-low p-5">
                     <span className="font-mono text-[12px] text-outline tracking-widest uppercase block mb-2">{s.k}</span>
-                    <span className="font-mono text-sm text-primary">{s.v}</span>
+                    <span className="flex flex-col font-mono text-sm text-primary">{s.v.map((line) => <span key={line}>{line}</span>)}</span>
                   </div>
                 ))}
               </div>
@@ -333,7 +339,7 @@ export default function BrandPage() {
 
           {/* ── Lockups ── */}
           <section className="mt-28">
-            <SectionHead index="01" label={t.lockupsLabel} title={t.lockupsTitle} body={t.lockupsBody} />
+            <SectionHead label={t.lockupsLabel} title={t.lockupsTitle} body={t.lockupsBody} />
 
             <motion.div
               variants={staggerContainer}
@@ -346,9 +352,6 @@ export default function BrandPage() {
                 <motion.div key={l.key} variants={fadeInUp} className="bg-surface-container-low group">
                   {/* Preview plate */}
                   <div className="relative bg-black flex items-center justify-center p-12 min-h-[260px]">
-                    <div className="absolute top-4 right-4">
-                      <ScanBadge variant="muted">{String(idx + 1).padStart(2, '0')}</ScanBadge>
-                    </div>
                     <Image
                       src={file(l.key, 'cyan-transparent', 'png')}
                       alt={`Ekinoxis ${l.name.toLowerCase()} logo`}
@@ -408,7 +411,7 @@ export default function BrandPage() {
 
           {/* ── Color ── */}
           <section className="mt-28">
-            <SectionHead index="02" label={t.colorLabel} title={t.colorTitle} body={t.colorBody} />
+            <SectionHead label={t.colorLabel} title={t.colorTitle} body={t.colorBody} />
 
             <div className="space-y-12">
               {PALETTE.map((group) => (
@@ -475,7 +478,7 @@ export default function BrandPage() {
 
           {/* ── Typography ── */}
           <section className="mt-28">
-            <SectionHead index="03" label={t.typeLabel} title={t.typeTitle} body={t.typeBody} />
+            <SectionHead label={t.typeLabel} title={t.typeTitle} body={t.typeBody} />
 
             <motion.div
               variants={staggerContainer}
@@ -490,9 +493,6 @@ export default function BrandPage() {
                   variants={fadeInUp}
                   className="relative bg-surface-container-low p-10 lg:p-14 group hover:bg-surface-container transition-colors duration-500"
                 >
-                  <div className="absolute top-4 right-4">
-                    <ScanBadge variant="muted">{String(idx + 1).padStart(2, '0')}</ScanBadge>
-                  </div>
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-baseline">
                     <div className="lg:col-span-3">
                       <h3 className={`${f.className} text-xl text-on-surface mb-2`}>{f.name}</h3>
@@ -528,7 +528,7 @@ export default function BrandPage() {
 
           {/* ── Icons & social ── */}
           <section className="mt-28">
-            <SectionHead index="04" label={t.iconsLabel} title={t.iconsTitle} body={t.iconsBody} />
+            <SectionHead label={t.iconsLabel} title={t.iconsTitle} body={t.iconsBody} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
               {/* Favicons */}
@@ -583,7 +583,7 @@ export default function BrandPage() {
                         />
                       </span>
                       <span className="font-mono text-[12px] text-outline group-hover:text-primary tracking-widest uppercase mt-3 block transition-colors">
-                        {a.label} · 1024 →
+                        {a.label} 1024 →
                       </span>
                     </a>
                   ))}
@@ -594,7 +594,7 @@ export default function BrandPage() {
 
           {/* ── Rules ── */}
           <section className="mt-28">
-            <SectionHead index="05" label={t.rulesLabel} title={t.rulesTitle} body={t.rulesBody} />
+            <SectionHead label={t.rulesLabel} title={t.rulesTitle} body={t.rulesBody} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
               <div className="bg-surface-container-low p-10 lg:p-14">
@@ -654,12 +654,10 @@ export default function BrandPage() {
 /* ── Local bits ── */
 
 function SectionHead({
-  index,
   label,
   title,
   body,
 }: {
-  index: string;
   label: string;
   title: string;
   body: string;
@@ -676,7 +674,7 @@ function SectionHead({
         variants={fadeInUp}
         className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-4"
       >
-        {index} / {label}
+        {label}
       </motion.span>
       <motion.h2
         variants={fadeInUp}

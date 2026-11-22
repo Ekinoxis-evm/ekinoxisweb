@@ -6,6 +6,7 @@ import { EASE_SETTLE } from '@/lib/animations';
 import type { LeadTopic } from '@/lib/supabase/types';
 import Button from './ui/Button';
 import PanelBackdrop from './ui/PanelBackdrop';
+import { FreeCallFacts } from './ui/FactList';
 import { useBookCall } from './BookCall';
 
 type Copy = { title: string; text: string };
@@ -34,9 +35,7 @@ export default function BookCallPanel({ topic, copy }: { topic: LeadTopic; copy?
       {/* Phones stack the copy over the bright side — dim it */}
       <div className="absolute inset-0 bg-black/55 lg:hidden pointer-events-none" />
       <div className="relative">
-        <p className="font-mono text-[12px] text-primary uppercase tracking-widest mb-4">
-          {en ? 'Free · 30 minutes' : 'Gratis · 30 minutos'}
-        </p>
+        <FreeCallFacts en={en} className="mb-4" />
         <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter leading-[0.95] text-on-surface mb-4 max-w-2xl">{c.title}</h2>
         <p className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed mb-8">{c.text}</p>
         <Button variant="primary" size="lg" onClick={() => bookCall(topic)} className="w-full sm:w-auto justify-center">

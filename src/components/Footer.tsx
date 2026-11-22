@@ -6,6 +6,8 @@ import { content } from '@/lib/content';
 import { BrandLockup } from '@/components/ui/BrandLogo';
 import { useBookCall } from '@/components/BookCall';
 import { LEGAL_SLUGS, legal } from '@/lib/legal';
+import FactList from '@/components/ui/FactList';
+import { MapPin } from 'lucide-react';
 
 export default function Footer() {
   const { language } = useLanguage();
@@ -120,8 +122,9 @@ export default function Footer() {
         <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between pt-8 border-t border-primary/5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
             <p className="font-mono text-[12px] uppercase tracking-widest text-outline">
-              © {currentYear} Ekinoxis Labs · Cali — Casper
+              © {currentYear} Ekinoxis Labs
             </p>
+            <FactList facts={[{ icon: MapPin, text: 'Cali — Casper' }]} />
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {legalLinks.map((l) => (
                 <li key={l.href}>

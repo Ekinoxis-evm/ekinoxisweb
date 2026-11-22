@@ -27,10 +27,10 @@ const appContent = {
       label: 'How we build',
       title: 'From a diagnosis to software that fits',
       steps: [
-        { num: '01', title: 'Diagnostic', desc: 'We sit with you and map how the business really works, and what to build first.', chip: 'Start' },
-        { num: '02', title: 'Design and demo', desc: 'We design it and build a working demo you can click — the starting point, not the end.', chip: 'First version' },
-        { num: '03', title: 'Rounds with you', desc: 'We build, show you, hear what is wrong, and change course. Again and again, directly with you.', chip: 'Back and forth' },
-        { num: '04', title: 'A product that fits', desc: 'Live with real users, doing what your business needs — and we keep it running.', chip: 'The goal' },
+        { title: 'Diagnostic', desc: 'We sit with you and map how the business really works, and what to build first.', chip: 'Start' },
+        { title: 'Design and demo', desc: 'We design it and build a working demo you can click — the starting point, not the end.', chip: 'First version' },
+        { title: 'Rounds with you', desc: 'We build, show you, hear what is wrong, and change course. Again and again, directly with you.', chip: 'Back and forth' },
+        { title: 'A product that fits', desc: 'Live with real users, doing what your business needs — and we keep it running.', chip: 'The goal' },
       ],
       round: ['Build', 'Show you', 'You tell us', 'Adjust'],
       center: 'Until it fits',
@@ -46,10 +46,10 @@ const appContent = {
       label: 'Cómo construimos',
       title: 'De un diagnóstico a software que encaja',
       steps: [
-        { num: '01', title: 'Diagnóstico', desc: 'Nos sentamos contigo y entendemos cómo funciona de verdad el negocio, y qué construir primero.', chip: 'Inicio' },
-        { num: '02', title: 'Diseño y demo', desc: 'Lo diseñamos y construimos un demo que funciona — el punto de partida, no el final.', chip: 'Primera versión' },
-        { num: '03', title: 'Rondas contigo', desc: 'Construimos, te mostramos, nos dices qué no sirve y cambiamos el rumbo. Una y otra vez, directo contigo.', chip: 'Ida y vuelta' },
-        { num: '04', title: 'Un producto que encaja', desc: 'En vivo con usuarios reales, haciendo lo que tu negocio necesita — y lo mantenemos funcionando.', chip: 'La meta' },
+        { title: 'Diagnóstico', desc: 'Nos sentamos contigo y entendemos cómo funciona de verdad el negocio, y qué construir primero.', chip: 'Inicio' },
+        { title: 'Diseño y demo', desc: 'Lo diseñamos y construimos un demo que funciona — el punto de partida, no el final.', chip: 'Primera versión' },
+        { title: 'Rondas contigo', desc: 'Construimos, te mostramos, nos dices qué no sirve y cambiamos el rumbo. Una y otra vez, directo contigo.', chip: 'Ida y vuelta' },
+        { title: 'Un producto que encaja', desc: 'En vivo con usuarios reales, haciendo lo que tu negocio necesita — y lo mantenemos funcionando.', chip: 'La meta' },
       ],
       round: ['Construimos', 'Te mostramos', 'Nos dices', 'Ajustamos'],
       center: 'Hasta que encaje',
@@ -145,11 +145,11 @@ export default function AppBuildingPage() {
                   key={idx}
                   className={`relative bg-surface-container-low p-6 md:p-10 flex flex-col ${plan.popular ? 'ring-1 ring-inset ring-primary/40' : ''}`}
                 >
-                  <div className="mb-6">
-                    <ScanBadge variant={plan.popular ? 'primary' : 'muted'}>
-                      {plan.popular ? (language === 'en' ? 'Most popular' : 'Más popular') : `TIER_${String(idx + 1).padStart(2, '0')}`}
-                    </ScanBadge>
-                  </div>
+                  {plan.popular && (
+                    <div className="mb-6">
+                      <ScanBadge variant="primary">{language === 'en' ? 'Most popular' : 'Más popular'}</ScanBadge>
+                    </div>
+                  )}
                   <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-2">
                     {plan.name}
                   </h3>

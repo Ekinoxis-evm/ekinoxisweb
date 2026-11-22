@@ -8,7 +8,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useBookCall } from '@/components/BookCall';
 import { workshops, type CourseStatus, type CourseLevel } from '@/lib/courses';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import { ArrowRight, CalendarDays, GraduationCap, Hand, Radio, Video, Wrench } from 'lucide-react';
+import { ArrowRight, Hand, Radio, Wrench } from 'lucide-react';
+import CourseFacts from '@/components/courses/CourseFacts';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 
 const coursesContent = {
@@ -91,25 +92,6 @@ function Price({ course, tbd }: { course: Workshop; tbd: string }) {
   return <>{course.price ?? <span className="font-body text-base font-normal text-on-surface-variant">{tbd}</span>}</>;
 }
 
-/** Date, format and level as three icon facts, in reading case. */
-function Facts({ course, level }: { course: Workshop; level: string }) {
-  const { language } = useLanguage();
-  return (
-    <ul className="flex flex-col gap-2 font-body text-[15px] text-on-surface">
-      {([
-        [CalendarDays, course.duration[language]],
-        [Video, course.format[language]],
-        [GraduationCap, level],
-      ] as const).map(([Icon, text]) => (
-        <li key={text} className="flex items-start gap-3">
-          <Icon size={18} aria-hidden className="mt-0.5 shrink-0 text-primary" />
-          {text}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function Status({ status, label }: { status: CourseStatus; label: string }) {
   return (
     <span className={`inline-flex items-center gap-2 font-body text-[15px] font-bold ${status === 'open' ? 'text-tertiary-dim' : status === 'waitlist' ? 'text-primary' : 'text-on-surface-variant'}`}>
@@ -146,7 +128,7 @@ export default function CoursesPage() {
                   <Status status={featured.status} label={t.status[featured.status]} />
                   <h2 className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-6xl">{featured.title[language]}</h2>
                   <p className="max-w-xl font-body text-lg leading-relaxed text-on-surface">{featured.tagline[language]}</p>
-                  <Facts course={featured} level={t.level[featured.level]} />
+                  <CourseFacts course={featured} level={t.level[featured.level]} />
                 </div>
                 <div className="flex flex-col justify-between gap-8">
                   <Tools course={featured} big />
@@ -173,7 +155,7 @@ export default function CoursesPage() {
                   <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface transition-colors duration-200 group-hover:text-primary md:text-3xl">{course.title[language]}</h3>
                   <p className="font-body text-base leading-relaxed text-on-surface-variant">{course.tagline[language]}</p>
                   <Tools course={course} />
-                  <Facts course={course} level={t.level[course.level]} />
+                  <CourseFacts course={course} level={t.level[course.level]} />
                   <span className="mt-auto flex items-center justify-between pt-4">
                     <span className="font-headline text-2xl font-bold text-on-surface">
                       <Price course={course} tbd={t.priceTbd} />

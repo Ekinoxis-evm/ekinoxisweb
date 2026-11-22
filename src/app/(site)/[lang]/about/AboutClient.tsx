@@ -156,7 +156,6 @@ export default function AboutClient({ hackers }: { hackers: Hacker[] }) {
             >
               {c.culture.values.map((v, i) => (
                 <motion.div key={v.title} variants={fadeInUp} className="group relative bg-surface-container-low p-6 md:p-10 transition-colors duration-500 hover:bg-surface-container">
-                  <span className="font-mono text-[12px] text-primary tracking-widest block mb-4">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-surface group-hover:text-primary transition-colors mb-3">{v.title}</h3>
                   <p className="font-body text-[15px] text-on-surface-variant leading-relaxed">{v.description}</p>
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
-import { ArrowRight, ArrowUpRight, Code2, Globe2, MessagesSquare } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Clock, Code2, Gift, Globe2, Languages, MessagesSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
+import FactList from '@/components/ui/FactList';
 import HeroBackdrop from '@/components/HeroBackdrop';
 import PanelBackdrop from '@/components/ui/PanelBackdrop';
 import LogoMarquee, { type MarqueeLogo } from '@/components/LogoMarquee';
@@ -130,10 +131,14 @@ export default function HomeClient({ products, hackathons, hackerCount, schools,
               {en ? 'Book a free call' : 'Agenda una llamada gratis'}
               <ArrowRight size={18} />
             </Button>
-            {/* One line, even at 375px: looser tracking than a label */}
-            <p className="mt-3 whitespace-nowrap font-mono text-[12px] uppercase tracking-wide text-outline">
-              {en ? '30 min · free · English or Spanish' : '30 min · gratis · español o inglés'}
-            </p>
+            <FactList
+              className="mt-4"
+              facts={[
+                { icon: Clock, text: '30 min' },
+                { icon: Gift, text: en ? 'Free' : 'Gratis' },
+                { icon: Languages, text: en ? 'English or Spanish' : 'Español o inglés' },
+              ]}
+            />
           </div>
         </div>
       </section>

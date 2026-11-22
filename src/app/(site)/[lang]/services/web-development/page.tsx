@@ -10,10 +10,13 @@ import BookCallPanel from '@/components/BookCallPanel';
 import { useBookCall } from '@/components/BookCall';
 import WorkStrip from '@/components/WorkStrip';
 import BuildLoop, { type BuildLoopCopy } from '@/components/BuildLoop';
-import { CreditCard, Eye, Hammer, LayoutTemplate, MessageSquare, Rocket, RefreshCw, Shuffle } from 'lucide-react';
+import { BadgeDollarSign, CreditCard, Eye, Hammer, LayoutTemplate, MessageSquare, Rocket, RefreshCw, Shuffle, Lock } from 'lucide-react';
+import FactList from '@/components/ui/FactList';
 import { fadeInUp } from '@/lib/animations';
 import { ToolsBand } from '@/components/LogoBands';
 
+/** From price, then the fixed-price promise */
+const TRUST_ICONS = [BadgeDollarSign, Lock];
 /** Plan and pay half, we build, rounds with you, live */
 const STEP_ICONS = [CreditCard, LayoutTemplate, RefreshCw, Rocket];
 /** Which booking-form package each pricing card pre-selects. */
@@ -24,17 +27,17 @@ const webDevContent = {
   en: {
     title: 'YOUR BUSINESS ONLINE',
     subtitle: 'Live in 5 days. Taking payments and answering WhatsApp from day one.',
-    trustLine: 'From $1,500 · Fixed price',
+    trustLine: ['From $1,500', 'Fixed price'],
     perfectFor: ['Entrepreneurs launching fast', 'Local businesses going digital', 'Consultants and service providers', 'Online stores & digital products'],
     included: ['A site that sells', 'Admin panel', 'Card payments', 'WhatsApp booking', 'Domain and hosting', 'Business email', 'Automatic receipts'],
     flow: {
       label: 'How it works',
       title: 'From a plan to a site that sells',
       steps: [
-        { num: '01', title: 'Pick your plan', desc: 'Choose a package and pay half. We agree on what your site must do.', chip: 'Day 1' },
-        { num: '02', title: 'We build it', desc: 'We set up your site, payments and WhatsApp. You watch it take shape.', chip: 'First version' },
-        { num: '03', title: 'Rounds with you', desc: 'We show you, you tell us what to change, we adjust. Directly with you.', chip: 'Back and forth' },
-        { num: '04', title: 'You go live', desc: 'Pay the rest and your business is online, taking payments.', chip: 'Day 5' },
+        { title: 'Pick your plan', desc: 'Choose a package and pay half. We agree on what your site must do.', chip: 'Day 1' },
+        { title: 'We build it', desc: 'We set up your site, payments and WhatsApp. You watch it take shape.', chip: 'First version' },
+        { title: 'Rounds with you', desc: 'We show you, you tell us what to change, we adjust. Directly with you.', chip: 'Back and forth' },
+        { title: 'You go live', desc: 'Pay the rest and your business is online, taking payments.', chip: 'Day 5' },
       ],
       round: ['Build', 'Show you', 'You tell us', 'Adjust'],
       center: 'Ready in 5\u00a0days',
@@ -53,17 +56,17 @@ const webDevContent = {
   es: {
     title: 'TU NEGOCIO EN LÍNEA',
     subtitle: 'En línea en 5 días. Cobrando y respondiendo WhatsApp desde el primer día.',
-    trustLine: 'Desde $1,500 · Precio fijo',
+    trustLine: ['Desde $1,500', 'Precio fijo'],
     perfectFor: ['Emprendedores lanzando rápido', 'Negocios locales digitalizándose', 'Consultores y proveedores de servicios', 'Tiendas online y productos digitales'],
     included: ['Un sitio que vende', 'Panel de administración', 'Pagos con tarjeta', 'Agenda por WhatsApp', 'Dominio y hosting', 'Correo de empresa', 'Recibos automáticos'],
     flow: {
       label: 'Cómo funciona',
       title: 'De un plan a un sitio que vende',
       steps: [
-        { num: '01', title: 'Elige tu plan', desc: 'Escoges un paquete y pagas la mitad. Acordamos qué debe hacer tu sitio.', chip: 'Día 1' },
-        { num: '02', title: 'Lo construimos', desc: 'Montamos tu sitio, los pagos y WhatsApp. Tú lo ves tomar forma.', chip: 'Primera versión' },
-        { num: '03', title: 'Rondas contigo', desc: 'Te mostramos, nos dices qué cambiar y ajustamos. Directo contigo.', chip: 'Ida y vuelta' },
-        { num: '04', title: 'Sales en vivo', desc: 'Pagas el resto y tu negocio queda en línea, cobrando.', chip: 'Día 5' },
+        { title: 'Elige tu plan', desc: 'Escoges un paquete y pagas la mitad. Acordamos qué debe hacer tu sitio.', chip: 'Día 1' },
+        { title: 'Lo construimos', desc: 'Montamos tu sitio, los pagos y WhatsApp. Tú lo ves tomar forma.', chip: 'Primera versión' },
+        { title: 'Rondas contigo', desc: 'Te mostramos, nos dices qué cambiar y ajustamos. Directo contigo.', chip: 'Ida y vuelta' },
+        { title: 'Sales en vivo', desc: 'Pagas el resto y tu negocio queda en línea, cobrando.', chip: 'Día 5' },
       ],
       round: ['Construimos', 'Te mostramos', 'Nos dices', 'Ajustamos'],
       center: 'Listo en 5\u00a0días',
@@ -113,7 +116,7 @@ export default function WebDevelopmentPage() {
               <p className="font-body text-lg text-on-surface-variant max-w-xl leading-relaxed">
                 {t.subtitle}
               </p>
-              <ScanBadge variant="primary">{t.trustLine}</ScanBadge>
+              <FactList facts={t.trustLine.map((text, i) => ({ icon: TRUST_ICONS[i], text }))} />
             </motion.div>
 
             {/* What every site comes with, at a glance */}

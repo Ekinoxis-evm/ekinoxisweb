@@ -20,7 +20,9 @@ export const MAX_HOURS = 12;
 export const FREE_CALL_MINUTES = 30;
 
 export type Lang = 'en' | 'es';
-export type Option = { value: string; en: string; es: string; hint?: { en: string; es: string } };
+/** One line under an option: a price, a time or a plain note, each shown on its own row. */
+export type HintFact = { kind: 'price' | 'time' | 'note'; text: string };
+export type Option = { value: string; en: string; es: string; hint?: { en: HintFact[]; es: HintFact[] } };
 
 export const DETAIL_KEYS = [
   'type', 'format', 'hours', 'estimate_usd',
@@ -44,10 +46,10 @@ export const MULTI_KEYS: DetailKey[] = ['type', 'needs'];
 /* ── The master form: which service? ────────────────────────────────────── */
 
 export const SERVICES: (Option & { value: LeadTopic })[] = [
-  { value: 'consultation', en: 'Advice on AI, crypto or automation', es: 'Asesoría en IA, cripto o automatización', hint: { en: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS}-hour session`, es: `$${BLOCK_PRICE_USD} · sesión de ${BLOCK_HOURS} horas` } },
-  { value: 'web', en: 'A website for my business', es: 'Un sitio web para mi negocio', hint: { en: 'From $1,500 · live in 5 days', es: 'Desde $1,500 · en vivo en 5 días' } },
-  { value: 'app', en: 'Software or an app built for me', es: 'Software o una app hecha para mí', hint: { en: 'Scoped together on the call', es: 'Lo definimos juntos en la llamada' } },
-  { value: 'talk', en: 'Invite us to speak', es: 'Invitarlos a hablar', hint: { en: 'Talks, panels, demos', es: 'Charlas, paneles, demos' } },
+  { value: 'consultation', en: 'Advice on AI, crypto or automation', es: 'Asesoría en IA, cripto o automatización', hint: { en: [{ kind: 'price', text: `$${BLOCK_PRICE_USD}` }, { kind: 'time', text: `${BLOCK_HOURS}-hour session` }], es: [{ kind: 'price', text: `$${BLOCK_PRICE_USD}` }, { kind: 'time', text: `sesión de ${BLOCK_HOURS} horas` }] } },
+  { value: 'web', en: 'A website for my business', es: 'Un sitio web para mi negocio', hint: { en: [{ kind: 'price', text: 'From $1,500' }, { kind: 'time', text: 'live in 5 days' }], es: [{ kind: 'price', text: 'Desde $1,500' }, { kind: 'time', text: 'en vivo en 5 días' }] } },
+  { value: 'app', en: 'Software or an app built for me', es: 'Software o una app hecha para mí', hint: { en: [{ kind: 'note', text: 'Scoped together on the call' }], es: [{ kind: 'note', text: 'Lo definimos juntos en la llamada' }] } },
+  { value: 'talk', en: 'Invite us to speak', es: 'Invitarlos a hablar', hint: { en: [{ kind: 'note', text: 'Talks, panels, demos' }], es: [{ kind: 'note', text: 'Charlas, paneles, demos' }] } },
   { value: 'course', en: 'A course for me or my team', es: 'Un curso para mí o mi equipo' },
   { value: 'general', en: 'Something else', es: 'Otra cosa' },
 ];
@@ -64,17 +66,17 @@ export const CONSULTATION_TYPES: Option[] = [
 ];
 
 export const CONSULTATION_FORMATS: Option[] = [
-  { value: 'hourly', en: 'Personalized session', es: 'Sesión personalizada', hint: { en: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS} hours`, es: `$${BLOCK_PRICE_USD} · ${BLOCK_HOURS} horas` } },
-  { value: 'workshop', en: 'Team workshop', es: 'Taller de equipo', hint: { en: 'Half day $3,800', es: 'Medio día $3,800' } },
-  { value: 'advisor', en: 'Monthly advisor', es: 'Asesor mensual', hint: { en: '$3,000 / month', es: '$3,000 / mes' } },
+  { value: 'hourly', en: 'Personalized session', es: 'Sesión personalizada', hint: { en: [{ kind: 'price', text: `$${BLOCK_PRICE_USD}` }, { kind: 'time', text: `${BLOCK_HOURS} hours` }], es: [{ kind: 'price', text: `$${BLOCK_PRICE_USD}` }, { kind: 'time', text: `${BLOCK_HOURS} horas` }] } },
+  { value: 'workshop', en: 'Team workshop', es: 'Taller de equipo', hint: { en: [{ kind: 'price', text: 'Half day $3,800' }], es: [{ kind: 'price', text: 'Medio día $3,800' }] } },
+  { value: 'advisor', en: 'Monthly advisor', es: 'Asesor mensual', hint: { en: [{ kind: 'price', text: '$3,000 / month' }], es: [{ kind: 'price', text: '$3,000 / mes' }] } },
 ];
 
 /* ── Websites ───────────────────────────────────────────────────────────── */
 
 export const WEB_PLANS: Option[] = [
-  { value: 'online', en: 'Online Business', es: 'Negocio Online', hint: { en: '$1,500', es: '$1,500' } },
-  { value: 'pro', en: 'Professional', es: 'Profesional', hint: { en: '$3,000 · AI assistant', es: '$3,000 · asistente de IA' } },
-  { value: 'complete', en: 'Complete', es: 'Completo', hint: { en: '$6,000 · for teams', es: '$6,000 · para equipos' } },
+  { value: 'online', en: 'Online Business', es: 'Negocio Online', hint: { en: [{ kind: 'price', text: '$1,500' }], es: [{ kind: 'price', text: '$1,500' }] } },
+  { value: 'pro', en: 'Professional', es: 'Profesional', hint: { en: [{ kind: 'price', text: '$3,000' }, { kind: 'note', text: 'AI assistant' }], es: [{ kind: 'price', text: '$3,000' }, { kind: 'note', text: 'asistente de IA' }] } },
+  { value: 'complete', en: 'Complete', es: 'Completo', hint: { en: [{ kind: 'price', text: '$6,000' }, { kind: 'note', text: 'for teams' }], es: [{ kind: 'price', text: '$6,000' }, { kind: 'note', text: 'para equipos' }] } },
   { value: 'unsure', en: 'Not sure yet', es: 'Aún no sé' },
 ];
 
@@ -95,9 +97,9 @@ export const WEB_NEEDS: Option[] = [
 /* ── Software & apps ────────────────────────────────────────────────────── */
 
 export const APP_PLANS: Option[] = [
-  { value: 'first', en: 'First Version', es: 'Primera Versión', hint: { en: 'From $12,000 · 4–6 weeks', es: 'Desde $12,000 · 4–6 semanas' } },
-  { value: 'full', en: 'Full Product', es: 'Producto Completo', hint: { en: 'From $38,000 · 8–12 weeks', es: 'Desde $38,000 · 8–12 semanas' } },
-  { value: 'team', en: 'Your Own Team', es: 'Tu Propio Equipo', hint: { en: 'From $16,000 / month', es: 'Desde $16,000 / mes' } },
+  { value: 'first', en: 'First Version', es: 'Primera Versión', hint: { en: [{ kind: 'price', text: 'From $12,000' }, { kind: 'time', text: '4–6 weeks' }], es: [{ kind: 'price', text: 'Desde $12,000' }, { kind: 'time', text: '4–6 semanas' }] } },
+  { value: 'full', en: 'Full Product', es: 'Producto Completo', hint: { en: [{ kind: 'price', text: 'From $38,000' }, { kind: 'time', text: '8–12 weeks' }], es: [{ kind: 'price', text: 'Desde $38,000' }, { kind: 'time', text: '8–12 semanas' }] } },
+  { value: 'team', en: 'Your Own Team', es: 'Tu Propio Equipo', hint: { en: [{ kind: 'price', text: 'From $16,000 / month' }], es: [{ kind: 'price', text: 'Desde $16,000 / mes' }] } },
   { value: 'unsure', en: 'Not sure yet', es: 'Aún no sé' },
 ];
 
