@@ -1076,12 +1076,11 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
               ))}
             </ul>
             <ReserveButton position="hero" onReserve={reserve} label={ctaFor(offer)} className="mt-8" />
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 font-body text-base text-on-surface">
+            <ul className="mt-6 flex flex-col gap-3 font-body text-base text-on-surface md:text-lg">
               {[
                 [CalendarDays, R.hero.facts.date],
                 [Clock, R.hero.facts.time],
-                [Clock, R.hero.facts.length],
-                [Video, R.hero.facts.recording],
+                [Video, R.hero.facts.place],
               ].map(([Icon, text]) => {
                 const I = Icon as typeof Clock;
                 return (
@@ -1092,7 +1091,6 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
                 );
               })}
             </ul>
-            <p className="mt-4 font-body text-[13px] text-on-surface-variant">{R.disclaimer}</p>
           </header>
 
           <div className="lg:col-span-5">
@@ -1110,8 +1108,8 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
           <div>
             <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} />
           </div>
-          <Routes marks={marks} />
           <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
+          <Routes marks={marks} />
           <Teacher />
 
           <section aria-labelledby="risks-heading">

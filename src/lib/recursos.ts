@@ -145,8 +145,8 @@ export const ACCIONES = {
 
   /** Live session. `time` stays null until William sets it; null hides it. */
   session: {
-    date: 'viernes 5 de diciembre',
-    time: '7:00 p. m.' as string | null,
+    date: 'sábado 6 de diciembre',
+    time: '10:00 a. m.' as string | null,
     line: (date: string, time: string | null) => `En vivo el ${date}${time ? `, ${time} (hora Colombia)` : ''}.`,
   },
 
@@ -156,10 +156,9 @@ export const ACCIONES = {
     titleEm: 'tokenizadas',
     sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides quién las guarda.',
     facts: {
-      date: 'Viernes 5 de diciembre',
-      time: '7:00 p. m. (hora Colombia)',
-      length: '3 horas en vivo',
-      recording: 'Grabación incluida',
+      date: 'Sábado 6 de diciembre',
+      time: '10:00 a. m. a 1:00 p. m. (hora Colombia)',
+      place: 'En línea, por Google Meet',
     },
     /** First 8 of these that have a logo file (a monogram among real logos reads as broken). */
     wall: ['aapl', 'nvda', 'msft', 'googl', 'amzn', 'meta', 'tsla', 'spcx', 'ant', 'coin'],
@@ -413,7 +412,7 @@ export const ACCIONES = {
     path: '/recursos/acciones-tokenizadas/gracias',
     metaTitle: 'Gracias por tu reserva',
     title: 'Gracias. Tu cupo está reservado.',
-    body: 'Taller en vivo el viernes 5 de diciembre. Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
+    body: 'Taller en vivo el sábado 6 de diciembre, de 10:00 a. m. a 1:00 p. m. (hora Colombia). Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
     back: 'Volver al taller',
   },
 

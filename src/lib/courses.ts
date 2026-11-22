@@ -219,7 +219,7 @@ export const workshops: (Course | LandingWorkshop)[] = [
       es: 'Compra acciones de las grandes tecnológicas tokenizadas, desde un exchange o tu propia wallet.',
     },
     format: { en: 'Live online · Spanish', es: 'En vivo online · español' },
-    duration: { en: '1 session · 3 hours · Fri 5 Dec', es: '1 sesión · 3 horas · vie 5 dic' },
+    duration: { en: '1 session · 3 hours · Sat 6 Dec', es: '1 sesión · 3 horas · sáb 6 dic' },
     /** Same on server and client (no hydration mismatch); `livePrice` replaces it in the browser, so the listing follows the 2 Dec switch without a deploy. */
     price: `$${ACCIONES.price.promo.amount}`,
     livePrice: () => `$${accionesAmount(new Date())}`,

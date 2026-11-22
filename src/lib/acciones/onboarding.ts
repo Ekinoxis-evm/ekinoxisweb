@@ -19,11 +19,11 @@ export const ACCIONES_PAYMENT_LINKS = [
 export const ACCIONES_COURSE_SLUG = 'acciones-tokenizadas';
 
 export const SESSION = {
-  /** Viernes 5 de diciembre de 2026, 7:00 p. m. COT (UTC-5). */
-  startsAt: '2026-12-06T00:00:00Z',
-  endsAt: '2026-12-06T03:00:00Z',
+  /** Sábado 6 de diciembre de 2026, 10:00 a. m. a 1:00 p. m. COT (UTC-5). Moved from Fri 5 Dec on 21 nov 2026. */
+  startsAt: '2026-12-06T15:00:00Z',
+  endsAt: '2026-12-06T18:00:00Z',
   /** Same UID everywhere, so the emailed and the downloaded invite are one calendar event. */
-  uid: 'taller-acciones-tokenizadas-20261205@ekinoxis.xyz',
+  uid: 'taller-acciones-tokenizadas-20261206@ekinoxis.xyz',
   /**
    * Google Meet of the Calendar event on global@ekinoxis.xyz (created 21 nov 2026). Only the paid
    * email and its invite carry it; public pages and the public .ics never do.
@@ -32,8 +32,8 @@ export const SESSION = {
   title: 'Taller en vivo: Acciones tech tokenizadas',
   /** Shown as separate icon rows, never joined (DESIGN.md: no dot-joined facts). */
   facts: [
-    { icon: 'date', label: 'Fecha', text: 'Viernes 5 de diciembre' },
-    { icon: 'time', label: 'Hora', text: '7:00 p. m. hora Colombia' },
+    { icon: 'date', label: 'Fecha', text: 'Sábado 6 de diciembre' },
+    { icon: 'time', label: 'Hora', text: '10:00 a. m. a 1:00 p. m. (hora Colombia)' },
     { icon: 'length', label: 'Duración', text: '3 horas, en vivo' },
     { icon: 'place', label: 'Lugar', text: 'En línea, por Google Meet' },
     { icon: 'language', label: 'Idioma', text: 'Español' },
@@ -53,7 +53,7 @@ export const SAFETY = {
 /** The public prep page, /es/recursos/acciones-tokenizadas/preparacion. */
 export const PREP_PAGE = {
   metaTitle: 'Preparación del taller de acciones tokenizadas',
-  badge: 'Antes del 5 de diciembre',
+  badge: 'Antes del 6 de diciembre',
   title: 'Prepárate para el taller',
   lead: 'Cuatro cosas listas antes de la sesión. La primera toma más tiempo: empieza por ahí.',
   calendar: 'Añadir al calendario',
@@ -190,7 +190,7 @@ export function sessionGoogleCalendarUrl(link: string | null): string {
 /* ── Onboarding email copy ────────────────────────────────────────────────── */
 
 export const ONBOARDING_EMAIL = {
-  subject: 'Tu cupo está listo: prepárate para el taller del 5 de diciembre',
+  subject: 'Tu cupo está listo: prepárate para el taller del 6 de diciembre',
   eyebrow: 'CUPO CONFIRMADO',
   hello: (first: string) => `Hola ${first}, tu cupo está listo.`,
   calendarNote: 'La invitación adjunta guarda la sesión en tu calendario, en tu zona horaria.',
