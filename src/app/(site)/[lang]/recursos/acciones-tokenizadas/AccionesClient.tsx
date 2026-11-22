@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -511,7 +511,7 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
     setPos(
       across
         ? { x: eb.left - wb.left + eb.width / 2, y: eb.top - wb.top - 6 }
-        : { x: eb.left - wb.left - 32, y: eb.top - wb.top + eb.height / 2 + 20 },
+        : { x: eb.left - wb.left - 40, y: eb.top - wb.top + eb.height / 2 + 28 },
     );
   }, [at]);
   useEffect(() => measure(), [measure]);
@@ -563,25 +563,41 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
           </Fragment>
         ))}
 
-        {/* The coin: it rides above the stop it is at, and changes face as the money converts. */}
+        {/*
+          The coin: it rides above the stop it is at (beside it on phones). Each time it lands, the
+          face swaps with a short blur-and-pop (cash → USDT → USDT + ETH → the stock token).
+        */}
         {pos && (
           <span
             aria-hidden
-            className={`pointer-events-none absolute left-0 top-0 flex h-10 w-10 items-center justify-center gap-0.5 rounded-full border border-primary bg-surface-container-lowest ${
+            className={`pointer-events-none absolute left-0 top-0 h-14 w-14 ${
               hidden ? 'opacity-0 transition-opacity duration-300' : 'opacity-100 transition-[transform,opacity] duration-1000 ease-in-out motion-reduce:transition-none'
             }`}
-            style={{ transform: `translate(${pos.x - 20}px, ${pos.y - 40}px)` }}
+            style={{ transform: `translate(${pos.x - 28}px, ${pos.y - 56}px)` }}
           >
-            {face === 'gas' ? (
-              <>
-                <LogoTile logo={marks.gas[0] ?? null} text="" className="w-5 bg-transparent" />
-                <LogoTile logo={marks.gas[1] ?? null} text="" className="w-4 bg-transparent" />
-              </>
-            ) : coinLogo ? (
-              <LogoTile logo={coinLogo} text="" className="w-7 bg-transparent" />
-            ) : (
-              <span className="font-mono text-[11px] font-bold text-on-surface">{t.cash}</span>
-            )}
+            <span key={`${face}-${at}`} className="animate-coin-swap absolute inset-0">
+              {face === 'gas' ? (
+                <>
+                  <span className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
+                    <LogoTile logo={marks.gas[0] ?? null} text="" className="w-8 bg-transparent" />
+                  </span>
+                  <span className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
+                    <LogoTile logo={marks.gas[1] ?? null} text="" className="w-6 bg-transparent" />
+                  </span>
+                </>
+              ) : (
+                <span className="flex h-full w-full items-center justify-center rounded-full border-2 border-primary bg-surface-container-lowest">
+                  {coinLogo ? (
+                    <LogoTile logo={coinLogo} text="" className="w-9 bg-transparent" />
+                  ) : (
+                    <span className="flex flex-col items-center leading-none text-on-surface">
+                      <Banknote size={20} aria-hidden className="text-primary" />
+                      <span className="mt-0.5 font-mono text-[11px] font-bold">{t.cash}</span>
+                    </span>
+                  )}
+                </span>
+              )}
+            </span>
           </span>
         )}
       </div>
