@@ -415,7 +415,7 @@ export function buildWorkshopOnboardingEmail(buyer: WorkshopBuyer): { subject: s
   <p style="margin:0;font-size:14px;line-height:21px;color:#a2acb5;">${link}</p>
 </td></tr></table>
 <p style="margin:0 0 12px;font-size:15px;line-height:24px;color:#a2acb5;">${esc(e.calendarNote)}</p>
-<p style="margin:0 0 8px;">${button(sessionGoogleCalendarUrl(), e.calendarButton)}</p>
+<p style="margin:0 0 8px;">${button(sessionGoogleCalendarUrl(SESSION.meetingUrl), e.calendarButton)}</p>
 ${h2(e.prepTitle)}
 ${stepsHtml(PREP_STEPS.map((s) => [esc(s.title), esc(s.text)] as [string, string]), false)}
 <p style="margin:0 0 24px;font-size:15px;line-height:24px;"><a href="${PREP_URL}" style="color:#8ff5ff;">${e.prepButton} →</a></p>
@@ -436,7 +436,7 @@ export async function sendWorkshopOnboardingEmail(buyer: WorkshopBuyer): Promise
       attachments: [
         {
           filename: 'taller-acciones-tokenizadas.ics',
-          content: Buffer.from(buildSessionIcs()).toString('base64'),
+          content: Buffer.from(buildSessionIcs(SESSION.meetingUrl)).toString('base64'),
           content_type: 'text/calendar; charset=utf-8; method=PUBLISH',
         },
       ],

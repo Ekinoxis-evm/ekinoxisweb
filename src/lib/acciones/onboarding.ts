@@ -24,13 +24,16 @@ export const SESSION = {
   endsAt: '2026-12-06T03:00:00Z',
   /** Same UID everywhere, so the emailed and the downloaded invite are one calendar event. */
   uid: 'taller-acciones-tokenizadas-20261205@ekinoxis.xyz',
-  /** The live-session URL. Null until it exists; never invent one. */
-  meetingUrl: null as string | null,
+  /**
+   * Google Meet of the Calendar event on global@ekinoxis.xyz (created 21 nov 2026). Only the paid
+   * email and its invite carry it; public pages and the public .ics never do.
+   */
+  meetingUrl: 'https://meet.google.com/jwm-pynr-kwe' as string | null,
   title: 'Taller en vivo · Acciones tech tokenizadas',
   date: 'Viernes 5 de diciembre',
   time: '7:00 p. m. hora Colombia',
   duration: '3 horas · en vivo, en línea, en español',
-  linkPending: 'Te enviamos el enlace de la sesión por correo 24 horas antes.',
+  linkPending: 'El enlace de la sesión está en tu correo de confirmación y en tu invitación de calendario.',
 } as const;
 
 export const PREP_PATH = '/recursos/acciones-tokenizadas/preparacion';
@@ -125,19 +128,20 @@ function fold(line: string): string {
   return out.join('\r\n ');
 }
 
-function eventDescription(): string {
+/** `link` is the Meet URL for buyers' own invites; null for anything public. */
+function eventDescription(link: string | null): string {
   return [
-    SESSION.meetingUrl ? `Enlace de la sesión: ${SESSION.meetingUrl}` : SESSION.linkPending,
+    link ? `Enlace de la sesión: ${link}` : SESSION.linkPending,
     `Prepárate antes de la sesión: ${PREP_URL}`,
     SAFETY.advice,
     SAFETY.keys,
   ].join('\n');
 }
 
-const location = () => SESSION.meetingUrl ?? 'En línea (enlace por correo 24 horas antes)';
+const location = (link: string | null) => link ?? 'En línea (enlace en tu correo de confirmación)';
 
 /** METHOD:PUBLISH: a plain event to add, not a meeting request to answer. */
-export function buildSessionIcs(now: Date = new Date()): string {
+export function buildSessionIcs(link: string | null, now: Date = new Date()): string {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
@@ -150,9 +154,9 @@ export function buildSessionIcs(now: Date = new Date()): string {
     `DTSTART:${icsDate(SESSION.startsAt)}`,
     `DTEND:${icsDate(SESSION.endsAt)}`,
     `SUMMARY:${icsText(SESSION.title)}`,
-    `DESCRIPTION:${icsText(eventDescription())}`,
-    `LOCATION:${icsText(location())}`,
-    `URL:${SESSION.meetingUrl ?? PREP_URL}`,
+    `DESCRIPTION:${icsText(eventDescription(link))}`,
+    `LOCATION:${icsText(location(link))}`,
+    `URL:${link ?? PREP_URL}`,
     'ORGANIZER;CN=Ekinoxis Labs:mailto:hola@ekinoxis.xyz',
     'STATUS:CONFIRMED',
     'BEGIN:VALARM',
@@ -166,13 +170,13 @@ export function buildSessionIcs(now: Date = new Date()): string {
   return lines.map(fold).join('\r\n') + '\r\n';
 }
 
-export function sessionGoogleCalendarUrl(): string {
+export function sessionGoogleCalendarUrl(link: string | null): string {
   const q = new URLSearchParams({
     action: 'TEMPLATE',
     text: SESSION.title,
     dates: `${icsDate(SESSION.startsAt)}/${icsDate(SESSION.endsAt)}`,
-    details: eventDescription(),
-    location: location(),
+    details: eventDescription(link),
+    location: location(link),
     ctz: 'America/Bogota',
   });
   return `https://calendar.google.com/calendar/render?${q.toString()}`;

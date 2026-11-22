@@ -2,7 +2,7 @@ import { buildSessionIcs } from '@/lib/acciones/onboarding';
 
 /** The workshop session as a calendar file; the same event (same UID) as the one in the onboarding email. */
 export function GET() {
-  return new Response(buildSessionIcs(), {
+  return new Response(buildSessionIcs(null), {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
       'Content-Disposition': 'attachment; filename="taller-acciones-tokenizadas.ics"',

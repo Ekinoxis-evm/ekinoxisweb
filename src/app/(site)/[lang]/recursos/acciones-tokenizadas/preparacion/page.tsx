@@ -57,19 +57,13 @@ export default function Page({ params }: { params: { lang: string } }) {
             </p>
             <p className="mt-1 font-mono text-xs uppercase tracking-widest text-outline">{SESSION.duration}</p>
             <p className="mt-3 font-body text-base text-on-surface-variant">
-              {SESSION.meetingUrl ? (
-                <a href={SESSION.meetingUrl} className={`text-primary underline underline-offset-4 ${focus}`}>
-                  {SESSION.meetingUrl}
-                </a>
-              ) : (
-                SESSION.linkPending
-              )}
+              {SESSION.linkPending}
             </p>
           </div>
 
           <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
-              href={sessionGoogleCalendarUrl()}
+              href={sessionGoogleCalendarUrl(null)}
               target="_blank"
               rel="noopener noreferrer"
               className={`inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-6 py-3 font-headline text-sm font-bold uppercase tracking-widest text-on-primary transition-colors duration-150 hover:bg-primary-dim sm:w-auto ${focus}`}
