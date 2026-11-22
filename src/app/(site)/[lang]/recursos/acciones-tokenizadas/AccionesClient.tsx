@@ -862,10 +862,6 @@ function Clip() {
   };
   return (
     <figure className="mx-auto flex w-full max-w-xs flex-col lg:max-w-72">
-      <figcaption className="mb-3 flex items-center gap-2 font-body text-[15px] font-bold text-on-surface">
-        <span aria-hidden className="h-2 w-2 rounded-full bg-tertiary-dim" />
-        {c.caption}
-      </figcaption>
       <video
         ref={ref}
         src={c.src}
