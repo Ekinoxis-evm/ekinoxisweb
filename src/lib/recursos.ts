@@ -132,20 +132,20 @@ export const ACCIONES = {
   disclaimer: 'Esto no es asesoría de inversión.',
 
   /**
-   * Confirmed by William (20 nov 2026): US$49 is the real price from 2 Dec; until then the
-   * Black Friday price is US$30. That is what makes the struck-through US$49 legitimate.
-   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4, created 21 nov 2026).
+   * Confirmed by William (20 nov 2026, promo changed 23 nov): US$49 is the real price from 2 Dec; until
+   * then the Black Friday price is US$15. That is what makes the struck-through US$49 legitimate.
+   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4); the US$30 link is retired.
    * The page picks the tier by the visitor's clock, so it switches on 2 Dec 00:00 COT without a deploy.
    */
   price: {
     regular: 49,
-    promo: { amount: 30, label: 'Precio Black Friday', until: '1 de diciembre', endsAt: '2026-12-02T05:00:00Z' },
-    links: { promo: 'https://buy.stripe.com/fZu6oH3EK5c91eG9vWcfK01', regular: 'https://buy.stripe.com/bJeeVd2AG6gde1sbE4cfK02' },
+    promo: { amount: 15, label: 'Precio Black Friday', until: '1 de diciembre', endsAt: '2026-12-02T05:00:00Z' },
+    links: { promo: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00', regular: 'https://buy.stripe.com/bJeeVd2AG6gde1sbE4cfK02' },
   },
 
   /** Live session. `time` stays null until William sets it; null hides it. */
   session: {
-    date: 'sábado 5 de diciembre',
+    date: 'sábado 12 de diciembre',
     time: '10:00 a. m.' as string | null,
     line: (date: string, time: string | null) => `En vivo el ${date}${time ? `, ${time} (hora Colombia)` : ''}.`,
   },
@@ -156,7 +156,7 @@ export const ACCIONES = {
     titleEm: 'tokenizadas',
     sub: 'Apple, NVIDIA, SpaceX y 37 más. Desde un exchange o en tu propia wallet: tú decides cómo comprarlas y almacenarlas.',
     facts: {
-      date: 'Sábado 5 de diciembre',
+      date: 'Sábado 12 de diciembre',
       time: '10:00 a. m. a 1:00 p. m. (hora Colombia)',
       place: 'En línea, por Google Meet',
     },
@@ -438,7 +438,7 @@ export const ACCIONES = {
     path: '/recursos/acciones-tokenizadas/gracias',
     metaTitle: 'Gracias por tu reserva',
     title: 'Gracias. Tu cupo está reservado.',
-    body: 'Taller en vivo el sábado 5 de diciembre, de 10:00 a. m. a 1:00 p. m. (hora Colombia). Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
+    body: 'Taller en vivo el sábado 12 de diciembre, de 10:00 a. m. a 1:00 p. m. (hora Colombia). Te escribimos al correo con el enlace y la preparación previa: tu cuenta y la verificación (KYC). Stripe te envía el recibo.',
     back: 'Volver al taller',
   },
 

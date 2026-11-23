@@ -1,13 +1,13 @@
 # Acciones tokenizadas — onboarding after payment
 
 What happens when someone pays for the live workshop «Acciones tech tokenizadas»
-(sábado 5 dic 2026, 10:00 a. m. a 1:00 p. m. COT = 2026-12-05 15:00Z, 3 h).
+(sábado 12 dic 2026, 10:00 a. m. a 1:00 p. m. COT = 2026-12-12 15:00Z, 3 h; moved from 5 dic on 23 nov).
 
 ## Flow
 
-1. The buyer pays through a Stripe Payment Link (US$30 `plink_1UeQDxFr9j0xyULSX6B2GweC`,
-   US$49 `plink_1UeQDyFr9j0xyULSo8fHh3IH`; the old US$15 `plink_1UddmKFr9j0xyULSLeUoCE0X` is
-   deactivated but still mapped). Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`,
+1. The buyer pays through a Stripe Payment Link (US$15 Black Friday `plink_1UddmKFr9j0xyULSLeUoCE0X`,
+   US$49 `plink_1UeQDyFr9j0xyULSo8fHh3IH`; the US$30 `plink_1UeQDxFr9j0xyULSX6B2GweC` is
+   deactivated since 23 nov but still mapped). Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`,
    which links to the prep page.
 2. Stripe sends `checkout.session.completed` (or `checkout.session.async_payment_succeeded`) to
    `POST /api/webhooks/stripe`. The route verifies the signature, and for a paid session:
@@ -50,7 +50,7 @@ who already got the email do not get it automatically — send them the link by 
 3. **Vercel → ekinoxisweb → Settings → Environment Variables (Production)**: add
    `STRIPE_WEBHOOK_SECRET`. Check `RESEND_API_KEY` exists. Never paste a key in a chat or commit.
 4. **Redeploy** production (env vars apply only to a new deployment).
-5. **Test with a real purchase:** buy the US$30 link with your own card and a mailbox you can read.
+5. **Test with a real purchase:** buy the US$15 link with your own card and a mailbox you can read.
    Expect within a minute: Stripe receipt, the onboarding email with the `.ics`, a row in
    `course_enrollments` with `course_slug = 'acciones-tokenizadas'`, and a 200 in Stripe → Webhooks →
    the endpoint's event log. Use «Resend» on that event in Stripe: it must answer 200 and **not**
