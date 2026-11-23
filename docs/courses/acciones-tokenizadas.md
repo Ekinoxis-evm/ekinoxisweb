@@ -15,9 +15,9 @@
 | Leads | `leads` via `/api/contact`, `topic = 'course'`, `details.resource = 'acciones-tokenizadas'`; own confirmation email in `src/lib/notify.ts` |
 
 ## Payment
-- **Stripe Payment Links** (live, product `prod_Vexh0me4TtKkC4`): US$15 Black Friday until 1 Dec 2026, US$49
-  from 2 Dec 00:00 COT, in `ACCIONES.price.links`; the page picks the tier by the visitor's clock. The US$30
-  link was retired on 23 nov 2026 (session moved to sáb 12 dic). Buttons append `?client_reference_id={utm_campaign|landing}-{position}`. After paying,
+- **Stripe Payment Links** (live, product `prod_Vexh0me4TtKkC4`): US$15 Black Friday until 1 Dec 2026, US$30
+  from 2 Dec 00:00 COT, in `ACCIONES.price.links`; the page picks the tier by the visitor's clock. On 23 nov 2026
+  the session moved to sáb 12 dic and the US$49 link stopped being used. Buttons append `?client_reference_id={utm_campaign|landing}-{position}`. After paying,
   Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`.
   Buyers land in `course_enrollments` through the Stripe webhook, which also sends the onboarding email
   (`docs/acciones-onboarding.md`). There is no interest form on the page; the only action is paying.

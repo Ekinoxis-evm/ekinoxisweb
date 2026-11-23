@@ -6,8 +6,8 @@ What happens when someone pays for the live workshop «Acciones tech tokenizadas
 ## Flow
 
 1. The buyer pays through a Stripe Payment Link (US$15 Black Friday `plink_1UddmKFr9j0xyULSLeUoCE0X`,
-   US$49 `plink_1UeQDyFr9j0xyULSo8fHh3IH`; the US$30 `plink_1UeQDxFr9j0xyULSX6B2GweC` is
-   deactivated since 23 nov but still mapped). Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`,
+   US$30 regular from 2 Dec `plink_1UeQDxFr9j0xyULSX6B2GweC`; the US$49 `plink_1UeQDyFr9j0xyULSo8fHh3IH`
+   is no longer linked since 23 nov but still mapped). Stripe redirects to `/es/recursos/acciones-tokenizadas/gracias`,
    which links to the prep page.
 2. Stripe sends `checkout.session.completed` (or `checkout.session.async_payment_succeeded`) to
    `POST /api/webhooks/stripe`. The route verifies the signature, and for a paid session:

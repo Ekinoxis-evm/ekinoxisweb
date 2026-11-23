@@ -12,8 +12,8 @@ const SITE = 'https://www.ekinoxis.xyz';
 /** The three Stripe Payment Links that sell this workshop (live account). */
 export const ACCIONES_PAYMENT_LINKS = [
   'plink_1UddmKFr9j0xyULSLeUoCE0X', // US$15 Black Friday (until 1 Dec)
-  'plink_1UeQDyFr9j0xyULSo8fHh3IH', // US$49 regular
-  'plink_1UeQDxFr9j0xyULSX6B2GweC', // US$30, retired 23 nov 2026; kept so a late event still maps
+  'plink_1UeQDxFr9j0xyULSX6B2GweC', // US$30 regular (from 2 Dec)
+  'plink_1UeQDyFr9j0xyULSo8fHh3IH', // US$49, no longer linked (23 nov 2026); kept so a late event still maps
 ] as const;
 
 export const ACCIONES_COURSE_SLUG = 'acciones-tokenizadas';

@@ -132,15 +132,15 @@ export const ACCIONES = {
   disclaimer: 'Esto no es asesoría de inversión.',
 
   /**
-   * Confirmed by William (20 nov 2026, promo changed 23 nov): US$49 is the real price from 2 Dec; until
-   * then the Black Friday price is US$15. That is what makes the struck-through US$49 legitimate.
-   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4); the US$30 link is retired.
+   * Confirmed by William (23 nov 2026): US$30 is the real price from 2 Dec; until then the Black Friday
+   * price is US$15. That is what makes the struck-through US$30 legitimate.
+   * Each tier is its own Stripe Payment Link (product prod_Vexh0me4TtKkC4); the US$49 link is no longer used.
    * The page picks the tier by the visitor's clock, so it switches on 2 Dec 00:00 COT without a deploy.
    */
   price: {
-    regular: 49,
+    regular: 30,
     promo: { amount: 15, label: 'Precio Black Friday', until: '1 de diciembre', endsAt: '2026-12-02T05:00:00Z' },
-    links: { promo: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00', regular: 'https://buy.stripe.com/bJeeVd2AG6gde1sbE4cfK02' },
+    links: { promo: 'https://buy.stripe.com/fZuaEXdfkfQN3mOeQgcfK00', regular: 'https://buy.stripe.com/fZu6oH3EK5c91eG9vWcfK01' },
   },
 
   /** Live session. `time` stays null until William sets it; null hides it. */
@@ -167,7 +167,7 @@ export const ACCIONES = {
   reserve: { paid: (amount: number) => `Reservar mi cupo por US$${amount}` },
   priceLine: (amount: number) => `US$${amount}`,
   single: 'pago único',
-  promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$49.`,
+  promoNote: (label: string, until: string) => `${label} hasta el ${until}. Después, US$30.`,
 
   clip: {
     caption: 'Compra real: SpaceX con 1 USDT en OKX',
