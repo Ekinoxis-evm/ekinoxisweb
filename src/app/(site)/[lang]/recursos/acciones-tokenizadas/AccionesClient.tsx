@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, Plus, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -628,11 +628,10 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
 
 /**
  * «2 métodos, el mismo resultado»: each method as its own animated band (the coin converting from
- * cash to USDT to the stock token), then the side-by-side comparison with the method images.
+ * cash to USDT to the stock token). The side-by-side comparison lives in «Antes de comprar».
  */
 function Routes({ marks }: { marks: Marks }) {
   const r = R.routes;
-  const [sel, setSel] = useState<Lane | null>(null);
   return (
     <section aria-labelledby="routes-heading">
       <Heading id="routes-heading">{r.heading}</Heading>
@@ -662,62 +661,69 @@ function Routes({ marks }: { marks: Marks }) {
         />
       </div>
 
-      {/* The comparison: one row per question, A and B side by side under it (phones) or beside it (laptops). */}
-      <div role="table" aria-labelledby="routes-heading" className="mt-12 grid md:mt-16 grid-cols-2 gap-px bg-primary/10 md:grid-cols-5">
-        <div role="row" className="contents">
-          <span role="columnheader" className="hidden bg-surface-container-lowest md:block" />
-          {(['a', 'b'] as const).map((key) => {
-            const m = r[key];
-            return (
-              <div
-                key={key}
-                role="columnheader"
-                onMouseEnter={() => setSel(key)}
-                onMouseLeave={() => setSel(null)}
-                className={`flex flex-col transition-colors duration-200 md:col-span-2 ${sel === key ? 'bg-surface-container-high' : 'bg-surface-container'}`}
-              >
-                <span className="flex flex-col gap-1 p-4 md:p-6">
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-headline text-2xl font-bold text-primary md:text-3xl">{m.letter}</span>
-                    <span className="font-headline text-lg font-bold leading-tight tracking-tight text-on-surface md:text-2xl">{m.title}</span>
-                  </span>
-                  <span className="font-body text-[15px] font-bold text-secondary">{m.tag}</span>
-                </span>
-              </div>
-            );
-          })}
-        </div>
-        {r.facts.map((f) => {
-          const Icon = FACT_ICONS[f.icon] ?? CircleHelp;
-          return (
-            <div key={f.label} role="row" className="contents">
-              <span role="rowheader" className="col-span-2 flex items-center gap-3 bg-surface-container-lowest px-4 py-3 md:col-span-1 md:px-6 md:py-6">
-                <Icon size={20} aria-hidden className="shrink-0 text-primary" />
-                <span className="font-headline text-base font-bold text-on-surface md:text-lg">{f.label}</span>
-              </span>
+    </section>
+  );
+}
+
+/** One question that opens; a native <details>, so it works with keyboard and without script. */
+function Question({ icon: Icon, q, children }: { icon: typeof Check; q: string; children: React.ReactNode }) {
+  return (
+    <details className="group bg-surface-container-low">
+      <summary
+        className={`flex min-h-16 cursor-pointer list-none items-center gap-4 p-4 transition-colors duration-150 hover:bg-surface-container md:p-6 [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
+      >
+        <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
+          <Icon size={22} />
+        </span>
+        <span className="flex-1 font-headline text-lg font-bold leading-tight text-on-surface md:text-xl">{q}</span>
+        <Plus size={20} aria-hidden className="shrink-0 text-primary transition-transform duration-200 group-open:rotate-45" />
+      </summary>
+      <div className="px-4 pb-5 md:px-6 md:pb-6 md:pl-[5.5rem]">{children}</div>
+    </details>
+  );
+}
+
+/**
+ * «Antes de comprar» as questions that open: first how the two methods differ (A and B side by
+ * side), then what to know about the token, the country and the risk.
+ */
+function BeforeBuying() {
+  const r = R.routes;
+  return (
+    <section aria-labelledby="risks-heading">
+      <Heading id="risks-heading">{R.risks.heading}</Heading>
+      <div className="flex flex-col gap-px bg-primary/10">
+        {r.facts.map((f) => (
+          <Question key={f.label} icon={FACT_ICONS[f.icon] ?? CircleHelp} q={f.label}>
+            <div className="grid grid-cols-1 gap-px bg-primary/10 sm:grid-cols-2">
               {(['a', 'b'] as const).map((key) => {
                 const v = f[key];
                 const mark = 'mark' in v ? v.mark : null;
                 return (
-                  <div
-                    key={key}
-                    role="cell"
-                    onMouseEnter={() => setSel(key)}
-                    onMouseLeave={() => setSel(null)}
-                    className={`p-4 transition-colors duration-200 md:col-span-2 md:p-6 ${sel === key ? 'bg-surface-container' : 'bg-surface-container-low'}`}
-                  >
-                    <span className="flex items-center gap-2 font-headline text-lg font-bold leading-tight text-on-surface md:text-xl">
+                  <div key={key} className="bg-surface-container p-4 md:p-5">
+                    <span className="flex items-baseline gap-2">
+                      <span className="font-headline text-xl font-bold text-primary">{r[key].letter}</span>
+                      <span className="font-body text-[15px] font-bold text-secondary">{r[key].title}</span>
+                    </span>
+                    <span className="mt-2 flex items-center gap-2 font-headline text-lg font-bold leading-tight text-on-surface">
                       {mark === 'yes' && <Check size={20} aria-hidden className="shrink-0 text-primary" />}
                       {mark === 'no' && <X size={20} aria-hidden className="shrink-0 text-on-surface-variant" />}
                       {v.short}
                     </span>
-                    <span className="mt-1 block font-body text-[15px] leading-relaxed text-on-surface-variant">{v.detail}</span>
+                    <span className="mt-1 block font-body text-base leading-relaxed text-on-surface-variant">{v.detail}</span>
                   </div>
                 );
               })}
             </div>
-          );
-        })}
+          </Question>
+        ))}
+        {R.risks.items.map((it, k) => (
+          <Question key={it.q} icon={RISK_ICONS[k] ?? ShieldAlert} q={it.q}>
+            <span className="block font-headline text-lg font-bold leading-tight text-on-surface">{it.title}</span>
+            <span className="mt-1 block max-w-3xl font-body text-base leading-relaxed text-on-surface">{it.body}</span>
+            {'source' in it && <span className={`${note} mt-2 block`}>{it.source}</span>}
+          </Question>
+        ))}
       </div>
     </section>
   );
@@ -1201,6 +1207,8 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
               })}
             </ul>
           </section>
+
+          <Routes marks={marks} />
         </div>
       </div>
 
@@ -1213,30 +1221,9 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
             <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} others={otherIssuers} />
           </div>
           <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
-          <Routes marks={marks} />
           <Teacher />
 
-          <section aria-labelledby="risks-heading">
-            <Heading id="risks-heading">{R.risks.heading}</Heading>
-            <ul className="grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-2">
-              {R.risks.items.map((r, k) => {
-                const Icon = RISK_ICONS[k] ?? ShieldAlert;
-                const lastOdd = k === R.risks.items.length - 1 && R.risks.items.length % 2 === 1;
-                return (
-                  <li key={r.title} className={`flex gap-4 bg-surface-container-low p-5 md:p-6 ${lastOdd ? 'md:col-span-2' : ''}`}>
-                    <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
-                      <Icon size={22} />
-                    </span>
-                    <span>
-                      <span className="block font-headline text-lg font-bold text-on-surface">{r.title}</span>
-                      <span className="mt-1 block font-body text-base leading-relaxed text-on-surface">{r.body}</span>
-                      {'source' in r && <span className={`${note} mt-2 block`}>{r.source}</span>}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+          <BeforeBuying />
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
             <h2 id="sources-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.sourcesList.heading}</h2>

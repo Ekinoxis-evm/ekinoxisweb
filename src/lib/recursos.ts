@@ -240,29 +240,29 @@ export const ACCIONES = {
     /** Images: Higgsfield GPT Image 2.5, equinox style (no text, logos or faces), 21 nov 2026. */
     a: { letter: 'A', title: 'Lo guarda un custodio', tag: 'Lo más fácil', image: '/recursos/acciones/metodo-custodio.webp', imageAlt: 'La puerta de una bóveda de acero cerrada, iluminada por una luz cian.' },
     b: { letter: 'B', title: 'Lo guardas tú', tag: 'Más control', image: '/recursos/acciones/metodo-propia.webp', imageAlt: 'Una mano abierta sostiene una pequeña wallet física, iluminada por una luz cian.' },
-    /** One row per question; `short` is the answer at a glance, `detail` the line under it. `mark` draws a yes/no icon. */
+    /** Questions in «Antes de comprar», each opening A and B side by side; `short` is the answer at a glance, `detail` the line under it. `mark` draws a yes/no icon. */
     facts: [
       {
         icon: 'buy',
-        label: 'Cómo compras',
+        label: '¿Dónde compro en cada método?',
         a: { short: 'En el exchange', detail: 'Con tus USDT, ahí mismo.' },
         b: { short: 'En Uniswap', detail: 'Envías USDT y un poco de ETH (para el gas) a tu wallet.' },
       },
       {
         icon: 'choose',
-        label: 'Eliges emisor y red',
+        label: '¿Puedo elegir el emisor y la red?',
         a: { short: 'No', detail: 'Lo decide el exchange (hoy, xStocks).', mark: 'no' },
         b: { short: 'Sí', detail: 'Tú eliges en Uniswap.', mark: 'yes' },
       },
       {
         icon: 'cost',
-        label: 'Cuánto cuesta',
+        label: '¿Cuánto cuesta?',
         a: { short: '0,1 % a 2,1 %', detail: 'Mis compras en OKX (19 nov 2026): orden a mercado 0,1 %; Convert ≈ +2,1 %.' },
         b: { short: 'Pool + gas', detail: 'Comisión del pool más el gas en ETH. Lo ves antes de confirmar.' },
       },
       {
         icon: 'risk',
-        label: 'Si algo sale mal',
+        label: '¿Qué pasa si algo sale mal?',
         a: { short: 'Reglas del exchange', detail: 'Dependes de lo que el exchange permita en tu país.' },
         b: { short: 'Tus 12 palabras', detail: 'Si las pierdes, pierdes la wallet.' },
       },
@@ -384,14 +384,15 @@ export const ACCIONES = {
     ],
   },
 
+  /** An expandable Q&A: first the method questions (routes.facts, A and B side by side), then these. */
   risks: {
     heading: 'Antes de comprar',
     items: [
-      { title: 'Es un token, no la acción', body: 'Sigue el precio, pero no da voto y los dividendos se reinvierten, no se pagan en efectivo.', source: 'OKX help, sep 2026' },
-      { title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending, 19 nov 2026' },
-      { title: 'No es para todos', body: 'xStocks no está disponible para residentes de EE. UU., Canadá, Reino Unido ni Australia.', source: 'Kraken, ene 2026' },
-      { title: 'Colombia: no verificado', body: 'No hemos verificado el estatus legal ni tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
-      { title: 'Puedes perder lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
+      { q: '¿Compro la acción o un token?', title: 'Un token, no la acción', body: 'Sigue el precio, pero no da voto y los dividendos se reinvierten, no se pagan en efectivo.', source: 'OKX help, sep 2026' },
+      { q: '¿Cómo sé que es el token correcto?', title: 'Busca por emisor, no por nombre', body: 'En Uniswap aparecen tokens con nombres parecidos que no son la acción, como «Claude» o «ANTHROPIC 1x Long».', source: 'Uniswap, Trending, 19 nov 2026' },
+      { q: '¿Puedo comprar desde cualquier país?', title: 'No en todos', body: 'xStocks no está disponible para residentes de EE. UU., Canadá, Reino Unido ni Australia.', source: 'Kraken, ene 2026' },
+      { q: '¿Es legal en Colombia?', title: 'No lo hemos verificado', body: 'Ni el estatus legal ni el tributario para residentes en Colombia. Consulta a un profesional antes de invertir.' },
+      { q: '¿Puedo perder dinero?', title: 'Sí, lo que pongas', body: 'Empieza con un monto que estés dispuesto a perder.' },
     ],
   },
 
