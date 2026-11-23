@@ -492,12 +492,14 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
   const hidden = !still && i > last;
 
   useEffect(() => setStill(window.matchMedia('(prefers-reduced-motion: reduce)').matches), []);
+  // A stop that converts the money waits for the trip and the full turn; the rest only for the trip.
+  const converts = i > 0 && i <= last && stops[i].face !== stops[i - 1].face;
   useEffect(() => {
     if (still || !seen) return;
-    const wait = i === last ? 2400 : i > last ? 500 : 1400;
+    const wait = i === last ? 2600 : i > last ? 500 : converts ? 2600 : 1500;
     const timer = setTimeout(() => setI((x) => (x > last ? 0 : x + 1)), wait);
     return () => clearTimeout(timer);
-  }, [i, still, seen, last]);
+  }, [i, still, seen, last, converts]);
 
   const measure = useCallback(() => {
     const w = wrap.current;
@@ -524,7 +526,37 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
   }, [measure]);
 
   const face = stops[at].face;
-  const coinLogo = face === 'usdt' || face === 'gas' ? marks.usdt[0] : face === 'token' ? marks.token[0] : null;
+  const from = at > 0 ? stops[at - 1].face : face;
+  const flip = !still && from !== face;
+
+  /** One face of the coin: cash, USDT, USDT + ETH (gas) or the stock token. */
+  const coinFace = (f: Face) => {
+    if (f === 'gas') {
+      return (
+        <>
+          <span className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
+            <LogoTile logo={marks.gas[0] ?? null} text="" className="w-8 bg-transparent" />
+          </span>
+          <span className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
+            <LogoTile logo={marks.gas[1] ?? null} text="" className="w-6 bg-transparent" />
+          </span>
+        </>
+      );
+    }
+    const logo = f === 'usdt' ? marks.usdt[0] : f === 'token' ? marks.token[0] : null;
+    return (
+      <span className="flex h-full w-full items-center justify-center rounded-full border-2 border-primary bg-surface-container-lowest">
+        {logo ? (
+          <LogoTile logo={logo} text="" className="w-9 bg-transparent" />
+        ) : (
+          <span className="flex flex-col items-center leading-none text-on-surface">
+            <Banknote size={20} aria-hidden className="text-primary" />
+            <span className="mt-0.5 font-mono text-[11px] font-bold">{t.cash}</span>
+          </span>
+        )}
+      </span>
+    );
+  };
   const tint = lane === 'a' ? 'bg-secondary/10' : 'bg-primary/10';
 
   return (
@@ -554,7 +586,7 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
                 }}
                 className={`flex h-16 min-w-16 items-center justify-center gap-1 px-2 transition-colors duration-300 ${
                   st.end ? 'border border-tertiary-dim text-tertiary-dim' : 'bg-surface-container-high text-on-surface'
-                } ${!hidden && k === at && !still ? 'ring-2 ring-primary' : ''}`}
+                } ${!hidden && k === at && !still && k > 0 ? 'animate-stop-pulse ring-2 ring-primary' : ''}`}
               >
                 {st.icon ?? st.logos?.filter((l): l is Logo => l !== null).slice(0, 3).map((l) => <LogoTile key={l.src} logo={l} text="" className="w-11" />)}
               </span>
@@ -564,40 +596,29 @@ function FlowLane({ lane, stops, marks }: { lane: Lane; stops: FlowStop[]; marks
         ))}
 
         {/*
-          The coin: it rides above the stop it is at (beside it on phones). Each time it lands, the
-          face swaps with a short blur-and-pop (cash → USDT → USDT + ETH → the stock token).
+          The coin, as in the «Ruta» ad: it travels with the face it has; where the money converts
+          (cash → USDT → USDT + ETH → the stock token) it lands and turns once on Y, swapping the face
+          at the first edge, and a ring bursts out. Where it is only received, it lands with the ring.
         */}
         {pos && (
           <span
             aria-hidden
-            className={`pointer-events-none absolute left-0 top-0 h-14 w-14 ${
+            className={`pointer-events-none absolute left-0 top-0 h-14 w-14 [perspective:480px] ${
               hidden ? 'opacity-0 transition-opacity duration-300' : 'opacity-100 transition-[transform,opacity] duration-1000 ease-in-out motion-reduce:transition-none'
             }`}
             style={{ transform: `translate(${pos.x - 28}px, ${pos.y - 56}px)` }}
           >
-            <span key={`${face}-${at}`} className="animate-coin-swap absolute inset-0">
-              {face === 'gas' ? (
-                <>
-                  <span className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
-                    <LogoTile logo={marks.gas[0] ?? null} text="" className="w-8 bg-transparent" />
-                  </span>
-                  <span className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-primary bg-surface-container-lowest">
-                    <LogoTile logo={marks.gas[1] ?? null} text="" className="w-6 bg-transparent" />
-                  </span>
-                </>
-              ) : (
-                <span className="flex h-full w-full items-center justify-center rounded-full border-2 border-primary bg-surface-container-lowest">
-                  {coinLogo ? (
-                    <LogoTile logo={coinLogo} text="" className="w-9 bg-transparent" />
-                  ) : (
-                    <span className="flex flex-col items-center leading-none text-on-surface">
-                      <Banknote size={20} aria-hidden className="text-primary" />
-                      <span className="mt-0.5 font-mono text-[11px] font-bold">{t.cash}</span>
-                    </span>
-                  )}
-                </span>
-              )}
-            </span>
+            {!still && at > 0 && !hidden && (
+              <span key={`ring-${at}`} className={`absolute -inset-3 rounded-full border-2 border-primary ${flip ? 'animate-coin-burst' : 'animate-coin-burst-land'}`} />
+            )}
+            {flip ? (
+              <Fragment key={`flip-${at}`}>
+                <span className="animate-coin-flip-out absolute inset-0 [backface-visibility:hidden]">{coinFace(from)}</span>
+                <span className="animate-coin-flip-in absolute inset-0 [backface-visibility:hidden]">{coinFace(face)}</span>
+              </Fragment>
+            ) : (
+              <span className="absolute inset-0">{coinFace(face)}</span>
+            )}
           </span>
         )}
       </div>
