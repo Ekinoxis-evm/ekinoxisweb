@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, Plus, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, BookOpen, Plus, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
 import ScanBadge from '@/components/ui/ScanBadge';
@@ -22,7 +22,7 @@ type Sector = { value: number; transfers: number; holders: number; source: strin
 /** Logo groups the money-flow diagrams draw; a null is a missing file and is skipped. */
 export type Marks = Record<'exchanges' | 'usdt' | 'gas' | 'xstocks' | 'wallets' | 'uniswap' | 'stocks' | 'token', (Logo | null)[]>;
 
-type SourceItem = { id: string; label: string; url: string | null };
+type SourceItem = { id: string; who: string; what: string | null; date: string | null; url: string | null };
 
 interface Props {
   tiles: TechTile[];
@@ -668,60 +668,45 @@ function Routes({ marks }: { marks: Marks }) {
 /** One question that opens; a native <details>, so it works with keyboard and without script. */
 function Question({ icon: Icon, q, children }: { icon: typeof Check; q: string; children: React.ReactNode }) {
   return (
-    <details className="group bg-surface-container-low">
-      <summary
-        className={`flex min-h-16 cursor-pointer list-none items-center gap-4 p-4 transition-colors duration-150 hover:bg-surface-container md:p-6 [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
-      >
-        <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center bg-surface-container-high text-primary">
-          <Icon size={22} />
-        </span>
-        <span className="flex-1 font-headline text-lg font-bold leading-tight text-on-surface md:text-xl">{q}</span>
-        <Plus size={20} aria-hidden className="shrink-0 text-primary transition-transform duration-200 group-open:rotate-45" />
+    <details className="group border-b border-outline-variant/40">
+      <summary className="flex min-h-16 cursor-pointer list-none items-center gap-4 py-5 transition-colors duration-150 hover:text-primary [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+        <Icon size={22} aria-hidden className="shrink-0 text-primary" />
+        <span className="flex-1 font-headline text-lg font-bold leading-tight text-on-surface md:text-2xl">{q}</span>
+        <Plus size={22} aria-hidden className="shrink-0 text-primary transition-transform duration-200 group-open:rotate-45" />
       </summary>
-      <div className="px-4 pb-5 md:px-6 md:pb-6 md:pl-[5.5rem]">{children}</div>
+      <div className="flex max-w-3xl flex-col gap-3 pb-6 pl-[2.375rem] font-body text-base leading-relaxed text-on-surface md:text-lg">{children}</div>
     </details>
   );
 }
 
 /**
- * «Antes de comprar» as questions that open: first how the two methods differ (A and B side by
- * side), then what to know about the token, the country and the risk.
+ * «Antes de comprar» as questions that open, each with a plain answer: first how the two methods
+ * differ (one line for A, one for B), then the token, the country and the risk.
  */
 function BeforeBuying() {
   const r = R.routes;
   return (
     <section aria-labelledby="risks-heading">
       <Heading id="risks-heading">{R.risks.heading}</Heading>
-      <div className="flex flex-col gap-px bg-primary/10">
+      <div className="border-t border-outline-variant/40">
         {r.facts.map((f) => (
           <Question key={f.label} icon={FACT_ICONS[f.icon] ?? CircleHelp} q={f.label}>
-            <div className="grid grid-cols-1 gap-px bg-primary/10 sm:grid-cols-2">
-              {(['a', 'b'] as const).map((key) => {
-                const v = f[key];
-                const mark = 'mark' in v ? v.mark : null;
-                return (
-                  <div key={key} className="bg-surface-container p-4 md:p-5">
-                    <span className="flex items-baseline gap-2">
-                      <span className="font-headline text-xl font-bold text-primary">{r[key].letter}</span>
-                      <span className="font-body text-[15px] font-bold text-secondary">{r[key].title}</span>
-                    </span>
-                    <span className="mt-2 flex items-center gap-2 font-headline text-lg font-bold leading-tight text-on-surface">
-                      {mark === 'yes' && <Check size={20} aria-hidden className="shrink-0 text-primary" />}
-                      {mark === 'no' && <X size={20} aria-hidden className="shrink-0 text-on-surface-variant" />}
-                      {v.short}
-                    </span>
-                    <span className="mt-1 block font-body text-base leading-relaxed text-on-surface-variant">{v.detail}</span>
-                  </div>
-                );
-              })}
-            </div>
+            {(['a', 'b'] as const).map((key) => (
+              <p key={key} className="flex gap-3">
+                <span className="w-5 shrink-0 font-headline font-bold text-primary" aria-label={`Método ${r[key].letter}`}>{r[key].letter}</span>
+                <span>
+                  <strong className="font-bold text-on-surface">{f[key].short}.</strong> <span className="text-on-surface-variant">{f[key].detail}</span>
+                </span>
+              </p>
+            ))}
           </Question>
         ))}
         {R.risks.items.map((it, k) => (
           <Question key={it.q} icon={RISK_ICONS[k] ?? ShieldAlert} q={it.q}>
-            <span className="block font-headline text-lg font-bold leading-tight text-on-surface">{it.title}</span>
-            <span className="mt-1 block max-w-3xl font-body text-base leading-relaxed text-on-surface">{it.body}</span>
-            {'source' in it && <span className={`${note} mt-2 block`}>{it.source}</span>}
+            <p>
+              <strong className="font-bold text-on-surface">{it.title}.</strong> <span className="text-on-surface-variant">{it.body}</span>
+            </p>
+            {'source' in it && <p className="flex items-center gap-2 text-[15px] text-on-surface-variant"><BookOpen size={16} aria-hidden className="shrink-0 text-primary" />{it.source}</p>}
           </Question>
         ))}
       </div>
@@ -1227,18 +1212,37 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
 
           <section id={SOURCES_ID} aria-labelledby="sources-heading" className="scroll-mt-24">
             <h2 id="sources-heading" className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.sourcesList.heading}</h2>
-            <ul className="mt-3 flex flex-col">
-              {sources.map((s) => (
-                <li key={s.id} className="font-body text-[15px] text-on-surface-variant">
-                  {s.url ? (
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center underline decoration-outline underline-offset-4 hover:text-primary">
-                      {s.label}
-                    </a>
-                  ) : (
-                    <span className="inline-flex min-h-[44px] items-center">{s.label}</span>
-                  )}
-                </li>
-              ))}
+            <ul className="mt-6 grid grid-cols-1 gap-px bg-primary/10 sm:grid-cols-2 lg:grid-cols-3">
+              {sources.map((s) => {
+                const body = (
+                  <>
+                    <span className="flex items-start justify-between gap-3">
+                      <span className="font-headline text-lg font-bold leading-tight text-on-surface transition-colors duration-150 group-hover:text-primary">{s.who}</span>
+                      {s.url && <ArrowUpRight size={18} aria-hidden className="mt-0.5 shrink-0 text-primary" />}
+                    </span>
+                    {s.what && <span className="font-body text-base leading-snug text-on-surface-variant">{s.what}</span>}
+                    {s.date && (
+                      <span className="mt-auto flex items-center gap-2 pt-2 font-body text-[15px] text-on-surface-variant">
+                        <CalendarDays size={16} aria-hidden className="shrink-0 text-primary" />
+                        <span className="sr-only">{R.sourcesList.read} </span>
+                        {s.date}
+                      </span>
+                    )}
+                  </>
+                );
+                const box = 'flex h-full flex-col gap-1 bg-surface-container-low p-5 md:p-6';
+                return (
+                  <li key={s.id}>
+                    {s.url ? (
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className={`group ${box} transition-colors duration-150 hover:bg-surface-container focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}>
+                        {body}
+                      </a>
+                    ) : (
+                      <span className={box}>{body}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </section>
 

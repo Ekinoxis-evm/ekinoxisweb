@@ -150,13 +150,6 @@ export function logoFor(name: string): Logo | null {
   return null;
 }
 
-/** «Kraken · disponibilidad de xStocks · 19 nov 2026». */
-export function sourceLabel(id: string): string {
-  const s = data.sources[id];
-  if (!s) return id;
-  return s.read_on ? `${s.name} · ${dateEs(s.read_on)}` : s.name;
-}
-
 export function dateEs(iso: string): string {
   return new Date(`${iso}T12:00:00Z`)
     .toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
@@ -197,15 +190,21 @@ export function issuerStats(): IssuerStat[] {
     .sort((a, b) => b.stocks - a.stocks);
 }
 
-/** Every source the catalog cites, for the page's sources list. */
-export function sourceList(): { id: string; label: string; url: string | null }[] {
-  return Object.entries(data.sources).map(([id, s]) => ({ id, label: sourceLabel(id), url: s.url }));
+/**
+ * Every source the catalog cites, for the page's sources list: the platform, what was read there
+ * and the date, as separate fields (the page never joins them with «·»).
+ */
+export function sourceList(): { id: string; who: string; what: string | null; date: string | null; url: string | null }[] {
+  return Object.entries(data.sources).map(([id, s]) => {
+    const [who, ...rest] = s.name.split(' · ');
+    return { id, who, what: rest.join(', ') || null, date: s.read_on ? dateEs(s.read_on) : null, url: s.url };
+  });
 }
 
 export const catalog = {
   version: data.version,
   metrics: data.metrics,
-  sector: { ...data.sector, label: sourceLabel(data.sector.source) },
+  sector: data.sector,
   issuers: data.issuers,
   venues: data.venues,
 };

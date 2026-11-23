@@ -331,6 +331,7 @@ export const ACCIONES = {
 
   sourcesList: {
     heading: 'Fuentes de los datos',
+    read: 'Consultado el',
   },
 
   /**
