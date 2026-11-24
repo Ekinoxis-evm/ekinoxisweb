@@ -389,9 +389,9 @@ export const ACCIONES = {
   control: {
     heading: 'Lo haces tú, con tus herramientas',
     items: [
-      { icon: 'money', title: 'Tu dinero no pasa por nosotros', body: 'Compras directo en el exchange o en Uniswap. Ekinoxis nunca recibe, guarda ni mueve tu dinero.' },
-      { icon: 'keys', title: 'Siempre tuyo', body: 'En tu cuenta, a tu nombre, o en tu wallet, con tus llaves. Nunca te pediremos tus 12 palabras.' },
-      { icon: 'guide', title: 'Nosotros te enseñamos', body: 'El taller en vivo y el Skill.md te guían paso a paso; cada clic lo haces tú.' },
+      { icon: 'money', title: 'Tu dinero no pasa por nosotros', body: 'Compras directo en el exchange o en Uniswap. Ekinoxis nunca recibe, guarda ni mueve tu dinero.', image: '/recursos/acciones/control-directo.webp' },
+      { icon: 'keys', title: 'Siempre tuyo', body: 'En tu cuenta, a tu nombre, o en tu wallet, con tus llaves. Nunca te pediremos tus 12 palabras.', image: '/recursos/acciones/control-tuyo.webp' },
+      { icon: 'guide', title: 'Nosotros te enseñamos', body: 'El taller en vivo y el Skill.md te guían paso a paso; cada clic lo haces tú.', image: '/recursos/acciones/control-guia.webp' },
     ],
   },
 

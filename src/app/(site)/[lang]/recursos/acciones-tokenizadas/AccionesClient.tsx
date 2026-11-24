@@ -4,7 +4,6 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, BookOpen, Plus, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
-import PanelBackdrop, { type PanelBackdropName } from '@/components/ui/PanelBackdrop';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { track } from '@/lib/analytics';
 import { fbq } from '@/lib/meta/pixel';
@@ -45,7 +44,6 @@ interface Props {
 
 /** Icon per point of the «Lo haces tú» block. */
 /** One of the site's three equinox backdrops per card, behind a dark fade that keeps the copy at full contrast. */
-const CONTROL_BACKDROPS: PanelBackdropName[] = ['metal', 'fog', 'horizon'];
 const CONTROL_ICONS = { money: ShieldCheck, keys: KeyRound, guide: Compass } as const;
 
 /** Icon per workshop fact in R.course.facts. */
@@ -1170,11 +1168,11 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
               {R.control.heading}
             </h2>
             <ul className="mt-10 grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
-              {R.control.items.map((it, k) => {
+              {R.control.items.map((it) => {
                 const Icon = CONTROL_ICONS[it.icon as keyof typeof CONTROL_ICONS];
                 return (
                   <li key={it.title} className="relative flex min-h-[15rem] flex-col justify-end gap-4 overflow-hidden bg-surface-container-low p-6 md:min-h-[22rem] md:p-8">
-                    <PanelBackdrop name={CONTROL_BACKDROPS[k % CONTROL_BACKDROPS.length]} />
+                    <img src={it.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-right-top" />
                     <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent" />
                     <span aria-hidden className="relative mb-auto flex h-12 w-12 items-center justify-center bg-surface-container-high text-primary">
                       <Icon size={24} />
