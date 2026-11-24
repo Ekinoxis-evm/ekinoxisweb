@@ -1,34 +1,16 @@
-# Ekinoxis — Typography
+# Ekinoxis typography
 
-Three faces, three jobs. All free on Google Fonts.
+_From @ekinoxis/brand v0.1.5 (github.com/Ekinoxis-evm/brand). Do not edit this copy._
 
-## Faces
-| Face | Role | Weights |
-|---|---|---|
-| [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) | Headlines, wordmark, labels, buttons | 300–700 |
-| [Inter](https://fonts.google.com/specimen/Inter) | Body copy | 300–700 |
-| [Space Mono](https://fonts.google.com/specimen/Space+Mono) | Metadata, UIDs, code, terminal | 400, 700 |
+## Type
 
-## Embed
-```html
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-```
+Three faces, each with one job. All are OFL-licensed and bundled in `fonts/`: woff2 for the web, plus static Space Grotesk TTFs in `fonts/static/` for Figma, desktop apps and the logo script.
 
-## Rules
-- Headlines: Space Grotesk 700, UPPERCASE, tracking −0.04em, line-height 0.9
-- Wordmark: Space Grotesk — 700 for EKINOXIS, 300 for the [ ] brackets
-- Body: Inter 400 (regular), line-height 1.65 — 300 blooms and goes unreadable on black
-- Metadata: Space Mono 400, 12px minimum, UPPERCASE, tracking +0.15em
-- Numbers: always tabular (`font-variant-numeric: tabular-nums`)
-
-## Scale (1920 reference)
-| Style | Size |
+| Face | Job |
 |---|---|
-| Display | clamp(3rem, 7vw, 8rem) |
-| H1 | clamp(2.5rem, 5vw, 4.5rem) |
-| H2 | 2rem |
-| H3 | 1.5rem |
-| Body | 1rem (lg: 1.125rem) |
-| Small | 0.875rem |
-| Mono meta | 0.75rem (12px) |
-| UID badge | 0.6875rem (11px) |
+| Space Grotesk 700 (300 for the wordmark's brackets) | Headlines, wordmark, buttons |
+| Inter 400 | Body. Never 300 on black, because it blooms |
+| Space Mono 400 | Labels, metadata, figures |
+
+Scale: display `clamp(3rem, 9vw, 8rem)` / 0.9 / −0.05em · headline `clamp(1.875rem, 4vw, 3rem)` · title 1.5rem · body 1.125rem / 1.625 · label 12px mono +0.1em uppercase · label-sm 11px.
+Nothing is smaller than 11px, and 11px is for badges only.

@@ -149,7 +149,7 @@ export default function BuildLoop({
                   isLoop
                     ? 'border-primary bg-primary text-surface-container-lowest shadow-[0_0_28px_rgba(143,245,255,0.45)]'
                     : isGoal
-                      ? 'border-tertiary-dim bg-surface-container-lowest text-tertiary-dim shadow-[0_0_20px_rgba(190,238,0,0.25)]'
+                      ? 'border-tertiary-dim bg-surface-container-lowest text-tertiary-dim shadow-[0_0_20px_rgba(0,255,65,0.25)]'
                       : 'border-primary/40 bg-surface-container-lowest text-primary'
                 }`}
               >

@@ -40,7 +40,7 @@ export default function MobileCTA() {
         }`}
       >
         <button type="button" onClick={() => bookCall()}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-surface-container-lowest font-headline font-bold uppercase tracking-wider text-sm py-3"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-surface-container-lowest font-headline font-bold text-sm py-3"
         >
           {en ? 'Book a free call' : 'Agenda una llamada'}
           <ArrowRight size={16} />

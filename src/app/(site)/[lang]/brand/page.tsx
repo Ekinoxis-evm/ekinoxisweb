@@ -13,10 +13,11 @@ import FactList from '@/components/ui/FactList';
 import { FileText, HardDrive, Package } from 'lucide-react';
 import { BrandMark } from '@/components/ui/BrandLogo';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
+import brand from '@ekinoxis/brand';
 
 /* ── Asset registry ─────────────────────────────────────────────────────────
-   Mirrors public/brand/. Each colorway ships as an SVG master and a 2× PNG
-   with the type baked in, so neither needs the font installed to render. */
+   Mirrors public/brand/, which `npm run brand:sync` copies from @ekinoxis/brand. Every lockup
+   ships in five colourways, as an SVG master (outlined type) and a PNG. */
 
 type Colorway = 'cyan-on-black' | 'cyan-transparent' | 'cyan-on-light' | 'white' | 'black';
 
@@ -32,54 +33,56 @@ interface Lockup {
   colorways: Colorway[];
 }
 
+const ALL_COLORWAYS: Colorway[] = ['cyan-on-black', 'cyan-transparent', 'cyan-on-light', 'white', 'black'];
+
 const LOCKUPS: Lockup[] = [
   {
     key: 'horizontal',
-    name: 'HORIZONTAL',
+    name: 'Horizontal',
     use: {
       en: 'The primary lockup. Headers, letterheads, decks, anything wider than tall.',
       es: 'El lockup principal. Encabezados, membretes, presentaciones, todo más ancho que alto.',
     },
-    w: 1396,
-    h: 408,
+    w: 2611,
+    h: 768,
     preview: 'h-16 md:h-20 w-auto max-w-[80%]',
-    colorways: ['cyan-on-black', 'cyan-transparent', 'cyan-on-light', 'white', 'black'],
+    colorways: ALL_COLORWAYS,
   },
   {
     key: 'stacked',
-    name: 'STACKED',
+    name: 'Stacked',
     use: {
       en: 'Mark above wordmark. Square formats, stamps, merch, profile headers.',
       es: 'Símbolo sobre el logotipo. Formatos cuadrados, sellos, merch, portadas.',
     },
-    w: 826,
-    h: 848,
+    w: 1907,
+    h: 1288,
     preview: 'h-36 md:h-44 w-auto',
-    colorways: ['cyan-on-black', 'cyan-transparent', 'white'],
+    colorways: ALL_COLORWAYS,
   },
   {
     key: 'mark',
-    name: 'MARK',
+    name: 'Mark',
     use: {
       en: 'Symbol alone. Avatars, favicons, app icons, tight spaces. Minimum 24px.',
       es: 'Solo el símbolo. Avatares, favicons, íconos de app, espacios reducidos. Mínimo 24px.',
     },
-    w: 400,
-    h: 400,
+    w: 768,
+    h: 768,
     preview: 'h-28 md:h-36 w-auto',
-    colorways: ['cyan-on-black', 'cyan-transparent', 'white', 'black'],
+    colorways: ALL_COLORWAYS,
   },
   {
     key: 'wordmark',
-    name: 'WORDMARK',
+    name: 'Wordmark',
     use: {
       en: 'Type only. Where the mark already appears nearby — footers, signatures.',
       es: 'Solo tipografía. Donde el símbolo ya aparece cerca — pies de página, firmas.',
     },
-    w: 1047,
-    h: 364,
+    w: 1907,
+    h: 584,
     preview: 'h-12 md:h-14 w-auto max-w-[80%]',
-    colorways: ['cyan-on-black', 'cyan-transparent', 'cyan-on-light', 'white', 'black'],
+    colorways: ALL_COLORWAYS,
   },
 ];
 
@@ -97,50 +100,43 @@ interface Swatch {
   role: { en: string; es: string };
 }
 
+/** Hex values come from @ekinoxis/brand; only the names and roles are written here. */
 const PALETTE: { group: string; swatches: Swatch[] }[] = [
   {
-    group: 'CORE',
+    group: 'LIGHT',
     swatches: [
-      { name: 'Electric Cyan', hex: '#8FF5FF', role: { en: 'The accent. Mark, brackets, highlights', es: 'El acento. Símbolo, corchetes, destacados' } },
-      { name: 'Primary Fixed', hex: '#00EEFC', role: { en: 'Saturated cyan for fills on light', es: 'Cian saturado para rellenos en claro' } },
-      { name: 'Primary Dim', hex: '#00DEEC', role: { en: 'Hover / pressed', es: 'Hover / presionado' } },
-      { name: 'Ink', hex: '#EDEDED', role: { en: 'Foreground text on dark', es: 'Texto principal sobre oscuro' } },
-      { name: 'Black', hex: '#000000', role: { en: 'The canvas', es: 'El lienzo' } },
-    ],
-  },
-  {
-    group: 'COSMIC BLUE',
-    swatches: [
-      { name: 'Secondary', hex: '#9492FF', role: { en: 'Links, secondary elements', es: 'Enlaces, elementos secundarios' } },
-      { name: 'Secondary Dim', hex: '#625DFF', role: { en: 'Hover', es: 'Hover' } },
-      { name: 'Secondary Container', hex: '#3106FF', role: { en: 'Deep fills', es: 'Rellenos profundos' } },
-    ],
-  },
-  {
-    group: 'NEON LIME',
-    swatches: [
-      { name: 'Tertiary', hex: '#F3FFCA', role: { en: 'Soft accent', es: 'Acento suave' } },
-      { name: 'Tertiary Dim', hex: '#BEEE00', role: { en: 'Status, success', es: 'Estado, éxito' } },
-      { name: 'Tertiary Fixed', hex: '#CAFD00', role: { en: 'High-energy accent', es: 'Acento de alta energía' } },
+      { name: 'Equinox Cyan', hex: brand['color-equinox-cyan'], role: { en: 'The one accent: the primary action and the mark', es: 'El único acento: la acción principal y el símbolo' } },
+      { name: 'Equinox Cyan Deep', hex: brand['color-equinox-cyan-deep'], role: { en: 'Hover / pressed', es: 'Hover / presionado' } },
+      { name: 'Ink on Cyan', hex: brand['color-ink-on-cyan'], role: { en: 'Text on a cyan fill', es: 'Texto sobre cian' } },
+      { name: 'Cosmic Blue', hex: brand['color-cosmic-blue'], role: { en: 'Secondary accent', es: 'Acento secundario' } },
     ],
   },
   {
     group: 'SURFACES',
     swatches: [
-      { name: 'Lowest', hex: '#000000', role: { en: 'Page background', es: 'Fondo de página' } },
-      { name: 'Container Low', hex: '#111111', role: { en: 'Cards, sections', es: 'Tarjetas, secciones' } },
-      { name: 'Container', hex: '#171717', role: { en: 'Card hover', es: 'Hover de tarjeta' } },
-      { name: 'Container High', hex: '#1C1C1C', role: { en: 'Elevated panels', es: 'Paneles elevados' } },
-      { name: 'Container Highest', hex: '#242424', role: { en: 'Highest elevation', es: 'Máxima elevación' } },
+      { name: 'Void', hex: brand['color-void'], role: { en: 'The canvas', es: 'El lienzo' } },
+      { name: 'Obsidian', hex: brand['color-obsidian'], role: { en: 'Page background', es: 'Fondo de página' } },
+      { name: 'Deep Tide', hex: brand['color-deep-tide'], role: { en: 'Cards, sections', es: 'Tarjetas, secciones' } },
+      { name: 'Tide', hex: brand['color-tide'], role: { en: 'Card hover', es: 'Hover de tarjeta' } },
+      { name: 'Raised Tide', hex: brand['color-raised-tide'], role: { en: 'Inputs, raised panels', es: 'Campos, paneles elevados' } },
+      { name: 'High Tide', hex: brand['color-high-tide'], role: { en: 'Highest container', es: 'Contenedor más alto' } },
     ],
   },
   {
-    group: 'LINES & STATE',
+    group: 'TEXT & LINES',
     swatches: [
-      { name: 'On-surface variant', hex: '#A3A3A3', role: { en: 'Muted body text', es: 'Texto atenuado' } },
-      { name: 'Outline', hex: '#8F8F8F', role: { en: 'Labels, muted but legible', es: 'Etiquetas, atenuado pero legible' } },
-      { name: 'Outline variant', hex: '#3D3D3D', role: { en: 'Ghost borders', es: 'Bordes fantasma' } },
-      { name: 'Error', hex: '#FF716C', role: { en: 'Errors, destructive', es: 'Errores, destructivo' } },
+      { name: 'First Light', hex: brand['color-first-light'], role: { en: 'Main text', es: 'Texto principal' } },
+      { name: 'Mist', hex: brand['color-mist'], role: { en: 'Secondary text', es: 'Texto secundario' } },
+      { name: 'Slate Label', hex: brand['color-slate-label'], role: { en: 'Labels; the dimmest text allowed', es: 'Etiquetas; el texto más tenue permitido' } },
+      { name: 'Hairline', hex: brand['color-hairline'], role: { en: '1px dividers, never text', es: 'Divisores de 1px, nunca texto' } },
+    ],
+  },
+  {
+    group: 'SIGNALS',
+    swatches: [
+      { name: 'Signal Green', hex: brand['color-signal-green'], role: { en: 'Done, live, the goal', es: 'Listo, en vivo, la meta' } },
+      { name: 'Signal Amber', hex: brand['color-signal-amber'], role: { en: 'Warnings, the middle of a scale', es: 'Advertencias, el medio de una escala' } },
+      { name: 'Alert Coral', hex: brand['color-alert-coral'], role: { en: 'Errors, the low end of a scale', es: 'Errores, el extremo bajo de una escala' } },
     ],
   },
 ];
@@ -152,8 +148,8 @@ const FACES = [
     name: 'Space Grotesk',
     className: 'font-headline',
     role: { en: 'Headlines, wordmark, labels, buttons', es: 'Titulares, logotipo, etiquetas, botones' },
-    weights: '300 — 700',
-    rule: { en: 'Headlines: 700, uppercase, tracking −0.04em, line-height 0.9', es: 'Titulares: 700, mayúsculas, tracking −0.04em, interlineado 0.9' },
+    weights: '300, 500, 700',
+    rule: { en: 'Headlines: 700, sentence case, tracking −0.05em, line-height 0.95. Capitals only for the hero slogan', es: 'Titulares: 700, en tipo oración, tracking −0.05em, interlineado 0.95. Mayúsculas solo en el eslogan' },
     specimen: 'INNOVATION WITHOUT FRONTIERS',
     size: 'text-3xl md:text-5xl font-bold tracking-tighter uppercase',
   },
@@ -161,8 +157,8 @@ const FACES = [
     name: 'Inter',
     className: 'font-body',
     role: { en: 'Body copy', es: 'Texto corrido' },
-    weights: '300 — 700',
-    rule: { en: 'Body: 300 (light), line-height 1.65', es: 'Cuerpo: 300 (light), interlineado 1.65' },
+    weights: '300, 400',
+    rule: { en: 'Body: 400, 18px, line-height 1.6', es: 'Cuerpo: 400, 18px, interlineado 1.6' },
     specimen: 'The first innovation laboratory of the Colombian Pacific.',
     size: 'text-lg md:text-2xl font-normal leading-relaxed',
   },
@@ -171,7 +167,7 @@ const FACES = [
     className: 'font-mono',
     role: { en: 'Labels, numbers, code', es: 'Etiquetas, números, código' },
     weights: '400, 700',
-    rule: { en: 'Metadata: 400, 10px, uppercase, tracking +0.2em', es: 'Metadatos: 400, 10px, mayúsculas, tracking +0.2em' },
+    rule: { en: 'Labels: 400, 12px minimum, uppercase, tracking +0.1em', es: 'Etiquetas: 400, mínimo 12px, mayúsculas, tracking +0.1em' },
     specimen: 'CALI, COLOMBIA // 3.4516° N // 0123456789',
     size: 'text-sm md:text-lg tracking-widest uppercase',
   },
@@ -274,7 +270,7 @@ export default function BrandPage() {
                   </Button>
                 </a>
                 <a
-                  href="/brand/brand-kit/Ekinoxis%20Brand%20Kit.html"
+                  href="https://github.com/Ekinoxis-evm/brand#readme"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -285,8 +281,8 @@ export default function BrandPage() {
                 <FactList
                   facts={[
                     { icon: Package, text: 'ZIP' },
-                    { icon: HardDrive, text: '0.9 MB' },
-                    { icon: FileText, text: 'SVG + PNG + DOCS' },
+                    { icon: HardDrive, text: '1.2 MB' },
+                    { icon: FileText, text: 'SVG + PNG + FONTS + DOCS' },
                   ]}
                 />
               </motion.div>
@@ -316,7 +312,7 @@ export default function BrandPage() {
               <span className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-6">
                 {t.markLabel}
               </span>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface uppercase mb-6">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-6">
                 {t.markTitle}
               </h2>
               <p className="text-on-surface-variant font-normal leading-relaxed mb-4">{t.markBody}</p>
@@ -363,7 +359,7 @@ export default function BrandPage() {
 
                   {/* Meta + downloads */}
                   <div className="p-8 lg:p-10">
-                    <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface uppercase mb-3">
+                    <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-3">
                       {l.name}
                     </h3>
                     <p className="text-sm text-on-surface-variant font-normal leading-relaxed mb-8">
@@ -457,23 +453,6 @@ export default function BrandPage() {
               ))}
             </div>
 
-            {/* Gradients */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
-              {[
-                { name: 'CYBER', css: 'linear-gradient(135deg, #8FF5FF 0%, #9492FF 100%)' },
-                { name: 'DARK', css: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)' },
-              ].map((g) => (
-                <div key={g.name} className="bg-surface-container-low">
-                  <div className="h-24 border-b border-primary/10" style={{ background: g.css }} />
-                  <div className="p-5">
-                    <span className="font-label text-[13px] font-medium text-on-surface uppercase tracking-wide block mb-2">
-                      {g.name}
-                    </span>
-                    <code className="font-mono text-[12px] text-outline break-all">{g.css}</code>
-                  </div>
-                </div>
-              ))}
-            </div>
           </section>
 
           {/* ── Typography ── */}
@@ -533,7 +512,7 @@ export default function BrandPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
               {/* Favicons */}
               <div className="bg-surface-container-low p-10 lg:p-14">
-                <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface uppercase mb-8">
+                <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                   {t.faviconTitle}
                 </h3>
                 <div className="flex flex-wrap items-end gap-6">
@@ -564,7 +543,7 @@ export default function BrandPage() {
 
               {/* Social avatars */}
               <div className="bg-surface-container-low p-10 lg:p-14">
-                <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface uppercase mb-8">
+                <h3 className="font-headline text-2xl font-bold tracking-tighter text-on-surface mb-8">
                   {t.socialTitle}
                 </h3>
                 <div className="grid grid-cols-2 gap-6">
@@ -629,7 +608,7 @@ export default function BrandPage() {
           {/* ── Closing CTA ── */}
           <section className="mt-28 border border-primary/10 bg-surface-container-low p-10 lg:p-16 flex flex-col lg:flex-row gap-8 lg:items-center lg:justify-between">
             <div>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface uppercase mb-3">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tighter text-on-surface mb-3">
                 {t.ctaTitle}
               </h2>
               <p className="text-on-surface-variant font-normal max-w-xl leading-relaxed">{t.ctaBody}</p>
@@ -678,7 +657,7 @@ function SectionHead({
       </motion.span>
       <motion.h2
         variants={fadeInUp}
-        className="font-headline text-4xl md:text-6xl font-bold tracking-tighter text-on-surface uppercase mb-4"
+        className="font-headline text-4xl md:text-6xl font-bold tracking-tighter text-on-surface mb-4"
       >
         {title}
       </motion.h2>

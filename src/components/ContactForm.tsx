@@ -413,7 +413,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
                 <span
                   className={`flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[11px] ${
                     goal
-                      ? `${done ? 'border-tertiary-dim' : 'border-outline-variant'} ${done ? 'bg-tertiary-dim text-surface-container-lowest shadow-[0_0_20px_rgba(190,238,0,0.25)]' : 'bg-surface-container-low text-on-surface-variant'}`
+                      ? `${done ? 'border-tertiary-dim' : 'border-outline-variant'} ${done ? 'bg-tertiary-dim text-surface-container-lowest shadow-[0_0_20px_rgba(0,255,65,0.25)]' : 'bg-surface-container-low text-on-surface-variant'}`
                       : lit
                         ? 'border-primary bg-primary text-surface-container-lowest'
                         : 'border-outline-variant bg-surface-container-low text-on-surface-variant'
@@ -438,7 +438,7 @@ export default function ContactForm({ topic: initialTopic = null, preset, classN
         className={`border border-primary/20 bg-primary/5 p-8 space-y-6 ${className}`}
       >
         <div>
-          <h3 className="font-headline text-2xl font-bold tracking-tighter text-primary uppercase mb-3">{t.sentTitle}</h3>
+          <h3 className="font-headline text-2xl font-bold tracking-tighter text-primary mb-3">{t.sentTitle}</h3>
           <p className="font-body text-on-surface-variant leading-relaxed">{slot ? t.sentBodyCall : t.sentBody}</p>
         </div>
         {process(true)}

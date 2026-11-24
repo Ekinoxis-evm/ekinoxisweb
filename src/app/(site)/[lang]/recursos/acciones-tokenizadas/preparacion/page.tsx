@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { lang: string } }) {
               href={sessionGoogleCalendarUrl(null)}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-6 py-3 font-headline text-sm font-bold uppercase tracking-widest text-on-primary transition-colors duration-150 hover:bg-primary-dim sm:w-auto ${focus}`}
+              className={`inline-flex min-h-11 w-full items-center justify-center gap-2 bg-primary px-6 py-3 font-headline text-sm font-bold text-on-primary transition-colors duration-150 hover:bg-primary-dim sm:w-auto ${focus}`}
             >
               <CalendarPlus size={16} aria-hidden />
               {COPY.calendar}
@@ -79,7 +79,7 @@ export default function Page({ params }: { params: { lang: string } }) {
             <a
               href={ICS_PATH}
               download="taller-acciones-tokenizadas.ics"
-              className={`inline-flex min-h-11 w-full items-center justify-center gap-2 border border-outline-variant px-6 py-3 font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant transition-colors duration-150 hover:border-on-surface hover:text-on-surface sm:w-auto ${focus}`}
+              className={`inline-flex min-h-11 w-full items-center justify-center gap-2 border border-outline-variant px-6 py-3 font-headline text-sm font-bold text-on-surface-variant transition-colors duration-150 hover:border-on-surface hover:text-on-surface sm:w-auto ${focus}`}
             >
               <Download size={16} aria-hidden />
               {COPY.ics}

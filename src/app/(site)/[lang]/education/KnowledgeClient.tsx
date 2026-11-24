@@ -167,7 +167,7 @@ export default function KnowledgeClient({ universities, government, certificatio
 
             {/* Banner */}
             <div className="bg-primary px-6 md:px-10 py-6 mb-px flex flex-col sm:flex-row sm:items-center justify-between gap-4 overflow-hidden">
-              <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-primary uppercase">
+              <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tighter text-on-primary">
                 {language === 'en' ? 'Decentralizing Knowledge' : 'Descentralizando el Conocimiento'}
               </h3>
               <ScanBadge className="bg-on-primary/10 border-on-primary/20 text-on-primary" bordered>
@@ -332,7 +332,7 @@ function SectionHead({
       <span className="font-mono text-[12px] text-primary tracking-widest uppercase block mb-4">
         {label}
       </span>
-      <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface uppercase mb-4">
+      <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface mb-4">
         {title}
       </h2>
       <p className="font-body text-on-surface-variant max-w-2xl leading-relaxed">{body}</p>

@@ -83,9 +83,9 @@ function PromptCard() {
       <button
         type="button"
         onClick={() => copy(p.text)}
-        className={`mt-8 inline-flex min-h-[56px] w-full items-center justify-center gap-3 px-8 font-headline text-[15px] font-bold uppercase tracking-widest transition-[background-color,box-shadow,transform] duration-300 [transition-timing-function:var(--ease-settle)] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        className={`mt-8 inline-flex min-h-[56px] w-full items-center justify-center gap-3 px-8 font-headline text-[15px] font-bold transition-[background-color,box-shadow,transform] duration-300 [transition-timing-function:var(--ease-settle)] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
           copied
-            ? 'bg-tertiary-dim text-black shadow-[0_0_20px_rgba(190,238,0,0.25)]'
+            ? 'bg-tertiary-dim text-black shadow-[0_0_20px_rgba(0,255,65,0.25)]'
             : 'bg-primary text-on-primary hover:bg-primary-dim hover:shadow-[0_0_30px_rgba(143,245,255,0.4)]'
         }`}
       >
@@ -202,7 +202,7 @@ function OrderLine() {
               >
                 <span
                   aria-hidden
-                  className={`block h-[13px] w-[13px] rounded-full ${goal ? 'bg-tertiary-dim shadow-[0_0_20px_rgba(190,238,0,0.25)]' : 'border border-primary bg-surface-container-lowest'}`}
+                  className={`block h-[13px] w-[13px] rounded-full ${goal ? 'bg-tertiary-dim shadow-[0_0_20px_rgba(0,255,65,0.25)]' : 'border border-primary bg-surface-container-lowest'}`}
                 />
                 <p className={`-mt-1.5 font-body text-base leading-relaxed lg:mt-5 ${goal ? 'text-tertiary-dim' : 'text-on-surface-variant'}`}>
                   <Rich text={s} />

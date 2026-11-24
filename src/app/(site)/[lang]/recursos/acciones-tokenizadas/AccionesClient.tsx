@@ -1251,7 +1251,7 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
           type="button"
           onClick={() => reserve('barra')}
           tabIndex={barShown ? 0 : -1}
-          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-primary font-headline text-sm font-bold uppercase tracking-wider text-surface-container-lowest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-primary font-headline text-sm font-bold text-surface-container-lowest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {ctaFor(offer)}
           <ArrowRight size={16} aria-hidden />

@@ -1,59 +1,39 @@
-# Ekinoxis — Colors
+# Ekinoxis colours
 
-Dark-first system. Black is the canvas; cyan is the voice.
+_From @ekinoxis/brand v0.1.5 (github.com/Ekinoxis-evm/brand). Do not edit this copy._
 
-## Brand core
-| Token | Hex | Role |
+## Color
+
+Dark only. Black is the canvas, and cyan is the one light.
+
+| Token | Hex | Use |
 |---|---|---|
-| Primary / Electric Cyan | `#8FF5FF` | The accent. Mark fill, brackets, highlights |
-| Primary Fixed | `#00EEFC` | Saturated cyan for fills on light |
-| Primary Dim | `#00DEEC` | Hover / pressed cyan |
-| On Primary | `#005D63` | Text on cyan surfaces |
-| Ink | `#E8F2FB` | Foreground text on dark |
-| Black | `#000000` | The canvas |
+| void | `#000000` | Canvas, lowest surface |
+| obsidian | `#0a0a0a` | Page background |
+| deep-tide | `#111111` | Cards |
+| tide | `#171717` | Containers, card hover |
+| raised-tide | `#1c1c1c` | Inputs |
+| high-tide | `#242424` | Highest container |
+| bright-tide | `#2a2a2a` | Brightest surface |
+| first-light | `#ededed` | Main text (16.9:1) |
+| mist | `#a3a3a3` | Secondary text (7.9:1) |
+| slate-label | `#8f8f8f` | Labels. The dimmest color allowed for text (6.1:1) |
+| hairline | `#3d3d3d` | 1px dividers. Never text |
+| logo-ring | `#707070` | Logo ring only. Never text (4.2:1) |
+| equinox-cyan | `#8ff5ff` | The one accent |
+| equinox-cyan-deep | `#00deec` | Hover / pressed |
+| equinox-cyan-on-light | `#00789e` | Logo on light backgrounds only |
+| ink-on-cyan | `#005d63` | Text on cyan (6.1:1) |
+| cosmic-blue | `#9492ff` | Secondary accent |
+| signal-green | `#00ff41` | Matrix green. End states only: done, live, the goal |
+| alert-coral | `#ff716c` | Errors, and the low step of a scale |
+| signal-amber | `#ffd45c` | Warnings, and the middle step of a scale |
+| chart-1…4 | `#c47524` `#0f98a6` `#7a9700` `#5585ff` | Charts |
 
-## Secondary — Cosmic Blue
-| Token | Hex |
-|---|---|
-| Secondary | `#9492FF` |
-| Secondary Dim | `#625DFF` |
-| Secondary Container | `#3106FF` |
+Contrast ratios are measured on obsidian.
 
-## Tertiary — Neon Lime
-| Token | Hex |
-|---|---|
-| Tertiary | `#F3FFCA` |
-| Tertiary Dim | `#BEEE00` |
-| Tertiary Fixed | `#CAFD00` |
-
-## Surfaces (dark hierarchy)
-| Token | Hex |
-|---|---|
-| Lowest | `#000000` |
-| Surface | `#060F16` |
-| Container Low | `#09151C` |
-| Container | `#0F1B23` |
-| Container High | `#14212A` |
-| Container Highest | `#192731` |
-| Bright | `#1E2E38` |
-
-## Neutrals & lines
-| Token | Hex |
-|---|---|
-| On-surface variant | `#A2ACB5` |
-| Outline | `#8A949C` |
-| Outline variant / Ghost | `#3F4951` |
-
-## Error
-`#FF716C` (base) · `#D7383B` (dim) · `#9F0519` (container)
-
-## Gradients
-- **Cyber**: `linear-gradient(135deg, #8FF5FF 0%, #9492FF 100%)`
-- **Dark**: `linear-gradient(180deg, #000000 0%, #060F16 100%)`
-
-## Logo colorways
-1. **cyan-on-black** — primary. Cyan mark + ink type on black
-2. **cyan-transparent** — same, transparent background (dark surfaces)
-3. **cyan-on-light** — cyan mark + black type, for clear/light backgrounds
-4. **white** — monochrome ink, b&w print on dark
-5. **black** — monochrome black, b&w print on light
+**Rules**
+- **One light.** Each screen, slide or frame has one cyan focal point. If two things glow, one of them is wrong.
+- **Full-strength text.** Never fade text with opacity. Use mist or slate-label at full strength.
+- **Green means arrival.** Signal green marks an end state. It is never decoration. (`signal-lime` is a deprecated alias for it, and will be removed in v0.2.)
+- **Status colors are signals, not accents.** Coral, amber and green only mean bad / good / excellent (or error / warning / done). Rating scales run coral → amber → green, like a traffic light. Always pair the color with a word, never color alone.

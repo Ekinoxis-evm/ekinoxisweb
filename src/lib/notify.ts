@@ -252,7 +252,7 @@ function stepsHtml(steps: [string, string][], lastIsGoal = true): string {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${steps
     .map(([title, text], i) => {
       const last = i === steps.length - 1;
-      const color = last && lastIsGoal ? '#beee00' : '#8ff5ff';
+      const color = last && lastIsGoal ? '#00ff41' : '#8ff5ff';
       return `<tr>
 <td style="width:36px;vertical-align:top;padding:0 0 18px;">
   <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:26px;height:26px;border:1px solid ${color};border-radius:13px;text-align:center;font-size:12px;font-weight:bold;color:${color};">${i + 1}</td></tr></table>

@@ -136,7 +136,7 @@ export default function CoursesPage() {
                     <span className="font-headline text-5xl font-bold tracking-tighter text-on-surface [font-variant-numeric:tabular-nums]">
                       <Price course={featured} tbd={t.priceTbd} />
                     </span>
-                    <span className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 bg-primary px-8 font-headline text-sm font-bold uppercase tracking-widest text-on-primary transition-colors duration-150 group-hover:bg-primary-dim sm:w-auto sm:self-start">
+                    <span className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 bg-primary px-8 font-headline text-sm font-bold text-on-primary transition-colors duration-150 group-hover:bg-primary-dim sm:w-auto sm:self-start">
                       {t.open}
                       <ArrowRight size={18} aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
                     </span>

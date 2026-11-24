@@ -16,7 +16,7 @@ colors:
   equinox-cyan-deep: "#00deec"
   ink-on-cyan: "#005d63"
   cosmic-blue: "#9492ff"
-  signal-lime: "#beee00"
+  signal-green: "#00ff41"
   alert-coral: "#ff716c"
   chart-1: "#c47524"
   chart-2: "#0f98a6"
@@ -173,7 +173,7 @@ project; `tailwind.config.js` maps this site's Material-style names onto the bra
   sparingly; it never competes with cyan for the action.
 
 ### Tertiary
-- **Signal Lime**: arrival and success. The goal step of a diagram ("Until it fits",
+- **Signal Green** (Matrix green, from brand v0.1.3; was lime #beee00): arrival and success. The goal step of a diagram ("Until it fits",
   "Ready in 5 days", "You go live"), confirmations, and "what you leave with" labels.
 
 ### Neutral
@@ -200,7 +200,7 @@ line that leads to it. If two things glow, one of them is wrong.
 (`text-outline/60`, `/70`…). Faded text fails contrast on the dark ground. Use Slate
 Label at full strength; only disabled controls may go fainter.
 
-**The Lime Means Arrival Rule.** Signal Lime marks an end state: done, live, the goal.
+**The Green Means Arrival Rule.** Signal Green marks an end state: done, live, the goal.
 It is never decoration and never a second call to action.
 
 ## Typography
@@ -213,12 +213,16 @@ It is never decoration and never a second call to action.
 Inter carrying the explanation, and a small typewriter mono labelling everything like
 a lab bench. The tension between huge and tiny is the signature.
 
+Voice and type rules come from the brand README (`@ekinoxis/brand`, sections Type and Voice):
+speak to the reader as tú / you; sentence case everywhere except the giant display lines and
+the mono labels and badges.
+
 ### Hierarchy
-- **Display** (700, 3rem→8rem, 0.9): page titles and the hero slogan, often uppercase,
-  one cyan italic word at most ("WITHOUT").
+- **Display** (700, 3rem→8rem, 0.9): page titles and the hero slogan. These giant lines are the
+  only headings set in capitals; one cyan italic word at most ("WITHOUT").
 - **Headline** (700, 1.875rem→3rem, 0.95): section titles.
-- **Title** (700, 1.125rem–1.5rem, 1.1): card and step titles, button labels (uppercase,
-  widest tracking).
+- **Title** (700, 1.125rem–1.5rem, 1.1): card and step titles, button labels, in sentence case
+  (brand v0.1.4 voice rule).
 - **Body** (400, 1rem–1.125rem, 1.625): descriptions; keep lines under ~65ch
   (`max-w-xl` / `max-w-2xl`).
 - **Label** (400, 12px, 0.1em, uppercase): eyebrows, metadata, chips, badge text.
@@ -253,7 +257,7 @@ empty holes; flex columns of badges align to the start so a badge never stretche
 Flat by default. Depth comes from tonal surface steps (Deep Tide → High Tide) and from
 light, not shadow. Floating elements (the header, menus, the booking popup) use glass:
 a translucent dark surface with a heavy backdrop blur. The only "shadows" are cyan or
-lime glows.
+green glows.
 
 ### Shadow Vocabulary
 - **Action glow** (`box-shadow: 0 0 30px rgba(143,245,255,0.4)`): primary button hover.
@@ -278,13 +282,12 @@ strengthen a border to cyan, never thicken it.
 ### Buttons
 Precise and calm; the primary one is the brightest thing on the screen.
 - **Shape:** square corners (0px).
-- **Primary:** Equinox Cyan fill, Ink on Cyan label, Space Grotesk bold uppercase with
-  widest tracking; sizes sm / md / lg (lg 16px × 32px).
+- **Primary:** Equinox Cyan fill, Ink on Cyan label, Space Grotesk bold in sentence case; sizes sm / md / lg (lg 16px × 32px).
 - **Hover / Focus:** deepens to Equinox Cyan Deep and picks up the action glow; press
   scales to 0.95. Focus shows a visible 2px cyan outline.
 - **Ghost:** transparent with a faint cyan hairline and cyan label; fills cyan with a
   Void label on hover. Used for the second action ("See our work").
-- **Secondary / Tertiary / Outline:** the same ghost shape in Cosmic Blue, Signal Lime
+- **Secondary / Tertiary / Outline:** the same ghost shape in Cosmic Blue, Signal Green
   or Slate; use rarely.
 - **Touch size:** at least 44px tall on phones; full width on phones for the main CTA.
 
@@ -295,7 +298,7 @@ Precise and calm; the primary one is the brightest thing on the screen.
 
 ### Badges (ScanBadge)
 - **Style:** Space Mono 11px uppercase, wide tracking, 1px border tinted to the text
-  colour; variants cyan, blue, lime, slate (muted), coral.
+  colour; variants cyan, blue, green, slate (muted), coral.
 - **Rule:** one badge per section, carrying a real label (Pricing, How we build, Day 5),
   never a fake system ID.
 
@@ -322,9 +325,9 @@ Precise and calm; the primary one is the brightest thing on the screen.
 
 ### Signature: the Light Line and the Loop
 Process diagrams (consultation funnel, how we build, how websites work) draw steps as
-nodes on one horizontal cyan line that warms to lime at the goal. The back-and-forth
+nodes on one horizontal cyan line that warms to green at the goal. The back-and-forth
 stage is a ring of four arrowed beats sitting *on* the line, with a pulse travelling it
-and the goal phrase in lime at its centre. On phones the line turns vertical.
+and the goal phrase in green at its centre. On phones the line turns vertical.
 
 ### Signature: Logo and Team Bands
 Full-bleed marquees of original logos (or team faces) sliding sideways on two identical

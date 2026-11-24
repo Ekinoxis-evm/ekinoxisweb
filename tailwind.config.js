@@ -32,8 +32,8 @@ module.exports = {
         'on-primary': b['ink-on-cyan'],
         // ── Secondary: Cosmic Blue ── (chart-1…4 come straight from the brand preset)
         'secondary': b['cosmic-blue'],
-        // ── Tertiary: Neon Lime ──
-        'tertiary-dim': b['signal-lime'],
+        // ── Tertiary: Signal Green (Matrix green) ──
+        'tertiary-dim': b['signal-green'],
         // ── Outline ──
         'outline': b['slate-label'],
         'outline-variant': b['hairline'],

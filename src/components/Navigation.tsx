@@ -180,7 +180,7 @@ export default function Navigation() {
               <button
                 type="button"
                 onClick={() => bookCall()}
-                className="hidden lg:inline-flex items-center border border-primary/40 px-4 min-h-[44px] font-label text-[12px] font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
+                className="hidden lg:inline-flex items-center border border-primary/40 px-4 min-h-[44px] font-label text-[12px] font-bold text-primary hover:bg-primary hover:text-surface-container-lowest transition-colors"
               >
                 {language === 'en' ? 'Book a free call' : 'Agenda una llamada'}
               </button>

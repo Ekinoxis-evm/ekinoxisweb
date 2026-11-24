@@ -20,19 +20,19 @@ interface ButtonProps {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary text-on-primary font-headline font-bold uppercase tracking-widest ' +
+    'bg-primary text-on-primary font-headline font-bold ' +
     'hover:bg-primary-dim hover:shadow-[0_0_30px_rgba(143,245,255,0.4)] active:scale-95',
   ghost:
-    'bg-transparent border border-primary/20 text-primary font-headline font-bold uppercase tracking-widest ' +
+    'bg-transparent border border-primary/20 text-primary font-headline font-bold ' +
     'hover:bg-primary hover:text-surface-container-lowest hover:border-primary active:scale-95',
   secondary:
-    'bg-transparent border border-secondary/20 text-secondary font-headline font-bold uppercase tracking-widest ' +
+    'bg-transparent border border-secondary/20 text-secondary font-headline font-bold ' +
     'hover:bg-secondary hover:text-surface-container-lowest active:scale-95',
   tertiary:
-    'bg-transparent border border-tertiary-dim/20 text-tertiary-dim font-headline font-bold uppercase tracking-widest ' +
+    'bg-transparent border border-tertiary-dim/20 text-tertiary-dim font-headline font-bold ' +
     'hover:bg-tertiary-dim hover:text-surface-container-lowest active:scale-95',
   outline:
-    'bg-transparent border border-outline/30 text-on-surface-variant font-headline font-bold uppercase tracking-widest ' +
+    'bg-transparent border border-outline/30 text-on-surface-variant font-headline font-bold ' +
     'hover:border-primary hover:text-primary active:scale-95',
 };
 
