@@ -163,21 +163,21 @@ function shell(inner: string, language: 'en' | 'es'): string {
 <body style="margin:0;padding:0;background:#000000;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:32px 16px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#09151c;border:1px solid #14212a;">
-<tr><td style="padding:28px 32px;border-bottom:1px solid #14212a;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#111111;border:1px solid #1c1c1c;">
+<tr><td style="padding:28px 32px;border-bottom:1px solid #1c1c1c;">
   <table role="presentation" cellpadding="0" cellspacing="0"><tr>
     <td style="padding-right:12px;"><img src="${SITE}/brand/favicon/favicon-180.png" width="32" height="32" alt="" style="display:block;border:0;"></td>
-    <td style="font-family:Arial,Helvetica,sans-serif;font-size:18px;letter-spacing:2px;color:#e8f2fb;"><span style="color:#8ff5ff;">[</span> EKINOXIS <span style="color:#8ff5ff;">]</span></td>
+    <td style="font-family:Arial,Helvetica,sans-serif;font-size:18px;letter-spacing:2px;color:#ededed;"><span style="color:#8ff5ff;">[</span> EKINOXIS <span style="color:#8ff5ff;">]</span></td>
   </tr></table>
 </td></tr>
-<tr><td style="padding:32px;font-family:Arial,Helvetica,sans-serif;color:#e8f2fb;">${inner}</td></tr>
-<tr><td style="padding:24px 32px;border-top:1px solid #14212a;font-family:Arial,Helvetica,sans-serif;">
+<tr><td style="padding:32px;font-family:Arial,Helvetica,sans-serif;color:#ededed;">${inner}</td></tr>
+<tr><td style="padding:24px 32px;border-top:1px solid #1c1c1c;font-family:Arial,Helvetica,sans-serif;">
   <p style="margin:0 0 6px;font-size:13px;letter-spacing:3px;color:#8ff5ff;">INNOVATION WITHOUT FRONTIERS</p>
-  <p style="margin:0;font-size:12px;line-height:18px;color:#8a949c;">${
+  <p style="margin:0;font-size:12px;line-height:18px;color:#8f8f8f;">${
     language === 'es'
       ? 'Desbloqueamos el poder de las tecnologías de frontera para tu negocio y tus ideas.'
       : 'We unlock the power of frontier technologies for your business and ideas.'
-  }<br><a href="${SITE}" style="color:#8a949c;">ekinoxis.xyz</a> · <a href="mailto:hola@ekinoxis.xyz" style="color:#8a949c;">hola@ekinoxis.xyz</a></p>
+  }<br><a href="${SITE}" style="color:#8f8f8f;">ekinoxis.xyz</a> · <a href="mailto:hola@ekinoxis.xyz" style="color:#8f8f8f;">hola@ekinoxis.xyz</a></p>
 </td></tr>
 </table>
 </td></tr></table></body></html>`;
@@ -240,10 +240,10 @@ function recapHtml(lead: LeadNotification): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;">
 ${rows
   .map(
-    ([k, v]) => `<tr><td style="padding:10px 16px;border-bottom:1px solid #14212a;font-size:12px;letter-spacing:1px;color:#8a949c;text-transform:uppercase;width:38%;vertical-align:top;">${esc(k)}</td><td style="padding:10px 16px;border-bottom:1px solid #14212a;font-size:14px;line-height:20px;color:#e8f2fb;">${esc(v)}</td></tr>`,
+    ([k, v]) => `<tr><td style="padding:10px 16px;border-bottom:1px solid #1c1c1c;font-size:12px;letter-spacing:1px;color:#8f8f8f;text-transform:uppercase;width:38%;vertical-align:top;">${esc(k)}</td><td style="padding:10px 16px;border-bottom:1px solid #1c1c1c;font-size:14px;line-height:20px;color:#ededed;">${esc(v)}</td></tr>`,
   )
   .join('')}
-${said ? `<tr><td colspan="2" style="padding:14px 16px;font-size:14px;line-height:22px;color:#a2acb5;font-style:italic;white-space:pre-wrap;">“${esc(said)}”</td></tr>` : ''}
+${said ? `<tr><td colspan="2" style="padding:14px 16px;font-size:14px;line-height:22px;color:#a3a3a3;font-style:italic;white-space:pre-wrap;">“${esc(said)}”</td></tr>` : ''}
 </table>`;
 }
 
@@ -258,8 +258,8 @@ function stepsHtml(steps: [string, string][], lastIsGoal = true): string {
   <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:26px;height:26px;border:1px solid ${color};border-radius:13px;text-align:center;font-size:12px;font-weight:bold;color:${color};">${i + 1}</td></tr></table>
 </td>
 <td style="vertical-align:top;padding:2px 0 18px 12px;">
-  <p style="margin:0 0 3px;font-size:15px;font-weight:bold;color:#e8f2fb;">${title}</p>
-  <p style="margin:0;font-size:14px;line-height:21px;color:#a2acb5;">${text}</p>
+  <p style="margin:0 0 3px;font-size:15px;font-weight:bold;color:#ededed;">${title}</p>
+  <p style="margin:0;font-size:14px;line-height:21px;color:#a3a3a3;">${text}</p>
 </td></tr>`;
     })
     .join('')}</table>`;
@@ -273,13 +273,13 @@ function stepsHtml(steps: [string, string][], lastIsGoal = true): string {
 export function buildConfirmationEmail(lead: LeadNotification): { subject: string; html: string } {
   const es = lead.language === 'es';
   const first = esc(lead.name.split(' ')[0] ?? lead.name);
-  const phone = lead.whatsapp ? `<span style="color:#e8f2fb;">${esc(lead.whatsapp)}</span>` : '';
+  const phone = lead.whatsapp ? `<span style="color:#ededed;">${esc(lead.whatsapp)}</span>` : '';
   const consultation = lead.topic === 'consultation';
 
   if (!lead.meetingAt) {
     const inner = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:3px;color:#8ff5ff;">${es ? 'MENSAJE RECIBIDO' : 'MESSAGE RECEIVED'}</p>
-<h1 style="margin:0 0 16px;font-size:26px;line-height:30px;color:#e8f2fb;">${es ? `Listo, ${first}.` : `Got it, ${first}.`}</h1>
-<p style="margin:0;font-size:15px;line-height:24px;color:#a2acb5;">${
+<h1 style="margin:0 0 16px;font-size:26px;line-height:30px;color:#ededed;">${es ? `Listo, ${first}.` : `Got it, ${first}.`}</h1>
+<p style="margin:0;font-size:15px;line-height:24px;color:#a3a3a3;">${
       es
         ? `Te respondemos por WhatsApp${phone ? ` al ${phone}` : ''} o por este correo, normalmente el mismo día hábil.`
         : `We will reply on WhatsApp${phone ? ` at ${phone}` : ''} or by this email, normally the same working day.`
@@ -299,19 +299,19 @@ ${stepsHtml(
         ['We agree the next step', 'A call, a date or a proposal. Your decision.'],
       ],
 )}
-<p style="margin:8px 0 0;font-size:13px;line-height:20px;color:#8a949c;">${es ? '¿Algo que agregar? Responde este correo.' : 'Anything to add? Just reply to this email.'}</p>`;
+<p style="margin:8px 0 0;font-size:13px;line-height:20px;color:#8f8f8f;">${es ? '¿Algo que agregar? Responde este correo.' : 'Anything to add? Just reply to this email.'}</p>`;
     return { subject: es ? 'Recibimos tu mensaje — Ekinoxis' : 'We got your message — Ekinoxis', html: shell(inner, lead.language) };
   }
 
   const when = esc(formatCot(lead.meetingAt, lead.language));
   const inner = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:3px;color:#8ff5ff;">${es ? 'LLAMADA CONFIRMADA' : 'CALL CONFIRMED'}</p>
-<h1 style="margin:0 0 20px;font-size:28px;line-height:32px;color:#e8f2fb;">${es ? `Nos vemos pronto, ${first}.` : `See you soon, ${first}.`}</h1>
+<h1 style="margin:0 0 20px;font-size:28px;line-height:32px;color:#ededed;">${es ? `Nos vemos pronto, ${first}.` : `See you soon, ${first}.`}</h1>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;border-left:2px solid #8ff5ff;margin:0 0 20px;">
 <tr><td style="padding:18px 20px;">
-  <p style="margin:0 0 4px;font-size:20px;color:#e8f2fb;font-weight:bold;">${when}</p>
-  <p style="margin:0;font-size:13px;color:#8a949c;">${es ? 'Hora de Colombia · 30 minutos · gratis' : 'Colombia time · 30 minutes · free'}</p>
+  <p style="margin:0 0 4px;font-size:20px;color:#ededed;font-weight:bold;">${when}</p>
+  <p style="margin:0;font-size:13px;color:#8f8f8f;">${es ? 'Hora de Colombia · 30 minutos · gratis' : 'Colombia time · 30 minutes · free'}</p>
 </td></tr></table>
-<p style="margin:0 0 6px;font-size:15px;line-height:24px;color:#a2acb5;">${
+<p style="margin:0 0 6px;font-size:15px;line-height:24px;color:#a3a3a3;">${
     es
       ? `Te llamamos por WhatsApp${phone ? ` al ${phone}` : ''}. La invitación adjunta guarda la hora en tu calendario, en tu zona horaria.`
       : `We will call you on WhatsApp${phone ? ` at ${phone}` : ''}. The attached invite puts it in your calendar, in your own time zone.`
@@ -337,12 +337,12 @@ ${stepsHtml(
       ],
 )}
 ${h2(es ? 'PARA APROVECHARLA' : 'TO MAKE THE MOST OF IT')}
-<p style="margin:0;font-size:14px;line-height:22px;color:#a2acb5;">${
+<p style="margin:0;font-size:14px;line-height:22px;color:#a3a3a3;">${
     es
       ? '• Ten claro qué quieres que cambie en 90 días.<br>• Si existe, ten a mano el sitio, la hoja de cálculo o la herramienta de la que hablaremos.<br>• Invita a quien decide contigo; la llamada es para hasta 5 personas.'
       : '• Know what you want to be different in 90 days.<br>• If it exists, have the site, spreadsheet or tool we will talk about at hand.<br>• Bring whoever decides with you; the call is for up to 5 people.'
   }</p>
-<p style="margin:24px 0 0;font-size:13px;line-height:20px;color:#8a949c;">${
+<p style="margin:24px 0 0;font-size:13px;line-height:20px;color:#8f8f8f;">${
     es ? '¿Necesitas otra hora? Responde este correo y la movemos.' : 'Need another time? Reply to this email and we move it.'
   }</p>`;
 
@@ -372,11 +372,11 @@ export async function sendBookingToTeam(lead: LeadNotification): Promise<boolean
   const to = process.env.BOOKING_NOTIFY_EMAIL || process.env.ADMIN_EMAIL;
   if (!to || !lead.meetingAt) return false;
   const inner = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:3px;color:#8ff5ff;">NEW BOOKING · ${esc((TOPIC_LABEL[lead.topic] ?? lead.topic).toUpperCase())}</p>
-<h1 style="margin:0 0 16px;font-size:24px;color:#e8f2fb;">${esc(lead.name)}</h1>
-<p style="margin:0 0 6px;font-size:16px;color:#e8f2fb;font-weight:bold;">${esc(formatCot(lead.meetingAt, 'en'))} · Colombia</p>
-<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a2acb5;">✉️ ${esc(lead.email)}<br>📱 ${esc(lead.whatsapp ?? '—')}<br>🌐 ${lead.language.toUpperCase()}${lead.sourcePath ? ` · ${esc(lead.sourcePath)}` : ''}</p>
-${detailLines(lead.details).length ? `<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#e8f2fb;">${detailLines(lead.details).map(esc).join('<br>')}</p>` : ''}
-<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a2acb5;white-space:pre-wrap;">${esc(lead.message)}</p>
+<h1 style="margin:0 0 16px;font-size:24px;color:#ededed;">${esc(lead.name)}</h1>
+<p style="margin:0 0 6px;font-size:16px;color:#ededed;font-weight:bold;">${esc(formatCot(lead.meetingAt, 'en'))} · Colombia</p>
+<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a3a3a3;">✉️ ${esc(lead.email)}<br>📱 ${esc(lead.whatsapp ?? '—')}<br>🌐 ${lead.language.toUpperCase()}${lead.sourcePath ? ` · ${esc(lead.sourcePath)}` : ''}</p>
+${detailLines(lead.details).length ? `<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#ededed;">${detailLines(lead.details).map(esc).join('<br>')}</p>` : ''}
+<p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#a3a3a3;white-space:pre-wrap;">${esc(lead.message)}</p>
 ${lead.details?.replay ? `<p style="margin:0 0 20px;font-size:13px;"><a href="${esc(String(lead.details.replay))}" style="color:#8ff5ff;">🎥 Watch the session replay</a></p>` : ''}
 <p style="margin:0;">${button(googleCalendarUrl(lead), 'Add to Google Calendar')}</p>`;
   return sendEmail({
@@ -407,21 +407,21 @@ export function buildWorkshopOnboardingEmail(buyer: WorkshopBuyer): { subject: s
     ? `<a href="${esc(SESSION.meetingUrl)}" style="color:#8ff5ff;">${esc(SESSION.meetingUrl)}</a>`
     : esc(SESSION.linkPending);
   const inner = `<p style="margin:0 0 12px;font-size:12px;letter-spacing:3px;color:#8ff5ff;">${e.eyebrow}</p>
-<h1 style="margin:0 0 20px;font-size:26px;line-height:30px;color:#e8f2fb;">${hello}</h1>
+<h1 style="margin:0 0 20px;font-size:26px;line-height:30px;color:#ededed;">${hello}</h1>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;border-left:2px solid #8ff5ff;margin:0 0 20px;">
 <tr><td style="padding:18px 20px;">
   <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 8px;border-collapse:collapse;">${SESSION.facts
-    .map((f) => `<tr><td style="padding:2px 16px 2px 0;font-size:13px;color:#8a949c;">${esc(f.label)}</td><td style="padding:2px 0;font-size:16px;color:#e8f2fb;font-weight:bold;">${esc(f.text)}</td></tr>`)
+    .map((f) => `<tr><td style="padding:2px 16px 2px 0;font-size:13px;color:#8f8f8f;">${esc(f.label)}</td><td style="padding:2px 0;font-size:16px;color:#ededed;font-weight:bold;">${esc(f.text)}</td></tr>`)
     .join('')}</table>
-  <p style="margin:0;font-size:14px;line-height:21px;color:#a2acb5;">${link}</p>
+  <p style="margin:0;font-size:14px;line-height:21px;color:#a3a3a3;">${link}</p>
 </td></tr></table>
-<p style="margin:0 0 12px;font-size:15px;line-height:24px;color:#a2acb5;">${esc(e.calendarNote)}</p>
+<p style="margin:0 0 12px;font-size:15px;line-height:24px;color:#a3a3a3;">${esc(e.calendarNote)}</p>
 <p style="margin:0 0 8px;">${button(sessionGoogleCalendarUrl(SESSION.meetingUrl), e.calendarButton)}</p>
 ${h2(e.prepTitle)}
 ${stepsHtml(PREP_STEPS.map((s) => [esc(s.title), esc(s.text)] as [string, string]), false)}
 <p style="margin:0 0 24px;font-size:15px;line-height:24px;"><a href="${PREP_URL}" style="color:#8ff5ff;">${e.prepButton} →</a></p>
-<p style="margin:0 0 6px;font-size:13px;line-height:20px;color:#8a949c;">${esc(e.receipt)} ${esc(e.questions)}</p>
-<p style="margin:0;font-size:13px;line-height:20px;color:#8a949c;">${esc(SAFETY.advice)} ${esc(SAFETY.keys)}</p>`;
+<p style="margin:0 0 6px;font-size:13px;line-height:20px;color:#8f8f8f;">${esc(e.receipt)} ${esc(e.questions)}</p>
+<p style="margin:0;font-size:13px;line-height:20px;color:#8f8f8f;">${esc(SAFETY.advice)} ${esc(SAFETY.keys)}</p>`;
   return { subject: e.subject, html: shell(inner, 'es') };
 }
 

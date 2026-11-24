@@ -11,9 +11,9 @@
 type Tone = 'cyan' | 'white' | 'black';
 
 const TONES: Record<Tone, { ring: string; disc: string; type: string; bracket: string }> = {
-  cyan: { ring: '#3F4951', disc: '#8FF5FF', type: '#E8F2FB', bracket: '#8FF5FF' },
-  white: { ring: '#6C777F', disc: '#E8F2FB', type: '#E8F2FB', bracket: '#E8F2FB' },
-  black: { ring: '#6C777F', disc: '#000000', type: '#000000', bracket: '#000000' },
+  cyan: { ring: '#3D3D3D', disc: '#8FF5FF', type: '#EDEDED', bracket: '#8FF5FF' },
+  white: { ring: '#707070', disc: '#EDEDED', type: '#EDEDED', bracket: '#EDEDED' },
+  black: { ring: '#707070', disc: '#000000', type: '#000000', bracket: '#000000' },
 };
 
 interface MarkProps {

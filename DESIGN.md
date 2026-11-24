@@ -3,15 +3,15 @@ name: Ekinoxis Labs
 description: Innovation Without Frontiers — a dark lab where a line of cyan light settles across the page.
 colors:
   void: "#000000"
-  obsidian: "#060f16"
-  deep-tide: "#09151c"
-  tide: "#0f1b23"
-  raised-tide: "#14212a"
-  high-tide: "#192731"
-  first-light: "#e8f2fb"
-  mist: "#a2acb5"
-  slate-label: "#8a949c"
-  hairline: "#3f4951"
+  obsidian: "#0a0a0a"
+  deep-tide: "#111111"
+  tide: "#171717"
+  raised-tide: "#1c1c1c"
+  high-tide: "#242424"
+  first-light: "#ededed"
+  mist: "#a3a3a3"
+  slate-label: "#8f8f8f"
+  hairline: "#3d3d3d"
   equinox-cyan: "#8ff5ff"
   equinox-cyan-deep: "#00deec"
   ink-on-cyan: "#005d63"
@@ -146,7 +146,7 @@ It must work first on a phone, in English and in Spanish, for a business owner w
 decides in minutes. Ambition shows as clarity and craft, not as decoration.
 
 **Key Characteristics:**
-- Near-black tonal layers, never flat grey; depth by surface shift, not shadow.
+- Neutral graphite tonal layers (no blue tint); depth by surface shift, not shadow.
 - One cyan line of light per composition: the hero horizon, the step line, the active
   tab marker, the primary button.
 - 0px corners everywhere; pills (`rounded-full`) only for dots and nodes.
@@ -155,7 +155,7 @@ decides in minutes. Ambition shows as clarity and craft, not as decoration.
 
 ## Colors
 
-A night palette with one source of light: deep blue-black tides, a cold electric
+A night palette with one source of light: neutral graphite tides, a cold electric
 cyan, and two rare signal colours.
 
 ### Primary
@@ -331,7 +331,7 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep every text colour at full strength; Slate Label (#8a949c) is the floor for
+- **Do** keep every text colour at full strength; Slate Label (#8f8f8f) is the floor for
   text (≥4.5:1 on every surface).
 - **Do** reveal above-the-fold headers with the CSS `.rise` class so they paint with the
   first frame; use Framer `whileInView` only for content below the fold.
@@ -347,6 +347,7 @@ under reduced motion. Logos link to their sites; faces open a profile popup.
   Robinhood Chain, Solana…), never as a text-only chip; files in `public/recursos/acciones/logos/chain-*`.
 
 ### Don't:
+- **Don't** tint the dark surfaces blue; panels and logo tiles are neutral graphite (#111111 → #242424).
 - **Don't** repeat a message across a page or between pages. One idea gets one place;
   if a description, hint or counter says what the title or another block already says,
   delete it. Every line of text must add value the reader does not already have.

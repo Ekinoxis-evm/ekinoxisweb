@@ -16,3 +16,4 @@ trending down, DESIGN.md is missing rules — check the repeats column.
 | Date | Screen / feature | Rounds | Repeated correction → rule added to DESIGN.md? |
 |---|---|---:|---|
 | | | | |
+| 2026-11-24 | Site-wide surfaces | 1 | Blue-black surfaces → neutral graphite; Don't added |

@@ -56,7 +56,7 @@
 
   /* ── Glass panel (floating modules) ── */
   .glass-panel {
-    background: rgba(15, 27, 35, 0.6);
+    background: rgba(23, 23, 23, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -87,7 +87,7 @@
 
   /* ── Ghost border ── */
   .ghost-border {
-    border: 1px solid rgba(63, 73, 81, 0.15);
+    border: 1px solid rgba(61, 61, 61, 0.15);
   }
 
   /* ── Hero sphere animations ──
@@ -145,7 +145,7 @@
   }
 
   .glass-effect {
-    background: rgba(9, 21, 28, 0.6);
+    background: rgba(17, 17, 17, 0.6);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(143, 245, 255, 0.1);

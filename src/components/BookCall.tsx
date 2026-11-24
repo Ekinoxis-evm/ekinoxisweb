@@ -95,7 +95,7 @@ export function BookCallProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 24 }}
               transition={{ duration: 0.5, ease: EASE_SETTLE }}
-              className="relative w-full sm:max-w-2xl max-h-[92svh] overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:#3f4951_transparent] bg-surface-container-low border border-primary/20 shadow-[0_0_60px_rgba(143,245,255,0.12)] p-6 md:p-10"
+              className="relative w-full sm:max-w-2xl max-h-[92svh] overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:#3d3d3d_transparent] bg-surface-container-low border border-primary/20 shadow-[0_0_60px_rgba(143,245,255,0.12)] p-6 md:p-10"
             >
               <button
                 type="button"

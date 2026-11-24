@@ -29,7 +29,7 @@ export default async function OpengraphImage() {
           justifyContent: 'space-between',
           background: '#000000',
           padding: '56px 80px',
-          color: '#e8f2fb',
+          color: '#ededed',
           position: 'relative',
           fontFamily: 'Space Grotesk',
         }}
@@ -48,11 +48,11 @@ export default async function OpengraphImage() {
         />
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           <svg width="72" height="72" viewBox="0 0 184 184">
-            <circle cx="92" cy="92" r="87.4" fill="#04121a" stroke="#3F4951" strokeWidth="1.5" />
+            <circle cx="92" cy="92" r="87.4" fill="#0a0a0a" stroke="#3D3D3D" strokeWidth="1.5" />
             <path d="M 92 4.6 A 87.4 87.4 0 0 1 92 179.4 Z" fill="#8FF5FF" />
-            <line x1="92" y1="1" x2="92" y2="183" stroke="#04121a" strokeWidth="2.2" />
+            <line x1="92" y1="1" x2="92" y2="183" stroke="#0a0a0a" strokeWidth="2.2" />
           </svg>
-          <div style={{ display: 'flex', fontSize: 34, letterSpacing: 2, color: '#e8f2fb' }}>
+          <div style={{ display: 'flex', fontSize: 34, letterSpacing: 2, color: '#ededed' }}>
             <span style={{ color: '#8ff5ff' }}>[</span>&nbsp;EKINOXIS&nbsp;<span style={{ color: '#8ff5ff' }}>]</span>
           </div>
         </div>
@@ -64,12 +64,12 @@ export default async function OpengraphImage() {
             <span style={{ color: '#8ff5ff', transform: 'skewX(-12deg)', marginLeft: 8 }}>WITHOUT</span>
             <span>FRONTIERS</span>
           </div>
-          <div style={{ display: 'flex', fontSize: 32, color: '#a2acb5' }}>
+          <div style={{ display: 'flex', fontSize: 32, color: '#a3a3a3' }}>
             Unlocking the power of frontier technologies.
           </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 22, color: '#8a949c', letterSpacing: 4 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 22, color: '#8f8f8f', letterSpacing: 4 }}>
           <span>EKINOXIS.XYZ</span>
           <span style={{ color: '#8ff5ff' }}>COLOMBIA · USA</span>
         </div>

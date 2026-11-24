@@ -104,7 +104,7 @@ const PALETTE: { group: string; swatches: Swatch[] }[] = [
       { name: 'Electric Cyan', hex: '#8FF5FF', role: { en: 'The accent. Mark, brackets, highlights', es: 'El acento. Símbolo, corchetes, destacados' } },
       { name: 'Primary Fixed', hex: '#00EEFC', role: { en: 'Saturated cyan for fills on light', es: 'Cian saturado para rellenos en claro' } },
       { name: 'Primary Dim', hex: '#00DEEC', role: { en: 'Hover / pressed', es: 'Hover / presionado' } },
-      { name: 'Ink', hex: '#E8F2FB', role: { en: 'Foreground text on dark', es: 'Texto principal sobre oscuro' } },
+      { name: 'Ink', hex: '#EDEDED', role: { en: 'Foreground text on dark', es: 'Texto principal sobre oscuro' } },
       { name: 'Black', hex: '#000000', role: { en: 'The canvas', es: 'El lienzo' } },
     ],
   },
@@ -128,18 +128,18 @@ const PALETTE: { group: string; swatches: Swatch[] }[] = [
     group: 'SURFACES',
     swatches: [
       { name: 'Lowest', hex: '#000000', role: { en: 'Page background', es: 'Fondo de página' } },
-      { name: 'Container Low', hex: '#09151C', role: { en: 'Cards, sections', es: 'Tarjetas, secciones' } },
-      { name: 'Container', hex: '#0F1B23', role: { en: 'Card hover', es: 'Hover de tarjeta' } },
-      { name: 'Container High', hex: '#14212A', role: { en: 'Elevated panels', es: 'Paneles elevados' } },
-      { name: 'Container Highest', hex: '#192731', role: { en: 'Highest elevation', es: 'Máxima elevación' } },
+      { name: 'Container Low', hex: '#111111', role: { en: 'Cards, sections', es: 'Tarjetas, secciones' } },
+      { name: 'Container', hex: '#171717', role: { en: 'Card hover', es: 'Hover de tarjeta' } },
+      { name: 'Container High', hex: '#1C1C1C', role: { en: 'Elevated panels', es: 'Paneles elevados' } },
+      { name: 'Container Highest', hex: '#242424', role: { en: 'Highest elevation', es: 'Máxima elevación' } },
     ],
   },
   {
     group: 'LINES & STATE',
     swatches: [
-      { name: 'On-surface variant', hex: '#A2ACB5', role: { en: 'Muted body text', es: 'Texto atenuado' } },
-      { name: 'Outline', hex: '#8A949C', role: { en: 'Labels, muted but legible', es: 'Etiquetas, atenuado pero legible' } },
-      { name: 'Outline variant', hex: '#3F4951', role: { en: 'Ghost borders', es: 'Bordes fantasma' } },
+      { name: 'On-surface variant', hex: '#A3A3A3', role: { en: 'Muted body text', es: 'Texto atenuado' } },
+      { name: 'Outline', hex: '#8F8F8F', role: { en: 'Labels, muted but legible', es: 'Etiquetas, atenuado pero legible' } },
+      { name: 'Outline variant', hex: '#3D3D3D', role: { en: 'Ghost borders', es: 'Bordes fantasma' } },
       { name: 'Error', hex: '#FF716C', role: { en: 'Errors, destructive', es: 'Errores, destructivo' } },
     ],
   },
@@ -385,10 +385,10 @@ export default function BrandPage() {
                                 background:
                                   c === 'cyan-on-light' ? '#FFFFFF'
                                   : c === 'black' ? '#FFFFFF'
-                                  : c === 'white' ? '#0F1B23'
+                                  : c === 'white' ? '#171717'
                                   : '#000000',
                                 boxShadow: `inset 0 0 0 4px ${
-                                  c === 'black' ? '#000000' : c === 'white' ? '#E8F2FB' : '#8FF5FF'
+                                  c === 'black' ? '#000000' : c === 'white' ? '#EDEDED' : '#8FF5FF'
                                 }`,
                               }}
                             />
@@ -461,7 +461,7 @@ export default function BrandPage() {
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-px bg-primary/10 border border-primary/10">
               {[
                 { name: 'CYBER', css: 'linear-gradient(135deg, #8FF5FF 0%, #9492FF 100%)' },
-                { name: 'DARK', css: 'linear-gradient(180deg, #000000 0%, #060F16 100%)' },
+                { name: 'DARK', css: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)' },
               ].map((g) => (
                 <div key={g.name} className="bg-surface-container-low">
                   <div className="h-24 border-b border-primary/10" style={{ background: g.css }} />

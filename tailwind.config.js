@@ -10,18 +10,18 @@ module.exports = {
       colors: {
         // ── Obsidian Architect surface hierarchy ──
         'surface-container-lowest': '#000000',
-        'surface': '#060f16',
-        'surface-container-low': '#09151c',
-        'surface-container': '#0f1b23',
-        'surface-container-high': '#14212a',
-        'surface-container-highest': '#192731',
-        'surface-variant': '#192731',
-        'surface-bright': '#1e2e38',
-        'surface-dim': '#060f16',
-        'background': '#060f16',
-        'on-background': '#e8f2fb',
-        'on-surface': '#e8f2fb',
-        'on-surface-variant': '#a2acb5',
+        'surface': '#0a0a0a',
+        'surface-container-low': '#111111',
+        'surface-container': '#171717',
+        'surface-container-high': '#1c1c1c',
+        'surface-container-highest': '#242424',
+        'surface-variant': '#242424',
+        'surface-bright': '#2a2a2a',
+        'surface-dim': '#0a0a0a',
+        'background': '#0a0a0a',
+        'on-background': '#ededed',
+        'on-surface': '#ededed',
+        'on-surface-variant': '#a3a3a3',
         // ── Primary: Electric Cyan ──
         'primary': '#8ff5ff',
         'primary-fixed': '#00eefc',
@@ -58,8 +58,8 @@ module.exports = {
         'on-tertiary-fixed': '#3a4a00',
         'on-tertiary-fixed-variant': '#526900',
         // ── Outline ──
-        'outline': '#8a949c',
-        'outline-variant': '#3f4951',
+        'outline': '#8f8f8f',
+        'outline-variant': '#3d3d3d',
         // ── Error ──
         'error': '#ff716c',
         'error-dim': '#d7383b',
@@ -67,8 +67,8 @@ module.exports = {
         'on-error': '#490006',
         'on-error-container': '#ffa8a3',
         // ── Inverse ──
-        'inverse-surface': '#f5faff',
-        'inverse-on-surface': '#4c565e',
+        'inverse-surface': '#fafafa',
+        'inverse-on-surface': '#525252',
         // ── Backward-compat aliases (remove after full migration) ──
         cyber: {
           blue: '#8ff5ff',
@@ -80,7 +80,7 @@ module.exports = {
           'purple-light': '#9492ff',
           'purple-dim': 'rgba(148, 146, 255, 0.1)',
           black: '#000000',
-          'black-light': '#060f16',
+          'black-light': '#0a0a0a',
           'black-dark': '#000000',
           'black-card': 'rgba(0, 0, 0, 0.7)',
         },
@@ -104,8 +104,8 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-cyber': 'linear-gradient(135deg, #8ff5ff 0%, #9492ff 100%)',
-        'gradient-dark': 'linear-gradient(180deg, #000000 0%, #060f16 100%)',
-        'gradient-surface': 'linear-gradient(180deg, #060f16 0%, #000000 100%)',
+        'gradient-dark': 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
+        'gradient-surface': 'linear-gradient(180deg, #0a0a0a 0%, #000000 100%)',
       },
       animation: {
         // ── New Obsidian Architect animations ──
