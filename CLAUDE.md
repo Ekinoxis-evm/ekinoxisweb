@@ -23,7 +23,8 @@ Next.js 14 (App Router) · TypeScript · Tailwind 3 · Framer Motion 11 · Supab
 - **Mode:** brand (Impeccable: Persuade); the admin is operational (Operate).
 - **Authority:** `DESIGN.md` (tokens, type, components, Do's and Don'ts) · `PRODUCT.md` · `.claude/rules/design.md` (universal standards, definition of done).
 - **Figma:** set up from the Ekinoxis root (shared branding and MCP config); not configured per project.
-- **Theme lives in:** `tailwind.config.js` + `src/app/globals.css`, the only place tokens become code.
+- **Brand source:** `@ekinoxis/brand` (github.com/Ekinoxis-evm/brand, pinned tag in `package.json`): colours, fonts, logos, imagery for every Ekinoxis project. Change a brand value there, tag, then bump the tag here; never edit a brand hex in this repo.
+- **Theme lives in:** `tailwind.config.js` (the brand preset + this site's Material-style aliases onto it) + `src/app/globals.css`, the only place tokens become code.
 - **Gate:** `node design/detect-gate.mjs` fails on new detector findings (baseline `design/detect-baseline.json`); log in `design/log.md`.
 - **Loop:** `/design-loop <screen> [figma-url]`. Corrected twice for the same thing → one line in `DESIGN.md` → Do's and Don'ts.
 - **Code recipes** (page shells, gap-px grid, badges, buttons): `docs/design-patterns.md`.

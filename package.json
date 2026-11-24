@@ -10,6 +10,7 @@
     "brand:zip": "cd public/brand && rm -f ekinoxis-brand-kit.zip && zip -r -q -X ekinoxis-brand-kit.zip README.md colors.md typography.md logo favicon social brand-kit -x '*.DS_Store'"
   },
   "dependencies": {
+    "@ekinoxis/brand": "github:Ekinoxis-evm/brand#v0.1.1",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.100.1",
     "framer-motion": "^11.0.5",

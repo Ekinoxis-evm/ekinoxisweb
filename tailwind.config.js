@@ -1,5 +1,13 @@
+// Brand values come from @ekinoxis/brand (github.com/Ekinoxis-evm/brand), the one source for every
+// Ekinoxis project. The Material-style names below are this site's aliases onto it; values the brand
+// doesn't define (inverse/dim shades) were unused Material scaffolding and are gone; a new shade goes
+// into the brand's tokens.json first.
+const brand = require('@ekinoxis/brand/tailwind');
+const b = brand.theme.extend.colors;
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [brand],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,81 +17,28 @@ module.exports = {
     extend: {
       colors: {
         // ── Obsidian Architect surface hierarchy ──
-        'surface-container-lowest': '#000000',
-        'surface': '#0a0a0a',
-        'surface-container-low': '#111111',
-        'surface-container': '#171717',
-        'surface-container-high': '#1c1c1c',
-        'surface-container-highest': '#242424',
-        'surface-variant': '#242424',
-        'surface-bright': '#2a2a2a',
-        'surface-dim': '#0a0a0a',
-        'background': '#0a0a0a',
-        'on-background': '#ededed',
-        'on-surface': '#ededed',
-        'on-surface-variant': '#a3a3a3',
+        'surface-container-lowest': b['void'],
+        'surface-container-low': b['deep-tide'],
+        'surface-container': b['tide'],
+        'surface-container-high': b['raised-tide'],
+        'surface-container-highest': b['high-tide'],
+        'background': b['obsidian'],
+        'on-background': b['first-light'],
+        'on-surface': b['first-light'],
+        'on-surface-variant': b['mist'],
         // ── Primary: Electric Cyan ──
-        'primary': '#8ff5ff',
-        'primary-fixed': '#00eefc',
-        'primary-dim': '#00deec',
-        'primary-container': '#00eefc',
-        'on-primary': '#005d63',
-        'on-primary-container': '#005359',
-        'on-primary-fixed': '#003f43',
-        'on-primary-fixed-variant': '#005e64',
-        'inverse-primary': '#006a71',
-        'surface-tint': '#8ff5ff',
-        // ── Secondary: Cosmic Blue ──
-        'chart-1': '#c47524',
-        'chart-2': '#0f98a6',
-        'chart-3': '#7a9700',
-        'chart-4': '#5585ff',
-        'secondary': '#9492ff',
-        'secondary-dim': '#625dff',
-        'secondary-container': '#3106ff',
-        'secondary-fixed': '#cfcdff',
-        'secondary-fixed-dim': '#bfbdff',
-        'on-secondary': '#100077',
-        'on-secondary-container': '#dedcff',
-        'on-secondary-fixed': '#1e00b1',
-        'on-secondary-fixed-variant': '#320aff',
+        'primary': b['equinox-cyan'],
+        'primary-dim': b['equinox-cyan-deep'],
+        'on-primary': b['ink-on-cyan'],
+        // ── Secondary: Cosmic Blue ── (chart-1…4 come straight from the brand preset)
+        'secondary': b['cosmic-blue'],
         // ── Tertiary: Neon Lime ──
-        'tertiary': '#f3ffca',
-        'tertiary-dim': '#beee00',
-        'tertiary-fixed': '#cafd00',
-        'tertiary-fixed-dim': '#beee00',
-        'tertiary-container': '#cafd00',
-        'on-tertiary': '#516700',
-        'on-tertiary-container': '#4a5e00',
-        'on-tertiary-fixed': '#3a4a00',
-        'on-tertiary-fixed-variant': '#526900',
+        'tertiary-dim': b['signal-lime'],
         // ── Outline ──
-        'outline': '#8f8f8f',
-        'outline-variant': '#3d3d3d',
+        'outline': b['slate-label'],
+        'outline-variant': b['hairline'],
         // ── Error ──
-        'error': '#ff716c',
-        'error-dim': '#d7383b',
-        'error-container': '#9f0519',
-        'on-error': '#490006',
-        'on-error-container': '#ffa8a3',
-        // ── Inverse ──
-        'inverse-surface': '#fafafa',
-        'inverse-on-surface': '#525252',
-        // ── Backward-compat aliases (remove after full migration) ──
-        cyber: {
-          blue: '#8ff5ff',
-          'blue-dark': '#00deec',
-          'blue-light': '#8ff5ff',
-          'blue-dim': 'rgba(143, 245, 255, 0.1)',
-          purple: '#9492ff',
-          'purple-dark': '#625dff',
-          'purple-light': '#9492ff',
-          'purple-dim': 'rgba(148, 146, 255, 0.1)',
-          black: '#000000',
-          'black-light': '#0a0a0a',
-          'black-dark': '#000000',
-          'black-card': 'rgba(0, 0, 0, 0.7)',
-        },
+        'error': b['alert-coral'],
       },
       fontFamily: {
         headline: ['var(--font-space-grotesk)', 'sans-serif'],
@@ -101,11 +56,6 @@ module.exports = {
         '2xl': '0px',
         '3xl': '0px',
         full: '9999px',
-      },
-      backgroundImage: {
-        'gradient-cyber': 'linear-gradient(135deg, #8ff5ff 0%, #9492ff 100%)',
-        'gradient-dark': 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
-        'gradient-surface': 'linear-gradient(180deg, #0a0a0a 0%, #000000 100%)',
       },
       animation: {
         // ── New Obsidian Architect animations ──

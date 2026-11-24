@@ -17,3 +17,4 @@ trending down, DESIGN.md is missing rules — check the repeats column.
 |---|---|---:|---|
 | | | | |
 | 2026-11-24 | Site-wide surfaces | 1 | Blue-black surfaces → neutral graphite; Don't added |
+| 2026-11-24 | Theme source | 0 | Tailwind colours now read from @ekinoxis/brand v0.1.1 (preset + aliases); compiled CSS byte-identical before/after |

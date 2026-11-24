@@ -158,6 +158,9 @@ decides in minutes. Ambition shows as clarity and craft, not as decoration.
 A night palette with one source of light: neutral graphite tides, a cold electric
 cyan, and two rare signal colours.
 
+The values come from `@ekinoxis/brand` (github.com/Ekinoxis-evm/brand), shared by every Ekinoxis
+project; `tailwind.config.js` maps this site's Material-style names onto the brand names.
+
 ### Primary
 - **Equinox Cyan**: the light. Primary buttons, active states, links, the step line,
   the glow under the action that matters. Text in cyan is reserved for short emphasis

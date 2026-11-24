@@ -239,7 +239,7 @@ export default function ProjectCard({ product, language, modulesLabel, compact =
                   <a key={label} href={href as string} target="_blank" rel="noopener noreferrer"
                     className={`flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-3 py-1.5 border transition-colors duration-200 ${
                       isContract
-                        ? 'border-tertiary-dim/30 text-tertiary-dim/60 hover:text-tertiary-dim hover:border-tertiary-dim/60'
+                        ? 'border-tertiary-dim/30 text-tertiary-dim hover:border-tertiary-dim/60'
                         : 'border-outline-variant/30 text-outline hover:text-on-surface hover:border-outline-variant/60'
                     }`}>
                     <Image src="/socials/github.png" alt="GitHub" width={12} height={12} className="opacity-60" />
