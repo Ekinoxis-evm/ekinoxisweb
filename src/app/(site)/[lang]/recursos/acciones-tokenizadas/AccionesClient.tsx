@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Ban, Banknote, Bot, Compass, KeyRound, MessageCircleQuestion, Radio, CalendarDays, Check, CircleHelp, Clock, Coins, Gauge, ListChecks, BookOpen, Plus, ShoppingCart, Landmark, Scale, Search, ShieldAlert, ShieldCheck, TrendingDown, Vault, Video, Wallet, X } from 'lucide-react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Button from '@/components/ui/Button';
+import PanelBackdrop, { type PanelBackdropName } from '@/components/ui/PanelBackdrop';
 import ScanBadge from '@/components/ui/ScanBadge';
 import { track } from '@/lib/analytics';
 import { fbq } from '@/lib/meta/pixel';
@@ -37,13 +38,14 @@ interface Props {
   /** Logos of the next issuers by value, for the «Otros emisores» row. */
   otherIssuers: (Logo | null)[];
   /** Logo per blockchain id (chain-<id> files). */
-  chains: Record<string, Logo | null>;
   exchanges: BandItem[];
   wallets: BandItem[];
   tokens: BandItem[];
 }
 
 /** Icon per point of the «Lo haces tú» block. */
+/** One of the site's three equinox backdrops per card, behind a dark fade that keeps the copy at full contrast. */
+const CONTROL_BACKDROPS: PanelBackdropName[] = ['metal', 'fog', 'horizon'];
 const CONTROL_ICONS = { money: ShieldCheck, keys: KeyRound, guide: Compass } as const;
 
 /** Icon per workshop fact in R.course.facts. */
@@ -231,7 +233,7 @@ function arc(a0: number, a1: number, ro: number, ri: number): string {
  * its numbers in the centre, a tap opens its card. The legend rows are the accessible controls and
  * the table view, so colour never carries identity alone.
  */
-function IssuersBlock({ issuers, asOf, sector, others }: { issuers: IssuerStat[]; asOf: string; sector: Sector; others: (Logo | null)[] }) {
+function IssuersBlock({ issuers, asOf, sector, others, children }: { issuers: IssuerStat[]; asOf: string; sector: Sector; others: (Logo | null)[]; children?: React.ReactNode }) {
   const b = R.issuersBlock;
   const rows = b.shown
     .flatMap(({ id, color }): (IssuerStat & { value: number; color: string })[] => {
@@ -428,6 +430,7 @@ function IssuersBlock({ issuers, asOf, sector, others }: { issuers: IssuerStat[]
           </div>
         )}
       </Sheet>
+      {children}
     </section>
   );
 }
@@ -714,77 +717,52 @@ function BeforeBuying() {
   );
 }
 
-/** A tile in a sliding band: a logo with its name; a link, a card opener, or plain. */
-type BandTile = { key: string; name: string; logo: Logo | null; href?: string };
+/** A tile in a sliding band: a stock's logo and ticker; a tap opens its card. */
+type BandTile = { key: string; name: string; logo: Logo | null };
 
 /**
- * One full-bleed band sliding sideways (the site's marquee: two identical halves, CSS only).
- * Pauses on hover and keyboard focus; under reduced motion the repeats hide and the row wraps.
- * With `onPick`, each tile opens a card instead of following a link.
+ * One band sliding sideways (the site's marquee: two identical halves, CSS only), so the loop is
+ * seamless. Pauses on hover and keyboard focus; under reduced motion the repeat hides and the row wraps.
  */
-function Band({ title, hint, items, onPick, reverse = false }: { title?: string; hint?: string; items: BandTile[]; onPick?: (key: string) => void; reverse?: boolean }) {
+function Band({ items, onPick, reverse = false }: { items: BandTile[]; onPick: (key: string) => void; reverse?: boolean }) {
   if (items.length === 0) return null;
-  const reps = Math.max(1, Math.ceil(14 / items.length));
-  const half = Array.from({ length: reps }, () => items).flat();
-  const tile = (it: BandTile, repeat: boolean) => {
-    const face = 'group flex w-24 flex-col items-center gap-2 p-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary md:w-28';
-    const inner = (
-      <>
-        <LogoTile logo={it.logo} text={it.name.slice(0, 4).toUpperCase()} className="w-16 border border-primary/10 transition-colors duration-150 group-hover:border-primary/60 md:w-20" />
-        <span className="w-full truncate font-body text-[13px] text-on-surface">{it.name}</span>
-      </>
-    );
-    const a11y = repeat ? { tabIndex: -1, 'aria-hidden': true } : {};
-    if (onPick)
-      return (
-        <button type="button" onClick={() => onPick(it.key)} aria-haspopup="dialog" aria-label={it.name} className={face} {...a11y}>
-          {inner}
-        </button>
-      );
-    if (it.href)
-      return (
-        <a href={it.href} target="_blank" rel="noopener noreferrer" aria-label={it.name} className={face} {...a11y}>
-          {inner}
-        </a>
-      );
-    return <span className={face}>{inner}</span>;
-  };
   return (
-    <div className="marquee [&:focus-within_.animate-marquee]:[animation-play-state:paused]">
-      {title && (
-        <div className="mx-auto mb-4 max-w-screen-2xl px-4 sm:px-6">
-          <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface">{title}</h3>
-          {hint && <p className="mt-1 font-body text-base text-on-surface-variant">{hint}</p>}
-        </div>
-      )}
-      <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
-        <ul
-          className={`flex w-max animate-marquee motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:justify-center ${reverse ? '[animation-direction:reverse]' : ''}`}
-          style={{ ['--marquee-duration' as string]: `${half.length * 3}s` }}
-        >
-          {[0, 1].flatMap((h) =>
-            half.map((it, k) => {
-              const repeat = h === 1 || k >= items.length;
-              return (
-                <li key={`${h}-${k}`} className={`mr-2 shrink-0 ${repeat ? 'motion-reduce:hidden' : ''}`}>
-                  {tile(it, repeat)}
-                </li>
-              );
-            }),
-          )}
-        </ul>
-      </div>
+    <div className="marquee overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] [&:focus-within_.animate-marquee]:[animation-play-state:paused]">
+      <ul
+        className={`flex w-max animate-marquee motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:justify-center ${reverse ? '[animation-direction:reverse]' : ''}`}
+        style={{ ['--marquee-duration' as string]: `${items.length * 3}s` }}
+      >
+        {[0, 1].flatMap((h) =>
+          items.map((it) => {
+            const repeat = h === 1;
+            return (
+              <li key={`${h}-${it.key}`} className={`mr-2 shrink-0 ${repeat ? 'motion-reduce:hidden' : ''}`}>
+                <button
+                  type="button"
+                  onClick={() => onPick(it.key)}
+                  aria-haspopup="dialog"
+                  aria-label={it.name}
+                  {...(repeat ? { tabIndex: -1, 'aria-hidden': true } : {})}
+                  className="group flex w-24 flex-col items-center gap-2 p-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary md:w-28"
+                >
+                  <LogoTile logo={it.logo} text={it.name.slice(0, 4).toUpperCase()} className="w-16 border border-primary/10 transition-colors duration-150 group-hover:border-primary/60 md:w-20" />
+                  <span className="w-full truncate font-body text-[13px] text-on-surface">{it.name}</span>
+                </button>
+              </li>
+            );
+          }),
+        )}
+      </ul>
     </div>
   );
 }
 
 /**
- * «Lo que usaremos»: exchanges, wallets and tokens as sliding bands of official logos, then the
- * 40 tech stocks in two bands running opposite ways; a stock opens its card (where to buy it,
- * who issues it).
+ * «Acciones que puedes obtener», inside «Mercado»: the 40 tech stocks in two bands running
+ * opposite ways; a stock opens its card (where to buy it, who issues it).
  */
-function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { tiles: TechTile[]; names: Record<string, string>; idLogos: Record<string, Logo | null>; asOf: string; exchanges: BandTile[]; wallets: BandTile[]; tokens: BandTile[] }) {
-  const k = R.toolkit;
+function Stocks({ tiles, names, idLogos, asOf }: { tiles: TechTile[]; names: Record<string, string>; idLogos: Record<string, Logo | null>; asOf: string }) {
+  const k = R.toolkit.stocks;
   const t = R.tech;
   const [open, setOpen] = useState<string | null>(null);
   const sel = tiles.find((x) => x.slug === open) ?? null;
@@ -795,21 +773,15 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
   const stock = (x: TechTile): BandTile => ({ key: x.slug, name: x.ticker, logo: x.logo });
   const mid = Math.ceil(tiles.length / 2);
   return (
-    <section aria-labelledby="toolkit-heading" className="flex flex-col gap-12 pt-20 md:gap-16 md:pt-28">
-      <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6">
-        <h2 id="toolkit-heading" className="font-headline text-4xl font-bold leading-[0.95] tracking-tighter text-on-surface md:text-5xl">
-          {k.heading}
-        </h2>
-      </div>
-      <Band title={k.exchanges.title} items={exchanges} />
-      <Band title={k.wallets.title} items={wallets} reverse />
-      <Band title={k.tokens.title} items={tokens} />
+    <div className="mt-14">
+      <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{k.title}</h3>
+      <p className="mb-6 mt-2 max-w-2xl font-body text-lg text-on-surface-variant">{k.hint}</p>
       <div className="flex flex-col gap-4">
-        <Band title={k.stocks.title} hint={k.stocks.hint} items={tiles.slice(0, mid).map(stock)} onPick={pick} reverse />
+        <Band items={tiles.slice(0, mid).map(stock)} onPick={pick} reverse />
         <Band items={tiles.slice(mid).map(stock)} onPick={pick} />
       </div>
 
-      <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? k.stocks.title}>
+      <Sheet open={sel !== null} onClose={() => setOpen(null)} label={sel?.name ?? k.title}>
         {sel && (
           <div>
             <div className="flex items-center gap-4 pr-12">
@@ -859,7 +831,41 @@ function Toolkit({ tiles, names, idLogos, asOf, exchanges, wallets, tokens }: { 
           </div>
         )}
       </Sheet>
-    </section>
+    </div>
+  );
+}
+
+/**
+ * «Lo que usaremos», inside «Qué haces en el taller»: each exchange, wallet, network and
+ * stablecoin once, still, with its name, linked to its official site.
+ */
+function Tools({ groups }: { groups: { title: string; items: BandItem[] }[] }) {
+  return (
+    <div className="mt-14">
+      <h3 className="font-headline text-2xl font-bold tracking-tight text-on-surface md:text-3xl">{R.toolkit.heading}</h3>
+      <div className="mt-6 grid grid-cols-1 gap-px bg-primary/10 lg:grid-cols-3">
+        {groups.map((g) => (
+          <div key={g.title} className="bg-surface-container-low p-6 md:p-8">
+            <h4 className="font-body text-[15px] font-bold text-on-surface-variant">{g.title}</h4>
+            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 lg:grid-cols-2">
+              {g.items.filter((it) => it.logo).map((it) => (
+                <li key={it.name}>
+                  <a
+                    href={it.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex min-h-11 items-center gap-3 font-body text-[15px] text-on-surface transition-colors duration-150 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    <LogoTile logo={it.logo} text="" className="w-9 shrink-0" />
+                    <span className="min-w-0">{it.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -985,7 +991,7 @@ function ReserveButton({ position, onReserve, label, className = '' }: { positio
  * across the top with a node per step and its column below; phones: the line runs down the left.
  * The line draws in and the steps settle in a short stagger once, on scroll (instant under reduced motion).
  */
-function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) => void; marks: Marks; chains: Record<string, Logo | null>; offer: Offer }) {
+function Course({ onReserve, tools, offer }: { onReserve: (p: string) => void; tools: { title: string; items: BandItem[] }[]; offer: Offer }) {
   const c = R.course;
   const [ref, seen] = useSeen<HTMLOListElement>();
   return (
@@ -1031,7 +1037,6 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
                 {'method' in st && <span className="font-mono text-[12px] uppercase tracking-widest text-secondary">{st.method}</span>}
               </p>
               <h3 className="mt-2 font-headline text-2xl font-bold leading-tight tracking-tight text-on-surface">{st.title}</h3>
-              <MiniLogos logos={st.marks.flatMap((m) => marks[m as keyof Marks] ?? [])} className="mt-4" />
               <ul className="mt-4 flex flex-col gap-2">
                 {st.does.map((d) => (
                   <li key={d} className="flex items-start gap-3 font-body text-base leading-relaxed text-on-surface">
@@ -1040,22 +1045,12 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
                   </li>
                 ))}
               </ul>
-              {'networks' in st && (
-                <ul aria-label="Redes" className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
-                  {st.networks.map((n) => (
-                    <li key={n.id} className="flex items-center gap-2 font-body text-[15px] text-on-surface">
-                      <LogoLink logo={chains[n.id] ?? null} className="flex items-center gap-2">
-                        <LogoTile logo={chains[n.id] ?? null} text={n.name.slice(0, 2).toUpperCase()} className="w-8" />
-                        <span>{n.name}</span>
-                      </LogoLink>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </li>
           );
         })}
       </ol>
+
+      <Tools groups={tools} />
 
       <div className="mt-12 flex flex-col gap-5 bg-surface-container-high p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
@@ -1073,12 +1068,9 @@ function Course({ onReserve, marks, chains, offer }: { onReserve: (p: string) =>
   );
 }
 
-/** Bands show official logos only; an entry without a file stays out until one lands. */
-const band = (items: BandItem[]): BandTile[] => items.flatMap((it) => (it.logo ? [{ key: it.name, name: it.name, logo: it.logo, href: it.href }] : []));
-
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, otherIssuers, chains, exchanges, wallets, tokens }: Props) {
+export default function AccionesClient({ tiles, sources, issuers, idLogos, sector, names, asOf, marks, otherIssuers, exchanges, wallets, tokens }: Props) {
   const [barShown, setBarShown] = useState(false);
   // Same first render on server and client (epoch → promo tier); the real clock applies after mount.
   const [offer, setOffer] = useState<Offer>(() => offerAt(new Date(0)));
@@ -1178,15 +1170,17 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
               {R.control.heading}
             </h2>
             <ul className="mt-10 grid grid-cols-1 gap-px bg-primary/10 md:grid-cols-3">
-              {R.control.items.map((it) => {
+              {R.control.items.map((it, k) => {
                 const Icon = CONTROL_ICONS[it.icon as keyof typeof CONTROL_ICONS];
                 return (
-                  <li key={it.title} className="flex flex-col gap-4 bg-surface-container-low p-6 md:p-8">
-                    <span aria-hidden className="flex h-12 w-12 items-center justify-center bg-surface-container-high text-primary">
+                  <li key={it.title} className="relative flex min-h-[15rem] flex-col justify-end gap-4 overflow-hidden bg-surface-container-low p-6 md:min-h-[22rem] md:p-8">
+                    <PanelBackdrop name={CONTROL_BACKDROPS[k % CONTROL_BACKDROPS.length]} />
+                    <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent" />
+                    <span aria-hidden className="relative mb-auto flex h-12 w-12 items-center justify-center bg-surface-container-high text-primary">
                       <Icon size={24} />
                     </span>
-                    <span className="font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-2xl">{it.title}</span>
-                    <span className="font-body text-base leading-relaxed text-on-surface-variant md:text-lg">{it.body}</span>
+                    <span className="relative font-headline text-xl font-bold leading-tight tracking-tight text-on-surface md:text-2xl">{it.title}</span>
+                    <span className="relative font-body text-base leading-relaxed text-on-surface md:text-lg">{it.body}</span>
                   </li>
                 );
               })}
@@ -1194,18 +1188,18 @@ export default function AccionesClient({ tiles, sources, issuers, idLogos, secto
           </section>
 
           <Routes marks={marks} />
-        </div>
-      </div>
-
-      {/* Full-bleed: what you will use, and the stocks you can get. Only official logos. */}
-      <Toolkit tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} exchanges={band(exchanges)} wallets={band(wallets)} tokens={band(tokens)} />
-
-      <div className="px-4 py-20 sm:px-6 md:py-32">
-        <div className="mx-auto flex max-w-screen-2xl flex-col gap-20 md:gap-32">
-          <div>
-            <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} others={otherIssuers} />
-          </div>
-          <Course onReserve={reserve} marks={marks} chains={chains} offer={offer} />
+          <IssuersBlock issuers={issuers} asOf={asOf} sector={sector} others={otherIssuers}>
+            <Stocks tiles={tiles} names={names} idLogos={idLogos} asOf={asOf} />
+          </IssuersBlock>
+          <Course
+            onReserve={reserve}
+            offer={offer}
+            tools={[
+              { title: R.toolkit.exchanges.title, items: exchanges },
+              { title: R.toolkit.wallets.title, items: wallets },
+              { title: R.toolkit.tokens.title, items: tokens },
+            ]}
+          />
           <Teacher />
 
           <BeforeBuying />

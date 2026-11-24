@@ -190,9 +190,9 @@ export const ACCIONES = {
    */
   toolkit: {
     heading: 'Lo que usaremos',
-    exchanges: { title: 'Exchanges que usaremos', venueIds: ['okx', 'kraken', 'bybit'], dexId: 'uniswap' },
+    exchanges: { title: 'Exchanges', venueIds: ['okx', 'kraken', 'bybit'], dexId: 'uniswap' },
     wallets: {
-      title: 'Wallets que usaremos',
+      title: 'Wallets',
       items: [
         { id: 'base', name: 'Base app', url: 'https://base.app' },
         { id: 'metamask', name: 'MetaMask', url: 'https://metamask.io' },
@@ -205,7 +205,7 @@ export const ACCIONES = {
     },
     /** Blockchains, then the stablecoins; ETH and SOL share their chain's mark, so they appear once. `logo` is the file key. */
     tokens: {
-      title: 'Tecnología blockchain que usaremos',
+      title: 'Redes y stablecoins',
       items: [
         { logo: 'chain-ethereum', name: 'Ethereum', url: 'https://ethereum.org' },
         { logo: 'chain-arbitrum', name: 'Arbitrum', url: 'https://arbitrum.io' },
@@ -351,36 +351,24 @@ export const ACCIONES = {
       {
         n: 'Antes',
         title: 'Crea tu cuenta',
-        marks: ['exchanges'],
         does: ['Abres tu cuenta en el exchange y completas la verificación (KYC).', 'Te guía el Skill.md en tu agente de IA.'],
       },
       {
         n: 'Bloque 1',
         title: 'De tu banco a tus primeros USDT',
-        marks: ['usdt'],
         does: ['Cargas tu cuenta con tu moneda bancaria.', 'Compras tus primeros USDT y ves cuánto te cobraron.'],
       },
       {
         n: 'Bloque 2',
         method: 'Método A',
         title: 'Tu primera acción tokenizada, en el exchange',
-        marks: ['xstocks', 'stocks'],
         does: ['Compras por la ruta fácil (Convert) y por la barata (orden a mercado).', 'Calculas cuánto te costó de verdad.'],
       },
       {
         n: 'Bloque 3',
         method: 'Método B',
         title: 'A tu propia wallet',
-        marks: ['wallets', 'uniswap'],
         does: ['Llevas USDT y el gas (ETH) a tu wallet.', 'Retiras a tu wallet lo que compraste en el exchange.', 'Compras en Uniswap eligiendo emisor y red.'],
-        /** Shown as logo + name (DESIGN.md: blockchains always by their logo); files chain-<id>. */
-        networks: [
-          { id: 'ethereum', name: 'Ethereum' },
-          { id: 'arbitrum', name: 'Arbitrum' },
-          { id: 'base', name: 'Base' },
-          { id: 'robinhood', name: 'Robinhood Chain' },
-          { id: 'solana', name: 'Solana' },
-        ],
       },
     ],
   },
